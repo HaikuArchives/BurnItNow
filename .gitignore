@@ -1,13 +1,9 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+BurnItNow
+cmake_install.cmake
+CMakeCache.txt
+Makefile
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+CMakeFiles/
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+Source/Makefile
+Source/CMakeFiles/
