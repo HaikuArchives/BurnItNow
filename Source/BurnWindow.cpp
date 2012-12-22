@@ -44,6 +44,8 @@ const float kControlPadding = 5;
 sdevice devices[5];
 int selectedDevice;
 
+BMenu* sessionMenu;
+
 #pragma mark --Constructor/Destructor--
 
 
@@ -131,7 +133,7 @@ BView* BurnWindow::_CreateToolBar()
 {
 	BGroupView* groupView = new BGroupView(B_HORIZONTAL, kControlPadding);
 
-	BMenu* sessionMenu = new BMenu("SessionMenu");
+	sessionMenu = new BMenu("SessionMenu");
 	sessionMenu->SetLabelFromMarked(true);
 	BMenuItem* daoItem = new BMenuItem("Disc At Once (DAO)", new BMessage());
 	daoItem->SetMarked(true);
@@ -200,7 +202,7 @@ BView* BurnWindow::_CreateTabView()
 
 	tabView->AddTab(new CompilationDataView());
 	tabView->AddTab(new CompilationAudioView());
-	tabView->AddTab(new CompilationImageView());
+	tabView->AddTab(new CompilationImageView(*this));
 
 	return tabView;
 }
@@ -326,4 +328,21 @@ void BurnWindow::FindDevices()
 			devices[xdev++] = dev;
 		}
 	}
+}
+
+#pragma mark -- Public Methods --
+
+sdevice BurnWindow::GetSelectedDevice() {
+	return devices[selectedDevice];
+}
+
+/*
+* true - DAO/SAO
+* false - TAO
+*/
+bool BurnWindow::GetSessionMode() {
+	BString modeLabel = sessionMenu->FindMarked()->Label();
+	if(modeLabel.FindFirst("DAO") == B_ERROR)
+		return false;
+	return true;
 }

@@ -24,6 +24,9 @@ public:
 	BurnWindow(BRect frame, const char* title);
 
 	virtual void MessageReceived(BMessage* message);
+	
+	sdevice GetSelectedDevice();
+	bool GetSessionMode();
 
 private:
 	BMenuBar* _CreateMenuBar();
