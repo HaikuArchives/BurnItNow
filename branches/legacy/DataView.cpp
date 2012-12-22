@@ -88,23 +88,23 @@ DataView::DataView(BRect size)
 
 	r.bottom += 15;
 	r.top += 15;
-	BRadioButton* macRadio = new BRadioButton(r, "fMacRadio", "Mac (hfs)", new BMessage(DATA_HFS));
-	if (!strcmp(DATA_STRING, "-hfs") && IMAGE_TYPE == 0)
+	BRadioButton* macRadio = new BRadioButton(r, "fMacRadio", "DVD Video", new BMessage(DATA_HFS));
+	if (!strcmp(DATA_STRING, "-dvd-video -UDF") && IMAGE_TYPE == 0)
 		macRadio->SetValue(B_CONTROL_ON);
 	fileSystemBox->AddChild(macRadio);
 
-	r.bottom += 15;
-	r.top += 15;
-	BRadioButton* ownRadio = new BRadioButton(r, "own", "Own (choose mkisofs options)", new BMessage(DATA_HFS));
+	//r.bottom += 15;
+	//r.top += 15;
+	//BRadioButton* ownRadio = new BRadioButton(r, "own", "Own (choose mkisofs options)", new BMessage(DATA_HFS));
 //	if(!strcmp(DATA_STRING,"-hfs"))
 //		fMacRadio->SetValue(B_CONTROL_ON);
-	ownRadio->SetEnabled(false);
-	fileSystemBox->AddChild(ownRadio);
+	//ownRadio->SetEnabled(false);
+	//fileSystemBox->AddChild(ownRadio);
 
 	r = Bounds();
 	r.InsetBy(5.0, 5.0);
 	r.top = 95;
-	r.right = r.right - 160;
+	r.right = r.right - 320;
 
 	IconLabel* bootLabel = new IconLabel(BRect(0, 0, 19 + 
 	                       be_bold_font->StringWidth(" El Torito Bootable CD"), 19), " El Torito Bootable CD", "bootcd_16.png");
@@ -137,10 +137,10 @@ DataView::DataView(BRect size)
 	r = Bounds();
 	r.InsetBy(5.0, 5.0);
 	r.top = 135;
-	r.left = r.right - 150;
+	r.left = r.right - 303;
 	r.bottom = 165;
 
-	AddChild(new BButton(r, "Change Volume Name", "Change Volume Name", new BMessage(CHANGE_VOL_NAME)));
+	AddChild(new BButton(r, "Change Volume Name", "Set Volume Name", new BMessage(CHANGE_VOL_NAME)));
 
 	fFilePanel = new BFilePanel(B_OPEN_PANEL);
 	fFilePanel->SetMessage(new BMessage(BOOT_CHANGE_IMAGE_NAME));

@@ -35,10 +35,18 @@ AudioView::AudioView(BRect size)
 	advLabel->SetDrawingMode(B_OP_ALPHA);
 	r = Bounds();
 	r.InsetBy(5.0, 5.0);
-	r.bottom = 80;
+	r.bottom = 165;
 	BBox* advOptionsBox = new BBox(r, "fAdvOptionsBox", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS, B_PLAIN_BORDER);
 	advOptionsBox->SetLabel(advLabel);
 	AddChild(advOptionsBox);
+	r.left = 150;
+	r.right = 278;
+	r.top = 20;
+	r.bottom = 150;
+	IconLabel* BGLabel = new IconLabel(r, "", "cdrw_64.png");
+	BGLabel->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	BGLabel->SetDrawingMode(B_OP_ALPHA);
+	advOptionsBox->AddChild(BGLabel);
 
 
 	r = advOptionsBox->Bounds();
@@ -69,11 +77,9 @@ AudioView::AudioView(BRect size)
 
 	advOptionsBox->AddChild(fPreEmpCheckBox);
 
-	r = advOptionsBox->Bounds();
-	r.InsetBy(5.0, 5.0);
-	r.top += 10;
-	r.left = 125;
-	r.bottom = 25;
+	r.top += 15;
+	r.right = 120;
+	r.bottom += 15;
 
 	fSwabCheckBox = new BCheckBox(r, "swab", "Swab", new BMessage(AUDIO_SWAB));
 	if (!strncmp(SWAB, "-swab", 5))
@@ -82,25 +88,25 @@ AudioView::AudioView(BRect size)
 	advOptionsBox->AddChild(fSwabCheckBox);
 
 
-	// Info box
-	r = Bounds();
-	r.InsetBy(5.0, 5.0);
-	r.top = 85;
-	BBox* infoBox = new BBox(r, "Info", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS, B_PLAIN_BORDER);
-	infoBox->SetLabel("Audio Info");
-	AddChild(infoBox);
+	//Info box
+	//r = Bounds();
+	//r.InsetBy(5.0, 5.0);
+	//r.top = 85;
+	//BBox* infoBox = new BBox(r, "Info", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS, B_PLAIN_BORDER);
+	//infoBox->SetLabel("Audio Info");
+	//AddChild(infoBox);
 
-	r = infoBox->Bounds();
-	r.InsetBy(5.0, 5.0);
-	r.top += 10;
-	r.right -= B_V_SCROLL_BAR_WIDTH;
-	r2 = r;
-	r2.InsetBy(2.0, 2.0);
-	BTextView* infoTextView = new BTextView(r, "infoTextView", r2, B_FOLLOW_NONE, B_WILL_DRAW);
-	infoTextView->MakeEditable(false);
-	infoTextView->SetStylable(true);
-	BScrollView* infoScrollView = new BScrollView("infoScrollView", infoTextView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER);
-	infoBox->AddChild(infoScrollView);
-	infoTextView->SetFontAndColor(be_fixed_font, B_FONT_ALL, &darkblue);
-	infoTextView->Insert("Here will be some AudioInfo in the future like what codecs there are on the system.");
+	//r = infoBox->Bounds();
+	//r.InsetBy(5.0, 5.0);
+	//r.top += 10;
+	//r.right -= B_V_SCROLL_BAR_WIDTH;
+	//r2 = r;
+	//r2.InsetBy(2.0, 2.0);
+	//BTextView* infoTextView = new BTextView(r, "infoTextView", r2, B_FOLLOW_NONE, B_WILL_DRAW);
+	//infoTextView->MakeEditable(false);
+	//infoTextView->SetStylable(true);
+	//BScrollView* infoScrollView = new BScrollView("infoScrollView", infoTextView, B_FOLLOW_NONE, 0, false, true, B_FANCY_BORDER);
+	//infoBox->AddChild(infoScrollView);
+	//infoTextView->SetFontAndColor(be_fixed_font, B_FONT_ALL, &darkblue);
+	//infoTextView->Insert("info here");
 }

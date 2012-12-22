@@ -48,7 +48,7 @@ public:
 	BBitmap* fFileBitmap;
 	BBitmap* fDirectoryBitmap;
 	BBitmap* fInfoBitmap;
-	
+	BBitmap* fAudioBitmap;
 	BPopUpMenu* fItemPopUpMenu;
 	
 };

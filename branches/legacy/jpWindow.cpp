@@ -65,7 +65,7 @@ char* BURNIT_PATH;
 char* BURN_DIR;
 BPath CDRTOOLS_DIR;
 
-char BURNPROOF[30]; // driveropts = burnproof
+char BURNFREE[30]; // driveropts=burnfree
 char PAD[10]; // -pad (audio)
 char DAO[10]; // -dao
 char NOFIX[10]; // -nofix (audio)
@@ -129,7 +129,7 @@ int32 OutPutMkImage(void* p)
 		SWin->Lock();
 		SWin->Ready();
 		SWin->Unlock();
-		sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
+		sprintf(IMAGE_NAME, "/boot/common/cache/tmp/BurnItNow.raw", BURNIT_PATH);
 	}
 	if (BOOTABLE) {
 		char temp[1024];
@@ -215,7 +215,7 @@ int32 OutPutBurn(void* p)
 	if (noerror)
 		SWin->Ready();
 	SWin->Unlock();
-	sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
+	sprintf(IMAGE_NAME, "/boot/common/cache/tmp/BurnItNow.raw", BURNIT_PATH);
 	BEntry(IMAGE_NAME, true).Remove();
 	if (BOOTABLE) {
 		char temp[1024];
@@ -292,8 +292,8 @@ jpWindow::jpWindow(BRect frame)
 	r = fAroundBox->Bounds();
 	r.InsetBy(10.0, 10.0);
 	r.top = r.bottom - 23; 
-	r.left = r.right - 70;
-	fCalcSizeButton = new BButton(r, "calcsize", "Calc. Size", new BMessage(CALCULATE_SIZE));
+	r.left = r.right - 75;
+	fCalcSizeButton = new BButton(r, "calcsize", "Calc Size!", new BMessage(CALCULATE_SIZE));
 	fAroundBox->AddChild(fCalcSizeButton);
 
 	// Tabs
@@ -411,8 +411,8 @@ jpWindow::jpWindow(BRect frame)
 	r.InsetBy(5.0, 5.0);
 	r.top = 220;
 	r.bottom = 240;
-	r.right = 120;
-	fNewVRCDButton = new BButton(r, "New Virtual CD", "New Virtual CD", new BMessage(NEW_VRCD));
+	r.right = 296;
+	fNewVRCDButton = new BButton(r, "New Virtual CD", "New data project", new BMessage(NEW_VRCD));
 	fAroundBox->AddChild(fNewVRCDButton);
 
 	// Open ISO
@@ -421,9 +421,18 @@ jpWindow::jpWindow(BRect frame)
 	r.top = 220;
 	r.bottom = 240;
 	r.left = 125;
-	r.right -= ((r.right / 2) + (B_V_SCROLL_BAR_WIDTH) + 2);
+	r.right -= ((r.right / 1) + (B_V_SCROLL_BAR_WIDTH) + 1);
 	fAddISOButton = new BButton(r, "Add ISOFile", "Add ISOFile", new BMessage(OPEN_ISO_FILE));
 	fAroundBox->AddChild(fAddISOButton);
+	
+    // Info
+	r = fAroundBox->Bounds();
+	r.InsetBy(5.0, 5.0);
+	r.top = 568;
+	r.bottom = 100;
+	r.right = 296;
+	fNewVRCDButton = new BButton(r, "Drag here only Audio and ISO files", "Drag here only Audio and ISO files", new BMessage(OPEN_ISO_FILE));
+	//fAroundBox->AddChild(fNewVRCDButton);
 
 	// FilePanel open isofile
 	fISOOpenPanel = new BFilePanel(B_OPEN_PANEL, &be_app_messenger, NULL, B_FILE_NODE, false, NULL, NULL, true, true);
@@ -437,7 +446,7 @@ jpWindow::jpWindow(BRect frame)
 	AddChild(fMenuBar);
 
 	menu = new BMenu("File");
-	menu->AddItem(new BMenuItem("About", new BMessage(MENU_FILE_ABOUT), 'A'));
+	menu->AddItem(new BMenuItem("About", new BMessage(MENU_FILE_ABOUT), 'I'));
 	menu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
 	fMenuBar->AddItem(menu);
 	fMenuBar->AddItem(new BMenuItem("Help", new BMessage(MENU_HELP)));
@@ -485,7 +494,7 @@ uint64 jpWindow::GetVRCDSize()
 			}
 		}
 		pclose(f1);
-		tempas = atol(buf) * 2048;
+		tempas = atoll(buf) * 2048;
 	} else if (IMAGE_TYPE == 1)
 		tempas = GetBFSSize();
 
@@ -495,129 +504,139 @@ uint64 jpWindow::GetVRCDSize()
 
 void jpWindow::CalculateSize()
 {
-	BFile f1;
-	char temp_char[1024];
-	char what[100];
-	uint32 angle_temp[100];
-	uint32 tracks, i;
-	off_t temp, total_audio, total, total_iso, total_vrcd;
-	
-	total_audio = 0;
-	total = 0;
-	total_iso = 0;
-	total_vrcd = 0;
-	temp = 0;	nrtracks = 0;
-	
-	if (BURN_TYPE == 0) {
-		sprintf(what, "DataCD");
-		total_vrcd = total = total_iso = total_audio = 0;
-		fStatusBar->SetBarColor(blue);
-		if (fLeftList->CountItems() > 0) {
-			LeftListItem* item1 = (LeftListItem*)fLeftList->ItemAt(0);
-			if (item1->fIconBitmap == fLeftList->fISOBitmap) {
-				f1.SetTo(&item1->fRef, B_READ_ONLY);
-				f1.GetSize(&temp);
-				total_iso += temp;
-				angle_temp[0] = temp / 1024 / 1024;
-				nrtracks = 1;
-			} else if (item1->fIconBitmap == fLeftList->fVRCDBitmap) {
-				nrtracks = 1;
-				total_vrcd = temp = GetVRCDSize();
-				angle_temp[0] = temp / 1024 / 1024;
-			}
-		}
-	} else if (BURN_TYPE == 1) {
-		sprintf(what, "AudioCD");
-		total_vrcd = total = total_iso = total_audio = temp = 0;
-		fStatusBar->SetBarColor(green);
-		if (fLeftList->CountItems() > 0) {
-			LeftListItem* item1 = (LeftListItem*)fLeftList->ItemAt(0);
-			LeftListItem* item2 = (LeftListItem*)fLeftList->ItemAt(1);
-			if (item1->fIconBitmap == fLeftList->fAudioBitmap) {
-				tracks = fLeftList->CountItems();
-				for (i = 0; i < tracks; i++) {
-					item1 = (LeftListItem*)fLeftList->ItemAt(i);
-					f1.SetTo(&item1->fRef, B_READ_ONLY);
-					f1.GetSize(&temp);
-					total_audio += temp;
-					angle_temp[i] = temp / 1024 / 1024;
-					nrtracks++;
-				}
-			} else if (fLeftList->CountItems() > 1) {
-				if (item2->fIconBitmap == fLeftList->fAudioBitmap) {
-					tracks = fLeftList->CountItems();
-					for (i = 1; i < tracks; i++) {
-						item1 = (LeftListItem*)fLeftList->ItemAt(i);
-						f1.SetTo(&item1->fRef, B_READ_ONLY);
-						f1.GetSize(&temp);
-						total_audio += temp;
-						angle_temp[i - 1] = temp / 1024 / 1024;
-						nrtracks++;
-					}
-				}
-			}
-		}
-	} else if (BURN_TYPE == 2) {
-		sprintf(what, "MixCD");
-		total_vrcd = total = total_iso = total_audio = 0;
-		fStatusBar->SetBarColor(greenblue);
-		if (fLeftList->CountItems() > 0) {
-			LeftListItem* item1 = (LeftListItem*)fLeftList->ItemAt(0);
-			LeftListItem* item2 = (LeftListItem*)fLeftList->ItemAt(1);
-			if (item1->fIconBitmap == fLeftList->fISOBitmap) {
-				nrtracks = 1;
-				f1.SetTo(&item1->fRef, B_READ_ONLY);
-				f1.GetSize(&temp);
-				total_iso = temp;
-				angle_temp[nrtracks - 1] = temp / 1024 / 1024;
-			} else if (item1->fIconBitmap == fLeftList->fVRCDBitmap) {
-				nrtracks = 1;
-				total_vrcd = temp = GetVRCDSize();
-				angle_temp[nrtracks - 1] = temp / 1024 / 1024;
-			}
-
-			if (item1->fIconBitmap == fLeftList->fAudioBitmap) {
-				tracks = fLeftList->CountItems();
-				for (i = 0; i < tracks; i++) {
-					item1 = (LeftListItem*)fLeftList->ItemAt(i);
-					f1.SetTo(&item1->fRef, B_READ_ONLY);
-					f1.GetSize(&temp);
-					total_audio += temp;
-					nrtracks++;
-					angle_temp[nrtracks - 1] = temp / 1024 / 1024;
-
-				}
-			}
-
-			else if (fLeftList->CountItems() > 1)
-				if (item2->fIconBitmap == fLeftList->fAudioBitmap) {
-					tracks = fLeftList->CountItems();
-					for (i = 1; i < tracks; i++) {
-						item1 = (LeftListItem*)fLeftList->ItemAt(i);
-						f1.SetTo(&item1->fRef, B_READ_ONLY);
-						f1.GetSize(&temp);
-						total_audio += temp;
-						nrtracks++;
-						angle_temp[nrtracks - 1] = temp / 1024 / 1024;
-					}
-				}
-		}
-	}
-
-	total = total_audio + total_iso + total_vrcd;
-	sprintf(temp_char, "%s - [%lld of 650 Mb]", what, total / 1024 / 1024);
-	fStatusBar->Reset();
-	fStatusBar->SetMaxValue(CDSIZE);
-	fStatusBar->Update((total / 1024 / 1024), temp_char);
-
-	for (i = 0; i < nrtracks; i++) {
-		if (i == 0)
-			angles[i] = ((float)360 / (float)(total / 1024 / 1024)) * (float)angle_temp[i];
-		else
-			angles[i] = ((float)360 / (float)(total / 1024 / 1024)) * (float)angle_temp[i] + angles[i - 1];
-	}
+        BFile f1;
+        char temp_char[1024];
+        char what[100];
+        uint32 angle_temp[100];
+        uint32 tracks, i;
+        off_t temp, total_audio, total, total_iso, total_vrcd, total_duration;
+ 
+        total_audio = 0;
+        total = 0;
+        total_iso = 0;
+        total_vrcd = 0;
+        total_duration = 0;
+        temp = 0;
+        nrtracks = 0;
+ 
+        if (BURN_TYPE == 0) {
+                sprintf(what, "Data");
+                total_vrcd = total = total_iso = total_audio = 0;
+                fStatusBar->SetBarColor(black);
+                if (fLeftList->CountItems() > 0) {
+                        LeftListItem* item1 = (LeftListItem*)fLeftList->ItemAt(0);
+                        if (item1->fIconBitmap == fLeftList->fISOBitmap) {
+                                f1.SetTo(&item1->fRef, B_READ_ONLY);
+                                f1.GetSize(&temp);
+                                total_iso += temp;
+                                angle_temp[0] = temp / 1024 / 1024;
+                                nrtracks = 1;
+                        } else if (item1->fIconBitmap == fLeftList->fVRCDBitmap) {
+                                nrtracks = 1;
+                                total_vrcd = temp = GetVRCDSize();
+                                angle_temp[0] = temp / 1024 / 1024;
+                        }
+                }
+        } else if (BURN_TYPE == 1) {
+                sprintf(what, "AudioCD");
+                total_vrcd = total = total_iso = total_audio = temp = 0;
+                fStatusBar->SetBarColor(blue);
+                if (fLeftList->CountItems() > 0) {
+                        LeftListItem* item1 = (LeftListItem*)fLeftList->ItemAt(0);
+                        LeftListItem* item2 = (LeftListItem*)fLeftList->ItemAt(1);
+                        if (item1->fIconBitmap == fLeftList->fAudioBitmap) {
+                                tracks = fLeftList->CountItems();
+                                for (i = 0; i < tracks; i++) {
+                                        item1 = (LeftListItem*)fLeftList->ItemAt(i);
+                                        f1.SetTo(&item1->fRef, B_READ_ONLY);
+                                        f1.GetSize(&temp);
+                                        total_audio += temp;
+                                        total_duration += item1->fAudioInfo.total_time;
+                                        angle_temp[i] = temp / 1024 / 1024;
+                                        nrtracks++;
+                                }
+                        } else if (fLeftList->CountItems() > 1) {
+                                if (item2->fIconBitmap == fLeftList->fAudioBitmap) {
+                                        tracks = fLeftList->CountItems();
+                                        for (i = 1; i < tracks; i++) {
+                                                item1 = (LeftListItem*)fLeftList->ItemAt(i);
+                                                f1.SetTo(&item1->fRef, B_READ_ONLY);
+                                                f1.GetSize(&temp);
+                                                total_audio += temp;
+                                                total_duration += item1->fAudioInfo.total_time;
+                                                angle_temp[i - 1] = temp / 1024 / 1024;
+                                                nrtracks++;
+                                        }
+                                }
+                        }
+                }
+        } else if (BURN_TYPE == 2) {
+                sprintf(what, "MixCD");
+                total_vrcd = total = total_iso = total_audio = 0;
+                fStatusBar->SetBarColor(greenblue);
+                if (fLeftList->CountItems() > 0) {
+                        LeftListItem* item1 = (LeftListItem*)fLeftList->ItemAt(0);
+                        LeftListItem* item2 = (LeftListItem*)fLeftList->ItemAt(1);
+                        if (item1->fIconBitmap == fLeftList->fISOBitmap) {
+                                nrtracks = 1;
+                                f1.SetTo(&item1->fRef, B_READ_ONLY);
+                                f1.GetSize(&temp);
+                                total_iso = temp;
+                                angle_temp[nrtracks - 1] = temp / 1024 / 1024;
+                        } else if (item1->fIconBitmap == fLeftList->fVRCDBitmap) {
+                                nrtracks = 1;
+                                total_vrcd = temp = GetVRCDSize();
+                                angle_temp[nrtracks - 1] = temp / 1024 / 1024;
+                        }
+ 
+                        if (item1->fIconBitmap == fLeftList->fAudioBitmap) {
+                                tracks = fLeftList->CountItems();
+                                for (i = 0; i < tracks; i++) {
+                                        item1 = (LeftListItem*)fLeftList->ItemAt(i);
+                                        f1.SetTo(&item1->fRef, B_READ_ONLY);
+                                        f1.GetSize(&temp);
+                                        total_audio += temp;
+                                        nrtracks++;
+                                        angle_temp[nrtracks - 1] = temp / 1024 / 1024;
+ 
+                                }
+                        } else if (fLeftList->CountItems() > 1) {
+                                if (item2->fIconBitmap == fLeftList->fAudioBitmap) {
+                                        tracks = fLeftList->CountItems();
+                                        for (i = 1; i < tracks; i++) {
+                                                item1 = (LeftListItem*)fLeftList->ItemAt(i);
+                                                f1.SetTo(&item1->fRef, B_READ_ONLY);
+                                                f1.GetSize(&temp);
+                                                total_audio += temp;
+                                                nrtracks++;
+                                                angle_temp[nrtracks - 1] = temp / 1024 / 1024;
+                                        }
+                                }
+                        }
+                }
+        }
+ 
+        total = total_audio + total_iso + total_vrcd;
+        if (BURN_TYPE == 1) {
+                // Audio CD
+                sprintf(temp_char, "%s - [%lld MB of 700 MB/%lld:%lld min of 80 min (CD)]",
+        what, total / 1024 / 1024, (total_duration / 1000000) / 60,
+        (total_duration / 1000000) % 60);
+        } else {
+                sprintf(temp_char, "%s - [%lld MB of 700 MB (CD) / 4474 MB (DVD5) / 8140 MB (DVD9)]",
+                        what, total / 1024 / 1024);
+        }
+        fStatusBar->Reset();
+        fStatusBar->SetMaxValue(CDSIZE);
+        fStatusBar->Update((total / 1024 / 1024), temp_char);
+ 
+        for (i = 0; i < nrtracks; i++) {
+                if (i == 0)
+                        angles[i] = ((float)360 / (float)(total / 1024 / 1024)) * (float)angle_temp[i];
+                else
+                        angles[i] = ((float)360 / (float)(total / 1024 / 1024)) * (float)angle_temp[i] + angles[i - 1];
+        }
 }
-
 
 void jpWindow::InitBurnIt()
 {	
@@ -632,7 +651,7 @@ void jpWindow::InitBurnIt()
 	path.GetParent(&path);
 	BURNIT_PATH = new char[strlen(path.Path())+1];
 	strcpy(BURNIT_PATH, path.Path());
-	sprintf(temp_char, "%s/tmp", BURNIT_PATH);
+	sprintf(temp_char, "/boot/common/cache/tmp", BURNIT_PATH);
 	if (!BEntry(temp_char).Exists())
 		BDirectory(BURNIT_PATH).CreateDirectory(temp_char, NULL);
 	IMAGE_NAME = new char[1024];
@@ -714,10 +733,10 @@ void jpWindow::InitBurnIt()
 	else
 		strcpy(DAO, " ");
 
-	if (fBurnItPrefs->FindString("BURNPROOF", &tr) == B_OK)
-		strcpy(BURNPROOF, tr);
+	if (fBurnItPrefs->FindString("BURNFREE", &tr) == B_OK)
+		strcpy(BURNFREE, tr);
 	else
-		strcpy(BURNPROOF, " ");
+		strcpy(BURNFREE, " ");
 
 	if (fBurnItPrefs->FindString("NOFIX", &tr) == B_OK)
 		strcpy(NOFIX, tr);
@@ -741,7 +760,7 @@ void jpWindow::InitBurnIt()
 	// End loading from pref file
 
 	JUST_IMAGE = false;
-	CDSIZE = 650;
+	CDSIZE = 8140;
 }
 
 
@@ -978,7 +997,7 @@ void jpWindow::BurnNOW()
 						if (temp != -1)
 							MakeImageNOW(temp, buf);
 						else {
-							BAlert* MyAlert = new BAlert("BurnItNow", "Put a blank CD or a CD that you have burned multisession on before.", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+							BAlert* MyAlert = new BAlert("BurnItNow", "Put a blank CD/DVD or a CD/DVD that you have burned multisession on before.", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
 							MyAlert->Go();
 						}
 					}
@@ -1042,7 +1061,7 @@ void jpWindow::BurnNOW()
 						if (temp != -1)
 							MakeImageNOW(temp, buf);
 						else {
-							BAlert* MyAlert = new BAlert("BurnItNow", "Put a blank CD or a CD that you have burned multisession on before.", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+							BAlert* MyAlert = new BAlert("BurnItNow", "Put a blank CD/DVD or a CD/DVD that you have burned multisession on before.", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
 							MyAlert->Go();
 						}
 					}
@@ -1170,8 +1189,7 @@ void jpWindow::MessageReceived(BMessage* message)
 
 		case CALCULATE_SIZE: {
 				if (VRCD && !ISOFILE) {
-					BAlert* MyAlert = new BAlert("BurnItNow", "This can take a moment because you have a Virtual CD Directory\nSo dont kill BurnItNow because it doesn't answer, it's just calculating the size.", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
-					MyAlert->Go();
+
 				}
 
 				CalculateSize();
@@ -1235,7 +1253,7 @@ void jpWindow::MessageReceived(BMessage* message)
 			break;
 
 		case DATA_HFS:
-			sprintf(DATA_STRING, "-hfs");
+			sprintf(DATA_STRING, "-dvd-video -UDF");
 			IMAGE_TYPE = 0;
 			if (BURN_TYPE == 0 || BURN_TYPE == 2) {
 				fBurnView->fOnTheFlyCheckBox->SetEnabled(false);
@@ -1398,11 +1416,11 @@ void jpWindow::MessageReceived(BMessage* message)
 				strcpy(DAO, " ");
 			break;
 
-		case MISC_BURNPROOF:
-			if (fPrefsView->fBurnProofCheckBox->Value() == 1)
-				strcpy(BURNPROOF, "driveropts = burnproof");
+		case MISC_BURNFREE:
+			if (fPrefsView->fBurnFreeCheckBox->Value() == 1)
+				strcpy(BURNFREE, "driveropts=burnfree");
 			else
-				strcpy(BURNPROOF, " ");
+				strcpy(BURNFREE, " ");
 			break;
 
 		case MENU_FILE_ABOUT:
@@ -1643,7 +1661,7 @@ void jpWindow::SaveData()
 	fBurnItPrefs->SetString("DATA_STRING", DATA_STRING);
 	fBurnItPrefs->SetString("PAD", PAD);
 	fBurnItPrefs->SetString("DAO", DAO);
-	fBurnItPrefs->SetString("BURNPROOF", BURNPROOF);
+	fBurnItPrefs->SetString("BURNFREE", BURNFREE);
 	fBurnItPrefs->SetString("SWAB", SWAB);
 	fBurnItPrefs->SetString("NOFIX", NOFIX);
 	fBurnItPrefs->SetString("PREEMP", PREEMP);
@@ -1729,7 +1747,7 @@ void jpWindow::MakeImageNOW(int Multi, const char* str)
 			if (!JUST_IMAGE)
 				BurnWithCDRecord();
 			else {
-				sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
+				sprintf(IMAGE_NAME, "/boot/common/cache/tmp/BurnItNow.raw", BURNIT_PATH);
 				fStatusWindow->Lock();
 				fStatusWindow->Ready();
 				fStatusWindow->Unlock();
@@ -1777,7 +1795,7 @@ void jpWindow::BurnWithCDRecord()
 	
 	CalculateSize();
 
-	BAlert* MyAlert = new BAlert("Put in a CD", "Put in a CDR/CDRW", "Cancel", "Ok", NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
+	BAlert* MyAlert = new BAlert("Put in a CD/DVD", "Put in a CDR/DVDR", "Cancel", "Ok", NULL, B_WIDTH_AS_USUAL, B_WARNING_ALERT);
 	Result = MyAlert->Go();
 	if (Result) {
 		if (ONTHEFLY || ISOFILE || (BURN_TYPE == 1)) {
@@ -1812,8 +1830,9 @@ void jpWindow::BurnWithCDRecord()
 				commandstr << BURN_DIR << '"' << " | " << CDRTOOLS_DIR.Path();
 				commandstr << "/cdrecord dev=" << fBurnDevice->scsiid;
 				commandstr << " speed=" << BURN_SPD ;
-				commandstr << " "  << BURNPROOF;
-				commandstr << "tsize" << tsize << " "; 
+				commandstr << " "  << BURNFREE;
+				commandstr << " fs=16m ";
+				commandstr << "tsize=" << tsize << " "; 
 				commandstr << DAO << " -data ";
 				commandstr << DUMMYMODE ;
 				commandstr << " " << EJECT << " -v -";
@@ -1822,9 +1841,10 @@ void jpWindow::BurnWithCDRecord()
 				commandstr.SetTo(CDRTOOLS_DIR.Path());
 				commandstr << "/";
 				commandstr << "cdrecord dev=" << fBurnDevice->scsiid << " speed=" << BURN_SPD ;
-				commandstr << " " << BURNPROOF << " " << DAO;
+				commandstr << " " << BURNFREE << " " << DAO;
 				commandstr << " -data " << DUMMYMODE ;
 				commandstr << " " << EJECT ;
+				commandstr << " fs=16m";
 				commandstr << " -v" ;	// aw 110910
 				commandstr << " " << MULTISESSION	<< "\"" << IMAGE_NAME << "\"";
 			}	
@@ -1844,21 +1864,23 @@ void jpWindow::BurnWithCDRecord()
 			fStatusWindow->SetAngles(angles, nrtracks);
 			fStatusWindow->Unlock();
 			commandstr.SetTo(CDRTOOLS_DIR.Path());
-			commandstr << "//";
+			commandstr << "/";
 			commandstr << "cdrecord dev=" << fBurnDevice->scsiid;
-			commandstr << " speed=" << BURN_SPD; 
-			commandstr << " " << BURNPROOF ;
-			commandstr << " " << DAO; 
-			commandstr << " " << PAD;
 			commandstr << " " << PREEMP ;
 			commandstr << " " << SWAB ;
 			commandstr << " " << NOFIX;
-			commandstr << " -audio " << DUMMYMODE;
-			commandstr << " " << EJECT ;
-			commandstr << " " << AUDIO_FILES;
+			commandstr << " speed=" << BURN_SPD ;
+			commandstr << "  " << BURNFREE;
+			commandstr << " fs=16m";
+			commandstr << "  " << DAO; 
+			commandstr << "  " << PAD;
+			commandstr << "  " << EJECT ;
+			commandstr << " -audio" << AUDIO_FILES;
 			commandstr.ReplaceAll("\t"," "); 	commandstr.ReplaceAll("  "," ");
 			printf("BURN_TYPE1: '%s'\n",commandstr.String());
-			Lock();
+			
+			Lock();	
+			strcpy(command, commandstr.String());
 			resume_thread(Cntrl = spawn_thread(controller, "Burning", 15, command));
 			snooze(500000);
 			resume_thread(OPBurn = spawn_thread(OutPutBurn, "OutPutBurning", 15, fStatusWindow));
@@ -1874,26 +1896,28 @@ void jpWindow::BurnWithCDRecord()
 				if (fDataView->fBootableCDCheckBox->Value() == 1)
 					MakeBootImage();
 
-				commandstr.SetTo(CDRTOOLS_DIR.Path());
-				commandstr << "/";
-				commandstr << "mkisofs " << DATA_STRING << BOOTSTRING << " -quiet -f -V " ;
-			 	commandstr << '"' << VOL_NAME << '"' << BURN_DIR << '"' << " |";
-				commandstr << CDRTOOLS_DIR.Path() << "/cdrecord dev=" ;
-			 	commandstr <<  fBurnDevice->scsiid << "speed=" << BURN_SPD ;
-			 	commandstr << " " << BURNPROOF;
-				commandstr << " tsize=" << tsize ;
-			 	commandstr << " " << DAO << " " << DUMMYMODE ;
-			 	commandstr << " " << EJECT << " " << PAD ;
-			 	commandstr << " " << PREEMP << " " << SWAB ;
-			 	commandstr << " " << NOFIX;
-				commandstr << " -data - -audio " << AUDIO_FILES;
+				//commandstr.SetTo(CDRTOOLS_DIR.Path());
+				//commandstr << "/";
+				//commandstr << "mkisofs " << DATA_STRING << BOOTSTRING << " -quiet -f -V " ;
+				//commandstr << " -f -V " << '"' << VOL_NAME << '"' << " " << '"';
+				//commandstr << BURN_DIR << '"' << " | " << CDRTOOLS_DIR.Path();
+				//commandstr << "/cdrecord dev=" << fBurnDevice->scsiid;
+				//commandstr << " speed=" << BURN_SPD ;
+			 	//commandstr << " " << BURNFREE;
+				//commandstr << " tsize=" << tsize ;
+			 	//commandstr << " " << DAO << " " << DUMMYMODE ;
+			 	//commandstr << " " << EJECT << " " << PAD ;
+			 	//commandstr << " " << PREEMP << " " << SWAB ;
+			 	//commandstr << " " << NOFIX;
+				//commandstr << " -audio" << AUDIO_FILES;
 				MessageLog(commandstr.String());
 			} else {
 				commandstr.SetTo(CDRTOOLS_DIR.Path());
-				commandstr << "//";
+				commandstr << "/";
 				commandstr << "cdrecord dev=" << fBurnDevice->scsiid;
 				commandstr << " speed=" << BURN_SPD ;
-			 	commandstr << " " << BURNPROOF << " " << DAO << " " << PAD ;
+			 	commandstr << " " << BURNFREE << " " << DAO << " " << PAD ;
+			 	commandstr << " fs=16m";
 			 	commandstr << " " << PREEMP << " " << SWAB ;
 			 	commandstr << " " << NOFIX ;
 			 	commandstr << " " << DUMMYMODE ;
@@ -1902,9 +1926,10 @@ void jpWindow::BurnWithCDRecord()
 			}
 			
 			commandstr.ReplaceAll("\t"," "); 	commandstr.ReplaceAll("  "," ");
-			printf("BURN_TYPE2: '%s'\n",commandstr.String());
+			printf("BURN_TYPE0: '%s'\n",commandstr.String());
 			
-			Lock();
+			Lock();	
+			strcpy(command, commandstr.String());
 			resume_thread(Cntrl = spawn_thread(controller, "Burning", 15, command));
 			snooze(500000);
 			resume_thread(OPBurn = spawn_thread(OutPutBurn, "OutPutBurning", 15, fStatusWindow));

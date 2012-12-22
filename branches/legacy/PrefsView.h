@@ -15,7 +15,7 @@ public:
 	PrefsView(BRect size);
 
 	BMenu* fRecordersMenu;
-	BCheckBox* fDAOCheckBox, *fBurnProofCheckBox;
+	BCheckBox* fDAOCheckBox, *fBurnFreeCheckBox;
 };
 
 

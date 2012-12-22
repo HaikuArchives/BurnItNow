@@ -26,17 +26,17 @@ AboutView::AboutView(BRect r, const char* title)
 	fViewFont = new BFont(be_plain_font);
 	SetFont(fViewFont);
 	fBurnBitmap = BTranslationUtils::GetBitmap('PNG ', "about.png");
-	fBurnProofBitmap = BTranslationUtils::GetBitmap('PNG ', "burn-proof.png");
-	fCDRecordBitmap = BTranslationUtils::GetBitmap('PNG ', "cdrecord.png");
+	//fBurnProofBitmap = BTranslationUtils::GetBitmap('PNG ', "burn-proof.png");
+	//fCDRecordBitmap = BTranslationUtils::GetBitmap('PNG ', "cdrecord.png");
 }
 
 
 AboutView::~AboutView()
 {
-	delete fViewFont;
-	delete fBurnBitmap;
-	delete fBurnProofBitmap;
-	delete fCDRecordBitmap;
+	//delete fViewFont;
+	//delete fBurnBitmap;
+	//delete fBurnProofBitmap;
+	//delete fCDRecordBitmap;
 }
 
 
@@ -72,36 +72,36 @@ void AboutView::Draw(BRect updateRect)
 	MovePenTo(p1);
 	SetHighColor(0, 0, 0);
 	SetDrawingMode(B_OP_ALPHA);
-	DrawString(COPYRIGHT1);
-	p1.x = r.left + 10;
-	p1.y = r.top +140;
-	MovePenTo(p1);
-	SetHighColor(0, 0, 0);
-	SetDrawingMode(B_OP_ALPHA);
-	DrawString(COPYRIGHT2);
-	p1.x = r.left + 205;
-	p1.y = r.bottom - 37;
-	DrawBitmap(fBurnProofBitmap, p1);
-	r2.left = p1.x;
-	r2.top = p1.y;
-	r2.right = p1.x + 180;
-	r2.bottom = p1.y + 32;
-	StrokeRect(r2);
-	p1.x = r.left + 5;
-	p1.y = r.bottom - 65;
-	DrawBitmap(fCDRecordBitmap, p1);
-	r2.left = p1.x;
-	r2.top = p1.y;
-	r2.right = p1.x + 180;
-	r2.bottom = p1.y + 60;
-	StrokeRect(r2);
-	StrokeRect(r);
+	//DrawString(COPYRIGHT1);
+	//p1.x = r.left + 10;
+	//p1.y = r.top +140;
+	//MovePenTo(p1);
+	//SetHighColor(0, 0, 0);
+	//SetDrawingMode(B_OP_ALPHA);
+	//DrawString(COPYRIGHT2);
+	//p1.x = r.left + 205;
+	//p1.y = r.bottom - 37;
+	//DrawBitmap(fBurnProofBitmap, p1);
+	//r2.left = p1.x;
+	//r2.top = p1.y;
+	//r2.right = p1.x + 180;
+	//r2.bottom = p1.y + 32;
+	//StrokeRect(r2);
+	//p1.x = r.left + 5;
+	//p1.y = r.bottom - 65;
+	//DrawBitmap(fCDRecordBitmap, p1);
+	//r2.left = p1.x;
+	//r2.top = p1.y;
+	//r2.right = p1.x + 180;
+	//r2.bottom = p1.y + 60;
+	//StrokeRect(r2);
+	//StrokeRect(r);
 }
 
 
 AboutWindow::AboutWindow()
 	:
-	BWindow(BRect(250, 200, 650, 500), "AboutWindow", B_MODAL_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_ZOOMABLE | B_NOT_RESIZABLE | B_NOT_CLOSABLE)
+	BWindow(BRect(250, 200, 650, 500), "AboutWindow", B_MODAL_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_ZOOMABLE | B_NOT_RESIZABLE)
 {
 	BRect r;
 	SetTitle("About");

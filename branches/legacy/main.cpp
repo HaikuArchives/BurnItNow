@@ -35,7 +35,7 @@ jpApp::jpApp()
 	BApplication("application/x-vnd.osdrawer-BurnItNow")
 {
 	BRect windowRect;
-	windowRect.Set(200, 30, 700, 530);
+	windowRect.Set(400, 80, 1030, 750);
 	baseWindow = new jpWindow(windowRect);
 }
 

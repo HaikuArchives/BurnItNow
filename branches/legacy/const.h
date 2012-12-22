@@ -64,7 +64,7 @@ const uint32 AUDIO_SWAB = 'AuSw';
 const uint32 AUDIO_NOFIX = 'AuNF';
 
 const uint32 MISC_DAO = 'MiDA';
-const uint32 MISC_BURNPROOF = 'MiBP';
+const uint32 MISC_BURNFREE = 'MiBF';
 
 
 const uint32 BURN_WITH_CDRECORD = 'BWCR';
@@ -82,6 +82,8 @@ const rgb_color blue = {0, 0, 200, 255};
 const rgb_color white = {255, 255, 255, 255};
 const rgb_color darkblue = {70, 70, 200, 255};
 const rgb_color greenblue = {0, 255, 255, 255};
+const rgb_color orange = {217, 107, 19, 255};
+const rgb_color lightblue = {89, 123, 228, 255};
 
 
 struct cdrecorder {

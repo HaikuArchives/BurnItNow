@@ -110,7 +110,7 @@ void StatusView::Draw(BRect updateRect)
 
 StatusWindow::StatusWindow(const char* title)
 	:
-	BWindow(BRect(220, 200, 500, 270), "StatusWindow", B_FLOATING_WINDOW_LOOK, B_MODAL_APP_WINDOW_FEEL, B_NOT_ZOOMABLE | B_NOT_RESIZABLE | B_NOT_CLOSABLE)
+	BWindow(BRect(220, 200, 535, 281), "StatusWindow", B_DOCUMENT_WINDOW_LOOK, B_FLOATING_ALL_WINDOW_FEEL, B_NOT_ZOOMABLE | B_NOT_RESIZABLE)
 {
 	BRect r;
 	if (title != NULL)
@@ -134,8 +134,8 @@ StatusWindow::StatusWindow(const char* title)
 
 	r = aroundView->Bounds();
 	r.InsetBy(5.0, 5.0);
-	r.top = r.bottom - 20;
-	r.left = r.right - 55;
+	r.top = r.bottom - 28;
+	r.left = r.right - 54;
 	fCloseButton = new BButton(r, "close", "Close", new BMessage('ClWi'));
 	aroundView->AddChild(fCloseButton);
 	fCloseButton->SetEnabled(false);

@@ -29,7 +29,7 @@ CDRWView::CDRWView(BRect size)
 	char temp_char[100];
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	// CDRW BOX
-	IconLabel* CDRWLabel = new IconLabel(BRect(0, 0, 19 + be_bold_font->StringWidth(""), 19), "", "cd_16.png");
+	IconLabel* CDRWLabel = new IconLabel(BRect(0, 0, 19 + be_bold_font->StringWidth(" Erase a rewritable CD"), 19), " Erase a rewritable CD", "cd_16.png");
 	CDRWLabel->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	CDRWLabel->SetDrawingMode(B_OP_ALPHA);
 	r = Bounds();
@@ -60,24 +60,24 @@ CDRWView::CDRWView(BRect size)
 	r = CDRWBox->Bounds();
 	r.left = 150;
 	r.right = 278;
-	r.top = 60;
-	r.bottom = 128;
-	IconLabel* BGLabel1 = new IconLabel(r, "", "cdrw_64.png");  //cdrw_64.png
+	r.top = 20;
+	r.bottom = 150;
+	IconLabel* BGLabel1 = new IconLabel(r, "", "cd.png");  //cdrw_64.png
 	BGLabel1->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	BGLabel1->SetDrawingMode(B_OP_BLEND);
+	BGLabel1->SetDrawingMode(B_OP_ALPHA);
 	CDRWBox->AddChild(BGLabel1);
 	IconLabel* BGLabel2 = new IconLabel(r, "", "erase_64.png"); //erase_64.png
 	BGLabel2->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	BGLabel2->SetDrawingMode(B_OP_BLEND);
+	BGLabel2->SetDrawingMode(B_OP_ALPHA);
 	CDRWBox->AddChild(BGLabel2);
 
 
 	// BlankSpeed
 	r = CDRWBox->Bounds();
 	r.InsetBy(5.0, 5.0);
-	r.top += 15;
-	r.left = 155;
-	r.right = 270;
+	r.left = 290;
+	r.right = 600;
+	r.top += 10;
 	sprintf(temp_char,"Blank Speed [%dx]", BLANK_SPD);
 	fBlankSpeedSlider = new BSlider(r, "BlankSpeed", temp_char, new BMessage(BLANK_SPEED_CHANGE), 0, 5, B_BLOCK_THUMB, B_FOLLOW_NONE);
 	fBlankSpeedSlider->SetHashMarks(B_HASH_MARKS_BOTTOM);
@@ -88,10 +88,11 @@ CDRWView::CDRWView(BRect size)
 	// BlankButton
 	r = CDRWBox->Bounds();
 	r.InsetBy(5.0, 5.0);
-	r.top += 10;
-	r.bottom = r.top + 50;
-	r.left = 330;
-	r.right = 415;
+	r.top = 90;
+	r.bottom = 120;
+	r.left = (r.right / 2) + 2;
+	r.left += (r.right - r.left) / 2 + 2;
+	r.right -= 2;
 	fBlankButton = new BButton(r, "BlankButton", "Blank!", new BMessage(BLANK_IT_NOW));
 	CDRWBox->AddChild(fBlankButton);
 }

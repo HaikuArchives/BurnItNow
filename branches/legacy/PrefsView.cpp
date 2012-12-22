@@ -16,7 +16,7 @@
 
 
 extern char DAO[10];
-extern char BURNPROOF[30];
+extern char BURNFREE[30];
 
 
 PrefsView::PrefsView(BRect size)
@@ -35,8 +35,8 @@ PrefsView::PrefsView(BRect size)
 	AddChild(recorderMenuField);
 
 	IconLabel* miscLabel = new IconLabel(BRect(0, 0, 19 + 
-	                       be_bold_font->StringWidth(" Misc Options (see help before change options)"), 19), 
-	                       " Misc Options (see help before change options)", "cdprefs_16.png");
+	                       be_bold_font->StringWidth(" Preferences"), 19), 
+	                       " Preferences", "cdprefs_16.png");
 	miscLabel->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	miscLabel->SetDrawingMode(B_OP_ALPHA);
 	r = Bounds();
@@ -59,9 +59,9 @@ PrefsView::PrefsView(BRect size)
 
 	r.top += 15;
 	r.bottom += 15;
-	fBurnProofCheckBox = new BCheckBox(r, "burnproof", "BurnProof (read help)", new BMessage(MISC_BURNPROOF));
-	if (!strncmp(BURNPROOF, "driveropts = burnproof", 22))
-		fBurnProofCheckBox->SetValue(B_CONTROL_ON);
+	fBurnFreeCheckBox = new BCheckBox(r, "burnfree", "BurnFree (read help)", new BMessage(MISC_BURNFREE));
+	if (!strncmp(BURNFREE, "driveropts=burnfree", 22))
+		fBurnFreeCheckBox->SetValue(B_CONTROL_ON);
 
-	miscOptBox->AddChild(fBurnProofCheckBox);
+	miscOptBox->AddChild(fBurnFreeCheckBox);
 }

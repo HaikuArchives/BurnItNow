@@ -85,10 +85,10 @@ FileListItem::~FileListItem()
 
 void FileListItem::DrawItem(BView* owner, BRect frame, bool complete)
 {
-	rgb_color rgbColor = {255, 255, 255, 255};
-	rgb_color rgbSelectedColor = {235, 235, 200, 255};
-	rgb_color rgbfPatternColor = {244, 244, 255, 255};
-	rgb_color black = {0, 0, 0, 255};
+	rgb_color rgbColor = {89, 123, 228, 255};
+	rgb_color rgbSelectedColor = {0, 0, 0, 255};
+	rgb_color rgbfPatternColor = {89, 123, 228, 255};
+	rgb_color black = {255, 255, 255, 255};
 
 	if (IsSelected())
 		rgbColor = rgbSelectedColor;
@@ -113,7 +113,7 @@ RightList::RightList(BRect size)
 	:
 	BListView(size, "RightList", B_MULTIPLE_SELECTION_LIST, B_FOLLOW_NONE, B_WILL_DRAW)
 {
-	SetViewColor(255, 255, 255, 0);
+	SetViewColor(89, 123, 228, 0);
 	fBDirectory = new BDirectory(BURN_DIR);
 	fTDirectory = new BDirectory(BURN_DIR);
 
@@ -124,7 +124,10 @@ RightList::RightList(BRect size)
 	
 	//BPopUpMenu* fItemPopUpMenu;
 	fItemPopUpMenu = new BPopUpMenu("Items Popup");
-	fItemPopUpMenu->SetRadioMode(false);
+	//fItemPopUpMenu->SetRadioMode(false);
+	//fItemPopUpMenu->AddItem(new BMenuItem("Move Up", new BMessage('mvup')));
+	//fItemPopUpMenu->AddItem(new BMenuItem("Move Down", new BMessage('mvdn')));
+	//fItemPopUpMenu->AddItem(new BMenuItem("Play", new BMessage('play')));
 	fItemPopUpMenu->AddItem(new BMenuItem("Remove", new BMessage('reIT')));
 	//fItemPopUpMenu->AddItem(new BMenuItem("Delete", new BMessage('deIT')));
 }
@@ -216,9 +219,9 @@ void RightList::KeyDown(const char* bytes, int32 numBytes)
 				int32 selection = CurrentSelection();
 				if (selection >= 0) {
 					FileListItem* item = (FileListItem*)ItemAt(selection);
-					BAlert* MyAlert = new BAlert("BurnItNow", "Are you sure you want to delete this selection", "Yes", "No", NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
-					MyAlert->SetFeel(B_MODAL_ALL_WINDOW_FEEL);
-					result = MyAlert->Go();
+					//BAlert* MyAlert = new BAlert("BurnItNow", "Are you sure you want to delete this selection", "Yes", "No", NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+					//MyAlert->SetFeel(B_MODAL_ALL_WINDOW_FEEL);
+					result = 0;
 					if (result == 0) 
 					{
 						DeleteFromVRCD(&item->fRef);
@@ -270,9 +273,9 @@ void RightList::MouseDown(BPoint point)
 						FileListItem* item = (FileListItem*)ItemAt(selection);
 						if (item->fIconBitmap != NULL && item->fIconBitmap != fInfoBitmap) {
 							//printf("Will remove %s\n",(char*) item->fName);
-							BAlert* MyAlert = new BAlert("BurnItNow", "Are you sure you want to delete this selection", "Yes", "No", NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
-							MyAlert->SetFeel(B_MODAL_ALL_WINDOW_FEEL);
-							result = MyAlert->Go();
+							//BAlert* MyAlert = new BAlert("BurnItNow", "Are you sure you want to delete this selection", "Yes", "No", NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+							//MyAlert->SetFeel(B_MODAL_ALL_WINDOW_FEEL);
+							result = 0;
 							if (result == 0) {
 								DeleteFromVRCD(&item->fRef);
 								UpdateDir();
@@ -383,7 +386,7 @@ void RightList::ParentDir()
 
 void RightList::CreateDir()
 {
-	AskName* makeDirWindow = new AskName(BRect(200, 200, 440, 250), "Make directory", MAKE_DIRECTORY, "");
+	AskName* makeDirWindow = new AskName(BRect(200, 200, 500, 250), "Make directory", MAKE_DIRECTORY, "");
 	makeDirWindow->Show();
 }
 
