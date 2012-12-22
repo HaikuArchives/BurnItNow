@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationImageView.h"
@@ -24,7 +24,7 @@ const int32 kScannerMessage = 'Scan';
 
 CompilationImageView::CompilationImageView()
 	:
-	BView("Image File(ISO/CUE)", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
+	BView("Image File (ISO/CUE)", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
 	fImageScannerThread(NULL)

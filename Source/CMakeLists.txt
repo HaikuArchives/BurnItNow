@@ -19,7 +19,7 @@ set(BURNITNOW_SRCS
 
 add_executable(BurnItNow ${BURNITNOW_SRCS})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-multichar -Woverloaded-virtual -Wno-unknown-pragmas")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-multichar -Woverloaded-virtual -Wno-unknown-pragmas -std=c++0x")
 
 include_directories(${BURNITNOW_SOURCE_DIR}/Source/Haiku)
 

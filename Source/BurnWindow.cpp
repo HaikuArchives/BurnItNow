@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "BurnWindow.h"
@@ -7,6 +7,9 @@
 #include "CompilationAudioView.h"
 #include "CompilationDataView.h"
 #include "CompilationImageView.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <Alert.h>
 #include <Application.h>
@@ -29,12 +32,17 @@ const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
 
+constexpr int32 kDeviceChangeMessage[5] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
+
 // Misc constants
 const int32 kMinBurnSpeed = 2;
 const int32 kMaxBurnSpeed = 16;
 
 const float kControlPadding = 5;
 
+// Misc variables
+sdevice devices[5];
+int selectedDevice;
 
 #pragma mark --Constructor/Destructor--
 
@@ -73,6 +81,21 @@ void BurnWindow::MessageReceived(BMessage* message)
 		case kBuildImageMessage:
 			_BuildImage();
 			break;
+		case kDeviceChangeMessage[0]:
+			selectedDevice=0;
+			break;
+		case kDeviceChangeMessage[1]:
+			selectedDevice=1;
+			break;
+		case kDeviceChangeMessage[2]:
+			selectedDevice=2;
+			break;
+		case kDeviceChangeMessage[3]:
+			selectedDevice=3;
+			break;
+		case kDeviceChangeMessage[4]:
+			selectedDevice=4;
+			break;
 		default:
 			BWindow::MessageReceived(message);
 	}
@@ -110,22 +133,30 @@ BView* BurnWindow::_CreateToolBar()
 
 	BMenu* sessionMenu = new BMenu("SessionMenu");
 	sessionMenu->SetLabelFromMarked(true);
-	BMenuItem* daoItem = new BMenuItem("Disc At Once(DAO)", new BMessage());
+	BMenuItem* daoItem = new BMenuItem("Disc At Once (DAO)", new BMessage());
 	daoItem->SetMarked(true);
 	sessionMenu->AddItem(daoItem);
-	sessionMenu->AddItem(new BMenuItem("Track At Once(TAO)", new BMessage()));
+	sessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
 	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "", sessionMenu);
 
 
-	// TODO Scan for devices and add them to the menu
 	BMenu* deviceMenu = new BMenu("DeviceMenu");
 	deviceMenu->SetLabelFromMarked(true);
 
-	BMenuItem* deviceItem = new BMenuItem("No Recording Devices Found", new BMessage());
-	deviceItem->SetMarked(true);
-	deviceItem->SetEnabled(false);
-	deviceMenu->AddItem(deviceItem);
-
+	// Checking for devices
+	FindDevices();
+	for (unsigned int ix=0; ix<sizeof(devices); ++ix) {
+		if (devices[ix].number.IsEmpty())
+			break;
+		BString deviceString("");
+		deviceString << devices[ix].manufacturer << devices[ix].model << "(" << devices[ix].number << ")";
+		BMenuItem* deviceItem = new BMenuItem(deviceString, new BMessage(kDeviceChangeMessage[ix]));
+		deviceItem->SetEnabled(true);
+		if (ix == 0)
+			deviceItem->SetMarked(true);
+		deviceMenu->AddItem(deviceItem);
+	}
+	
 	BMenuField* deviceMenuField = new BMenuField("DeviceMenuField", "", deviceMenu);
 
 	// TODO These values should be obtained from the capabilities of the drive and the type of media
@@ -251,4 +282,48 @@ void BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	BString speedString("Burn Speed: ");
 	speedString << speedSlider->Value() << "X";
 	speedSlider->SetLabel(speedString.String());
+}
+
+void BurnWindow::FindDevices()
+{
+	FILE* f;
+	char buff[512];
+	BString output[512];
+	int lineNumber = 0;
+	int xdev = 0;
+	
+	f = popen("cdrecord -scanbus", "r");
+	while (fgets(buff, sizeof(buff), f)!=NULL){
+		output[lineNumber] = buff;
+		lineNumber++;
+	}
+	pclose(f);
+	
+	for (BString &i: output)
+	{
+		if (i.FindFirst('*') == B_ERROR && i.FindFirst("\' ") != B_ERROR)
+		{
+			BString device = i.Trim();
+			
+			// find device number
+			int numberRange = device.FindFirst('\t');
+			BString number;
+			number.SetTo(device, numberRange);
+			
+			// find manufacturer
+			int manuStart = device.FindFirst('\'');
+			int manuEnd = device.FindFirst('\'', manuStart);
+			BString manu;
+			device.CopyInto(manu, manuStart+1, manuEnd-3);
+			
+			// find model
+			int modelStart = device.FindFirst('\'', manuEnd+1);
+			int modelEnd = device.FindFirst('\'', modelStart+1);
+			BString model;
+			device.CopyInto(model, modelStart+3, modelEnd-6);
+			
+			sdevice dev = { number, manu, model };
+			devices[xdev++] = dev;
+		}
+	}
 }
