@@ -7,6 +7,7 @@
 #include "CompilationAudioView.h"
 #include "CompilationDataView.h"
 #include "CompilationImageView.h"
+#include "CompilationCDRWView.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -203,6 +204,7 @@ BView* BurnWindow::_CreateTabView()
 	tabView->AddTab(new CompilationDataView());
 	tabView->AddTab(new CompilationAudioView());
 	tabView->AddTab(new CompilationImageView(*this));
+	tabView->AddTab(new CompilationCDRWView(*this));
 
 	return tabView;
 }

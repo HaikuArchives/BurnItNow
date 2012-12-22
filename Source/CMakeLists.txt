@@ -11,6 +11,7 @@ set(BURNITNOW_SRCS
 	CompilationAudioView.cpp
 	CompilationDataView.cpp
 	CompilationImageView.cpp
+	CompilationCDRWView.cpp
 	BurnItNow.rdef
 
 # 3rd party sources
