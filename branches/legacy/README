@@ -1,0 +1,29 @@
+BurnItNow README
+Copyright ©2000-2010
+
+BurnItNow is a Haiku GUI FrontEnd for cdrecord and mkisofs. 
+	So all the burners that work with cdrecord work with BurnItNow.
+
+BurnItNow is open source software under the MIT license.
+
+Requierment:
+	* cdrecord 1.9+ and mkisofs 1.12+
+	* A burner that works with cdrecord 1.9+
+
+Special functions:
+	* Doubleclick on an Audiofile and ISOfile in the rightlist will bring up info on the leftlist
+	* Doubleclick on the VRCD in the rightlist will bring up the Virtual CD Directory on 
+	    leftlist.
+	* Rightclick on an item in the rightlist will bring up a menu (MoveUp, Remove,
+	    MoveDown, Play)
+	* You can drag files to the left list after you created a VRCD
+	* You can drag audiofiles to the rightlist
+	* If you drag an other file than an audiofile to the rightlist it will assume that its
+	    an ISOfile and burnit as an ISOfile.
+
+Author: Johan Nilsson
+Email: "Johan Nilsson" <joppefan@gmail.com>
+
+BurnItNow url: http://dev.osdrawer.net/projects/burnitnow
+
+Maintained at OSDrawer.net by the BurnItNow maintainers

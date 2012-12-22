@@ -1,0 +1,16 @@
+This is the source for the rewrite of BurnItNow.
+It is still in the very early stages of being written.
+
+
+For the original version please checkout the "legacy" branch at:
+	http://svn.osdrawer.net/burnitnow/branches/legacy
+
+
+
+**Building**
+
+You must have CMake installed in order to build this project.  A basic compile
+can be performed with the following commands:
+
+cmake .
+make

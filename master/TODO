@@ -1,0 +1,38 @@
+* Add vector icons, main app has one now, perhaps add more icons for various
+    functions at some point.
+
+* Add proper Archiving/Unarchiving for the main window
+    This will be used for saving the settings/state and in the future could be
+    used for saving and loading projects
+
+* Add threading functions/classes for running the various tools
+    Probably best to "borrow" the BCommandRunner class from the Haiku repository.
+    This will need to take various commands, execute them, and then update a
+    status bar somewhere, possibly a modal pop up window.
+    * Implement functions to create an ISO image via mkisofs
+    * Implement functions to run cdrecord for various things such as burning,
+        device scanning, blanking, media info
+
+* Implement the various compilation views(for in the TabView)
+    * The ISO view should be the easiest.  Basically just a browse button and a
+        small view that shows info about the image to be burned.
+    * The audio view will be a basic ColumnListView showing track#/file/length.
+        Initial support will probably be wav only but we'll probably want the ability
+        to reencode files(e.g. mp3/ogg/etc....)
+    * The data view will be the most complex as it will probably require
+        implementing a mini file manager.  As with the audio view, this will probably
+        use a ColumnListView borrowed from the Haiku sources.  This one will need to
+        be in outline mode(i.e. a tree instead of a list)
+
+* Add Drag & Drop support for adding files/folders
+
+* Add a function to copy a cd.  Not sure if this should be another compilation
+    view or just a command from a menu.
+
+* Add cdrw erasing.  This will probably start out as a function in a menu but
+    may be made into something where the user is prompted to erase if they try to
+    burn to a CDRW that already has data.
+
+* Investigate UDF/DVD support
+
+* Localize the application

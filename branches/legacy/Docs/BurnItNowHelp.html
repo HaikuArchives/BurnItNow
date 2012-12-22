@@ -1,0 +1,329 @@
+<html> 
+<head> 
+<title>Help for BurnItNow</title> 
+</head> 
+<body background=helpbg.gif> 
+<H1>Help for BurnItNow</H1>
+<BR>
+<H2>Requierment</H2><PRE> 
+	* cdrecord 2.01.01+ and mkisofs 2.01.01+
+	* A burner that works with cdrecord 2.01.01+
+
+</PRE> 
+<H2>Options</H2><PRE>
+	<B>BurnTab:</B>
+		DataCD - Burns a data session on a CD.
+		AudioCD - Burns audio tracks on a CD.
+		MixCD - Burns one data session and audio tracks on a CD.
+		
+		Multisession - Lets you burn multiple times on a cd (ONLY DATA)
+		On The Fly - Burns a VRCD without creating a imagefile
+		Dummy mode - Test burn a cd (doesnt write on the cd)
+		Eject - Ejects the CD after finish burning.
+		
+		Burning Speed - Lets you choose what speed the burner should burn with.
+		
+		Make Image - Make and saves an ISO image.
+		Burn - Burns the CD. 
+		
+	<B>DataTab:</B>
+		ISO9660 - Burns a pure ISO9660 cd
+		Joliet - Burns a ISO9660 with Joliet ext.
+		Windows 9x/ME - Burns a ISO9660 with support long filenames
+		BeOS - Not implented yet
+		Mac - Burns a hfs cd.
+		RockRidge - Burns a UNIX cd for singel users systems.
+		Real RockRidge - Burns a UNIX cd for multi users systems.
+		
+		Change Volume Name - Change the Volume name on the active VRCD
+		
+		Bootable CD - Lets you make Bootable CD:s just drop the select the boot file
+				BurnItNow will make an new file that exactly 2.88 Mb with your
+				boot file first in the file and the rest zeros.
+				DONT DROP FILE THAT OVER 2.88 Mb!
+				
+	<B>AudioTab:</B>
+		If you dont understand dont change any options
+		
+		pad - 		If the track is a data track, 15 sectors of zeroed data 
+              			will  be  added  to the end of this and each subsequent 
+              			data track.  In this case, the pad  option  is  super- 
+              			seded by the padsize= option. It will remain however as 
+              			a shorthand for padsize=15s.  If the -pad option refers 
+              			to  an audio track, cdrecord will pad the audio data to 
+              			be a multiple of 2352 bytes. The audio data padding  is 
+              			done  with  binary  zeroes  which  is equal to absolute 
+              			silence.
+              			
+		no fixate - 	The disk will only be fixated (i.e. a  TOC  for  a  CD- 
+          			Reader  will be written). This may be used, if for some 
+          			reason the disk has been written but not fixated.  This 
+          			option  currently  does  not  work with old TEAC drives 
+          			(CD-R50S and CD-R55S).
+		
+		swab - 		If this flag is present, audio data is assumed to be in 
+          	   		byte-swapped  (little-endian) order.  Some types of CD- 
+	           	   	Writers e.g. Yamaha, Sony and the new SCSI-3/mmc drives 
+	          	   	require  audio  data  to  be presented in little-endian 
+          	   		order, while other writers require  audio  data  to  be 
+          	   		presented  in  the big-endian (network) byte order nor- 
+          	   		mally used by the SCSI protocol.  Cdrecord knows  if  a 
+          	   		CD-Recorder  needs  audio data in big- or little-endian 
+          	   		order, and corrects the byte order of the  data  stream 
+          	   		to  match the needs of the recorder.  You only need the 
+          	   		-swab flag if your data stream  is  in  Intel  (little- 
+          	   		endian) byte order. 
+
+          	   		Note that the verbose output of cdrecord will show  you 
+          	   		if  swapping is necessary to make the byte order of the 
+          	   		input data fit the required byte order of the recorder. 
+          	   		Cdrecord  will not show you if the -swab flag was actu- 
+          	   		ally present for a track.
+		
+		preemp - 	If this flag is present, all TOC entries for subsequent 
+          		 	audio tracks will indicate that the audio data has been 
+          		 	sampled with 50/15 µsec preemphasis.  The data, however 
+          		 	is not modified during the process of transferring from 
+          		 	file to disk. This option has no effect on data tracks.
+          		 	
+	
+	<B>CDRWTab:</B>
+		Blank(list) - Choose blanktype.
+		
+		Blank Speed - Choose the speed you want to blank with
+		
+		Blank(Button) - Blank the CDRW
+		
+		
+	<B>PrefsTab:</B>
+		Devices - Choose burner.
+		
+		DAO - Set Disk At Once mode. This currently only  works  with 
+        	      MMC drives that support non raw Session At Once mode.
+
+		BurnProof -  this option is implemented to support Buffer Underrun Proof writing with
+			     drives that use the Sanyo BURN-Proof technology.
+        	      
+	
+	<B>LogTab:</B>
+		Shows some information and errormessages.
+		
+
+
+</PRE>
+<H2>Links</H2><PRE>
+	<a href="http://dev.osdrawer.net/projects/burnitnow">BurnItNow project page</a>
+	<a href="http://cdrecord.berlios.de/private/cdrecord.html">CDrecord</a>
+	<a href="http://ports.haiku-files.org/wiki/app-cdr/cdrtools">HaikuPorts cdrtools page</a>
+
+</PRE>
+<H2>Bugs</H2><PRE>
+There are a handful of issues to be fixed in BurnItNow, to see the current list or to report a new issue see the <a href="http://dev.osdrawer.net/projects/burnitnow/issues">BurnItNow issues page at OSDrawer.net</a>.
+
+
+
+</PRE>
+<H2>FAQ</H2><PRE>
+	Q: How do i report a bug?
+	A: File a bug report on the <a href="http://dev.osdrawer.net/projects/burnitnow">BurnItNow project page at OSDrawer.net</a>
+
+	Q: Does my burner work with BurnItNow?
+	A: BurnItNow uses cdrecord to burn CDs, BurnItNow is just a frontend to cdrecord.
+           Check on the list at the bottom of this document.
+
+
+</PRE>
+
+<H2>BurnerList</H2><PRE>
+This list is for cdrecord 2.01.01 if you got a newer version of cdrecord
+it may support more burners. Your burner may be working even if its 
+not on this list.
+
+[Begin cut from cdrecord 2.01.01]
+    Cdrecord is currently maintained with the following drives:
+
+    Plextor PX-W241040A 
+    Plextor PX-W121032S 
+    Plextor PX-W121032A 
+    Plextor PX-W124 
+    Plextor PX-W8220 
+    Plextor PX-W4220 
+    Plextor PX-R820 
+    Plextor PX-R412C 
+    Yamaha CRW-8832 
+    Yamaha CRW-4416 
+    Yamaha CDR-400 
+    Ricoh MP-7040A 
+    Ricoh MP-7040S 
+    Ricoh MP-7060S (available only to Thomas Niederreiter and Heiko Eißfeld) 
+    TEAC CD-R55S 
+    TEAC CD-R58S 
+    TEAC CD-W54E 
+    Sanyo CDR-Bp2 
+    Sony CDU948S 
+    Sony CRX-140S (available only to Thomas Niederreiter and Heiko Eißfeld) 
+    Sony CRX-145E 
+    COMPRO/Matsushita/Panasonic CW-7502 
+    Philips CDD-2000 
+    Goldstar 8080 
+    Freecom Traveller
+
+    Drives that have been reported to work or that should work:
+
+    Should work in this case means that Andy MCFadden listed them in http://www.fadden.com/cdrfaq/faq05.html to be identical to working drives:
+
+    ACER CR-1420C 
+    ACER CDRW 6206A 
+    AOPEN CRW9420 (Re-writeable) 
+    BTC BCE 621E 
+    COMPRO CW-7502 
+    Dysan CR-622 ???? See Wearnes 622 
+    Dysan CR-1622 
+    DynaTec CDM-240J (see Pinnacle RCD-4x4) 
+    DynaTec CDM-240 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    DynaTec CDM-400 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    Freecom Traveller 
+    Grundig CDR-100 
+    Hewlett Packard 4020i 
+    Hewlett Packard 6020i 
+    HP C4324/C4325 (HP SureStore 4020i/6020i) 
+    HP 7100 
+    HP 7110 
+    HP 7200 
+    HP 8100 
+    HP 8210 
+    HP CD-Writer+ M820 
+    Hi-Val CD-R (see Pinnacle RCD-4x4) 
+    IMATION CD-RW IMW040420 
+    JVC XR-W2001 (uses TEAC code - see below and this page - audio not working) 
+    JVC XR-W2010 (uses TEAC code - see below and this page - audio not working) 
+    JVC XR-W2020 (uses TEAC code - see below and this page - audio not working) 
+    JVC XR-W2080 (first MMC drive from JVC) 
+    Kodak PCD-200 or Kodak PCD-200 Plus 
+    Kodak PCD-225 
+    Kodak PCD-240 
+    Kodak PCD-600 
+    Matsushita CW-7502 
+    Matsushita CW-7503 
+    Matsushita CW-7582 
+    Memorex CR-622 ???? See Wearnes 622 
+    Memorex CR-1622 
+    Memorex CRW-1622 
+    Microboards PlayWrite 2000 (use cdrecord driver=sony_cdu924 and report inquiry) 
+    Microboards PlayWrite 4000 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    Microboards PlayWrite 4001RW 
+    MicroNet MasterCD Plus 4x4 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    MicroNet MasterCD Plus 4x6 
+    Mitsubishi MCA-CDRW 226 
+    Mitsubishi DD6430A 
+    Mitsumi CR-2401-TS 
+    Mitsumi CR-2600-TE 
+    Mitsumi CR-2801-TE 
+    Mitsumi CR-4801-TE 
+    Mitsumi CR-4802-TE ??? 
+    Nomai 680.rw 
+    Olympus CDS615E 
+    Olympus CDS620E (use cdrecord driver=sony_cdu924 and report inquiry) 
+    Olympus CD-R2x6 (use cdrecord driver=sony_cdu924 and report inquiry) 
+    Optima Dis Kovery 650 CD-R 
+    OTI CDRW 965 
+    OTI-975 Socrates 1.0 (CDRW) 
+    Panasonic CW-7502 
+    Panasonic CW-7503 
+    Panasonic CW-7582 
+    Philips CDD 521 (CDD521/02 Revision: 2.06 has bad firmware - seems not to work) 
+    Philips CDD 521 (upgraded units only: ID: CDD521/10 Revision: 2.07) 
+    Philips CDD 522 
+    Philips CDD 2000 
+    Philips CDD 2600 
+    Philips CDD 3600 
+    Philips CDD 3610 
+    Philips CDRW400 
+    Philips Omniwriter 26 
+    Philips Omniwriter 26A 
+    Philips CDD4201 CD-RW 
+    Pinnacle Micro RCD-1000 (see TEAC/JVC): Need to upgrade firmware to 2.35 
+    Pinnacle Micro RCD-5020 (see TEAC/JVC - audio not working) 
+    Pinnacle Micro RCD-5040 (see TEAC/JVC - audio not working) 
+    Pinnacle Micro RCD-4x4 
+    Pioneer DW-S114X 
+    Plasmon CDR 4220 
+    Plasmon RF-4100 
+    Plasmon RF-4102 
+    Plasmon CDR 4400 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    Plasmon CDR 480 
+    Plextor PX-R24CS (use cdrecord driver=ricoh_ro1420c and report inquiry) 
+    Plextor PX-R412C 
+    Plextor PX-R820 
+    Plextor PX-W4220 
+    Plextor PX-W8220 
+    Plextor PX-W124 
+    Plextor PX-W121032S 
+    Plextor PX-W121032A 
+    Plextor PX-W161032A 
+    Plextor PX-W241040A 
+    Procom PCDR 4 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    Ricoh RO-1420C 
+    Ricoh MP-6200 
+    Ricoh MP-6200I 
+    Ricoh MP-6201 
+    Ricoh MP-7040A 
+    Ricoh MP-7040S 
+    Ricoh MP-7060S 
+    SAMSUNG SW-206 
+    Sanyo CDR-Bp2 
+    Smart & Friendly CD-R1002 (use cdrecord driver=sony_cdu924 and report inquiry) 
+    Smart & Friendly CD-R1004 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    Smart & Friendly CD-R2004 (use cdrecord driver=sony_cdu924 and report inquiry) 
+    Smart & Friendly CD-R2006 PLUS 
+    Smart & Friendly CD-R2006 PRO 
+    Smart & Friendly CD-R4000 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
+    Smart & Friendly CD-R4006 
+    Smart & Friendly CD-R4012 
+    Smart & Friendly CD-RW226 
+    Smart & Friendly CD-R8020 
+    Sony CDU920S 
+    Sony CDU924S 
+    Sony CDU926S 
+    Sony CDU928S 
+    Sony CDU940S 
+    Sony CDU948S 
+    Sony CRX-100 
+    Sony CRX-140S 
+    Sony CRX-145E 
+    Taiyo Yuden CD-WO EW-50 
+    TEAC CD-R50S 
+    TEAC CD-R55S 
+    TEAC CD-R56S 
+    TEAC CD-R58S 
+    TEAC CD-W54E 
+    That's Write CDR-N820S 
+    Traxdata CDRW-2260EL-PRO 
+    Traxdata CDR-4120 
+    Traxdata CDRW-4260 
+    Turtle Beach 2040R (use cdrecord driver=ricoh_ro1420c and report inquiry) 
+    WAITEK WT2036 
+    Wearnes CD-R622 
+    Wearnes CD-R632P 
+    Yamaha CDR-100 
+    Yamaha CDR-102 
+    Yamaha CDR-200 
+    Yamaha CDR-400(Firmware revision 1.0d and up otherwise upgrade) 
+    Yamaha CDR-401 
+    Yamaha CRW-4001 
+    Yamaha CRW-2260 
+    Yamaha CRW-2261 
+    Yamaha CRW-4260 
+    Yamaha CRW-4261 
+    Yamaha CRW-4416 
+    Yamaha CRW-6416 
+    Yamaha CRW-8424 
+    Yamaha CRW-8832 
+    Yamaha CRW-2100 
+    Yamaha CRW-2200
+[End cut from cdrecord 2.01.01]
+</PRE>
+
+Copyright&copy; 2000-2002 by Johan Nilsson, &copy; 2010-2011 BurnItNow maintainers 
+</body>
+</html>
