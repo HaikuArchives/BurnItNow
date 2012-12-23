@@ -8,6 +8,7 @@
 #include "CompilationDataView.h"
 #include "CompilationImageView.h"
 #include "CompilationCDRWView.h"
+#include "CompilationCloneView.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +34,7 @@ const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
 
-constexpr int32 kDeviceChangeMessage[5] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
+constexpr int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
 // Misc constants
 const int32 kMinBurnSpeed = 2;
@@ -42,10 +43,11 @@ const int32 kMaxBurnSpeed = 16;
 const float kControlPadding = 5;
 
 // Misc variables
-sdevice devices[5];
+sdevice devices[MAX_DEVICES];
 int selectedDevice;
 
 BMenu* sessionMenu;
+BMenu* deviceMenu;
 
 #pragma mark --Constructor/Destructor--
 
@@ -115,7 +117,7 @@ BMenuBar* BurnWindow::_CreateMenuBar()
 	BMenu* fileMenu = new BMenu("File");
 	menuBar->AddItem(fileMenu);
 
-	BMenuItem* aboutItem = new BMenuItem("About ...", new BMessage(B_ABOUT_REQUESTED));
+	BMenuItem* aboutItem = new BMenuItem("About...", new BMessage(B_ABOUT_REQUESTED));
 	aboutItem->SetTarget(be_app);
 	fileMenu->AddItem(aboutItem);
 	fileMenu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
@@ -143,12 +145,12 @@ BView* BurnWindow::_CreateToolBar()
 	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "", sessionMenu);
 
 
-	BMenu* deviceMenu = new BMenu("DeviceMenu");
+	deviceMenu = new BMenu("DeviceMenu");
 	deviceMenu->SetLabelFromMarked(true);
 
 	// Checking for devices
-	FindDevices();
-	for (unsigned int ix=0; ix<sizeof(devices); ++ix) {
+	FindDevices(devices);
+	for (unsigned int ix=0; ix<MAX_DEVICES; ++ix) {
 		if (devices[ix].number.IsEmpty())
 			break;
 		BString deviceString("");
@@ -205,6 +207,7 @@ BView* BurnWindow::_CreateTabView()
 	tabView->AddTab(new CompilationAudioView());
 	tabView->AddTab(new CompilationImageView(*this));
 	tabView->AddTab(new CompilationCDRWView(*this));
+	tabView->AddTab(new CompilationCloneView(*this));
 
 	return tabView;
 }
@@ -288,7 +291,9 @@ void BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	speedSlider->SetLabel(speedString.String());
 }
 
-void BurnWindow::FindDevices()
+#pragma mark -- Public Methods --
+
+void BurnWindow::FindDevices(sdevice *array)
 {
 	FILE* f;
 	char buff[512];
@@ -327,12 +332,11 @@ void BurnWindow::FindDevices()
 			device.CopyInto(model, modelStart+3, modelEnd-6);
 			
 			sdevice dev = { number, manu, model };
-			devices[xdev++] = dev;
+			if (xdev <= MAX_DEVICES)
+				array[xdev++] = dev;
 		}
 	}
 }
-
-#pragma mark -- Public Methods --
 
 sdevice BurnWindow::GetSelectedDevice() {
 	return devices[selectedDevice];

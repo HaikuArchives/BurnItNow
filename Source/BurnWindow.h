@@ -11,6 +11,8 @@
 #include <View.h>
 #include <Window.h>
 
+#define MAX_DEVICES 5
+
 
 typedef struct sdevice {
 	BString number;
@@ -25,6 +27,7 @@ public:
 
 	virtual void MessageReceived(BMessage* message);
 	
+	void FindDevices(sdevice *array);
 	sdevice GetSelectedDevice();
 	bool GetSessionMode();
 
@@ -39,8 +42,6 @@ private:
 	void _OpenWebSite();
 	void _OpenHelp();
 	void _UpdateSpeedSlider(BMessage* message);
-	
-	void FindDevices();
 };
 
 #endif	// _BURNWINDOW_H_
