@@ -4,8 +4,8 @@
  */
 #include "BurnWindow.h"
 
-#include "CompilationAudioView.h"
 #include "CompilationDataView.h"
+#include "CompilationAudioView.h"
 #include "CompilationImageView.h"
 #include "CompilationCDRWView.h"
 #include "CompilationCloneView.h"
@@ -23,7 +23,6 @@
 #include <RadioButton.h>
 #include <Slider.h>
 #include <StatusBar.h>
-#include <TabView.h>
 
 
 // Message constants
@@ -49,6 +48,8 @@ int selectedDevice;
 BMenu* sessionMenu;
 BMenu* deviceMenu;
 
+CompilationDataView* fCompilationDataView;
+
 #pragma mark --Constructor/Destructor--
 
 
@@ -56,11 +57,12 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 	:
 	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
+	fTabView = _CreateTabView();
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 1)
 		.Add(_CreateMenuBar())
 		.Add(_CreateToolBar())
-		.Add(_CreateTabView());
+		.Add(fTabView);
 }
 
 
@@ -198,11 +200,13 @@ BView* BurnWindow::_CreateToolBar()
 }
 
 
-BView* BurnWindow::_CreateTabView()
+BTabView* BurnWindow::_CreateTabView()
 {
 	BTabView* tabView = new BTabView("CompilationsTabView", B_WIDTH_FROM_LABEL);
 
-	tabView->AddTab(new CompilationDataView());
+	fCompilationDataView = new CompilationDataView(*this);
+
+	tabView->AddTab(fCompilationDataView);
 	tabView->AddTab(new CompilationAudioView());
 	tabView->AddTab(new CompilationImageView(*this));
 	tabView->AddTab(new CompilationCDRWView(*this));
@@ -223,7 +227,10 @@ void BurnWindow::_BurnDisc()
 
 void BurnWindow::_BuildImage()
 {
-	(new BAlert("BuildImageAlert", "Not Implemented Yet!", "Ok"))->Go();
+	if (fTabView->FocusTab() == 0)
+		fCompilationDataView->BuildISO();
+	else
+		(new BAlert("BuildImageAlert", "On this tab ISO building isn't implemented.", "Ok"))->Go();
 }
 
 

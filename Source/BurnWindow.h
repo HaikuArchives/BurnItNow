@@ -8,6 +8,7 @@
 
 #include <MenuBar.h>
 #include <String.h>
+#include <TabView.h>
 #include <View.h>
 #include <Window.h>
 
@@ -34,7 +35,7 @@ public:
 private:
 	BMenuBar* _CreateMenuBar();
 	BView* _CreateToolBar();
-	BView* _CreateTabView();
+	BTabView* _CreateTabView();
 	BView* _CreateDiskUsageView();
 
 	void _BurnDisc();
@@ -42,6 +43,8 @@ private:
 	void _OpenWebSite();
 	void _OpenHelp();
 	void _UpdateSpeedSlider(BMessage* message);
+	
+	BTabView* fTabView;
 };
 
 #endif	// _BURNWINDOW_H_
