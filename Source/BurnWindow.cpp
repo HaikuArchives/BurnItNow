@@ -60,8 +60,7 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 1)
 		.Add(_CreateMenuBar())
 		.Add(_CreateToolBar())
-		.Add(_CreateTabView())
-		.Add(_CreateDiskUsageView());
+		.Add(_CreateTabView());
 }
 
 
@@ -210,41 +209,6 @@ BView* BurnWindow::_CreateTabView()
 	tabView->AddTab(new CompilationCloneView(*this));
 
 	return tabView;
-}
-
-
-BView* BurnWindow::_CreateDiskUsageView()
-{
-	BGroupView* diskUsageView = new BGroupView();
-	diskUsageView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, 50));
-
-	// TODO This StatusBar will probably be moved to a private class variable to
-	// allow for easy adjustments from MessageReceived()
-	BStatusBar* statusBar = new BStatusBar("MediaTypeStatusBar");
-
-	BMenu* mediaMenu = new BMenu("MediaTypeMenu");
-	mediaMenu->SetLabelFromMarked(true);
-
-	// TODO Send actual BMessages and readjust the max position of the StatusBar
-
-	// Create our media pop up menu items and use the 650MiB item as the default
-	BMenuItem* mediaMenuItem = new BMenuItem("CD 650MiB", new BMessage());
-	mediaMenuItem->SetMarked(true);
-	mediaMenu->AddItem(mediaMenuItem);
-	mediaMenu->AddItem(new BMenuItem("CD 700MiB", new BMessage()));
-//	mediaMenu->AddItem(new BMenuItem("DVD5 4.37GiB", new BMessage()));
-//	mediaMenu->AddItem(new BMenuItem("DVD9 7.95GiB", new BMessage()));
-
-	BMenuField* mediaMenuField = new BMenuField("MediaTypeMenuField", "Media:", mediaMenu);
-	mediaMenuField->SetExplicitMaxSize(BSize(200, B_SIZE_UNLIMITED));
-
-	BLayoutBuilder::Group<>(diskUsageView)
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
-		.Add(statusBar)
-		.AddStrut(10)
-		.Add(mediaMenuField);
-
-	return diskUsageView;
 }
 
 
