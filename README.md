@@ -9,11 +9,12 @@ Original project site can be viewed here: <http://dev.osdrawer.net/projects/burn
 
 Building
 ==========
-You must have CMake installed in order to build this project.  A basic compile
-can be performed with the following commands:
+You must have CMake installed in order to build this project.  A basic compile can be performed with the following commands:
 
+```
 cmake .
 make
+```
 
 License
 ==========
