@@ -26,10 +26,10 @@ AudioView::AudioView(BRect size)
 	:
 	BView(size, "AudioView", B_FOLLOW_NONE, B_WILL_DRAW)
 {
-	BRect r, r2;
+	BRect r;
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	IconLabel* advLabel = new IconLabel(BRect(0, 0, 19 + be_bold_font->StringWidth(" Audio Options (see help before change options)"), 19), 
+	IconLabel* advLabel = new IconLabel(BRect(0, 0, 19 + be_bold_font->StringWidth(" Audio Options (see help before change options)"), 19),
 							" Audio Options (see help before change options)", "audiocd_16.png");
 	advLabel->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	advLabel->SetDrawingMode(B_OP_ALPHA);

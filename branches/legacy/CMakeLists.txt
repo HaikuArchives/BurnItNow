@@ -18,6 +18,7 @@ set(BURNITNOW_SRCS
 	CopyCDView.cpp
 	DataView.cpp
 	IconLabel.cpp
+	ImageButton.cpp
 	LeftList.cpp
 	LogView.cpp
 	MakeBFS.cpp
@@ -25,10 +26,9 @@ set(BURNITNOW_SRCS
 	PrefsView.cpp
 	RightList.cpp
 	StatusWindow.cpp
+	WeightData.cpp
 	jpWindow.cpp
-	AboutImage.rdef
 	BurnItNow.rdef
-	gfx.rdef
 	)
 
 add_executable("BurnItNow" ${BURNITNOW_SRCS})

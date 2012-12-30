@@ -30,7 +30,6 @@ extern char* IMAGE_NAME;
 extern char* BURNIT_PATH;
 extern char* BURN_DIR;
 
-
 BBitmap* GetBitmapResource(type_code type, const char* name);
 
 LeftListItem::LeftListItem(entry_ref* ref, const char* name, BBitmap* icon, struct AudioInfo* Info)
@@ -195,8 +194,7 @@ void LeftList::KeyDown(const char* bytes, int32 numBytes)
 							ISOFILE = false;
 							jpWindow* win = dynamic_cast<jpWindow*>(Window());
 							if (win != NULL) {
-								win->fMakeDirButton->SetEnabled(false);
-								win->fParentDirButton->SetEnabled(false);
+								win->EnableRightPanel(false);
 								win->fNewVRCDButton->SetEnabled(true);
 								win->fAddISOButton->SetEnabled(true);
 								win->fDataView->fBootableCDCheckBox->SetEnabled(false);
@@ -272,8 +270,7 @@ void LeftList::MouseDown(BPoint point)
 							ISOFILE = false;
 							jpWindow* win = dynamic_cast<jpWindow*>(Window());
 							if (win != NULL) {
-								win->fMakeDirButton->SetEnabled(false);
-								win->fParentDirButton->SetEnabled(false);
+								win->EnableRightPanel(false);
 								win->fNewVRCDButton->SetEnabled(true);
 								win->fAddISOButton->SetEnabled(true);
 							}
@@ -308,7 +305,8 @@ void LeftList::MouseDown(BPoint point)
 			if (item->fIconBitmap == fISOBitmap) {
 				sprintf(temp1, "Info on ISOFile");
 				sprintf(temp2, "%s", item->fName);
-				sprintf(temp3, "%d MB");
+				sprintf(temp3, "%d MB", 0); 
+					// TODO: Not sure. Added dummy zero.
 				jpWindow* win = dynamic_cast<jpWindow*>(Window());
 				if (win != NULL)
 					win->fRightList->UpdateInfo(temp1, temp2, temp3, NULL, NULL);

@@ -5,17 +5,17 @@
  * Distributed under the terms of the MIT License.
  */
 
-
 #include "jpWindow.h"
 #include "copyright.h"
 
 #include "AboutWindow.h"
 #include "AskName.h"
-#include "AudioView.h"
+#include "AudioView.h" 
 #include "BurnView.h"
 #include "CDRWView.h"
 #include "CopyCDView.h"
 #include "DataView.h"
+#include "ImageButton.h"
 #include "LeftList.h"
 #include "LogView.h"
 #include "MakeBFS.h"
@@ -26,7 +26,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 
 #include <Alert.h>
 #include <Application.h>
@@ -39,7 +38,7 @@
 #include <Path.h>
 #include <Roster.h>
 #include <ScrollView.h>
-
+#include <TranslationUtils.h>
 
 const char* BlType[] = {"all", "fast", "session", "track", "trtail", "unreserve", "unclose"};
 int16 BLANK_TYPE;
@@ -63,6 +62,8 @@ entry_ref BOOTIMAGEREF;
 char* IMAGE_NAME;
 char* BURNIT_PATH;
 char* BURN_DIR;
+char* WEIGHTS_FILE;
+
 BPath CDRTOOLS_DIR;
 
 char BURNFREE[30]; // driveropts=burnfree
@@ -129,7 +130,7 @@ int32 OutPutMkImage(void* p)
 		SWin->Lock();
 		SWin->Ready();
 		SWin->Unlock();
-		sprintf(IMAGE_NAME, "/boot/common/cache/tmp/BurnItNow.raw", BURNIT_PATH);
+		sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
 	}
 	if (BOOTABLE) {
 		char temp[1024];
@@ -215,7 +216,7 @@ int32 OutPutBurn(void* p)
 	if (noerror)
 		SWin->Ready();
 	SWin->Unlock();
-	sprintf(IMAGE_NAME, "/boot/common/cache/tmp/BurnItNow.raw", BURNIT_PATH);
+	sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
 	BEntry(IMAGE_NAME, true).Remove();
 	if (BOOTABLE) {
 		char temp[1024];
@@ -341,6 +342,73 @@ jpWindow::jpWindow(BRect frame)
 	fTabView->AddTab(fLogView, fMiscTab);
 	fMiscTab->SetLabel("Log");
 
+	r = fAroundBox->Bounds();
+	r.top = 220;
+	r.bottom = r.top + 26;
+	
+	// Make Dir Button
+	r.left = r.right / 2;
+	r.right = r.left + 26;
+	
+	fMakeDirButton = new ImageButton(r, "MakeDir", 
+		BTranslationUtils::GetBitmap('PNG ', "mkdir.png"), 
+		new BMessage(TOOLS_DIR), B_FOLLOW_NONE);
+		
+	fAroundBox->AddChild(fMakeDirButton);
+	
+	// Add Button
+	r.left += 30;
+	r.right += 30;
+	
+	fAddButton = new ImageButton(r, "Add", 
+		BTranslationUtils::GetBitmap('PNG ', "add.png"), 
+		new BMessage(TOOLS_ADD), B_FOLLOW_NONE);
+		
+	fAroundBox->AddChild(fAddButton);
+	
+	// Remove Button
+	r.left += 30;
+	r.right += 30;
+	
+	fRemoveButton = new ImageButton(r, "Remove", 
+		BTranslationUtils::GetBitmap('PNG ', "remove.png"), 
+		new BMessage(TOOLS_REM), B_FOLLOW_NONE);
+		
+	fAroundBox->AddChild(fRemoveButton);
+	
+	// Move Up Button
+	r.left += 30 + 10;
+	r.right += 30 + 10;
+	
+	fMoveUpButton = new ImageButton(r, "MoveUp", 
+		BTranslationUtils::GetBitmap('PNG ', "up.png"), 
+		new BMessage(TOOLS_UP), B_FOLLOW_NONE);
+	
+	fAroundBox->AddChild(fMoveUpButton);
+	
+	// Move Down Button
+	r.left += 30;
+	r.right += 30;
+	
+	fMoveDownButton = new ImageButton(r, "MoveDown", 
+		BTranslationUtils::GetBitmap('PNG ', "down.png"), 
+		new BMessage(TOOLS_DOWN), B_FOLLOW_NONE);
+		
+	fAroundBox->AddChild(fMoveDownButton);
+	
+	// Parent Dir Button
+	r.left += 30 + 10;
+	r.right += 30 + 10;
+	
+	fParentDirButton = new ImageButton(r, "ParentDir", 
+		BTranslationUtils::GetBitmap('PNG ', "parentdir.png"), 
+		new BMessage(TOOLS_PARENT), B_FOLLOW_NONE);
+		
+	fAroundBox->AddChild(fParentDirButton);
+	
+	if (!VRCD) 
+		EnableRightPanel(false);
+	
 	fAroundBox->AddChild(fTabView);
 
 	// FileList(RightList)
@@ -350,36 +418,12 @@ jpWindow::jpWindow(BRect frame)
 	r.bottom = r.bottom - 50;
 	r.left = (r.right / 2) + 3;
 	r.right -= (B_V_SCROLL_BAR_WIDTH + 3);
+	
 	fRightList = new RightList(r);
 
-	fAroundBox->AddChild(new BScrollView("Scroll files/info", fRightList, B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, false, true));
-
-	// ParentDir button
-	r = fAroundBox->Bounds();
-	r.InsetBy(5.0, 5.0);
-	r.top = 220;
-	r.bottom = 240;
-	r.left = (r.right / 2);
-	r.right -= (r.right - r.left) / 2;
-	fParentDirButton = new BButton(r, "ParentDir", "ParentDir", new BMessage( PARENT_DIR ));
-	fAroundBox->AddChild(fParentDirButton);
-
-	// MakeDir button
-	r = fAroundBox->Bounds();
-	r.InsetBy(5.0, 5.0);
-	r.top = 220;
-	r.bottom = 240;
-	r.left = (r.right / 2) + 2;
-	r.left += (r.right - r.left) / 2 + 2;
-	r.right -= 2;
-	fMakeDirButton = new BButton(r, "MakeDir", "MakeDir", new BMessage( MAKE_DIR ));
-	fAroundBox->AddChild(fMakeDirButton);
-
-	if (!VRCD) {
-		fMakeDirButton->SetEnabled(false);
-		fParentDirButton->SetEnabled(false);
-	}
-
+	fAroundBox->AddChild(new BScrollView("Scroll files/info", fRightList, 
+		B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, false, true));
+	
 	// LeftList
 	r = fAroundBox->Bounds();
 	r.InsetBy(5.0, 5.0);
@@ -480,7 +524,10 @@ uint64 jpWindow::GetVRCDSize()
 	uint64 tempas = 0;
 	if (IMAGE_TYPE == 0) {
 		FILE* f1;
-		sprintf(command, "mkisofs -print-size %s %s -gui -f -V \"%s\" -C %s \"%s\" 2>&1", DATA_STRING, BOOTSTRING, VOL_NAME, fBurnDevice->scsiid, BURN_DIR);
+		
+		sprintf(command, "mkisofs -print-size %s %s -gui -f -V \"%s\" -C %s \"%s\" 2>&1", 
+			DATA_STRING, BOOTSTRING, VOL_NAME, fBurnDevice->scsiid, BURN_DIR);
+			
 		printf("com: %s\n",command);
 		f1 = popen(command, "r");
 		while (!feof(f1) && !ferror(f1)) {
@@ -649,20 +696,31 @@ void jpWindow::InitBurnIt()
 	entry_ref ref = info.ref;
 	BEntry(&ref, true).GetPath(&path);
 	path.GetParent(&path);
+
+	// Beware: "C/C++ is a write-only language." _(x.x)_
+	// TODO: Maybe I should rework this section?
+	
 	BURNIT_PATH = new char[strlen(path.Path())+1];
 	strcpy(BURNIT_PATH, path.Path());
-	sprintf(temp_char, "/boot/common/cache/tmp", BURNIT_PATH);
+	sprintf(temp_char, "%s/tmp", BURNIT_PATH);
+
 	if (!BEntry(temp_char).Exists())
 		BDirectory(BURNIT_PATH).CreateDirectory(temp_char, NULL);
+		
 	IMAGE_NAME = new char[1024];
 	sprintf(IMAGE_NAME, "%s/BurnItNow.raw", temp_char);
+	
+	WEIGHTS_FILE = new char[1024];
+	sprintf(WEIGHTS_FILE, "%s/w.txt", temp_char);
+	
 	sprintf(temp_char, "%s/VRCD", temp_char);
+	
 	if (!BEntry(temp_char).Exists())
 		BDirectory(temp_char).CreateDirectory(temp_char, NULL);
 
 	BURN_DIR = new char[strlen(temp_char)+1];
 	strcpy(BURN_DIR, temp_char);
-
+	
 	FindCDRTools();
 
 	// Load from pref file
@@ -1500,13 +1558,33 @@ void jpWindow::MessageReceived(BMessage* message)
 			sprintf(buf, "Blank Speed [%dx]", BLANK_SPD);
 			fCDRWView->fBlankSpeedSlider->SetLabel(buf);
 			break;
-
-		case PARENT_DIR:
-			fRightList->ParentDir();
-			break;
-
-		case MAKE_DIR:
+	
+		case TOOLS_DIR:
 			fRightList->CreateDir();
+			break;
+	
+		case TOOLS_ADD:
+			fRightList->Add();
+			break;
+	
+		case TOOLS_ADD_DONE:
+			fRightList->AddDone();
+			break;
+		
+		case TOOLS_REM:
+			fRightList->RemoveSelected();
+			break;
+		
+		case TOOLS_UP:
+			fRightList->MoveSelectedUp();
+			break;
+		
+		case TOOLS_DOWN:
+			fRightList->MoveSelectedDown();
+			break;
+		
+		case TOOLS_PARENT:
+			fRightList->ParentDir();
 			break;
 
 		case MAKE_DIRECTORY:
@@ -1527,8 +1605,8 @@ void jpWindow::MessageReceived(BMessage* message)
 				VRCD = true;
 				fNewVRCDButton->SetEnabled(false);
 				fAddISOButton->SetEnabled(false);
-				fMakeDirButton->SetEnabled(true);
-				fParentDirButton->SetEnabled(true);
+				
+				EnableRightPanel(true);
 
 				fVolumeNameWindow = new AskName(BRect(200, 200, 440, 240), "Volume name", VOLUME_NAME, VOL_NAME);
 				fVolumeNameWindow->Show();
@@ -1718,10 +1796,12 @@ void jpWindow::MakeImageNOW(int Multi, const char* str)
 
 		if (IMAGE_TYPE == 0) {
 			if (Multi == 0)
-				sprintf(command, "mkisofs -o \"%s\" %s %s -gui -f -V \"%s\" \"%s\" 2>&1", IMAGE_NAME, DATA_STRING, BOOTSTRING, VOL_NAME, BURN_DIR);
+				sprintf(command, "mkisofs -o \"%s\" %s %s -gui -f -V \"%s\" -sort \"%s\" \"%s\" 2>&1", 
+					IMAGE_NAME, DATA_STRING, BOOTSTRING, VOL_NAME, WEIGHTS_FILE, BURN_DIR);
 
 			if (Multi == 1)
-				sprintf(command, "mkisofs -o \"%s\" %s %s -gui -f -V \"%s\" -C %s -M %s \"%s\" 2>&1", IMAGE_NAME, DATA_STRING, BOOTSTRING, VOL_NAME, str, fBurnDevice->scsiid, BURN_DIR);
+				sprintf(command, "mkisofs -o \"%s\" %s %s -gui -f -V \"%s\" -sort \"%s\" -C %s -M %s \"%s\" 2>&1", 
+					IMAGE_NAME, DATA_STRING, BOOTSTRING, VOL_NAME, WEIGHTS_FILE, str, fBurnDevice->scsiid, BURN_DIR);
 
 			Lock();
 			resume_thread(Cntrl = spawn_thread(controller, "MakeingIMAGE", 5, command));
@@ -1747,7 +1827,8 @@ void jpWindow::MakeImageNOW(int Multi, const char* str)
 			if (!JUST_IMAGE)
 				BurnWithCDRecord();
 			else {
-				sprintf(IMAGE_NAME, "/boot/common/cache/tmp/BurnItNow.raw", BURNIT_PATH);
+				sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
+				
 				fStatusWindow->Lock();
 				fStatusWindow->Ready();
 				fStatusWindow->Unlock();
@@ -1826,6 +1907,7 @@ void jpWindow::BurnWithCDRecord()
 				commandstr << "/";
 				commandstr << "mkisofs " << DATA_STRING << " -quiet " ;
 				commandstr << BOOTSTRING ;
+				commandstr << " -sort "<< '"' << WEIGHTS_FILE << '"';
 				commandstr << " -f -V " << '"' << VOL_NAME << '"' << " " << '"';
 				commandstr << BURN_DIR << '"' << " | " << CDRTOOLS_DIR.Path();
 				commandstr << "/cdrecord dev=" << fBurnDevice->scsiid;
@@ -1875,7 +1957,7 @@ void jpWindow::BurnWithCDRecord()
 			commandstr << "  " << DAO; 
 			commandstr << "  " << PAD;
 			commandstr << "  " << EJECT ;
-			commandstr << " -audio" << AUDIO_FILES;
+			commandstr << " -audio " << AUDIO_FILES;
 			commandstr.ReplaceAll("\t"," "); 	commandstr.ReplaceAll("  "," ");
 			printf("BURN_TYPE1: '%s'\n",commandstr.String());
 			
@@ -1979,5 +2061,20 @@ void jpWindow::MakeBootImage()
 		BOOTABLE = false;
 		BAlert* MyAlert = new BAlert("BurnItNow", "The boot image you chose doesn't exist.\n BurnItNow will burn this CD without a bootimage.", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
 		MyAlert->Go();
+	}
+}
+
+void jpWindow::EnableRightPanel(bool enable)
+{
+	if (enable) {
+		fMakeDirButton->SetEnabled(true);
+		fAddButton->SetEnabled(true);
+	} else {
+		fMakeDirButton->SetEnabled(false);
+		fAddButton->SetEnabled(false);
+		fRemoveButton->SetEnabled(false);
+		fMoveUpButton->SetEnabled(false);
+		fMoveDownButton->SetEnabled(false);
+		fParentDirButton->SetEnabled(false);	
 	}
 }

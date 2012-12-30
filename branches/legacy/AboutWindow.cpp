@@ -1,6 +1,6 @@
 /*
  * Copyright 2000-2002, Johan Nilsson. All rights reserved.
- * Copyright 2010-2011 BurnItNow maintainers 
+ * Copyright 2010-2011 BurnItNow maintainers
  * Distributed under the terms of the MIT License.
  */
 
@@ -44,7 +44,7 @@ void AboutView::Draw(BRect updateRect)
 {
 	SetLowColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 	SetHighColor(ui_color(B_PANEL_BACKGROUND_COLOR));
-	BRect r, r2;
+	BRect r;
 	BPoint p1;
 	r = Bounds();
 	FillRect(r);
