@@ -274,7 +274,26 @@ void BurnWindow::_BuildImage()
 
 void BurnWindow::_ClearCache()
 {
-	(new BAlert("ClearCacheAlert", "Not Implemented Yet", "Ok"))->Go();
+	BEntry* entry = new BEntry("/boot/common/cache/burnitnow_cache.iso");
+	entry->Remove();
+	
+	entry = new BEntry("/boot/common/cache/burnitnow_iso.iso");
+	entry->Remove();
+	
+	BDirectory* dir = new BDirectory("/boot/common/cache/burnitnow_cache/");
+	
+	while (true)
+	{
+		if (dir->GetNextEntry(entry) != B_OK)
+			break;
+		
+		entry->Remove();
+	}
+	
+	entry = new BEntry("/boot/common/cache/burnitnow_cache/");
+	entry->Remove();
+	
+	(new BAlert("ClearCacheAlert", "Cache clearing succeeded.", "Ok"))->Go();
 }
 
 void BurnWindow::_OpenSettings()
