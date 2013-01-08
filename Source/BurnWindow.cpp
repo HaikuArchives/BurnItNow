@@ -49,6 +49,7 @@ BMenu* sessionMenu;
 BMenu* deviceMenu;
 
 CompilationDataView* fCompilationDataView;
+CompilationAudioView* fCompilationAudioView;
 
 #pragma mark --Constructor/Destructor--
 
@@ -205,9 +206,10 @@ BTabView* BurnWindow::_CreateTabView()
 	BTabView* tabView = new BTabView("CompilationsTabView", B_WIDTH_FROM_LABEL);
 
 	fCompilationDataView = new CompilationDataView(*this);
+	fCompilationAudioView = new CompilationAudioView(*this);
 
 	tabView->AddTab(fCompilationDataView);
-	tabView->AddTab(new CompilationAudioView());
+	tabView->AddTab(fCompilationAudioView);
 	tabView->AddTab(new CompilationImageView(*this));
 	tabView->AddTab(new CompilationCDRWView(*this));
 	tabView->AddTab(new CompilationCloneView(*this));
