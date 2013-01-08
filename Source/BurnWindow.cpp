@@ -28,6 +28,8 @@
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
+const int32 kOpenSettingsMessage = 'Stng';
+const int32 kClearCacheMessage = 'Cche';
 
 const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
@@ -82,6 +84,12 @@ void BurnWindow::MessageReceived(BMessage* message)
 	}
 
 	switch (message->what) {
+		case kClearCacheMessage:
+			_ClearCache();
+			break;
+		case kOpenSettingsMessage:
+			_OpenSettings();
+			break;
 		case kOpenWebsiteMessage:
 			_OpenWebSite();
 			break;
@@ -140,11 +148,17 @@ BMenuBar* BurnWindow::_CreateMenuBar()
 	fileMenu->AddItem(aboutItem);
 	fileMenu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
 
+	BMenu* toolsMenu = new BMenu("Tools and settings");
+	menuBar->AddItem(toolsMenu);
+	
+	toolsMenu->AddItem(new BMenuItem("Clear cache", new BMessage(kClearCacheMessage)));
+	toolsMenu->AddItem(new BMenuItem("Settings...", new BMessage(kOpenSettingsMessage), 'S'));
+
 	BMenu* helpMenu = new BMenu("Help");
 	menuBar->AddItem(helpMenu);
 
-	helpMenu->AddItem(new BMenuItem("Usage Instructions", new BMessage(kOpenHelpMessage)));
-	helpMenu->AddItem(new BMenuItem("Project Website", new BMessage(kOpenWebsiteMessage)));
+	helpMenu->AddItem(new BMenuItem("Usage instructions", new BMessage(kOpenHelpMessage)));
+	helpMenu->AddItem(new BMenuItem("Project website", new BMessage(kOpenWebsiteMessage)));
 
 	return menuBar;
 }
@@ -257,6 +271,16 @@ void BurnWindow::_BuildImage()
 		(new BAlert("BuildImageAlert", "On this tab ISO building isn't implemented.", "Ok"))->Go();
 }
 
+
+void BurnWindow::_ClearCache()
+{
+	(new BAlert("ClearCacheAlert", "Not Implemented Yet", "Ok"))->Go();
+}
+
+void BurnWindow::_OpenSettings()
+{
+	(new BAlert("OpenSettingsAlert", "Not Implemented Yet", "Ok"))->Go();
+}
 
 void BurnWindow::_OpenWebSite()
 {

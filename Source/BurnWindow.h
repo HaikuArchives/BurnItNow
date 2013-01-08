@@ -40,6 +40,8 @@ private:
 
 	void _BurnDisc();
 	void _BuildImage();
+	void _ClearCache();
+	void _OpenSettings();
 	void _OpenWebSite();
 	void _OpenHelp();
 	void _UpdateSpeedSlider(BMessage* message);
