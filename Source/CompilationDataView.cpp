@@ -123,7 +123,16 @@ void CompilationDataView::_ChooseDirectory()
 
 void CompilationDataView::_FromScratch()
 {
-	(new BAlert("FromScratchAlert", "Not Implemented Yet!", "Ok"))->Go();
+	// Create cache directory
+	BDirectory* dir = new BDirectory();
+	dir->CreateDirectory("/boot/common/cache/burnitnow_cache/", NULL);
+	fDirPath->SetTo("/boot/common/cache/burnitnow_cache/");
+	
+	(new BAlert("DirectoryOpenedAlert", "In opened directory prepare compilation. Then, close it and now you can build ISO or burn disc.", "Ok"))->Go();
+	
+	// Display cache directory
+	CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
+	command->AddArgument("open")->AddArgument("/boot/common/cache/burnitnow_cache/")->Run();	
 }
 
 void CompilationDataView::_OpenDirectory(BMessage* message)
