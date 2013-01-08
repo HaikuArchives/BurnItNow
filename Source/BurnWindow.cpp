@@ -242,6 +242,8 @@ void BurnWindow::_BurnDisc()
 {
 	if (fTabView->FocusTab() == 0)
 		fCompilationDataView->BurnDisc();
+	else if (fTabView->FocusTab() == 1)
+		fCompilationAudioView->BurnDisc();
 	else
 		(new BAlert("BurnDiscAlert", "On this tab CD burning isn't implemented.", "Ok"))->Go();
 }

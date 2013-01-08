@@ -123,3 +123,35 @@ void CompilationAudioView::_AddTrack(BMessage* message) {
 	BStringItem* item = new BStringItem(fTrackPath->Leaf());
 	fAudioList->AddItem(item);
 }
+
+
+#pragma mark -- Public Methods --
+
+
+void CompilationAudioView::BurnDisc() {
+	fBurnerInfoTextView->SetText(NULL);
+	fBurnerInfoBox->SetLabel("Burning in progress...");
+	
+	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
+	
+	fBurnerThread->AddArgument("cdrecord")
+		->AddArgument("-dev=")
+		->AddArgument(windowParent->GetSelectedDevice().number.String())
+		->AddArgument("-audio")
+		->AddArgument("-pad");
+	
+	if (windowParent->GetSessionMode())
+		fBurnerThread->AddArgument("-sao");
+	else
+		fBurnerThread->AddArgument("-tao");
+		
+	for (unsigned int ix = 0; ix<=MAX_TRACKS; ix++)
+	{
+		if (fTrackPaths[ix] == NULL)
+			break;
+
+		fBurnerThread->AddArgument(fTrackPaths[ix]->Path());
+	}
+	
+	fBurnerThread->Run();
+}

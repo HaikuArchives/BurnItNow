@@ -27,11 +27,13 @@ public:
 	virtual ~CompilationAudioView();
 
 	virtual void MessageReceived(BMessage* message);
+	
+	void BurnDisc();
 
 private:
 	void _BurnerParserOutput(BMessage* message);
 	void _AddTrack(BMessage* message);
-
+	
 	CommandThread* fBurnerThread;
 	BTextView* fBurnerInfoTextView;
 	BListView* fAudioList;
