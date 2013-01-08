@@ -50,6 +50,7 @@ BMenu* deviceMenu;
 
 CompilationDataView* fCompilationDataView;
 CompilationAudioView* fCompilationAudioView;
+CompilationImageView* fCompilationImageView;
 
 #pragma mark --Constructor/Destructor--
 
@@ -72,6 +73,14 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 
 void BurnWindow::MessageReceived(BMessage* message)
 {
+	if (message->WasDropped()) {
+		entry_ref ref;
+		if (message->FindRef("refs", 0, &ref)==B_OK) {
+			message->what = B_REFS_RECEIVED;
+			be_app->PostMessage(message);
+		}
+	}
+
 	switch (message->what) {
 		case kOpenWebsiteMessage:
 			_OpenWebSite();
@@ -102,6 +111,11 @@ void BurnWindow::MessageReceived(BMessage* message)
 			break;
 		case kDeviceChangeMessage[4]:
 			selectedDevice=4;
+			break;
+		case B_REFS_RECEIVED:
+			// Redirect message to current tab
+			if(fTabView->FocusTab() == 2)
+				fCompilationImageView->MessageReceived(message);
 			break;
 		default:
 			BWindow::MessageReceived(message);
@@ -207,10 +221,11 @@ BTabView* BurnWindow::_CreateTabView()
 
 	fCompilationDataView = new CompilationDataView(*this);
 	fCompilationAudioView = new CompilationAudioView(*this);
+	fCompilationImageView = new CompilationImageView(*this);
 
 	tabView->AddTab(fCompilationDataView);
 	tabView->AddTab(fCompilationAudioView);
-	tabView->AddTab(new CompilationImageView(*this));
+	tabView->AddTab(fCompilationImageView);
 	tabView->AddTab(new CompilationCDRWView(*this));
 	tabView->AddTab(new CompilationCloneView(*this));
 
