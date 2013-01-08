@@ -82,7 +82,7 @@ void CompilationDataView::AttachedToWindow()
 	BButton* chooseDirectoryButton = dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
 	if (chooseDirectoryButton != NULL)
 		chooseDirectoryButton->SetTarget(this);
-		
+	
 	BButton* fromScratchButton = dynamic_cast<BButton*>(FindView("FromScratchButton"));
 	if (fromScratchButton != NULL)
 		fromScratchButton->SetTarget(this);
@@ -191,5 +191,28 @@ void CompilationDataView::BuildISO()
 
 void CompilationDataView::BurnDisc()
 {
-	(new BAlert("BurnDiscAlert", "Not Implemented Yet!", "Ok"))->Go();
+	mode = 1;
+
+	if (fDirPath->Path() == NULL)
+	{
+		(new BAlert("ChooseDirectoryFirstAlert", "Choose directory to burn first.", "Ok"))->Go();
+		return;
+	}
+
+	if (fBurnerThread != NULL)
+		delete fBurnerThread;
+
+	fBurnerInfoTextView->SetText(NULL);
+	fBurnerInfoBox->SetLabel("Burning in progress...");
+
+	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
+	
+	fBurnerThread->AddArgument("cdrecord")
+		->AddArgument("-dev=")
+		->AddArgument(windowParent->GetSelectedDevice().number.String());
+	
+	if (windowParent->GetSessionMode())
+		fBurnerThread->AddArgument("-sao")->AddArgument(fDirPath->Path())->Run();
+	else
+		fBurnerThread->AddArgument("-tao")->AddArgument(fDirPath->Path())->Run();
 }

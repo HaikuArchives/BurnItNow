@@ -221,7 +221,10 @@ BTabView* BurnWindow::_CreateTabView()
 
 void BurnWindow::_BurnDisc()
 {
-	(new BAlert("BurnDiscAlert", "Not Implemented Yet!", "Ok"))->Go();
+	if (fTabView->FocusTab() == 0)
+		fCompilationDataView->BurnDisc();
+	else
+		(new BAlert("BurnDiscAlert", "On this tab CD burning isn't implemented.", "Ok"))->Go();
 }
 
 
