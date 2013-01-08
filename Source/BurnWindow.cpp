@@ -114,7 +114,9 @@ void BurnWindow::MessageReceived(BMessage* message)
 			break;
 		case B_REFS_RECEIVED:
 			// Redirect message to current tab
-			if(fTabView->FocusTab() == 2)
+			if(fTabView->FocusTab() == 1)
+				fCompilationAudioView->MessageReceived(message);
+			else if(fTabView->FocusTab() == 2)
 				fCompilationImageView->MessageReceived(message);
 			break;
 		default:

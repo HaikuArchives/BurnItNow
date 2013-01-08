@@ -8,8 +8,8 @@
 
 #include <Alert.h>
 #include <Button.h>
+#include <Entry.h>
 #include <LayoutBuilder.h>
-#include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
@@ -22,9 +22,11 @@ const int32 kBurnerMessage = 'Brnr';
 CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 	:
 	BView("Audio", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fBurnerThread(NULL)
+	fBurnerThread(NULL),
+	fTrackPath(new BPath())
 {
 	windowParent = &parent;
+	fCurrentPath = 0;
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -60,6 +62,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 CompilationAudioView::~CompilationAudioView()
 {
 	delete fBurnerThread;
+	delete fTrackPath;
 }
 
 
@@ -71,6 +74,9 @@ void CompilationAudioView::MessageReceived(BMessage* message)
 	switch (message->what) {
 		case kBurnerMessage:
 			_BurnerParserOutput(message);
+			break;
+		case B_REFS_RECEIVED:
+			_AddTrack(message);
 			break;
 		default:
 			BView::MessageReceived(message);
@@ -94,4 +100,26 @@ void CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	
 	if (!fBurnerThread->IsRunning())
 		fBurnerInfoBox->SetLabel("Ready.");
+}
+
+void CompilationAudioView::_AddTrack(BMessage* message) {
+	// TODO Verify that the file is a WAV file
+	
+	entry_ref trackRef;
+
+	if (message->FindRef("refs", &trackRef) != B_OK)
+		return;
+	
+	if (fCurrentPath == 0)
+	{
+		// fAudioList->RemoveItem(0) returns error
+		int32 tmp = 0;
+		fAudioList->RemoveItem(tmp);
+	}
+	
+	fTrackPath->SetTo(&trackRef);
+	fTrackPaths[fCurrentPath++] = fTrackPath;
+
+	BStringItem* item = new BStringItem(fTrackPath->Leaf());
+	fAudioList->AddItem(item);
 }

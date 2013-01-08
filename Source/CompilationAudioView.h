@@ -10,8 +10,12 @@
 
 #include <Box.h>
 #include <ListView.h>
+#include <Path.h>
 #include <TextView.h>
 #include <View.h>
+
+
+#define MAX_TRACKS 255
 
 
 class CommandThread;
@@ -26,6 +30,7 @@ public:
 
 private:
 	void _BurnerParserOutput(BMessage* message);
+	void _AddTrack(BMessage* message);
 
 	CommandThread* fBurnerThread;
 	BTextView* fBurnerInfoTextView;
@@ -33,6 +38,10 @@ private:
 	BurnWindow* windowParent;
 	BBox* fBurnerInfoBox;
 	BBox* fAudioBox;
+	
+	BPath* fTrackPath;
+	BPath* fTrackPaths[MAX_TRACKS];
+	int fCurrentPath;
 };
 
 
