@@ -41,7 +41,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 	fBurnerInfoBox->AddChild(infoScrollView);
 	
 	fAudioBox = new BBox("AudioInfoBBox");
-	fAudioBox->SetLabel("Drop tracks here.");
+	fAudioBox->SetLabel("Drop tracks here (only WAV files).");
 
 	fAudioList = new BListView("AudioListView");
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView", fAudioList, 0, true, true);
