@@ -1,5 +1,5 @@
 /*
- * Copyright 2010, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "BurnApplication.h"
@@ -31,7 +31,7 @@ BurnApplication::BurnApplication()
 void BurnApplication::AboutRequested()
 {
 	// TODO Replace with real about window
-	(new BAlert("AboutAlert", "BurnItNow2\nhttp://dev.osdrawer.net/projects/burnitnow", "Ok"))->Go();
+	(new BAlert("AboutAlert", "BurnItNow2\nCopyright 2010-2012, BurnItNow Team. All rights reserved.\nDistributed under the terms of the MIT License.\nhttps://github.com/przemub/burnitnow\nhttp://dev.osdrawer.net/projects/burnitnow", "Ok"))->Go();
 }
 
 
