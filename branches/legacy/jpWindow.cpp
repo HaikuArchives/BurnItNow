@@ -1437,7 +1437,7 @@ void jpWindow::MessageReceived(BMessage* message)
 
 		case BURN_MULTI:
 			if (fBurnView->fMultiCheckBox->Value() == 1)
-				strcpy(MULTISESSION, "-multi");
+				strcpy(MULTISESSION, "-multi ");
 			else
 				strcpy(MULTISESSION, " ");
 			break;
