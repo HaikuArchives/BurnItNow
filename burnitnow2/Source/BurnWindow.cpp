@@ -1,12 +1,17 @@
 /*
- * Copyright 2010, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "BurnWindow.h"
 
-#include "CompilationAudioView.h"
 #include "CompilationDataView.h"
+#include "CompilationAudioView.h"
 #include "CompilationImageView.h"
+#include "CompilationCDRWView.h"
+#include "CompilationCloneView.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <Alert.h>
 #include <Application.h>
@@ -18,16 +23,19 @@
 #include <RadioButton.h>
 #include <Slider.h>
 #include <StatusBar.h>
-#include <TabView.h>
 
 
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
+const int32 kOpenSettingsMessage = 'Stng';
+const int32 kClearCacheMessage = 'Cche';
 
 const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
+
+constexpr int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
 // Misc constants
 const int32 kMinBurnSpeed = 2;
@@ -35,6 +43,16 @@ const int32 kMaxBurnSpeed = 16;
 
 const float kControlPadding = 5;
 
+// Misc variables
+sdevice devices[MAX_DEVICES];
+int selectedDevice;
+
+BMenu* sessionMenu;
+BMenu* deviceMenu;
+
+CompilationDataView* fCompilationDataView;
+CompilationAudioView* fCompilationAudioView;
+CompilationImageView* fCompilationImageView;
 
 #pragma mark --Constructor/Destructor--
 
@@ -43,12 +61,12 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 	:
 	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
+	fTabView = _CreateTabView();
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 1)
 		.Add(_CreateMenuBar())
 		.Add(_CreateToolBar())
-		.Add(_CreateTabView())
-		.Add(_CreateDiskUsageView());
+		.Add(fTabView);
 }
 
 
@@ -57,7 +75,21 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 
 void BurnWindow::MessageReceived(BMessage* message)
 {
+	if (message->WasDropped()) {
+		entry_ref ref;
+		if (message->FindRef("refs", 0, &ref)==B_OK) {
+			message->what = B_REFS_RECEIVED;
+			be_app->PostMessage(message);
+		}
+	}
+
 	switch (message->what) {
+		case kClearCacheMessage:
+			_ClearCache();
+			break;
+		case kOpenSettingsMessage:
+			_OpenSettings();
+			break;
 		case kOpenWebsiteMessage:
 			_OpenWebSite();
 			break;
@@ -72,6 +104,28 @@ void BurnWindow::MessageReceived(BMessage* message)
 			break;
 		case kBuildImageMessage:
 			_BuildImage();
+			break;
+		case kDeviceChangeMessage[0]:
+			selectedDevice=0;
+			break;
+		case kDeviceChangeMessage[1]:
+			selectedDevice=1;
+			break;
+		case kDeviceChangeMessage[2]:
+			selectedDevice=2;
+			break;
+		case kDeviceChangeMessage[3]:
+			selectedDevice=3;
+			break;
+		case kDeviceChangeMessage[4]:
+			selectedDevice=4;
+			break;
+		case B_REFS_RECEIVED:
+			// Redirect message to current tab
+			if(fTabView->FocusTab() == 1)
+				fCompilationAudioView->MessageReceived(message);
+			else if(fTabView->FocusTab() == 2)
+				fCompilationImageView->MessageReceived(message);
 			break;
 		default:
 			BWindow::MessageReceived(message);
@@ -89,16 +143,22 @@ BMenuBar* BurnWindow::_CreateMenuBar()
 	BMenu* fileMenu = new BMenu("File");
 	menuBar->AddItem(fileMenu);
 
-	BMenuItem* aboutItem = new BMenuItem("About ...", new BMessage(B_ABOUT_REQUESTED));
+	BMenuItem* aboutItem = new BMenuItem("About...", new BMessage(B_ABOUT_REQUESTED));
 	aboutItem->SetTarget(be_app);
 	fileMenu->AddItem(aboutItem);
 	fileMenu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
 
+	BMenu* toolsMenu = new BMenu("Tools and settings");
+	menuBar->AddItem(toolsMenu);
+	
+	toolsMenu->AddItem(new BMenuItem("Clear cache", new BMessage(kClearCacheMessage)));
+	toolsMenu->AddItem(new BMenuItem("Settings...", new BMessage(kOpenSettingsMessage), 'S'));
+
 	BMenu* helpMenu = new BMenu("Help");
 	menuBar->AddItem(helpMenu);
 
-	helpMenu->AddItem(new BMenuItem("Usage Instructions", new BMessage(kOpenHelpMessage)));
-	helpMenu->AddItem(new BMenuItem("Project Website", new BMessage(kOpenWebsiteMessage)));
+	helpMenu->AddItem(new BMenuItem("Usage instructions", new BMessage(kOpenHelpMessage)));
+	helpMenu->AddItem(new BMenuItem("Project website", new BMessage(kOpenWebsiteMessage)));
 
 	return menuBar;
 }
@@ -108,24 +168,32 @@ BView* BurnWindow::_CreateToolBar()
 {
 	BGroupView* groupView = new BGroupView(B_HORIZONTAL, kControlPadding);
 
-	BMenu* sessionMenu = new BMenu("SessionMenu");
+	sessionMenu = new BMenu("SessionMenu");
 	sessionMenu->SetLabelFromMarked(true);
-	BMenuItem* daoItem = new BMenuItem("Disc At Once(DAO)", new BMessage());
+	BMenuItem* daoItem = new BMenuItem("Disc At Once (DAO)", new BMessage());
 	daoItem->SetMarked(true);
 	sessionMenu->AddItem(daoItem);
-	sessionMenu->AddItem(new BMenuItem("Track At Once(TAO)", new BMessage()));
+	sessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
 	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "", sessionMenu);
 
 
-	// TODO Scan for devices and add them to the menu
-	BMenu* deviceMenu = new BMenu("DeviceMenu");
+	deviceMenu = new BMenu("DeviceMenu");
 	deviceMenu->SetLabelFromMarked(true);
 
-	BMenuItem* deviceItem = new BMenuItem("No Recording Devices Found", new BMessage());
-	deviceItem->SetMarked(true);
-	deviceItem->SetEnabled(false);
-	deviceMenu->AddItem(deviceItem);
-
+	// Checking for devices
+	FindDevices(devices);
+	for (unsigned int ix=0; ix<MAX_DEVICES; ++ix) {
+		if (devices[ix].number.IsEmpty())
+			break;
+		BString deviceString("");
+		deviceString << devices[ix].manufacturer << devices[ix].model << "(" << devices[ix].number << ")";
+		BMenuItem* deviceItem = new BMenuItem(deviceString, new BMessage(kDeviceChangeMessage[ix]));
+		deviceItem->SetEnabled(true);
+		if (ix == 0)
+			deviceItem->SetMarked(true);
+		deviceMenu->AddItem(deviceItem);
+	}
+	
 	BMenuField* deviceMenuField = new BMenuField("DeviceMenuField", "", deviceMenu);
 
 	// TODO These values should be obtained from the capabilities of the drive and the type of media
@@ -163,50 +231,21 @@ BView* BurnWindow::_CreateToolBar()
 }
 
 
-BView* BurnWindow::_CreateTabView()
+BTabView* BurnWindow::_CreateTabView()
 {
 	BTabView* tabView = new BTabView("CompilationsTabView", B_WIDTH_FROM_LABEL);
 
-	tabView->AddTab(new CompilationDataView());
-	tabView->AddTab(new CompilationAudioView());
-	tabView->AddTab(new CompilationImageView());
+	fCompilationDataView = new CompilationDataView(*this);
+	fCompilationAudioView = new CompilationAudioView(*this);
+	fCompilationImageView = new CompilationImageView(*this);
+
+	tabView->AddTab(fCompilationDataView);
+	tabView->AddTab(fCompilationAudioView);
+	tabView->AddTab(fCompilationImageView);
+	tabView->AddTab(new CompilationCDRWView(*this));
+	tabView->AddTab(new CompilationCloneView(*this));
 
 	return tabView;
-}
-
-
-BView* BurnWindow::_CreateDiskUsageView()
-{
-	BGroupView* diskUsageView = new BGroupView();
-	diskUsageView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, 50));
-
-	// TODO This StatusBar will probably be moved to a private class variable to
-	// allow for easy adjustments from MessageReceived()
-	BStatusBar* statusBar = new BStatusBar("MediaTypeStatusBar");
-
-	BMenu* mediaMenu = new BMenu("MediaTypeMenu");
-	mediaMenu->SetLabelFromMarked(true);
-
-	// TODO Send actual BMessages and readjust the max position of the StatusBar
-
-	// Create our media pop up menu items and use the 650MiB item as the default
-	BMenuItem* mediaMenuItem = new BMenuItem("CD 650MiB", new BMessage());
-	mediaMenuItem->SetMarked(true);
-	mediaMenu->AddItem(mediaMenuItem);
-	mediaMenu->AddItem(new BMenuItem("CD 700MiB", new BMessage()));
-//	mediaMenu->AddItem(new BMenuItem("DVD5 4.37GiB", new BMessage()));
-//	mediaMenu->AddItem(new BMenuItem("DVD9 7.95GiB", new BMessage()));
-
-	BMenuField* mediaMenuField = new BMenuField("MediaTypeMenuField", "Media:", mediaMenu);
-	mediaMenuField->SetExplicitMaxSize(BSize(200, B_SIZE_UNLIMITED));
-
-	BLayoutBuilder::Group<>(diskUsageView)
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
-		.Add(statusBar)
-		.AddStrut(10)
-		.Add(mediaMenuField);
-
-	return diskUsageView;
 }
 
 
@@ -215,15 +254,52 @@ BView* BurnWindow::_CreateDiskUsageView()
 
 void BurnWindow::_BurnDisc()
 {
-	(new BAlert("BurnDiscAlert", "Not Implemented Yet!", "Ok"))->Go();
+	if (fTabView->FocusTab() == 0)
+		fCompilationDataView->BurnDisc();
+	else if (fTabView->FocusTab() == 1)
+		fCompilationAudioView->BurnDisc();
+	else
+		(new BAlert("BurnDiscAlert", "On this tab CD burning isn't implemented.", "Ok"))->Go();
 }
 
 
 void BurnWindow::_BuildImage()
 {
-	(new BAlert("BuildImageAlert", "Not Implemented Yet!", "Ok"))->Go();
+	if (fTabView->FocusTab() == 0)
+		fCompilationDataView->BuildISO();
+	else
+		(new BAlert("BuildImageAlert", "On this tab ISO building isn't implemented.", "Ok"))->Go();
 }
 
+
+void BurnWindow::_ClearCache()
+{
+	BEntry* entry = new BEntry("/boot/common/cache/burnitnow_cache.iso");
+	entry->Remove();
+	
+	entry = new BEntry("/boot/common/cache/burnitnow_iso.iso");
+	entry->Remove();
+	
+	BDirectory* dir = new BDirectory("/boot/common/cache/burnitnow_cache/");
+	
+	while (true)
+	{
+		if (dir->GetNextEntry(entry) != B_OK)
+			break;
+		
+		entry->Remove();
+	}
+	
+	entry = new BEntry("/boot/common/cache/burnitnow_cache/");
+	entry->Remove();
+	
+	(new BAlert("ClearCacheAlert", "Cache clearing succeeded.", "Ok"))->Go();
+}
+
+void BurnWindow::_OpenSettings()
+{
+	(new BAlert("OpenSettingsAlert", "Not Implemented Yet", "Ok"))->Go();
+}
 
 void BurnWindow::_OpenWebSite()
 {
@@ -251,4 +327,66 @@ void BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	BString speedString("Burn Speed: ");
 	speedString << speedSlider->Value() << "X";
 	speedSlider->SetLabel(speedString.String());
+}
+
+#pragma mark -- Public Methods --
+
+void BurnWindow::FindDevices(sdevice *array)
+{
+	FILE* f;
+	char buff[512];
+	BString output[512];
+	int lineNumber = 0;
+	int xdev = 0;
+	
+	f = popen("cdrecord -scanbus", "r");
+	while (fgets(buff, sizeof(buff), f)!=NULL){
+		output[lineNumber] = buff;
+		lineNumber++;
+	}
+	pclose(f);
+	
+	for (BString &i: output)
+	{
+		if (i.FindFirst('*') == B_ERROR && i.FindFirst("\' ") != B_ERROR)
+		{
+			BString device = i.Trim();
+			
+			// find device number
+			int numberRange = device.FindFirst('\t');
+			BString number;
+			number.SetTo(device, numberRange);
+			
+			// find manufacturer
+			int manuStart = device.FindFirst('\'');
+			int manuEnd = device.FindFirst('\'', manuStart);
+			BString manu;
+			device.CopyInto(manu, manuStart+1, manuEnd-3);
+			
+			// find model
+			int modelStart = device.FindFirst('\'', manuEnd+1);
+			int modelEnd = device.FindFirst('\'', modelStart+1);
+			BString model;
+			device.CopyInto(model, modelStart+3, modelEnd-6);
+			
+			sdevice dev = { number, manu, model };
+			if (xdev <= MAX_DEVICES)
+				array[xdev++] = dev;
+		}
+	}
+}
+
+sdevice BurnWindow::GetSelectedDevice() {
+	return devices[selectedDevice];
+}
+
+/*
+* true - DAO/SAO
+* false - TAO
+*/
+bool BurnWindow::GetSessionMode() {
+	BString modeLabel = sessionMenu->FindMarked()->Label();
+	if(modeLabel.FindFirst("DAO") == B_ERROR)
+		return false;
+	return true;
 }

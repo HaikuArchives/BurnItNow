@@ -13,25 +13,15 @@
     * Implement functions to run cdrecord for various things such as burning,
         device scanning, blanking, media info
 
-* Implement the various compilation views(for in the TabView)
-    * The ISO view should be the easiest.  Basically just a browse button and a
-        small view that shows info about the image to be burned.
-    * The audio view will be a basic ColumnListView showing track#/file/length.
-        Initial support will probably be wav only but we'll probably want the ability
-        to reencode files(e.g. mp3/ogg/etc....)
-    * The data view will be the most complex as it will probably require
-        implementing a mini file manager.  As with the audio view, this will probably
-        use a ColumnListView borrowed from the Haiku sources.  This one will need to
-        be in outline mode(i.e. a tree instead of a list)
+* Replace Tracker in role of file manager for Data compilation view.
 
-* Add Drag & Drop support for adding files/folders
+* Add more functions to Audio view, like support for MP3/OGG files. This view cannot handle more than one dropped file at once.
 
-* Add a function to copy a cd.  Not sure if this should be another compilation
-    view or just a command from a menu.
+* Give more options to customize compilation, like CD label. Handle speed slider and checkboxes.
 
-* Add cdrw erasing.  This will probably start out as a function in a menu but
-    may be made into something where the user is prompted to erase if they try to
-    burn to a CDRW that already has data.
+* Correct items alignement - some of them is askew.
+
+* Write ATA/ATAPI devices support (dev=ATAPI).
 
 * Investigate UDF/DVD support
 
