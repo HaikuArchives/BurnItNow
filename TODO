@@ -1,0 +1,27 @@
+BurnItNow Todo
+
+* Audio CD														Done.
+* Mix CD														Done.
+* On the fly (Only when using VRCD) 							Done.
+* Get output from CDrecord and mkisofs							Done.
+* Data CD 														Done.
+* Checkbars for eject, multisession, dummymode, on the fly		Done.
+* Multisession													Almost Done.
+* Burn a ISO file												Done.
+* Choose Windows, Mac, ISO-9660...........						Done.
+* CDRW blank													Done.
+* Copy DataCD
+* Copy AudioCD
+* Copy MixCD							
+* Bootable CD													Done.
+* Save Settings													Done.
+(* Save and Open projects)
+* Play audiofile												Done.
+* Calculate size												Done.
+* Help															Done.
+* New Statuswindow when burning									Not in the legacy branch.
+* Support for different languages 								Not in the legacy branch.
+   (request from Thorsten Korz [www.insidebeos.de])	
+* Check if CDrecord and mkisofs is on the system				Done.
+* Print out errors in log view									Indicates an error!
+* Better README													Done.
