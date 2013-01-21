@@ -1,0 +1,1283 @@
+/*
+Theme Name: haiku
+Theme URI: 
+Description: 
+Version: 1.0
+Author: 
+Author URI: 
+Tags: fixed width, left sidebar, two columns, valid XHTML, widgets
+*/
+
+/* begin Page */
+/* Created by Artisteer v3.0.0.32906 */
+
+#art-main, table
+{
+    font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 13px;
+}
+
+h1, h2, h3, h4, h5, h6, p, a, ul, ol, li
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+  margin: 0 auto;
+  padding: 0;
+  color: #000000;
+  background-color: #9FB2C6;
+  background-image: url('images/Bottom_texture.jpg');
+  background-repeat: repeat-x;
+  background-attachment: fixed;
+  background-position: top left;
+}
+
+.art-postcontent,
+.art-postcontent li,
+.art-postcontent table,
+.art-postcontent a,
+.art-postcontent a:link,
+.art-postcontent a:visited,
+.art-postcontent a.visited,
+.art-postcontent a:hover,
+.art-postcontent a.hovered
+{
+    font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+    font-size: 13px;
+    line-height: 150%;
+    text-shadow: 2px 2px 10px gray;
+}
+}
+
+.art-postcontent p
+{
+	margin: 12px 0 12px 0;
+}
+
+h1, h2, h3, h4, h5, h6,
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
+h1 a:link, h2 a:link, h3 a:link, h4 a:link, h5 a:link, h6 a:link,
+h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited,
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-size: 32px;
+  text-shadow: 2px 2px 1px gray;
+}
+
+.art-postcontent a
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  text-decoration: underline;
+  color: #293DFF;
+}
+
+.art-postcontent a:link
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  text-decoration: underline;
+  color: #293DFF;
+}
+
+.art-postcontent a:visited, .art-postcontent a.visited
+{
+
+  color: #293DFF;
+}
+
+.art-postcontent  a:hover, .art-postcontent a.hover
+{
+	text-decoration: underline;
+	color: #FC9D6E;
+	font-family: Arial, Helvetica, Sans-Serif;
+}
+
+
+.art-postcontent h1
+{
+   margin: 21px 0 21px 0; 
+   color: #FB6E28;
+ 
+}
+
+.art-postcontent h2
+{
+    color: #293DFF;
+   margin: 19px 0 19px 0; 
+   font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+   font-size: 22px;   
+}
+
+.art-postcontent h3
+{
+   margin: 19px 0 19px 0; 
+  color: #E14E05; 
+  font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 18px;    
+}
+
+.art-postcontent h4
+{
+   margin: 20px 0 20px 0; 
+   color: #3D5266; 
+   font-size: 16px;   
+}
+
+.art-postcontent h5
+{
+   margin: 26px 0 26px 0; 
+   color: #3D5266;   
+   font-size: 13px;
+}
+
+.art-postcontent h6
+{
+   margin: 35px 0 35px 0; 
+   color: #3D5266;
+   font-size: 11px;      
+}
+
+ul
+{
+  list-style-type: none;
+}
+
+ol
+{
+  list-style-position: inside;
+}
+
+#art-main
+{
+  position: relative;
+  width: 100%;
+  left: 0;
+  top: 0;
+  cursor:default;
+}
+
+form
+{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+table.position
+{
+  position: relative;
+  width: 100%;
+  table-layout: fixed;
+}
+/* end Page */
+
+/* begin Box, Sheet */
+.art-sheet
+{
+  position: relative;
+  margin: 0 auto;
+  min-width: 25px;
+  min-height: 25px;
+}
+
+.art-sheet-body
+{
+  position: relative;
+  padding: 4px;
+}
+
+.art-sheet-tr, .art-sheet-tl, .art-sheet-br, .art-sheet-bl, .art-sheet-tc, .art-sheet-bc,.art-sheet-cr, .art-sheet-cl
+{
+  position: absolute;
+}
+
+.art-sheet-tr, .art-sheet-tl, .art-sheet-br, .art-sheet-bl
+{
+  width: 36px;
+  height: 36px;
+  background-image: url('images/sheet_s.png');
+}
+
+.art-sheet-tl
+{
+  top: 0;
+  left: 0;
+  clip: rect(auto, 18px, 18px, auto);
+}
+
+.art-sheet-tr
+{
+  top: 0;
+  right: 0;
+  clip: rect(auto, auto, 18px, 18px);
+}
+
+.art-sheet-bl
+{
+  bottom: 0;
+  left: 0;
+  clip: rect(18px, 18px, auto, auto);
+}
+
+.art-sheet-br
+{
+  bottom: 0;
+  right: 0;
+  clip: rect(18px, auto, auto, 18px);
+}
+
+.art-sheet-tc, .art-sheet-bc
+{
+  left: 18px;
+  right: 18px;
+  height: 36px;
+  background-image: url('images/sheet_h.png');
+}
+
+.art-sheet-tc
+{
+  top: 0;
+  clip: rect(auto, auto, 18px, auto);
+}
+
+.art-sheet-bc
+{
+  bottom: 0;
+  clip: rect(18px, auto, auto, auto);
+}
+
+.art-sheet-cr, .art-sheet-cl
+{
+  top: 18px;
+  bottom: 18px;
+  width: 36px;
+  background-image: url('images/sheet_v.png');
+}
+
+.art-sheet-cr
+{
+  right: 0;
+  clip: rect(auto, auto, auto, 18px);
+}
+
+.art-sheet-cl
+{
+  left: 0;
+  clip: rect(auto, 18px, auto, auto);
+}
+
+.art-sheet-cc
+{
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  background-color: #F9FAFB;
+}
+
+.art-sheet
+{
+	top: 50px !important;
+	margin-bottom: 50px !important;
+	cursor:auto;
+	width: 700px;
+}
+
+
+/* end Box, Sheet */
+
+/* begin Header */
+div.art-header
+{
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+
+div.art-header-center
+{
+	position: relative;
+	width: 700px;
+	left:45%;
+}
+
+
+div.art-header-png
+{
+  position: absolute;
+  left:-50%;
+  top: 0;
+  width: 892px;
+  height: 150px;
+  background-image: url('images/header.png');
+  background-repeat: no-repeat;
+  background-position:center center; 
+}
+
+
+/* end Header */
+
+/* begin Logo */
+div.art-logo
+{
+  display: block;
+  position: absolute;
+  left: 554px;
+  top: 51px;
+  width: 328px;
+}
+
+h1.art-logo-name
+{
+  display: block;
+  text-align: left;
+}
+
+h1.art-logo-name, h1.art-logo-name a, h1.art-logo-name a:link, h1.art-logo-name a:visited, h1.art-logo-name a:hover
+{
+  font-size: 28px;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  color: #000000 !important;
+}
+
+
+h2.art-logo-text, 
+h2.art-logo-text a,
+h2.art-logo-text a:link,
+h2.art-logo-text a:visited,
+h2.art-logo-text a:hover
+{
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  color: #214559 !important;
+}
+
+h2.art-logo-text
+{
+  display: block;
+  text-align: left;
+}
+/* end Logo */
+
+/* begin Layout */
+.art-content-layout
+{
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: Transparent;
+  border: none !important;
+  padding:0 !important;
+}
+.art-layout-cell, .art-content-layout-row
+{
+  background-color: Transparent;
+  vertical-align: top;
+  text-align: left;
+  border: none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.art-content-layout .art-content-layout{width: auto;margin:0;}
+.art-content-layout .art-layout-cell, .art-content-layout .art-layout-cell .art-content-layout .art-layout-cell{display: table-cell;}
+.art-layout-cell .art-layout-cell{display: block;}
+.art-content-layout-row {display: table-row;}
+.art-layout-glare{position:relative;}/* end Layout */
+
+/* begin Box, Block */
+.art-block
+{
+  position: fixed;
+  margin: 0 auto;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+.art-block-body
+{
+  position: fixed;
+  padding: 0;
+}
+
+
+.art-block
+{
+  margin: 10px;
+}
+
+/* end Box, Block */
+
+/* begin BlockHeader */
+.art-blockheader
+{
+  margin-bottom: 0;
+}
+
+.art-blockheader, .art-blockheader h3.t
+{
+  position: relative;
+  height: 34px;
+}
+
+.art-blockheader h3.t,
+.art-blockheader h3.t a,
+.art-blockheader h3.t a:link,
+.art-blockheader h3.t a:visited, 
+.art-blockheader h3.t a:hover
+{
+  color: #000000;
+  font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+  font-size: 14px;
+}
+
+.art-blockheader h3.t
+{
+  margin:0;
+  padding: 0 10px 0 5px;
+  white-space: nowrap;
+  line-height: 34px;	
+}
+
+/* end BlockHeader */
+
+/* begin Box, BlockContent */
+.art-blockcontent
+{
+  position: relative;
+  margin: 0 auto;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+.art-blockcontent-body
+{
+  position: relative;
+  padding: 3px;
+}
+
+
+.art-blockcontent-body, 
+.art-blockcontent-body li, 
+.art-blockcontent-body a,
+.art-blockcontent-body a:link,
+.art-blockcontent-body a:visited,
+.art-blockcontent-body a:hover
+{
+	color: #2E3D4C;
+	font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+	font-size: 13px;
+	text-align: left;
+}
+
+.art-blockcontent-body p
+{
+	margin: 6px 0 6px 0;
+	font-weight: bold;
+	text-align: left;
+}
+
+.art-blockcontent-body a
+{
+  color: #293DFF;
+  font-family: "Trebuchet MS", Arial, Helvetica, Sans-Serif;
+  
+}
+
+.art-blockcontent-body a:link
+{
+  color: #293DFF;
+  font-family: "Trebuchet MS", Arial, Helvetica, Sans-Serif;
+  
+}
+
+.art-blockcontent-body a:visited, .art-blockcontent-body a.visited
+{
+  color: #293DFF;
+  font-family: Arial, Helvetica, Sans-Serif;
+  text-decoration: underline;
+}
+
+.art-blockcontent-body a:hover, .art-blockcontent-body a.hover
+{
+  color: #FC9D6E;
+  font-family: Arial, Helvetica, Sans-Serif;
+  text-decoration: underline;
+
+}
+
+.art-blockcontent-body ul li
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  line-height: 125%;    
+  color: #FB6E28;
+
+  padding: 0 0 0 16px;
+  background-image: url('images/blockcontentbullets.png');
+  background-repeat: no-repeat;
+}/* end Box, BlockContent */
+
+/* begin Button */
+.art-button-wrapper a.art-button,
+.art-button-wrapper a.art-button:link,
+.art-button-wrapper input.art-button,
+.art-button-wrapper button.art-button
+{
+  text-decoration: none;
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-size: 13px;
+  position:relative;
+  top:0;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  color: #8C3103 !important;
+  width: auto;
+  outline: none;
+  border: none;
+  background: none;
+  line-height: 32px;
+  height: 32px;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  overflow: visible;
+  cursor: default;
+}
+
+.art-button img, .art-button-wrapper img
+{
+  margin: 0;
+  vertical-align: middle;
+}
+
+.art-button-wrapper
+{
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  z-index: 0;
+}
+
+.firefox2 .art-button-wrapper
+{
+  display: block;
+  float: left;
+}
+
+input, select, textarea
+{
+  vertical-align: middle;
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-size: 13px;
+}
+
+.art-block select 
+{
+    width:96%;
+}
+
+.art-button-wrapper.hover .art-button, .art-button-wrapper.hover a.art-button:link, .art-button:hover
+{
+  color: #7F5305 !important;
+  text-decoration: none !important;
+}
+
+.art-button-wrapper.active .art-button, .art-button-wrapper.active a.art-button:link
+{
+  color: #FFFFFF !important;
+}
+
+.art-button-wrapper .art-button-l, .art-button-wrapper .art-button-r
+{
+  display: block;
+  position: absolute;
+  height: 106px;
+  margin: 0;
+  padding: 0;
+  background-image: url('images/button.png');
+}
+
+.art-button-wrapper .art-button-l
+{
+  left: 0;
+  right: 10px;
+}
+
+.art-button-wrapper .art-button-r
+{
+  width: 409px;
+  right: 0;
+  clip: rect(auto, auto, auto, 399px);
+}
+
+.art-button-wrapper.hover .art-button-l, .art-button-wrapper.hover .art-button-r
+{
+  top: -37px;
+}
+
+.art-button-wrapper.active .art-button-l, .art-button-wrapper.active .art-button-r
+{
+  top: -74px;
+}
+
+.art-button-wrapper input
+{
+  float: none !important;
+}
+/* end Button */
+
+/* begin Box, Post */
+.art-post
+{
+  position: relative;
+  margin: 0 auto;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+.art-post-body
+{
+  position: relative;
+  padding: 10px;
+}
+
+
+.art-post
+{
+  margin: 0;
+}
+
+a img
+{
+	border: 0;
+	text-align: right;
+}
+
+.art-article img, img.art-article
+{
+  border: solid 0 #B2C2D1;
+  margin: 4px;
+}
+
+.art-metadata-icons img
+{
+  border: none;
+  vertical-align: middle;
+  margin: 2px;
+}
+
+.art-article table, table.art-article
+{
+  border-collapse: collapse;
+  margin: 1px;
+}
+
+.art-article th, .art-article td
+{
+  padding: 2px;
+  border: solid 1px #8099B3;
+  vertical-align: top;
+  text-align: left;
+}
+
+.art-article th
+{
+  text-align: center;
+  vertical-align: middle;
+  padding: 7px;
+}
+
+pre
+{
+  overflow: auto;
+  padding: 0.1em;
+  float:left;
+}
+
+/* end Box, Post */
+
+/* begin PostHeaderIcon */
+h2.art-postheader
+{
+  color: #FB6E28;
+  margin: 5px 0 5px 0;
+}
+
+h2.art-postheader, 
+h2.art-postheader a, 
+h2.art-postheader a:link, 
+h2.art-postheader a:visited,
+h2.art-postheader a.visited,
+h2.art-postheader a:hover,
+h2.art-postheader a.hovered
+{
+  font-family: Verdana, Geneva, Arial, Helvetica, Sans-Serif;
+  font-size: 24px;
+}
+
+h2.art-postheader a, h2.art-postheader a:link
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  text-align: left;
+  text-decoration: none;
+  color: #28536C;
+}
+
+h2.art-postheader a:visited, h2.art-postheader a.visited
+{
+
+  color: #5C7A99;
+}
+
+
+h2.art-postheader a:hover,  h2.art-postheader a.hovered
+{
+
+
+  color: #3E81A8;
+}
+
+/* end PostHeaderIcon */
+
+/* begin PostIcons, PostHeaderIcons */
+.art-postheadericons,
+.art-postheadericons a,
+.art-postheadericons a:link,
+.art-postheadericons a:visited,
+.art-postheadericons a:hover
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  color: #3D5266;
+}
+
+.art-postheadericons
+{
+  padding: 1px;
+
+}
+
+.art-postheadericons a, .art-postheadericons a:link
+{
+  text-decoration: none;
+  color: #2F617F;
+}
+
+.art-postheadericons a:visited, .art-postheadericons a.visited
+{
+  font-style: italic;
+  font-weight: normal;
+  color: #2F617F;
+}
+
+.art-postheadericons a:hover, .art-postheadericons a.hover
+{
+  font-style: italic;
+  font-weight: normal;
+  text-decoration: underline;
+  color: #3E81A8;
+}
+/* end PostIcons, PostHeaderIcons */
+
+/* begin PostBullets */
+.art-post ol, .art-post ul
+{
+  margin: 1em 0 1em 2em;
+  padding: 0;
+}
+
+.art-post li
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+}
+
+.art-post li ol, .art-post li ul
+{
+  margin: 0.5em 0 0.5em 2em;
+  padding: 0;
+}
+
+.art-post li
+{
+  color: #4991BC; 
+
+  padding: 0;
+}
+
+
+/* end PostBullets */
+
+/* begin PostQuote */
+.art-postcontent blockquote,
+.art-postcontent blockquote a,
+.art-postcontent blockquote a:link,
+.art-postcontent blockquote a:visited,
+.art-postcontent blockquote a:hover
+{
+  color: #1E0A01;
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-style: italic;
+  font-weight: normal;
+  text-align: left;
+}
+
+.art-postcontent blockquote p
+{
+   margin: 2px 0 2px 15px;
+}
+
+.art-postcontent blockquote
+{
+   border: solid 0 #FC9764;
+  margin: 10px 10px 10px 50px;
+  padding: 0 0 0 28px;
+  background-color: #FDC9AF;
+  background-image: url('images/postquote.png');
+  background-position: left top;
+  background-repeat: no-repeat;/* makes blockquote not to align behind the image if they are in the same line */
+  overflow: auto;
+}
+
+/* end PostQuote */
+
+/* begin PostIcons, PostFooterIcons */
+.art-postfootericons,
+.art-postfootericons a,
+.art-postfootericons a:link,
+.art-postfootericons a:visited,
+.art-postfootericons a:hover
+{
+  font-family: Arial, Helvetica, Sans-Serif;
+  color: #3D5266;
+}
+
+.art-postfootericons
+{
+  padding: 1px;
+
+}
+
+.art-postfootericons a, .art-postfootericons a:link
+{
+  text-decoration: none;
+  color: #2F617F;
+}
+
+.art-postfootericons a:visited, .art-postfootericons a.visited
+{
+
+  color: #2F617F;
+}
+
+.art-postfootericons a:hover, .art-postfootericons a.hover
+{
+
+
+  color: #3E81A8;
+}
+/* end PostIcons, PostFooterIcons */
+
+/* begin Footer */
+.art-footer
+{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.art-footer-b 
+{
+  position: absolute;
+  left:5px;
+  right:5px;
+  bottom:0;
+  height:5px;
+  background-image: url('images/footer_b.png');
+}
+
+.art-footer-r, .art-footer-l
+{
+  position: absolute;
+  height:5px;
+  background-image: url('images/footer_s.png');
+  bottom: 0;
+}
+
+.art-footer-l
+{
+  left: 0;
+  width:5px;
+}
+
+.art-footer-r
+{
+  right: 0;
+  width:10px;
+  clip: rect(auto, auto, auto, 5px);
+}
+
+.art-footer-t
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  background-color: #D6DEE6;
+}
+
+.art-footer-body
+{
+    position:relative;
+    padding: 5px;
+}
+
+.art-footer-body .art-rss-tag-icon
+{
+  position: absolute;
+  left:   6px;
+  bottom:5px;
+  z-index:1;
+}
+
+.art-rss-tag-icon
+{
+  display: block;
+  background-image: url('images/rssicon.png');
+  background-position: center right;
+  background-repeat: no-repeat;
+  height: 32px;
+  width: 32px;
+  cursor: default;
+}
+
+.art-footer-text p
+{
+  padding:0;
+  margin:0;
+}
+
+.art-footer,
+.art-footer a,
+.art-footer a:link,
+.art-footer a:visited,
+.art-footer a:hover
+{
+    color: #192129;
+    font-size: 11px;
+}
+
+.art-footer-text
+{
+  min-height: 32px;
+  padding: 0 10px 0 10px;
+
+}
+
+.art-footer,
+.art-footer-text,
+.art-footer p
+{
+  text-align: center;
+}
+
+.art-footer a,
+.art-footer a:link
+{
+  color: #295670;
+  text-decoration: none;
+}
+
+.art-footer a:visited
+{
+  color: #394D60;
+
+}
+
+.art-footer a:hover
+{
+  color: #458FBA;
+
+  text-decoration: underline;
+}
+/* end Footer */
+
+/* begin PageFooter */
+.art-page-footer, 
+.art-page-footer a,
+.art-page-footer a:link,
+.art-page-footer a:visited,
+.art-page-footer a:hover
+{
+  font-family: Arial;
+  font-size: 10px;
+  letter-spacing: normal;
+  word-spacing: normal;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: underline;
+  color: #5096BE;
+}
+
+.art-page-footer
+{
+  margin: 1em;
+  text-align: center;
+  text-decoration: none;
+  color: #435970;
+}
+/* end PageFooter */
+
+/* begin LayoutCell, sidebar1 */
+
+.art-content-layout .art-sidebar1
+{
+  width: 200px;
+}
+
+/* end LayoutCell, sidebar1 */
+
+/* begin LayoutCell, content */
+
+
+
+
+/* end LayoutCell, content */
+
+
+
+textarea#comment{width:100%;}
+
+.commentlist, .commentlist li
+{
+  background: none;
+}
+
+.commentlist li li
+{
+  margin-left: 30px;
+}
+
+.commentlist li .avatar
+{
+  float: right;
+  border: 1px solid #eee;
+  padding: 2px;
+  margin: 1px;
+  background: #fff;
+}
+
+.commentlist li cite
+{
+  font-size: 1.2em;
+}
+
+#commentform textarea
+{
+  width: 100%;
+}
+
+img.wp-smiley
+{
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation
+{
+  display: block;
+  text-align: center;
+}
+
+/* Recommended by http://codex.wordpress.org/CSS */
+/* Begin */
+.aligncenter, div.aligncenter, .art-article .aligncenter img, .aligncenter img.art-article, .aligncenter img, img.aligncenter
+{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alignleft
+{
+  float: left;
+}
+
+.alignright
+{
+  float: right;
+}
+
+.alignright img, img.alignright
+{
+  margin: 1em;
+  margin-right: 0;
+}
+
+.alignleft img, img.alignleft
+{
+  margin: 1em;
+  margin-left: 0;
+}
+
+.wp-caption
+{
+  border: 1px solid #ddd;
+  background-color: #f3f3f3;
+  padding-top: 4px;
+  margin: 10px;
+}
+
+.wp-caption img
+{
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+}
+
+.wp-caption p.wp-caption-text
+{
+  font-size: 11px;
+  line-height: 17px;
+  padding: 0 4px 5px;
+  margin: 0;
+}
+
+.wp-caption, .wp-caption p
+{
+    text-align: center;
+}
+/* End */
+
+
+.hidden
+{
+  display: none;
+}
+
+/* Calendar */
+#wp-calendar {
+  empty-cells: show;
+  margin: 10px auto 0;
+  width: 155px;
+}
+
+#wp-calendar #next a {
+  padding-right: 10px;
+  text-align: right;
+}
+
+#wp-calendar #prev a {
+  padding-left: 10px;
+  text-align: left;
+}
+
+#wp-calendar a {
+  display: block;
+}
+
+#wp-calendar caption {
+  text-align: center;
+  width: 100%;
+}
+
+#wp-calendar td {
+  padding: 3px 0;
+  text-align: center;
+}
+
+.gallery {
+  letter-spacing: normal;
+}
+
+.art-content {
+  position: relative;
+  z-index: 1;   
+}
+
+#todays-events{
+  position: relative;
+  z-index: 11;    
+}
+
+#upcoming-events{
+  position: relative;
+  z-index: 10;    
+}
+
+img.wp-post-image 
+{
+    margin:0 5px 5px 0 !important;
+}
+
+div.art-footer li, ul.commentlist li
+{
+    list-style-image: none;
+    background:none;
+    list-style-type:none;
+    
+}
+
+div.art-footer div.art-content-layout,  
+div.art-content div.art-content-layout
+{
+    margin:0 auto;
+    width:100%;
+}
+
+div.art-footer ul
+{
+    padding-left: 0;
+}
+
+div.art-footer ul li ul
+{
+    padding-left: 20px;
+}
+
+
+div.art-layout-cell-size1 
+{
+    width:100%;
+}
+
+div.art-layout-cell-size2 
+{
+    width:50%;
+}
+div.art-layout-cell-size3 
+{
+    width:33%;
+}
+
+div.art-layout-cell-size4
+{
+    width:25%;
+}
+
+div.art-author-info img.avatar 
+{
+	float:left;	
+	margin-top:0;
+}
+#art-main .art-sheet .art-sheet-body .art-content-layout .art-content-layout-row .art-layout-cell.art-content .art-post .art-post-body .art-post-inner.art-article .art-postcontent .cleared p strong {
+	color: #F00;
+}
