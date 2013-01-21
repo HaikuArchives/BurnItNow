@@ -126,53 +126,52 @@ void LeftList::MessageReceived(BMessage* msg)
 	entry_ref ref;
 	int32 counter = 0;
 
-	 switch (msg->what) {
-                case B_SIMPLE_DATA:
-                        while (msg->FindRef("refs", counter++, &ref) == B_OK) {
-                                if ((testfile = new BMediaFile(&ref)) != NULL) {
-                                        testfile->InitCheck();
-                                        track = testfile->TrackAt(0);
-                                        if (track != NULL) {
-                                                track->EncodedFormat(&format);
-                                                if (format.IsAudio()) {
-                                                        memset(&format, 0, sizeof(format));
-                                                        format.type = B_MEDIA_RAW_AUDIO;
-                                                        track->DecodedFormat(&format);
-                                                        fAudioInfo.total_time = track->Duration();
-                                                        media_raw_audio_format* raf = &(format.u.raw_audio);
-                                                        fAudioInfo.bps = (int32)(raf->format & 0xf);
-                                                        fAudioInfo.frame_rate = (int32)raf->frame_rate;
-                                                        fAudioInfo.channels = (int32)raf->channel_count;
-                                                        track->GetCodecInfo(&codecInfo);
-                                                        strcpy(fAudioInfo.pretty_name, codecInfo.pretty_name);
-                                                        strcpy(fAudioInfo.short_name, codecInfo.short_name);
-                                                        fIsAudio = true;
-                                                }
-                                        }
-                                } else
-                                        WriteLog("MediaFile NULL (file doesnt exists!?)");
- 
-                                delete testfile;
-                                if (fIsAudio) {
-                                        if ((fAudioInfo.channels == 2) && (fAudioInfo.frame_rate == 44100) && (fAudioInfo.bps == 2))
-                                                AddItem(new LeftListItem(&ref, ref.name, fAudioBitmap, &fAudioInfo));
-                                        else {
-                                                BAlert* MyAlert = new BAlert("BurnItNow", "You can only burn 16 bits stereo 44.1 kHz Raw Audio files.\n (More audio files will be supported in the future)", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
-                                                MyAlert->Go();
-                                        }
-                                } else {
-                                        BPath temp_path;
-                                        BEntry(&ref).GetPath(&temp_path);
-                                        jpWindow* win = dynamic_cast<jpWindow*>(Window());
-                                        if (win != NULL)
-                                                win->SetISOFile((char*)temp_path.Path());
-                                }
-                        }
-                        break;
-                default:
-                        BListView::MessageReceived(msg);
-                        break;
-        }
+	switch (msg->what) {
+		case B_SIMPLE_DATA:
+			while (msg->FindRef("refs", counter++, &ref) == B_OK) {
+				if ((testfile = new BMediaFile(&ref)) != NULL) {
+					testfile->InitCheck();
+					track = testfile->TrackAt(0);
+					if (track != NULL) {
+						track->EncodedFormat(&format);
+						if (format.IsAudio()) {
+							memset(&format, 0, sizeof(format));
+							format.type = B_MEDIA_RAW_AUDIO;
+							track->DecodedFormat(&format);
+							fAudioInfo.total_time = track->Duration();
+							media_raw_audio_format* raf = &(format.u.raw_audio);
+							fAudioInfo.bps = (int32)(raf->format & 0xf);
+							fAudioInfo.frame_rate = (int32)raf->frame_rate;
+							fAudioInfo.channels = (int32)raf->channel_count;
+							track->GetCodecInfo(&codecInfo);
+							strcpy(fAudioInfo.pretty_name, codecInfo.pretty_name);
+							strcpy(fAudioInfo.short_name, codecInfo.short_name);
+							fIsAudio = true;
+						}
+					}
+				} else
+					WriteLog("MediaFile NULL (file doesnt exists!?)");
+ 				delete testfile;
+				if (fIsAudio) {
+					if ((fAudioInfo.channels == 2) && (fAudioInfo.frame_rate == 44100) && (fAudioInfo.bps == 2))
+						AddItem(new LeftListItem(&ref, ref.name, fAudioBitmap, &fAudioInfo));
+					else {
+						BAlert* MyAlert = new BAlert("BurnItNow", "You can only burn 16 bits stereo 44.1 kHz Raw Audio files.\n (More audio files will be supported in the future)", "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+						MyAlert->Go();
+					}
+				} else {
+					BPath temp_path;
+					BEntry(&ref).GetPath(&temp_path);
+					jpWindow* win = dynamic_cast<jpWindow*>(Window());
+					if (win != NULL)
+						win->SetISOFile((char*)temp_path.Path());
+				}
+			}
+			break;
+		default:
+			BListView::MessageReceived(msg);
+			break;
+	}
 }
 
 
