@@ -61,11 +61,11 @@ entry_ref BOOTIMAGEREF;
 
 char* IMAGE_NAME;
 char* BURNIT_PATH;
-char* CACHE_PATH;
 char* BURN_DIR;
 char* WEIGHTS_FILE;
 
 BPath CDRTOOLS_DIR;
+BPath CACHE_PATH;
 
 char BURNFREE[30]; // driveropts=burnfree
 char PAD[10]; // -pad (audio)
@@ -131,7 +131,7 @@ int32 OutPutMkImage(void* p)
 		SWin->Lock();
 		SWin->Ready();
 		SWin->Unlock();
-		sprintf(IMAGE_NAME, "%s/BurnItNow.raw", CACHE_PATH);
+		sprintf(IMAGE_NAME, "%s/BurnItNow.raw", CACHE_PATH.Path());
 	}
 	if (BOOTABLE) {
 		char temp[1024];
@@ -217,7 +217,7 @@ int32 OutPutBurn(void* p)
 	if (noerror)
 		SWin->Ready();
 	SWin->Unlock();
-	sprintf(IMAGE_NAME, "%s/BurnItNow.raw", CACHE_PATH);
+	sprintf(IMAGE_NAME, "%s/BurnItNow.raw", CACHE_PATH.Path());
 	BEntry(IMAGE_NAME, true).Remove();
 	if (BOOTABLE) {
 		char temp[1024];
