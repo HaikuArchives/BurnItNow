@@ -61,6 +61,7 @@ entry_ref BOOTIMAGEREF;
 
 char* IMAGE_NAME;
 char* BURNIT_PATH;
+char* CACHE_PATH;
 char* BURN_DIR;
 char* WEIGHTS_FILE;
 
@@ -130,7 +131,7 @@ int32 OutPutMkImage(void* p)
 		SWin->Lock();
 		SWin->Ready();
 		SWin->Unlock();
-		sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
+		sprintf(IMAGE_NAME, "%s/BurnItNow.raw", CACHE_PATH);
 	}
 	if (BOOTABLE) {
 		char temp[1024];
@@ -216,7 +217,7 @@ int32 OutPutBurn(void* p)
 	if (noerror)
 		SWin->Ready();
 	SWin->Unlock();
-	sprintf(IMAGE_NAME, "%s/tmp/BurnItNow.raw", BURNIT_PATH);
+	sprintf(IMAGE_NAME, "%s/BurnItNow.raw", CACHE_PATH);
 	BEntry(IMAGE_NAME, true).Remove();
 	if (BOOTABLE) {
 		char temp[1024];
@@ -691,6 +692,7 @@ void jpWindow::InitBurnIt()
 	char temp_char[1024];
 	app_info info;
 	BPath path;
+	status_t fStatus;
 
 	be_app->GetAppInfo(&info);
 	entry_ref ref = info.ref;
@@ -706,6 +708,10 @@ void jpWindow::InitBurnIt()
 
 	if (!BEntry(temp_char).Exists())
 		BDirectory(BURNIT_PATH).CreateDirectory(temp_char, NULL);
+
+	fStatus = find_directory(B_COMMON_CACHE_DIRECTORY, &CACHE_PATH);
+	if (fStatus != B_OK)
+		return;
 		
 	IMAGE_NAME = new char[1024];
 	sprintf(IMAGE_NAME, "%s/BurnItNow.raw", temp_char);
