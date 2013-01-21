@@ -1,6 +1,6 @@
 /*
  * Copyright 2000-2002, Johan Nilsson. All rights reserved.
- * Copyright 2011 BurnItNow maintainers 
+ * Copyright 2011-2012, BurnItNow maintainers 
  * Distributed under the terms of the MIT License.
  */
 #ifndef _CONST_H_
