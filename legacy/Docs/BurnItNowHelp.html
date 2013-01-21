@@ -1,329 +1,266 @@
-<html> 
-<head> 
-<title>Help for BurnItNow</title> 
-</head> 
-<body background=helpbg.gif> 
-<H1>Help for BurnItNow</H1>
-<BR>
-<H2>Requierment</H2><PRE> 
-	* cdrecord 2.01.01+ and mkisofs 2.01.01+
-	* A burner that works with cdrecord 2.01.01+
-
-</PRE> 
-<H2>Options</H2><PRE>
-	<B>BurnTab:</B>
-		DataCD - Burns a data session on a CD.
-		AudioCD - Burns audio tracks on a CD.
-		MixCD - Burns one data session and audio tracks on a CD.
-		
-		Multisession - Lets you burn multiple times on a cd (ONLY DATA)
-		On The Fly - Burns a VRCD without creating a imagefile
-		Dummy mode - Test burn a cd (doesnt write on the cd)
-		Eject - Ejects the CD after finish burning.
-		
-		Burning Speed - Lets you choose what speed the burner should burn with.
-		
-		Make Image - Make and saves an ISO image.
-		Burn - Burns the CD. 
-		
-	<B>DataTab:</B>
-		ISO9660 - Burns a pure ISO9660 cd
-		Joliet - Burns a ISO9660 with Joliet ext.
-		Windows 9x/ME - Burns a ISO9660 with support long filenames
-		BeOS - Not implented yet
-		Mac - Burns a hfs cd.
-		RockRidge - Burns a UNIX cd for singel users systems.
-		Real RockRidge - Burns a UNIX cd for multi users systems.
-		
-		Change Volume Name - Change the Volume name on the active VRCD
-		
-		Bootable CD - Lets you make Bootable CD:s just drop the select the boot file
-				BurnItNow will make an new file that exactly 2.88 Mb with your
-				boot file first in the file and the rest zeros.
-				DONT DROP FILE THAT OVER 2.88 Mb!
-				
-	<B>AudioTab:</B>
-		If you dont understand dont change any options
-		
-		pad - 		If the track is a data track, 15 sectors of zeroed data 
-              			will  be  added  to the end of this and each subsequent 
-              			data track.  In this case, the pad  option  is  super- 
-              			seded by the padsize= option. It will remain however as 
-              			a shorthand for padsize=15s.  If the -pad option refers 
-              			to  an audio track, cdrecord will pad the audio data to 
-              			be a multiple of 2352 bytes. The audio data padding  is 
-              			done  with  binary  zeroes  which  is equal to absolute 
-              			silence.
-              			
-		no fixate - 	The disk will only be fixated (i.e. a  TOC  for  a  CD- 
-          			Reader  will be written). This may be used, if for some 
-          			reason the disk has been written but not fixated.  This 
-          			option  currently  does  not  work with old TEAC drives 
-          			(CD-R50S and CD-R55S).
-		
-		swab - 		If this flag is present, audio data is assumed to be in 
-          	   		byte-swapped  (little-endian) order.  Some types of CD- 
-	           	   	Writers e.g. Yamaha, Sony and the new SCSI-3/mmc drives 
-	          	   	require  audio  data  to  be presented in little-endian 
-          	   		order, while other writers require  audio  data  to  be 
-          	   		presented  in  the big-endian (network) byte order nor- 
-          	   		mally used by the SCSI protocol.  Cdrecord knows  if  a 
-          	   		CD-Recorder  needs  audio data in big- or little-endian 
-          	   		order, and corrects the byte order of the  data  stream 
-          	   		to  match the needs of the recorder.  You only need the 
-          	   		-swab flag if your data stream  is  in  Intel  (little- 
-          	   		endian) byte order. 
-
-          	   		Note that the verbose output of cdrecord will show  you 
-          	   		if  swapping is necessary to make the byte order of the 
-          	   		input data fit the required byte order of the recorder. 
-          	   		Cdrecord  will not show you if the -swab flag was actu- 
-          	   		ally present for a track.
-		
-		preemp - 	If this flag is present, all TOC entries for subsequent 
-          		 	audio tracks will indicate that the audio data has been 
-          		 	sampled with 50/15 µsec preemphasis.  The data, however 
-          		 	is not modified during the process of transferring from 
-          		 	file to disk. This option has no effect on data tracks.
-          		 	
-	
-	<B>CDRWTab:</B>
-		Blank(list) - Choose blanktype.
-		
-		Blank Speed - Choose the speed you want to blank with
-		
-		Blank(Button) - Blank the CDRW
-		
-		
-	<B>PrefsTab:</B>
-		Devices - Choose burner.
-		
-		DAO - Set Disk At Once mode. This currently only  works  with 
-        	      MMC drives that support non raw Session At Once mode.
-
-		BurnProof -  this option is implemented to support Buffer Underrun Proof writing with
-			     drives that use the Sanyo BURN-Proof technology.
-        	      
-	
-	<B>LogTab:</B>
-		Shows some information and errormessages.
-		
-
-
-</PRE>
-<H2>Links</H2><PRE>
-	<a href="http://dev.osdrawer.net/projects/burnitnow">BurnItNow project page</a>
-	<a href="http://cdrecord.berlios.de/private/cdrecord.html">CDrecord</a>
-	<a href="http://ports.haiku-files.org/wiki/app-cdr/cdrtools">HaikuPorts cdrtools page</a>
-
-</PRE>
-<H2>Bugs</H2><PRE>
-There are a handful of issues to be fixed in BurnItNow, to see the current list or to report a new issue see the <a href="http://dev.osdrawer.net/projects/burnitnow/issues">BurnItNow issues page at OSDrawer.net</a>.
-
-
-
-</PRE>
-<H2>FAQ</H2><PRE>
-	Q: How do i report a bug?
-	A: File a bug report on the <a href="http://dev.osdrawer.net/projects/burnitnow">BurnItNow project page at OSDrawer.net</a>
-
-	Q: Does my burner work with BurnItNow?
-	A: BurnItNow uses cdrecord to burn CDs, BurnItNow is just a frontend to cdrecord.
-           Check on the list at the bottom of this document.
-
-
-</PRE>
-
-<H2>BurnerList</H2><PRE>
-This list is for cdrecord 2.01.01 if you got a newer version of cdrecord
-it may support more burners. Your burner may be working even if its 
-not on this list.
-
-[Begin cut from cdrecord 2.01.01]
-    Cdrecord is currently maintained with the following drives:
-
-    Plextor PX-W241040A 
-    Plextor PX-W121032S 
-    Plextor PX-W121032A 
-    Plextor PX-W124 
-    Plextor PX-W8220 
-    Plextor PX-W4220 
-    Plextor PX-R820 
-    Plextor PX-R412C 
-    Yamaha CRW-8832 
-    Yamaha CRW-4416 
-    Yamaha CDR-400 
-    Ricoh MP-7040A 
-    Ricoh MP-7040S 
-    Ricoh MP-7060S (available only to Thomas Niederreiter and Heiko Eißfeld) 
-    TEAC CD-R55S 
-    TEAC CD-R58S 
-    TEAC CD-W54E 
-    Sanyo CDR-Bp2 
-    Sony CDU948S 
-    Sony CRX-140S (available only to Thomas Niederreiter and Heiko Eißfeld) 
-    Sony CRX-145E 
-    COMPRO/Matsushita/Panasonic CW-7502 
-    Philips CDD-2000 
-    Goldstar 8080 
-    Freecom Traveller
-
-    Drives that have been reported to work or that should work:
-
-    Should work in this case means that Andy MCFadden listed them in http://www.fadden.com/cdrfaq/faq05.html to be identical to working drives:
-
-    ACER CR-1420C 
-    ACER CDRW 6206A 
-    AOPEN CRW9420 (Re-writeable) 
-    BTC BCE 621E 
-    COMPRO CW-7502 
-    Dysan CR-622 ???? See Wearnes 622 
-    Dysan CR-1622 
-    DynaTec CDM-240J (see Pinnacle RCD-4x4) 
-    DynaTec CDM-240 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    DynaTec CDM-400 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    Freecom Traveller 
-    Grundig CDR-100 
-    Hewlett Packard 4020i 
-    Hewlett Packard 6020i 
-    HP C4324/C4325 (HP SureStore 4020i/6020i) 
-    HP 7100 
-    HP 7110 
-    HP 7200 
-    HP 8100 
-    HP 8210 
-    HP CD-Writer+ M820 
-    Hi-Val CD-R (see Pinnacle RCD-4x4) 
-    IMATION CD-RW IMW040420 
-    JVC XR-W2001 (uses TEAC code - see below and this page - audio not working) 
-    JVC XR-W2010 (uses TEAC code - see below and this page - audio not working) 
-    JVC XR-W2020 (uses TEAC code - see below and this page - audio not working) 
-    JVC XR-W2080 (first MMC drive from JVC) 
-    Kodak PCD-200 or Kodak PCD-200 Plus 
-    Kodak PCD-225 
-    Kodak PCD-240 
-    Kodak PCD-600 
-    Matsushita CW-7502 
-    Matsushita CW-7503 
-    Matsushita CW-7582 
-    Memorex CR-622 ???? See Wearnes 622 
-    Memorex CR-1622 
-    Memorex CRW-1622 
-    Microboards PlayWrite 2000 (use cdrecord driver=sony_cdu924 and report inquiry) 
-    Microboards PlayWrite 4000 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    Microboards PlayWrite 4001RW 
-    MicroNet MasterCD Plus 4x4 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    MicroNet MasterCD Plus 4x6 
-    Mitsubishi MCA-CDRW 226 
-    Mitsubishi DD6430A 
-    Mitsumi CR-2401-TS 
-    Mitsumi CR-2600-TE 
-    Mitsumi CR-2801-TE 
-    Mitsumi CR-4801-TE 
-    Mitsumi CR-4802-TE ??? 
-    Nomai 680.rw 
-    Olympus CDS615E 
-    Olympus CDS620E (use cdrecord driver=sony_cdu924 and report inquiry) 
-    Olympus CD-R2x6 (use cdrecord driver=sony_cdu924 and report inquiry) 
-    Optima Dis Kovery 650 CD-R 
-    OTI CDRW 965 
-    OTI-975 Socrates 1.0 (CDRW) 
-    Panasonic CW-7502 
-    Panasonic CW-7503 
-    Panasonic CW-7582 
-    Philips CDD 521 (CDD521/02 Revision: 2.06 has bad firmware - seems not to work) 
-    Philips CDD 521 (upgraded units only: ID: CDD521/10 Revision: 2.07) 
-    Philips CDD 522 
-    Philips CDD 2000 
-    Philips CDD 2600 
-    Philips CDD 3600 
-    Philips CDD 3610 
-    Philips CDRW400 
-    Philips Omniwriter 26 
-    Philips Omniwriter 26A 
-    Philips CDD4201 CD-RW 
-    Pinnacle Micro RCD-1000 (see TEAC/JVC): Need to upgrade firmware to 2.35 
-    Pinnacle Micro RCD-5020 (see TEAC/JVC - audio not working) 
-    Pinnacle Micro RCD-5040 (see TEAC/JVC - audio not working) 
-    Pinnacle Micro RCD-4x4 
-    Pioneer DW-S114X 
-    Plasmon CDR 4220 
-    Plasmon RF-4100 
-    Plasmon RF-4102 
-    Plasmon CDR 4400 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    Plasmon CDR 480 
-    Plextor PX-R24CS (use cdrecord driver=ricoh_ro1420c and report inquiry) 
-    Plextor PX-R412C 
-    Plextor PX-R820 
-    Plextor PX-W4220 
-    Plextor PX-W8220 
-    Plextor PX-W124 
-    Plextor PX-W121032S 
-    Plextor PX-W121032A 
-    Plextor PX-W161032A 
-    Plextor PX-W241040A 
-    Procom PCDR 4 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    Ricoh RO-1420C 
-    Ricoh MP-6200 
-    Ricoh MP-6200I 
-    Ricoh MP-6201 
-    Ricoh MP-7040A 
-    Ricoh MP-7040S 
-    Ricoh MP-7060S 
-    SAMSUNG SW-206 
-    Sanyo CDR-Bp2 
-    Smart & Friendly CD-R1002 (use cdrecord driver=sony_cdu924 and report inquiry) 
-    Smart & Friendly CD-R1004 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    Smart & Friendly CD-R2004 (use cdrecord driver=sony_cdu924 and report inquiry) 
-    Smart & Friendly CD-R2006 PLUS 
-    Smart & Friendly CD-R2006 PRO 
-    Smart & Friendly CD-R4000 (use cdrecord driver=yamaha_cdr100 and report inquiry) 
-    Smart & Friendly CD-R4006 
-    Smart & Friendly CD-R4012 
-    Smart & Friendly CD-RW226 
-    Smart & Friendly CD-R8020 
-    Sony CDU920S 
-    Sony CDU924S 
-    Sony CDU926S 
-    Sony CDU928S 
-    Sony CDU940S 
-    Sony CDU948S 
-    Sony CRX-100 
-    Sony CRX-140S 
-    Sony CRX-145E 
-    Taiyo Yuden CD-WO EW-50 
-    TEAC CD-R50S 
-    TEAC CD-R55S 
-    TEAC CD-R56S 
-    TEAC CD-R58S 
-    TEAC CD-W54E 
-    That's Write CDR-N820S 
-    Traxdata CDRW-2260EL-PRO 
-    Traxdata CDR-4120 
-    Traxdata CDRW-4260 
-    Turtle Beach 2040R (use cdrecord driver=ricoh_ro1420c and report inquiry) 
-    WAITEK WT2036 
-    Wearnes CD-R622 
-    Wearnes CD-R632P 
-    Yamaha CDR-100 
-    Yamaha CDR-102 
-    Yamaha CDR-200 
-    Yamaha CDR-400(Firmware revision 1.0d and up otherwise upgrade) 
-    Yamaha CDR-401 
-    Yamaha CRW-4001 
-    Yamaha CRW-2260 
-    Yamaha CRW-2261 
-    Yamaha CRW-4260 
-    Yamaha CRW-4261 
-    Yamaha CRW-4416 
-    Yamaha CRW-6416 
-    Yamaha CRW-8424 
-    Yamaha CRW-8832 
-    Yamaha CRW-2100 
-    Yamaha CRW-2200
-[End cut from cdrecord 2.01.01]
-</PRE>
-
-Copyright&copy; 2000-2002 by Johan Nilsson, &copy; 2010-2011 BurnItNow maintainers 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en"
+ lang="en-US">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>BurnItNow BETA 6 -Quick Start Guide</title>
+  <link rel="stylesheet" href="./style.css" type="text/css"
+ media="screen">
+<!--[if IE 6]><link rel="stylesheet" href="./style.ie6.css" type="text/css" media="screen" /><![endif]--><!--[if IE 7]><link rel="stylesheet" href="./style.ie7.css" type="text/css" media="screen" /><![endif]-->
+  <script type="text/javascript" src="./jquery.js"></script>
+  <script type="text/javascript" src="./script.js"></script>
+</head>
+<body>
+<a style="font-family: Trebuchet MS;" name="inizio" id="inizio"></a>
+<div style="font-family: Trebuchet MS;" id="art-main">
+<div class="art-sheet">
+<div class="art-sheet-tl"></div>
+<div class="art-sheet-tr"></div>
+<div class="art-sheet-bl"></div>
+<div class="art-sheet-br"></div>
+<div class="art-sheet-tc"></div>
+<div class="art-sheet-bc"></div>
+<div class="art-sheet-cl"></div>
+<div class="art-sheet-cr"></div>
+<div class="art-sheet-cc"></div>
+<div class="art-sheet-body">
+<div class="art-header">
+<div class="art-header-center">
+<div class="art-header-png"></div>
+</div>
+<div style="top: 51px; height: 70px;" class="art-logo">
+<h1 id="name-text" class="art-logo-name"><br>
+</h1>
+<h1 id="name-text" class="art-logo-name"><br>
+</h1>
+<h1 id="name-text" class="art-logo-name"><br>
+</h1>
+</div>
+</div>
+<div class="art-content-layout">
+<div class="art-content-layout-row">
+<div class="art-layout-cell art-sidebar1">
+<div class="art-block">
+<div class="art-block-body">
+<div class="art-blockheader">
+<h3 class="t">Quick menu<br>
+</h3>
+</div>
+<div class="art-blockcontent">
+<div class="art-blockcontent-body">
+<p><a href="#prefs" target="_self">Set the preferences<br>
+</a></p>
+<p><a href="#data">Burning Data<br>
+</a></p>
+<p><a href="#audio" target="_self">Burning Audio<br>
+</a></p>
+<p><a href="#mix">Mixed CD<br>
+</a></p>
+<p><a href="#filesystem">Which filesystem<br>
+</a></p>
+<p><a href="#audioopt">Audio options<br>
+</a></p>
+<p><a href="#otheropt" target="_self">Other options<br>
+</a></p>
+<p><span style="font-size: 13px;"><a href="#inizio" target="_self">Start<br>
+</a>
+<div style="text-align: center;"><a href="#inizio" target="_self"><img
+ src="images/up.png" alt="Torna ad inizio pagina" height="45" width="40"></a></div>
+</span></p>
+<div class="cleared"></div>
+</div>
+</div>
+<div class="cleared"></div>
+</div>
+</div>
+<div class="cleared"></div>
+</div>
+<div class="art-layout-cell art-content">
+<div class="art-post">
+<div class="art-post-body">
+<div class="art-post-inner art-article">
+<h2 class="art-postheader">Quick Start Guide<br>
+</h2>
+<div class="art-postcontent">
+<p><br>
+</p>
+<p><span style="font-weight: bold;">BurnItNow</span> BETA 6 is a
+GUI Frontend for CDRecord and mkisofs.<br>
+You can burn AudioCD, DataCD, MixedCD, ISO files.<br>
+You can also use this app to <span style="font-weight: bold;">make ISO
+image or your files</span>, eg to backup
+your personal data (you can also make <span style="font-weight: bold;">BFS
+disk images</span>).<br>
+This new version has many
+fixes/improvements
+compared to BETA5. Now you can properly burn AudioCD's, the GUI
+supports
+DVD's size,
+you can set a max. burning speed of 48X and you can rearrange files in
+the list.<br>
+</p>
+<h2><a name="start"></a>Main window</h2>
+<img style="width: 300px; height: 329px;" alt="Main window"
+ src="burnscreens/Main.png"><br>
+This is the main Window, where you can choose what kind of project burn
+on CD's and DVD's.<br>
+In the <span style="font-weight: bold;">left panel (orange)</span> you
+can insert <span style="font-weight: bold;">Audio files, ISO images</span>
+and make a virtual project to insert data files.<br>
+In the <span style="font-weight: bold;">right panel (light blue)</span>
+you can insert any kind of <span style="font-weight: bold;">data file<br>
+</span>Here you can also set some options:<br>
+<br>
+<span style="font-weight: bold;">Multisession</span> (a multisession
+disc is a disc to which data files are added incrementally in more than
+one
+recording, allowing you to add, update, or delete files and
+directories. All the data on a multisession disc can be seen as if it
+were all recorded at the same time (if you linked the data between
+sessions)<br>
+<span style="font-weight: bold;"><br>
+On the fly</span> (an example of burning on the fly might be copying a
+CD using your CD ROM (source) and your CD burner (destination) at the
+same time, otherwise, if this option is disabled, data files will be
+copied before
+in a temp ISO file and then burned)<br>
+<br>
+<span style="font-weight: bold;">Test</span> (this is a dummy mode:
+enabling this option will be performed only a burning simulation; will
+not written anything and it is very helpful for testing and see if the
+write speed is good enough and if the read/write buffer of the burning
+device are always filled with CD data)<br>
+<br>
+<span style="font-weight: bold;">Eject</span> (will eject CD/DVD after
+burning).<br>
+<br>
+<h2><a name="data"></a>Burning data on CD's and DVD's</h2>
+<img style="width: 300px; height: 329px;" alt="Burn data"
+ src="burnscreens/Burndata.png"><br>
+After choosing <span style="font-weight: bold;">Data</span> as
+project, you have to click on "<span style="font-style: italic;">New
+data project</span>" button, to start a new project in the left panel.
+Then you can <span style="font-weight: bold;">drag</span> any kind of<span
+ style="font-weight: bold;"> data files in the right panel</span>.<br>
+Clicking on "<span style="font-style: italic;">Calc Size!</span>" you
+can see what kind of media (CD 700 MB, DVD5, DVD9) you need for the
+project.<br>
+After that you have to choose the burning speed (a max value of 10/16X
+if
+you write data to a DVD).<br>
+<br>
+<h2><a name="audio"></a>Burn an audio CD</h2>
+<img style="width: 300px; height: 328px;" alt="Burn an audio CD"
+ src="burnscreens/Audio1.png"><br>
+<br>
+To burn an <span style="font-weight: bold;">audio CD</span> you have
+to simply drag your <span style="font-weight: bold;">audio files</span>
+in the<span style="font-weight: bold;"> left panel</span>. You can also
+rearrange files by right click and
+choosing "Move Up" and Move Down", you can also remove and play files.
+Clicking on "Calc Size!" you will see duration in MB and minutes.<br>
+<span style="font-weight: bold;">Note:</span> at the moment in
+BurnItNow BETA 6, you can only insert wav files as audio files.<span
+ style="font-weight: bold;"></span><br>
+<span style="font-style: italic;"></span><br>
+<p><br>
+</p>
+<h2><a name="mix"></a>Burn a Mixed CD</h2>
+A <span style="font-weight: bold;">mixed CD</span> is a CD which
+contains <span style="font-weight: bold;">Data and Audio files together</span>.<br>
+To properly burn this kind of CD you have simply to choose "MixCD" as
+project, and <span style="font-weight: bold;">repeat the above steps
+for inserting data and audio files together</span>.<br>
+<br>
+<img alt="Mix" src="burnscreens/MixCD.png"><br>
+<br>
+To burn a <span style="font-weight: bold;">mixed CD</span>, you have
+to
+repeat the steps for <span style="font-weight: bold;"><a href="#data">burning
+Data</a> and
+<a href="#audio">Audio CD's</a></span><br>
+<br>
+<h1><a name="prefs"></a>Adjust the preferences</h1>
+In this section you can see how to set properly options and preferences.<br>
+<br>
+<h2><a name="filesystem"></a>Filesystem</h2>
+<img alt="Options" src="burnscreens/Options1.png"><br>
+<br>
+In this tab you can choose which kind of<span style="font-weight: bold;">
+filesystem </span>will be used <span style="font-weight: bold;">for
+burning Data CD's and DVD's</span>.<br>
+This option will also affect the kind of<span style="font-weight: bold;">
+ISO image</span> which you can make
+using the "<span style="font-style: italic;">Make Image</span>" Button.<br>
+<br>
+<img style="width: 225px; height: 273px;" alt="make image"
+ src="burnscreens/makeimage.png"><br>
+<span style="font-style: italic;">By clicking on "Make Image" you will
+create an ISO image of your data files (you can also choose to make an
+<span style="font-weight: bold;">BFS image</span>, eg to backup Haiku's
+files)<br>
+<br>
+</span>The most common option to choose is <span
+ style="font-weight: bold;">ISO-9660 with long filnames</span>,
+otherwise the names of your files will be truncated.<br>
+<br>
+<h2><a name="audioopt"></a>Audio Options</h2>
+<img src="burnscreens/Options2.png"><br>
+<br>
+Padding is the only audio option to finalize a standard AudioCD; all
+other options are for the most part obsolete (useful only with older cd
+burners), and you can leave them unchecked.<br>
+<br>
+<h2><a name="otheropt"></a>Other preferences</h2>
+Here you can set other preferences: <span style="font-weight: bold;">DAO</span>
+(Disk-At-Once) and <span style="font-weight: bold;">Burnfree</span>.<br>
+<span
+ style="color: rgb(0, 0, 0); font-size: 13px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 16px; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; background-color: rgb(255, 255, 255); display: inline ! important; float: none;"><br>
+<img src="burnscreens/Options3.png"><br>
+<br>
+<span style="font-weight: bold;">DAO</span> - Disk at Once, writes the
+leadin, all the tracks and the leadout as a single operation, producing
+a finalised disk. Audio track gaps can be eliminated, CD-Text can be
+written (if supported), but it is not possible to allow further
+additions. You have to prefer DAO to TAO; is more compliant. But in
+anyway <span style="font-weight: bold;">you have to deselect DAO</span>
+if you want <span style="font-weight: bold;">to burn a multisession
+CD/DVD</span>.<br>
+<br>
+<span style="font-weight: bold;">Burnfree</span> - </span><span
+ class="Apple-style-span"
+ style="border-collapse: separate; color: rgb(28, 40, 55); font-size: 13px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 19px; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; background-color: rgb(250, 251, 252);">buffer
+underrun protection, </span><span
+ style="color: rgb(0, 0, 0); font-size: 13px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 16px; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; background-color: rgb(255, 255, 255); display: inline ! important; float: none;">is
+a technology designed to allow disk burning applications to recover if
+at some point the drive is burning data faster than the application
+can send it. Enable it.<br>
+<br>
+<span style="font-weight: bold;">Devices</span> - Here you can select
+which burner device to use.<br>
+</span><span style="font-style: italic;"></span><br>
+<p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="art-footer">
+<div class="art-footer-body">
+<div class="art-footer-text">
+<p>BurnItNow Beta6 Quick Start Guide - By Giovanni Mugnai - 2013 ©<br>
+</p>
+<p></p>
+</div>
+<div class="cleared"></div>
+</div>
+</div>
+<div class="cleared"></div>
+</div>
+</div>
+<div class="cleared"></div>
+</div>
 </body>
 </html>
