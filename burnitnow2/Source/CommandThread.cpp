@@ -1,13 +1,13 @@
 /*
- * Copyright 2010, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "CommandThread.h"
-
 #include "CommandPipe.h"
 
 #include <AutoLocker.h>
 
+bool started = false;
 
 class CommandReader : public BPrivate::BCommandPipe::LineReader {
 public:
@@ -21,6 +21,7 @@ public:
 		// TODO Handle cancel
 		return false;
 	}
+
 
 	virtual status_t ReadLine(const BString& line)
 	{
@@ -122,6 +123,7 @@ status_t CommandThread::Run()
 	if (resume_thread(fThread) != B_OK)
 		return B_ERROR;
 
+	started = true;
 	return B_OK;
 }
 
@@ -143,6 +145,11 @@ status_t CommandThread::Wait()
 	wait_for_thread(fThread, &status);
 
 	return status;
+}
+
+bool CommandThread::IsRunning()
+{
+	return started;
 }
 
 
@@ -205,4 +212,6 @@ void CommandThread::_ThreadExit(void* data)
 	copy.AddInt32("thread_exit", 0);
 
 	invoker->Invoke(&copy);
+	
+	started = false;
 }
