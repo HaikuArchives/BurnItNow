@@ -1,5 +1,27 @@
 Changes BurnItNow
 
+2013-Jan beta 6
+    *Some bugfixes and improvements in the gui
+
+2012-12
+    * Some changes in the GUI
+    * Improved file ordering interface
+
+2012-11
+    * Added a function to calculate the time of AudioCD's
+         Many thanks to John Scipione and Fredrik Modéen
+         for their help and assistance!
+    * Added support to 700MB CD.
+    * Now the main window is wider.
+    * Increased a max speed to 48X
+    * Can burn DVD now
+    * Can burn MixCD's (containing data and audio)
+    * AudioCD mode works now
+    * Fixed burnproof
+
+2011 beta 5
+	* Included into Haiku as an OptionalPackage
+
 2010-09 beta 4
 	* Updated the graphics
 	* Removed unimplemented CopyCD option
