@@ -709,7 +709,7 @@ void jpWindow::InitBurnIt()
 	if (!BEntry(temp_char).Exists())
 		BDirectory(BURNIT_PATH).CreateDirectory(temp_char, NULL);
 
-	fStatus = find_directory(B_COMMON_CACHE_DIRECTORY, &CACHE_PATH);
+	fStatus = find_directory(B_SYSTEM_CACHE_DIRECTORY, &CACHE_PATH);
 	if (fStatus != B_OK)
 		return;
 		
@@ -833,7 +833,7 @@ void jpWindow::FindCDRTools()
 	BPath path;
 	BEntry entry;
 
-	fStatus = find_directory(B_COMMON_BIN_DIRECTORY, &CDRTOOLS_DIR);
+	fStatus = find_directory(B_SYSTEM_BIN_DIRECTORY, &CDRTOOLS_DIR);
 	if (fStatus != B_OK)
 		return;
 
