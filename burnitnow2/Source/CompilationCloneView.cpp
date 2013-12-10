@@ -21,7 +21,7 @@ const int32 kCreateImageMessage = 'Crat';
 const int32 kBurnImageMessage = 'Wrte';
 const int32 kClonerMessage = 'Clnr';
 
-constexpr int32 kDeviceChangeMessage[MAX_DEVICES] = { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
+const int32 kDeviceChangeMessage[MAX_DEVICES] = { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
 
 // Misc variables
 sdevice srcDevices[MAX_DEVICES];
@@ -122,22 +122,12 @@ void CompilationCloneView::MessageReceived(BMessage* message)
 		case kClonerMessage:
 			_ClonerOutput(message);
 			break;
-		case kDeviceChangeMessage[0]:
-			selectedSrcDevice=0;
-			break;
-		case kDeviceChangeMessage[1]:
-			selectedSrcDevice=1;
-			break;
-		case kDeviceChangeMessage[2]:
-			selectedSrcDevice=2;
-			break;
-		case kDeviceChangeMessage[3]:
-			selectedSrcDevice=3;
-			break;
-		case kDeviceChangeMessage[4]:
-			selectedSrcDevice=4;
-			break;
 		default:
+		if( kDeviceChangeMessage[0] == message->what ){selectedSrcDevice=0; break;}
+		else if( kDeviceChangeMessage[1] == message->what ){selectedSrcDevice=1; break;}
+		else if( kDeviceChangeMessage[2] == message->what ){selectedSrcDevice=2; break;}
+		else if( kDeviceChangeMessage[3] == message->what ){selectedSrcDevice=3; break;}
+		else if( kDeviceChangeMessage[4] == message->what ){selectedSrcDevice=4; break;}
 			BView::MessageReceived(message);
 	}
 }

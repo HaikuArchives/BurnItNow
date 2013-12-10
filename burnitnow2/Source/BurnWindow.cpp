@@ -35,7 +35,7 @@ const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
 
-constexpr int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
+const int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
 // Misc constants
 const int32 kMinBurnSpeed = 2;
@@ -105,21 +105,6 @@ void BurnWindow::MessageReceived(BMessage* message)
 		case kBuildImageMessage:
 			_BuildImage();
 			break;
-		case kDeviceChangeMessage[0]:
-			selectedDevice=0;
-			break;
-		case kDeviceChangeMessage[1]:
-			selectedDevice=1;
-			break;
-		case kDeviceChangeMessage[2]:
-			selectedDevice=2;
-			break;
-		case kDeviceChangeMessage[3]:
-			selectedDevice=3;
-			break;
-		case kDeviceChangeMessage[4]:
-			selectedDevice=4;
-			break;
 		case B_REFS_RECEIVED:
 			// Redirect message to current tab
 			if(fTabView->FocusTab() == 1)
@@ -128,6 +113,11 @@ void BurnWindow::MessageReceived(BMessage* message)
 				fCompilationImageView->MessageReceived(message);
 			break;
 		default:
+		if( kDeviceChangeMessage[0] == message->what ){selectedDevice=0; break;}
+		else if( kDeviceChangeMessage[1] == message->what ){selectedDevice=1; break;}
+		else if( kDeviceChangeMessage[2] == message->what ){selectedDevice=2; break;}
+		else if( kDeviceChangeMessage[3] == message->what ){selectedDevice=3; break;}
+		else if( kDeviceChangeMessage[4] == message->what ){selectedDevice=4; break;}
 			BWindow::MessageReceived(message);
 	}
 }
@@ -346,11 +336,11 @@ void BurnWindow::FindDevices(sdevice *array)
 	}
 	pclose(f);
 	
-	for (BString &i: output)
+	for (BString *i=output; i<(output+512) ; i++)
 	{
-		if (i.FindFirst('*') == B_ERROR && i.FindFirst("\' ") != B_ERROR)
+		if (i->FindFirst('*') == B_ERROR && i->FindFirst("\' ") != B_ERROR)
 		{
-			BString device = i.Trim();
+			BString device = i->Trim();
 			
 			// find device number
 			int numberRange = device.FindFirst('\t');
