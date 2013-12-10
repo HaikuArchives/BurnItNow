@@ -5,7 +5,7 @@
  */
 
 
-resource app_signature "application/x-vnd.osdrawer.BurnItNow2";
+resource app_signature "application/x-vnd.haikuarchives.BurnItNow2";
 
 resource app_flags B_EXCLUSIVE_LAUNCH;
 
