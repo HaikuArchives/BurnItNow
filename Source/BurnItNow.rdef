@@ -4,14 +4,13 @@
  * Haiku Vector Icon by Michele Frau
  */
 
-
 resource app_signature "application/x-vnd.haikuarchives.BurnItNow2";
 
 resource app_flags B_EXCLUSIVE_LAUNCH;
 
 resource app_version {
 	major  = 0,
-	middle = 0,
+	middle = 1,
 	minor  = 0,
 
 	variety = B_APPV_DEVELOPMENT,
@@ -24,7 +23,7 @@ resource app_version {
 resource file_types message;
 
 
-resource(11) vector_icon array {
+resource vector_icon array {
 	$"6E6369660A020102023B4000000000000000BBC0004A000048800000FFFC0600"
 	$"FFFF7200FF04006602011202B97FB43B9EBCBE49A6BC360949AD024A91140000"
 	$"65FF00100500020106033AF622B944633AE1463C9C4B48B4C349B78A00CDC590"
@@ -58,4 +57,3 @@ resource(11) vector_icon array {
 	$"4B1200000043D47D01178300040A06010B000A00010C000A03010D000A03010E"
 	$"000A03010E20B441B3BF0A03010E202620"
 };
-
