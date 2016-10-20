@@ -264,13 +264,13 @@ void BurnWindow::_BuildImage()
 
 void BurnWindow::_ClearCache()
 {
-	BEntry* entry = new BEntry("/boot/common/cache/burnitnow_cache.iso");
+	BEntry* entry = new BEntry("/boot/system/cache/burnitnow_cache.iso");
 	entry->Remove();
 	
-	entry = new BEntry("/boot/common/cache/burnitnow_iso.iso");
+	entry = new BEntry("/boot/system/cache/burnitnow_iso.iso");
 	entry->Remove();
 	
-	BDirectory* dir = new BDirectory("/boot/common/cache/burnitnow_cache/");
+	BDirectory* dir = new BDirectory("/boot/system/cache/burnitnow_cache/");
 	
 	while (true)
 	{
@@ -280,7 +280,7 @@ void BurnWindow::_ClearCache()
 		entry->Remove();
 	}
 	
-	entry = new BEntry("/boot/common/cache/burnitnow_cache/");
+	entry = new BEntry("/boot/system/cache/burnitnow_cache/");
 	entry->Remove();
 	
 	(new BAlert("ClearCacheAlert", "Cache clearing succeeded.", "Ok"))->Go();

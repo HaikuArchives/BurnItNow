@@ -146,7 +146,7 @@ void CompilationCloneView::_CreateImage()
 	fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));
 	fClonerThread->AddArgument("readcd")
 		->AddArgument("-s")
-		->AddArgument("f=/boot/common/cache/burnitnow_cache.iso")
+		->AddArgument("f=/boot/system/cache/burnitnow_cache.iso")
 		->AddArgument("dev=")
 		->AddArgument(device)
 		->Run();
@@ -167,9 +167,9 @@ void CompilationCloneView::_BurnImage()
 		->AddArgument(windowParent->GetSelectedDevice().number.String());
 	
 	if (windowParent->GetSessionMode())
-		fClonerThread->AddArgument("-sao")->AddArgument("/boot/common/cache/burnitnow_cache.iso")->Run();
+		fClonerThread->AddArgument("-sao")->AddArgument("/boot/system/cache/burnitnow_cache.iso")->Run();
 	else
-		fClonerThread->AddArgument("-tao")->AddArgument("/boot/common/cache/burnitnow_cache.iso")->Run();
+		fClonerThread->AddArgument("-tao")->AddArgument("/boot/system/cache/burnitnow_cache.iso")->Run();
 		
 	step = 2;
 }
@@ -199,7 +199,7 @@ void CompilationCloneView::_ClonerOutput(BMessage* message)
 			if (resp == 0)
 			{
 				CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
-				command->AddArgument("open")->AddArgument("/boot/common/cache/")->Run();
+				command->AddArgument("open")->AddArgument("/boot/system/cache/")->Run();
 			}
 		}
 	}

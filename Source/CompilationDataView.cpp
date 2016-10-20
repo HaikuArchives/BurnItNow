@@ -125,14 +125,14 @@ void CompilationDataView::_FromScratch()
 {
 	// Create cache directory
 	BDirectory* dir = new BDirectory();
-	dir->CreateDirectory("/boot/common/cache/burnitnow_cache/", NULL);
-	fDirPath->SetTo("/boot/common/cache/burnitnow_cache/");
+	dir->CreateDirectory("/boot/system/cache/burnitnow_cache/", NULL);
+	fDirPath->SetTo("/boot/system/cache/burnitnow_cache/");
 	
 	(new BAlert("DirectoryOpenedAlert", "In opened directory prepare compilation. Then, close it and now you can build ISO or burn disc.", "Ok"))->Go();
 	
 	// Display cache directory
 	CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
-	command->AddArgument("open")->AddArgument("/boot/common/cache/burnitnow_cache/")->Run();	
+	command->AddArgument("open")->AddArgument("/boot/system/cache/burnitnow_cache/")->Run();	
 }
 
 void CompilationDataView::_OpenDirectory(BMessage* message)
@@ -163,7 +163,7 @@ void CompilationDataView::_BurnerOutput(BMessage* message)
 	{
 		fBurnerInfoBox->SetLabel("Ready.");
 		CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
-		command->AddArgument("open")->AddArgument("/boot/common/cache/")->Run();
+		command->AddArgument("open")->AddArgument("/boot/system/cache/")->Run();
 		mode = 0;
 	}
 	else if (!fBurnerThread->IsRunning() && mode == 2)
@@ -192,7 +192,7 @@ void CompilationDataView::BuildISO()
 	
 	fBurnerThread->AddArgument("mkisofs")
 		->AddArgument("-o")
-		->AddArgument("/boot/common/cache/burnitnow_iso.iso")
+		->AddArgument("/boot/system/cache/burnitnow_iso.iso")
 		->AddArgument(fDirPath->Path())
 		->Run();
 }
