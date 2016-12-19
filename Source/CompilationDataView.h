@@ -11,6 +11,7 @@
 #include <Box.h>
 #include <FilePanel.h>
 #include <Menu.h>
+#include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -39,7 +40,7 @@ private:
 	CommandThread* fBurnerThread;
 	BTextView* fBurnerInfoTextView;
 	BurnWindow* windowParent;
-	BBox* fBurnerInfoBox;
+	BSeparatorView* fBurnerInfoBox;
 	BPath* fDirPath;
 };
 

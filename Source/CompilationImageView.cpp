@@ -8,13 +8,14 @@
 
 #include <Alert.h>
 #include <Button.h>
+#include <ControlLook.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
 
-const float kControlPadding = 5;
+static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
 const int32 kBurnImageMessage = 'Burn';
@@ -32,31 +33,38 @@ CompilationImageView::CompilationImageView(BurnWindow &parent)
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fImageInfoBox = new BBox("ImageInfoBBox");
+	fImageInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
+	fImageInfoBox->SetFont(be_bold_font);
 	fImageInfoBox->SetLabel("Image information");
 
 	fImageInfoTextView = new BTextView("ImageInfoTextView");
 	fImageInfoTextView->SetWordWrap(false);
 	fImageInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView", fImageInfoTextView, 0, true, true);
+	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
+		fImageInfoTextView, 0, true, true);
 
-	fImageInfoBox->AddChild(infoScrollView);
-
-	BButton* chooseImageButton = new BButton("ChooseImageButton", "Choose file", new BMessage(kChooseImageMessage));
+	BButton* chooseImageButton = new BButton("ChooseImageButton",
+		"Choose file", new BMessage(kChooseImageMessage));
 	chooseImageButton->SetTarget(this);
 	
-	BButton* burnImageButton = new BButton("BurnImageButton", "Burn image", new BMessage(kBurnImageMessage));
+	BButton* burnImageButton = new BButton("BurnImageButton", "Burn image",
+		new BMessage(kBurnImageMessage));
 	burnImageButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
+		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
 			.Add(new BStringView("ImageFileStringView", "Image file: "))
-			.Add(chooseImageButton)
-			.Add(burnImageButton)
+			.AddGlue()
+			.AddGroup(B_HORIZONTAL)
+				.AddGlue()
+				.Add(chooseImageButton)
+				.Add(burnImageButton)
+				.End()
 			.End()
-		.AddGroup(B_HORIZONTAL)
+		.AddGroup(B_VERTICAL)
 			.Add(fImageInfoBox)
+			.Add(infoScrollView)
 			.End();
 }
 
@@ -113,7 +121,8 @@ void CompilationImageView::_ChooseImage()
 {
 	// TODO Create a RefFilter for the panel?
 	if (fOpenPanel == NULL)
-		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_FILE_NODE, false, NULL, NULL, true);
+		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
+			NULL, B_FILE_NODE, false, NULL, NULL, true);
 
 	fOpenPanel->Show();
 }
@@ -126,9 +135,10 @@ void CompilationImageView::_BurnImage()
 		delete fImageParserThread;
 		
 	fImageInfoTextView->SetText(NULL);
-	fImageInfoBox->SetLabel("Burning in progress...");
+	fImageInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
 		
-	fImageParserThread = new CommandThread(NULL, new BInvoker(new BMessage(kParserMessage), this));
+	fImageParserThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kParserMessage), this));
 	
 	fImageParserThread->AddArgument("cdrecord")
 		->AddArgument("-dev=")
@@ -190,5 +200,5 @@ void CompilationImageView::_ImageParserOutput(BMessage* message)
 	fImageInfoTextView->Insert(data.String());
 	
 	if (!fImageParserThread->IsRunning())
-		fImageInfoBox->SetLabel("Ready.");
+		fImageInfoBox->SetLabel("Ready");
 }

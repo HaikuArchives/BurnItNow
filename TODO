@@ -19,8 +19,6 @@
 
 * Give more options to customize compilation, like CD label. Handle speed slider and checkboxes.
 
-* Correct items alignement - some of them is askew.
-
 * Write ATA/ATAPI devices support (dev=ATAPI).
 
 * Investigate UDF/DVD support

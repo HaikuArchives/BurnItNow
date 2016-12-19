@@ -5,16 +5,16 @@
 #include "CompilationDataView.h"
 
 #include "CommandThread.h"
-
 #include <Alert.h>
 #include <Button.h>
+#include <ControlLook.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
 
-const float kControlPadding = 5;
+static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
 const int32 kChooseDirectoryMessage = 'Cusd';
@@ -35,33 +35,38 @@ CompilationDataView::CompilationDataView(BurnWindow &parent)
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fBurnerInfoBox = new BBox("DataInfoBBox");
-	fBurnerInfoBox->SetLabel("Ready.");
+	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
+	fBurnerInfoBox->SetFont(be_bold_font);
+	fBurnerInfoBox->SetLabel("Ready");
 
 	fBurnerInfoTextView = new BTextView("DataInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(false);
 	fBurnerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("DataInfoScrollView", fBurnerInfoTextView, 0, true, true);
+	BScrollView* infoScrollView = new BScrollView("DataInfoScrollView",
+		fBurnerInfoTextView, 0, true, true);
 
-	fBurnerInfoBox->AddChild(infoScrollView);
-
-	BButton* chooseDirectoryButton = new BButton("ChooseDirectoryButton", "Choose directory to burn", new BMessage(kChooseDirectoryMessage));
+	BButton* chooseDirectoryButton = new BButton("ChooseDirectoryButton",
+		"Choose directory to burn", new BMessage(kChooseDirectoryMessage));
 	chooseDirectoryButton->SetTarget(this);
 	
-	BStringView* stringView = new BStringView("", "OR");
+	BStringView* stringView = new BStringView("", "or");
 	
-	BButton* fromScratchButton = new BButton("FromScratchButton", "Prepare compilation from scratch", new BMessage(kFromScratchMessage));
+	BButton* fromScratchButton = new BButton("FromScratchButton",
+		"Prepare compilation from scratch", new BMessage(kFromScratchMessage));
 	fromScratchButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
+		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
+			.AddGlue()
 			.Add(chooseDirectoryButton)
 			.Add(stringView)
 			.Add(fromScratchButton)
+			.AddGlue()
 			.End()
-		.AddGroup(B_HORIZONTAL)
+		.AddGroup(B_VERTICAL)
 			.Add(fBurnerInfoBox)
+			.Add(infoScrollView)
 			.End();
 }
 
@@ -115,7 +120,8 @@ void CompilationDataView::MessageReceived(BMessage* message)
 void CompilationDataView::_ChooseDirectory()
 {
 	if (fOpenPanel == NULL)
-		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL, B_DIRECTORY_NODE, false, NULL, NULL, true);
+		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
+			B_DIRECTORY_NODE, false, NULL, NULL, true);
 
 	fOpenPanel->Show();
 }
@@ -128,7 +134,9 @@ void CompilationDataView::_FromScratch()
 	dir->CreateDirectory("/boot/system/cache/burnitnow_cache/", NULL);
 	fDirPath->SetTo("/boot/system/cache/burnitnow_cache/");
 	
-	(new BAlert("DirectoryOpenedAlert", "In opened directory prepare compilation. Then, close it and now you can build ISO or burn disc.", "Ok"))->Go();
+	(new BAlert("DirectoryOpenedAlert",
+		"Prepare the compilation in the opened folder. Then close it and "
+		"build the ISO or burn the disc.", "OK"))->Go();
 	
 	// Display cache directory
 	CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
@@ -144,7 +152,8 @@ void CompilationDataView::_OpenDirectory(BMessage* message)
 	
 	fDirPath->SetTo(&dirRef);
 	
-	(new BAlert("DirectoryOpenedAlert", "OK. Now you can build ISO or burn disc.", "Ok"))->Go();
+	(new BAlert("DirectoryOpenedAlert",
+		"Now you can build the ISO or burn the disc.", "OK"))->Go();
 }
 
 
@@ -161,13 +170,13 @@ void CompilationDataView::_BurnerOutput(BMessage* message)
 	
 	if (!fBurnerThread->IsRunning() && mode == 1)
 	{
-		fBurnerInfoBox->SetLabel("Ready.");
+		fBurnerInfoBox->SetLabel("Ready");
 		CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
 		command->AddArgument("open")->AddArgument("/boot/system/cache/")->Run();
 		mode = 0;
 	}
 	else if (!fBurnerThread->IsRunning() && mode == 2)
-		fBurnerInfoBox->SetLabel("Ready.");
+		fBurnerInfoBox->SetLabel("Ready");
 }
 
 #pragma mark -- Public Methods --
@@ -178,7 +187,8 @@ void CompilationDataView::BuildISO()
 	
 	if (fDirPath->Path() == NULL)
 	{
-		(new BAlert("ChooseDirectoryFirstAlert", "Choose directory to burn first.", "Ok"))->Go();
+		(new BAlert("ChooseDirectoryFirstAlert",
+			"First choose the folder to burn.", "OK"))->Go();
 		return;
 	}
 
@@ -186,7 +196,7 @@ void CompilationDataView::BuildISO()
 		delete fBurnerThread;
 		
 	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel("Building in progress...");
+	fBurnerInfoBox->SetLabel("Building in progress" B_UTF8_ELLIPSIS);
 	
 	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
 	
@@ -204,7 +214,8 @@ void CompilationDataView::BurnDisc()
 
 	if (fDirPath->Path() == NULL)
 	{
-		(new BAlert("ChooseDirectoryFirstAlert", "Choose directory to burn first.", "Ok"))->Go();
+		(new BAlert("ChooseDirectoryFirstAlert",
+			"First choose the folder to burn.", "OK"))->Go();
 		return;
 	}
 
@@ -212,7 +223,7 @@ void CompilationDataView::BurnDisc()
 		delete fBurnerThread;
 
 	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel("Burning in progress...");
+	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
 
 	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
 	

@@ -8,9 +8,9 @@
 
 #include "BurnWindow.h"
 
-#include <Box.h>
 #include <FilePanel.h>
 #include <Menu.h>
+#include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -35,7 +35,7 @@ private:
 	CommandThread* fClonerThread;
 	BTextView* fClonerInfoTextView;
 	BurnWindow* windowParent;
-	BBox* fClonerInfoBox;
+	BSeparatorView* fClonerInfoBox;
 	BMenu* fSourceDeviceMenu;
 };
 

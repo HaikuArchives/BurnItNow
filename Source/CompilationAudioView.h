@@ -8,9 +8,9 @@
 
 #include "BurnWindow.h"
 
-#include <Box.h>
 #include <ListView.h>
 #include <Path.h>
+#include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -38,8 +38,8 @@ private:
 	BTextView* fBurnerInfoTextView;
 	BListView* fAudioList;
 	BurnWindow* windowParent;
-	BBox* fBurnerInfoBox;
-	BBox* fAudioBox;
+	BSeparatorView* fBurnerInfoBox;
+	BSeparatorView* fAudioBox;
 	
 	BPath* fTrackPath;
 	BPath* fTrackPaths[MAX_TRACKS];

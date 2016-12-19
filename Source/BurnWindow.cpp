@@ -18,9 +18,11 @@
 #include <Box.h>
 #include <Button.h>
 #include <CheckBox.h>
+#include <ControlLook.h>
 #include <LayoutBuilder.h>
 #include <MenuItem.h>
 #include <RadioButton.h>
+#include <SpaceLayoutItem.h>
 #include <Slider.h>
 #include <StatusBar.h>
 
@@ -41,7 +43,7 @@ const int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3'
 const int32 kMinBurnSpeed = 2;
 const int32 kMaxBurnSpeed = 16;
 
-const float kControlPadding = 5;
+static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Misc variables
 sdevice devices[MAX_DEVICES];
@@ -59,9 +61,12 @@ CompilationImageView* fCompilationImageView;
 
 BurnWindow::BurnWindow(BRect frame, const char* title)
 	:
-	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
+	BWindow(frame, title, B_TITLED_WINDOW,
+		B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	fTabView = _CreateTabView();
+	fTabView->SetBorder(B_NO_BORDER);
+	fTabView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 1)
 		.Add(_CreateMenuBar())
@@ -133,16 +138,18 @@ BMenuBar* BurnWindow::_CreateMenuBar()
 	BMenu* fileMenu = new BMenu("File");
 	menuBar->AddItem(fileMenu);
 
-	BMenuItem* aboutItem = new BMenuItem("About...", new BMessage(B_ABOUT_REQUESTED));
+	BMenuItem* aboutItem = new BMenuItem("About" B_UTF8_ELLIPSIS,
+		new BMessage(B_ABOUT_REQUESTED));
 	aboutItem->SetTarget(be_app);
 	fileMenu->AddItem(aboutItem);
 	fileMenu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
 
-	BMenu* toolsMenu = new BMenu("Tools and settings");
+	BMenu* toolsMenu = new BMenu("Tools & settings");
 	menuBar->AddItem(toolsMenu);
 	
 	toolsMenu->AddItem(new BMenuItem("Clear cache", new BMessage(kClearCacheMessage)));
-	toolsMenu->AddItem(new BMenuItem("Settings...", new BMessage(kOpenSettingsMessage), 'S'));
+	toolsMenu->AddItem(new BMenuItem("Settings" B_UTF8_ELLIPSIS,
+		new BMessage(kOpenSettingsMessage), 'S'));
 
 	BMenu* helpMenu = new BMenu("Help");
 	menuBar->AddItem(helpMenu);
@@ -165,7 +172,7 @@ BView* BurnWindow::_CreateToolBar()
 	sessionMenu->AddItem(daoItem);
 	sessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
 	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "", sessionMenu);
-
+	sessionMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	deviceMenu = new BMenu("DeviceMenu");
 	deviceMenu->SetLabelFromMarked(true);
@@ -185,36 +192,40 @@ BView* BurnWindow::_CreateToolBar()
 	}
 	
 	BMenuField* deviceMenuField = new BMenuField("DeviceMenuField", "", deviceMenu);
+	deviceMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	// TODO These values should be obtained from the capabilities of the drive and the type of media
-	BSlider* burnSlider = new BSlider("SpeedSlider", "Burn Speed: 2X", new BMessage(kSpeedSliderMessage), kMinBurnSpeed, kMaxBurnSpeed, B_HORIZONTAL);
+	BSlider* burnSlider = new BSlider("SpeedSlider", "Burn speed: 2X",
+		new BMessage(kSpeedSliderMessage), kMinBurnSpeed, kMaxBurnSpeed, B_HORIZONTAL);
 	burnSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
 	burnSlider->SetLimitLabels("2X", "16X");
 	burnSlider->SetHashMarks(B_HASH_MARKS_BOTH);
 	burnSlider->SetHashMarkCount(15);
+	burnSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-
-	// TODO Use a grid for the container to get proper alignment
-	BLayoutBuilder::Group<>(groupView)
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
-		.AddGroup(B_VERTICAL)
-			.AddGroup(B_HORIZONTAL)
-				.Add(new BCheckBox("MultiSessionCheckBox", "MultiSession", new BMessage()))
-				.Add(new BCheckBox("OnTheFlyCheckBox", "On The Fly", new BMessage()))
+	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
+		.SetInsets(kControlPadding, kControlPadding)
+		.AddGroup(B_HORIZONTAL, kControlPadding * 2)
+			.AddGroup(B_VERTICAL)
+				.AddGlue()
+				.AddGrid(kControlPadding, 0.0)
+					.Add(new BCheckBox("MultiSessionCheckBox", "MultiSession", new BMessage()), 0, 0)
+					.Add(new BCheckBox("OnTheFlyCheckBox", "On-the-fly", new BMessage()), 1, 0)
+					.Add(new BCheckBox("DummyModeCheckBox", "Dummy mode", new BMessage()), 0, 1)
+					.Add(new BCheckBox("EjectCheckBox", "Eject after burning", new BMessage()), 1, 1)
+					.End()
+				.AddGlue()
 				.End()
-			.AddGroup(B_HORIZONTAL)
-				.Add(new BCheckBox("DummyModeCheckBox", "Dummy Mode", new BMessage()))
-				.Add(new BCheckBox("EjectCheckBox", "Eject After Burning", new BMessage()))
+			.AddGrid(kControlPadding * 2, kControlPadding)
+				.Add(burnSlider, 0, 0, 1, 2)
+				.Add(new BButton("BurnDiscButton", "Burn disc", new BMessage(kBurnDiscMessage)), 1, 0)
+				.Add(new BButton("BuildISOButton", "Build ISO", new BMessage(kBuildImageMessage)), 1, 1)
 				.End()
-			.AddGroup(B_HORIZONTAL)
+		.End()
+		.AddGroup(B_HORIZONTAL)
 				.Add(sessionMenuField)
+				.Add(deviceMenuField)
 				.End()
-			.End()
-		.AddGrid(kControlPadding, kControlPadding)
-			.Add(burnSlider, 0, 0, 1, 1)
-			.Add(deviceMenuField, 0, 1, 1, 1)
-			.Add(new BButton("BurnDiscButton", "Burn Disc", new BMessage(kBurnDiscMessage)), 1, 0, 1, 1)
-			.Add(new BButton("BuildISOButton", "Build ISO", new BMessage(kBuildImageMessage)), 1, 1, 1, 1)
 		.End();
 
 	return groupView;
@@ -249,7 +260,8 @@ void BurnWindow::_BurnDisc()
 	else if (fTabView->FocusTab() == 1)
 		fCompilationAudioView->BurnDisc();
 	else
-		(new BAlert("BurnDiscAlert", "On this tab CD burning isn't implemented.", "Ok"))->Go();
+		(new BAlert("BurnDiscAlert",
+			"On this tab CD burning isn't implemented.", "OK"))->Go();
 }
 
 
@@ -258,7 +270,8 @@ void BurnWindow::_BuildImage()
 	if (fTabView->FocusTab() == 0)
 		fCompilationDataView->BuildISO();
 	else
-		(new BAlert("BuildImageAlert", "On this tab ISO building isn't implemented.", "Ok"))->Go();
+		(new BAlert("BuildImageAlert",
+			"On this tab ISO building isn't implemented.", "OK"))->Go();
 }
 
 
@@ -283,25 +296,25 @@ void BurnWindow::_ClearCache()
 	entry = new BEntry("/boot/system/cache/burnitnow_cache/");
 	entry->Remove();
 	
-	(new BAlert("ClearCacheAlert", "Cache clearing succeeded.", "Ok"))->Go();
+	(new BAlert("ClearCacheAlert", "Cache clearing succeeded.", "OK"))->Go();
 }
 
 void BurnWindow::_OpenSettings()
 {
-	(new BAlert("OpenSettingsAlert", "Not Implemented Yet", "Ok"))->Go();
+	(new BAlert("OpenSettingsAlert", "Not implemented yet", "OK"))->Go();
 }
 
 void BurnWindow::_OpenWebSite()
 {
 	// TODO Ask BRoster to launch a browser for the project website
-	(new BAlert("OpenWebSiteAlert", "Not Implemented Yet", "Ok"))->Go();
+	(new BAlert("OpenWebSiteAlert", "Not implemented yet", "OK"))->Go();
 }
 
 
 void BurnWindow::_OpenHelp()
 {
 	// TODO Ask BRoster to launch a browser for the local documentation
-	(new BAlert("OpenHelpAlert", "Not Implemented Yet", "Ok"))->Go();
+	(new BAlert("OpenHelpAlert", "Not implemented yet", "OK"))->Go();
 }
 
 
@@ -314,7 +327,7 @@ void BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	if (speedSlider == NULL)
 		return;
 
-	BString speedString("Burn Speed: ");
+	BString speedString("Burn speed: ");
 	speedString << speedSlider->Value() << "X";
 	speedSlider->SetLabel(speedString.String());
 }

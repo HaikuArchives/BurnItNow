@@ -8,13 +8,14 @@
 
 #include <Alert.h>
 #include <Button.h>
+#include <ControlLook.h>
 #include <Entry.h>
 #include <LayoutBuilder.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
 
-const float kControlPadding = 5;
+static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
 const int32 kBurnerMessage = 'Brnr';
@@ -30,31 +31,37 @@ CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fBurnerInfoBox = new BBox("AudioInfoBBox");
-	fBurnerInfoBox->SetLabel("Ready.");
+	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
+	fBurnerInfoBox->SetFont(be_bold_font);
+	fBurnerInfoBox->SetLabel("Ready");
 
 	fBurnerInfoTextView = new BTextView("AudioInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(false);
 	fBurnerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView", fBurnerInfoTextView, 0, true, true);
+	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
+		fBurnerInfoTextView, 0, true, true);
 
-	fBurnerInfoBox->AddChild(infoScrollView);
-	
-	fAudioBox = new BBox("AudioInfoBBox");
-	fAudioBox->SetLabel("Drop tracks here (only WAV files).");
+	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
+	fAudioBox->SetFont(be_bold_font);
+	fAudioBox->SetLabel("Drop tracks here (only WAV files)");
 
 	fAudioList = new BListView("AudioListView");
-	BScrollView* audioScrollView = new BScrollView("AudioScrollView", fAudioList, 0, true, true);
-
-	fAudioBox->AddChild(audioScrollView);
+	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
+		fAudioList, 0, true, true);
 	
 	fAudioList->AddItem(new BStringItem("<list is empty>"));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
+		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
-			.Add(fBurnerInfoBox)
-			.Add(fAudioBox)
+			.AddGroup(B_VERTICAL)
+				.Add(fBurnerInfoBox)
+				.Add(infoScrollView)
+				.End()
+			.AddGroup(B_VERTICAL)
+				.Add(fAudioBox)
+				.Add(audioScrollView)
+				.End()
 			.End();
 }
 
@@ -99,7 +106,7 @@ void CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	fBurnerInfoTextView->Insert(data.String());
 	
 	if (!fBurnerThread->IsRunning())
-		fBurnerInfoBox->SetLabel("Ready.");
+		fBurnerInfoBox->SetLabel("Ready");
 }
 
 void CompilationAudioView::_AddTrack(BMessage* message) {
@@ -130,9 +137,10 @@ void CompilationAudioView::_AddTrack(BMessage* message) {
 
 void CompilationAudioView::BurnDisc() {
 	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel("Burning in progress...");
+	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
 	
-	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBurnerMessage), this));
 	
 	fBurnerThread->AddArgument("cdrecord")
 		->AddArgument("-dev=")

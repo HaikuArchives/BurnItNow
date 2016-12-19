@@ -10,6 +10,7 @@
 
 #include <Box.h>
 #include <FilePanel.h>
+#include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -36,7 +37,7 @@ private:
 	CommandThread* fImageParserThread;
 	BTextView* fImageInfoTextView;
 	BurnWindow* windowParent;
-	BBox* fImageInfoBox;
+	BSeparatorView* fImageInfoBox;
 };
 
 

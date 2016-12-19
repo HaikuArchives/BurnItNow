@@ -8,13 +8,14 @@
 
 #include <Alert.h>
 #include <Button.h>
+#include <ControlLook.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
 
-const float kControlPadding = 5;
+static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
 const int32 kBlankMessage = 'Blnk';
@@ -30,15 +31,15 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow &parent)
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fBlankerInfoBox = new BBox("ImageInfoBBox");
-	fBlankerInfoBox->SetLabel("Ready.");
+	fBlankerInfoBox = new BSeparatorView("ImageInfoBBox");
+	fBlankerInfoBox->SetFont(be_bold_font);
+	fBlankerInfoBox->SetLabel("Ready");
 
 	fBlankerInfoTextView = new BTextView("ImageInfoTextView");
 	fBlankerInfoTextView->SetWordWrap(false);
 	fBlankerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView", fBlankerInfoTextView, 0, true, true);
-
-	fBlankerInfoBox->AddChild(infoScrollView);
+	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
+		fBlankerInfoTextView, 0, true, true);
 
 	fBlankModeMenu = new BMenu("BlankModeMenu");
 	fBlankModeMenu->SetLabelFromMarked(true);
@@ -53,21 +54,24 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow &parent)
 	fBlankModeMenu->AddItem(new BMenuItem("Unreserve", new BMessage()));
 	fBlankModeMenu->AddItem(new BMenuItem("Unclose", new BMessage()));
 	
-	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField", "Blank:", fBlankModeMenu);
+	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
+		"Blank:", fBlankModeMenu);
 
-	BButton* blankButton = new BButton("BlankButton", "Blank!", new BMessage(kBlankMessage));
+	BButton* blankButton = new BButton("BlankButton", "Blank!",
+		new BMessage(kBlankMessage));
 	blankButton->SetTarget(this);
 	
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
-		.SetInsets(kControlPadding, kControlPadding, kControlPadding, kControlPadding)
+		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
 			.Add(blankModeMenuField)
 			.Add(blankButton)
 			.End()
-		.AddGroup(B_HORIZONTAL)
+		.AddGroup(B_VERTICAL)
 			.Add(fBlankerInfoBox)
+			.Add(infoScrollView)
 			.End();
 }
 
@@ -118,9 +122,10 @@ void CompilationCDRWView::_Blank()
 		mode = "trtail";		
 		
 	fBlankerInfoTextView->SetText(NULL);
-	fBlankerInfoBox->SetLabel("Blanking in progress...");
+	fBlankerInfoBox->SetLabel("Blanking in progress" B_UTF8_ELLIPSIS);
 	
-	fBlankerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBlankerMessage), this));
+	fBlankerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBlankerMessage), this));
 	fBlankerThread->AddArgument("cdrecord")
 		->AddArgument("blank=")
 		->AddArgument(mode)
@@ -142,5 +147,5 @@ void CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 	fBlankerInfoTextView->Insert(data.String());
 	
 	if (!fBlankerThread->IsRunning())
-		fBlankerInfoBox->SetLabel("Ready.");
+		fBlankerInfoBox->SetLabel("Ready");
 }

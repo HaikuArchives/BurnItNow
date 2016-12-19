@@ -14,7 +14,7 @@
 
 BurnApplication::BurnApplication()
 	:
-	BApplication("application/x-vnd.osdrawer.BurnItNow2")
+	BApplication("application/x-vnd.haikuarchives.BurnItNow2")
 {
 	// TODO Get window size/position from saved settings
 	fWindow = new BurnWindow(BRect(150, 150, 700, 800), "BurnItNow2");
@@ -31,7 +31,12 @@ BurnApplication::BurnApplication()
 void BurnApplication::AboutRequested()
 {
 	// TODO Replace with real about window
-	(new BAlert("AboutAlert", "BurnItNow2\nCopyright 2010-2012, BurnItNow Team. All rights reserved.\nDistributed under the terms of the MIT License.\nhttps://github.com/przemub/burnitnow\nhttp://dev.osdrawer.net/projects/burnitnow", "Ok"))->Go();
+	(new BAlert("AboutAlert",
+		"BurnItNow2\nCopyright 2010-2012, BurnItNow Team. "
+		"All rights reserved.\n"
+		"Distributed under the terms of the MIT License.\n"
+		"https://github.com/przemub/burnitnow\n"
+		"https://github.com/HaikuArchives/BurnItNow", "OK"))->Go();
 }
 
 

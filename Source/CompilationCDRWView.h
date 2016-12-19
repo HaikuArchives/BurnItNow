@@ -11,6 +11,7 @@
 #include <Box.h>
 #include <FilePanel.h>
 #include <Menu.h>
+#include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -34,7 +35,7 @@ private:
 	CommandThread* fBlankerThread;
 	BTextView* fBlankerInfoTextView;
 	BurnWindow* windowParent;
-	BBox* fBlankerInfoBox;
+	BSeparatorView* fBlankerInfoBox;
 	BMenu* fBlankModeMenu;
 };
 
