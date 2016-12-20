@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #ifndef _COMPILATIONIMAGEVIEW_H_
@@ -8,7 +8,6 @@
 
 #include "BurnWindow.h"
 
-#include <Box.h>
 #include <FilePanel.h>
 #include <SeparatorView.h>
 #include <TextView.h>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationCloneView.h"
@@ -9,6 +9,7 @@
 #include <Alert.h>
 #include <Button.h>
 #include <ControlLook.h>
+#include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
 #include <ScrollView.h>
@@ -149,16 +150,27 @@ void CompilationCloneView::_CreateImage()
 
 	fClonerInfoTextView->SetText(NULL);
 	fClonerInfoBox->SetLabel("Image creating in progress" B_UTF8_ELLIPSIS);
-	
-	fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));
-	fClonerThread->AddArgument("readcd")
-		->AddArgument("-s")
-		->AddArgument("f=/boot/system/cache/burnitnow_cache.iso")
-		->AddArgument("dev=")
-		->AddArgument(device)
-		->Run();
+
+	BPath path;
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+		return;
+
+	status_t ret = path.Append("burnitnow_cache.iso");
+	if (ret == B_OK) {
+		BString parameter = "f=";
+		parameter.Append(path.Path());
+		BString device = windowParent->GetSelectedDevice().number.String();
 		
-	step = 1;
+		fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));
+		fClonerThread->AddArgument("readcd")
+			->AddArgument("-s")
+			->AddArgument(parameter)
+			->AddArgument("dev=")
+			->AddArgument(device)
+			->Run();
+
+		step = 1;
+	}
 }
 
 
@@ -166,19 +178,27 @@ void CompilationCloneView::_BurnImage()
 {
 	fClonerInfoTextView->SetText(NULL);
 	fClonerInfoBox->SetLabel("Image burning in progress" B_UTF8_ELLIPSIS);
-	
-	fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));
-	
+	BString device = windowParent->GetSelectedDevice().number.String();
+
+	fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));	
 	fClonerThread->AddArgument("cdrecord")
-		->AddArgument("-dev=")
-		->AddArgument(windowParent->GetSelectedDevice().number.String());
-	
-	if (windowParent->GetSessionMode())
-		fClonerThread->AddArgument("-sao")->AddArgument("/boot/system/cache/burnitnow_cache.iso")->Run();
-	else
-		fClonerThread->AddArgument("-tao")->AddArgument("/boot/system/cache/burnitnow_cache.iso")->Run();
+		->AddArgument("dev=")
+		->AddArgument(device);
+
+	BPath path;
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+		return;
+
+	status_t ret = path.Append("burnitnow_cache.iso");
+	if (ret == B_OK) {
+printf("CompilationCloneView::_BurnImage() - %s\n", path.Path());
+		if (windowParent->GetSessionMode())
+			fClonerThread->AddArgument("-sao")->AddArgument(path.Path())->Run();
+		else
+			fClonerThread->AddArgument("-tao")->AddArgument(path.Path())->Run();
 		
-	step = 2;
+		step = 2;
+	}
 }
 
 
@@ -192,7 +212,7 @@ void CompilationCloneView::_ClonerOutput(BMessage* message)
 	data << "\n";
 
 	fClonerInfoTextView->Insert(data.String());
-	
+
 	if (!fClonerThread->IsRunning() && step == 1)
 	{
 		fClonerInfoBox->SetLabel("Ready");
@@ -200,16 +220,21 @@ void CompilationCloneView::_ClonerOutput(BMessage* message)
 		// Last output line always (expect error) contains speed statistics
 		if (result.FindFirst(" kB/sec.") != B_ERROR)
 		{
-			BAlert* finishAlert = new BAlert("CreateImageFinishAlert"
+			BAlert* finishAlert = new BAlert("CreateImageFinishAlert", 
 				"The image file has been created successfully.\n"
 				"Would you like to open the destination folder?",
 				"Open folder", "Cancel");
 			int resp = finishAlert->Go();
+
+			BPath path;
+			if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+				return;
+printf("CompilationCloneView::_ClonerOutput - %s\n", path.Path());
 			if (resp == 0)
 			{
 				CommandThread* command = new CommandThread(NULL,
 					new BInvoker(new BMessage(), this));
-				command->AddArgument("open")->AddArgument("/boot/system/cache/")->Run();
+				command->AddArgument("open")->AddArgument(path.Path())->Run();
 			}
 		}
 	}

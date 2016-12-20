@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationImageView.h"
@@ -44,11 +44,11 @@ CompilationImageView::CompilationImageView(BurnWindow &parent)
 		fImageInfoTextView, 0, true, true);
 
 	BButton* chooseImageButton = new BButton("ChooseImageButton",
-		"Choose file", new BMessage(kChooseImageMessage));
+		"Step 1: Choose ISO/CUE", new BMessage(kChooseImageMessage));
 	chooseImageButton->SetTarget(this);
 	
-	BButton* burnImageButton = new BButton("BurnImageButton", "Burn image",
-		new BMessage(kBurnImageMessage));
+	BButton* burnImageButton = new BButton("BurnImageButton",
+		"Step 2: Burn image", new BMessage(kBurnImageMessage));
 	burnImageButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
@@ -139,10 +139,11 @@ void CompilationImageView::_BurnImage()
 		
 	fImageParserThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kParserMessage), this));
-	
+
+	BString device = windowParent->GetSelectedDevice().number.String();
 	fImageParserThread->AddArgument("cdrecord")
-		->AddArgument("-dev=")
-		->AddArgument(windowParent->GetSelectedDevice().number.String());
+		->AddArgument("dev=")
+		->AddArgument(device);
 	
 	if (windowParent->GetSessionMode())
 		fImageParserThread->AddArgument("-sao")->AddArgument(fImagePath->Path())->Run();

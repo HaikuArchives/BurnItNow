@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "BurnWindow.h"
@@ -19,6 +19,7 @@
 #include <Button.h>
 #include <CheckBox.h>
 #include <ControlLook.h>
+#include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <MenuItem.h>
 #include <RadioButton.h>
@@ -41,7 +42,7 @@ const int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3'
 
 // Misc constants
 const int32 kMinBurnSpeed = 2;
-const int32 kMaxBurnSpeed = 16;
+const int32 kMaxBurnSpeed = 52;
 
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
@@ -198,9 +199,9 @@ BView* BurnWindow::_CreateToolBar()
 	BSlider* burnSlider = new BSlider("SpeedSlider", "Burn speed: 2X",
 		new BMessage(kSpeedSliderMessage), kMinBurnSpeed, kMaxBurnSpeed, B_HORIZONTAL);
 	burnSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
-	burnSlider->SetLimitLabels("2X", "16X");
+	burnSlider->SetLimitLabels("2X", "52X");
 	burnSlider->SetHashMarks(B_HASH_MARKS_BOTH);
-	burnSlider->SetHashMarkCount(15);
+	burnSlider->SetHashMarkCount(17);
 	burnSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
@@ -277,26 +278,39 @@ void BurnWindow::_BuildImage()
 
 void BurnWindow::_ClearCache()
 {
-	BEntry* entry = new BEntry("/boot/system/cache/burnitnow_cache.iso");
-	entry->Remove();
-	
-	entry = new BEntry("/boot/system/cache/burnitnow_iso.iso");
-	entry->Remove();
-	
-	BDirectory* dir = new BDirectory("/boot/system/cache/burnitnow_cache/");
-	
-	while (true)
-	{
-		if (dir->GetNextEntry(entry) != B_OK)
-			break;
-		
+	BPath cachePath;
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &cachePath) != B_OK)
+		return;
+
+	BPath path = cachePath;
+	status_t ret = path.Append("burnitnow_cache.iso");
+	if (ret == B_OK) {
+		BEntry* entry = new BEntry(path.Path());
 		entry->Remove();
+
+		path = cachePath;
+		path.Append("burnitnow_iso.iso");
+		entry = new BEntry(path.Path());
+		entry->Remove();
+
+		path = cachePath;
+		path.Append("burnitnow_cache");
+
+		BDirectory* dir = new BDirectory(path.Path());
+
+		while (true)
+		{
+			if (dir->GetNextEntry(entry) != B_OK)
+				break;
+
+			entry->Remove();
+		}
+
+		entry = new BEntry(path.Path());
+		entry->Remove();
+
+		(new BAlert("ClearCacheAlert", "Cache cleared successfully.", "OK"))->Go();
 	}
-	
-	entry = new BEntry("/boot/system/cache/burnitnow_cache/");
-	entry->Remove();
-	
-	(new BAlert("ClearCacheAlert", "Cache clearing succeeded.", "OK"))->Go();
 }
 
 void BurnWindow::_OpenSettings()

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationDataView.h"
@@ -8,6 +8,7 @@
 #include <Alert.h>
 #include <Button.h>
 #include <ControlLook.h>
+#include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
 #include <ScrollView.h>
@@ -130,17 +131,24 @@ void CompilationDataView::_ChooseDirectory()
 void CompilationDataView::_FromScratch()
 {
 	// Create cache directory
-	BDirectory* dir = new BDirectory();
-	dir->CreateDirectory("/boot/system/cache/burnitnow_cache/", NULL);
-	fDirPath->SetTo("/boot/system/cache/burnitnow_cache/");
-	
-	(new BAlert("DirectoryOpenedAlert",
-		"Prepare the compilation in the opened folder. Then close it and "
-		"build the ISO or burn the disc.", "OK"))->Go();
-	
-	// Display cache directory
-	CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
-	command->AddArgument("open")->AddArgument("/boot/system/cache/burnitnow_cache/")->Run();	
+	BPath path;
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+		return;
+
+	status_t ret = path.Append("burnitnow_cache");
+	if (ret == B_OK) {
+		BDirectory* dir = new BDirectory();
+		dir->CreateDirectory(path.Path(), NULL);
+		fDirPath->SetTo(path.Path());
+
+		(new BAlert("DirectoryOpenedAlert",
+			"Prepare the compilation in the opened folder. Then close it and "
+			"build the ISO or burn the disc.", "OK"))->Go();
+
+		// Display cache directory
+		CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
+		command->AddArgument("open")->AddArgument(path.Path())->Run();
+	}
 }
 
 void CompilationDataView::_OpenDirectory(BMessage* message)
@@ -149,7 +157,7 @@ void CompilationDataView::_OpenDirectory(BMessage* message)
 
 	if (message->FindRef("refs", &dirRef) != B_OK)
 		return;
-	
+
 	fDirPath->SetTo(&dirRef);
 	
 	(new BAlert("DirectoryOpenedAlert",
@@ -170,9 +178,12 @@ void CompilationDataView::_BurnerOutput(BMessage* message)
 	
 	if (!fBurnerThread->IsRunning() && mode == 1)
 	{
+		BPath path;
+		if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+			return;
 		fBurnerInfoBox->SetLabel("Ready");
 		CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
-		command->AddArgument("open")->AddArgument("/boot/system/cache/")->Run();
+		command->AddArgument("open")->AddArgument(path.Path())->Run();
 		mode = 0;
 	}
 	else if (!fBurnerThread->IsRunning() && mode == 2)
@@ -199,12 +210,19 @@ void CompilationDataView::BuildISO()
 	fBurnerInfoBox->SetLabel("Building in progress" B_UTF8_ELLIPSIS);
 	
 	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
-	
-	fBurnerThread->AddArgument("mkisofs")
+
+	BPath path;
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+		return;
+
+	status_t ret = path.Append("burnitnow_iso.iso");
+	if (ret == B_OK) {
+		fBurnerThread->AddArgument("mkisofs")
 		->AddArgument("-o")
-		->AddArgument("/boot/system/cache/burnitnow_iso.iso")
+		->AddArgument(path.Path())
 		->AddArgument(fDirPath->Path())
 		->Run();
+	}
 }
 
 
