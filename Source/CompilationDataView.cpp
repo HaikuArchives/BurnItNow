@@ -32,7 +32,8 @@ CompilationDataView::CompilationDataView(BurnWindow &parent)
 	BView("Data", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBurnerThread(NULL),
-	fDirPath(new BPath())
+	fDirPath(new BPath()),
+	fImagePath(new BPath())
 {
 	windowParent = &parent;
 	
@@ -239,15 +240,14 @@ void CompilationDataView::BuildISO()
 	
 	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
 
-	BPath path;
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, fImagePath) != B_OK)
 		return;
 
-	status_t ret = path.Append("burnitnow_iso.iso");
+	status_t ret = fImagePath->Append("burnitnow_iso.iso");
 	if (ret == B_OK) {
 		fBurnerThread->AddArgument("mkisofs")
 		->AddArgument("-o")
-		->AddArgument(path.Path())
+		->AddArgument(fImagePath->Path())
 		->AddArgument(fDirPath->Path())
 		->Run();
 	}
@@ -258,7 +258,7 @@ void CompilationDataView::BurnDisc()
 {
 	mode = 1;
 
-	if (fDirPath->Path() == NULL)
+	if (fImagePath->Path() == NULL)
 	{
 		(new BAlert("ChooseDirectoryFirstAlert",
 			"First choose the folder to burn.", "OK"))->Go();
@@ -278,7 +278,7 @@ void CompilationDataView::BurnDisc()
 		->AddArgument(device);
 	
 	if (windowParent->GetSessionMode())
-		fBurnerThread->AddArgument("-sao")->AddArgument(fDirPath->Path())->Run();
+		fBurnerThread->AddArgument("-sao")->AddArgument(fImagePath->Path())->Run();
 	else
-		fBurnerThread->AddArgument("-tao")->AddArgument(fDirPath->Path())->Run();
+		fBurnerThread->AddArgument("-tao")->AddArgument(fImagePath->Path())->Run();
 }

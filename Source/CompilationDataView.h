@@ -41,6 +41,7 @@ private:
 	BurnWindow* windowParent;
 	BSeparatorView* fBurnerInfoBox;
 	BPath* fDirPath;
+	BPath* fImagePath;
 };
 
 
