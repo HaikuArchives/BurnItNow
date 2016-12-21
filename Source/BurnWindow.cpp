@@ -105,12 +105,6 @@ void BurnWindow::MessageReceived(BMessage* message)
 		case kSpeedSliderMessage:
 			_UpdateSpeedSlider(message);
 			break;
-		case kBurnDiscMessage:
-			_BurnDisc();
-			break;
-		case kBuildImageMessage:
-			_BuildImage();
-			break;
 		case B_REFS_RECEIVED:
 			// Redirect message to current tab
 			if(fTabView->FocusTab() == 1)
@@ -205,8 +199,8 @@ BView* BurnWindow::_CreateToolBar()
 	burnSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
-		.SetInsets(kControlPadding, kControlPadding)
-		.AddGroup(B_HORIZONTAL, kControlPadding * 2)
+		.SetInsets(kControlPadding, 0, kControlPadding, kControlPadding)
+		.AddGroup(B_HORIZONTAL, kControlPadding * 3)
 			.AddGroup(B_VERTICAL)
 				.AddGlue()
 				.AddGrid(kControlPadding, 0.0)
@@ -217,16 +211,12 @@ BView* BurnWindow::_CreateToolBar()
 					.End()
 				.AddGlue()
 				.End()
-			.AddGrid(kControlPadding * 2, kControlPadding)
-				.Add(burnSlider, 0, 0, 1, 2)
-				.Add(new BButton("BurnDiscButton", "Burn disc", new BMessage(kBurnDiscMessage)), 1, 0)
-				.Add(new BButton("BuildISOButton", "Build ISO", new BMessage(kBuildImageMessage)), 1, 1)
-				.End()
+				.Add(burnSlider)
 		.End()
 		.AddGroup(B_HORIZONTAL)
-				.Add(sessionMenuField)
-				.Add(deviceMenuField)
-				.End()
+			.Add(sessionMenuField)
+			.Add(deviceMenuField)
+			.End()
 		.End();
 
 	return groupView;
@@ -252,28 +242,6 @@ BTabView* BurnWindow::_CreateTabView()
 
 
 #pragma mark --Private Message Handlers--
-
-
-void BurnWindow::_BurnDisc()
-{
-	if (fTabView->FocusTab() == 0)
-		fCompilationDataView->BurnDisc();
-	else if (fTabView->FocusTab() == 1)
-		fCompilationAudioView->BurnDisc();
-	else
-		(new BAlert("BurnDiscAlert",
-			"On this tab CD burning isn't implemented.", "OK"))->Go();
-}
-
-
-void BurnWindow::_BuildImage()
-{
-	if (fTabView->FocusTab() == 0)
-		fCompilationDataView->BuildISO();
-	else
-		(new BAlert("BuildImageAlert",
-			"On this tab ISO building isn't implemented.", "OK"))->Go();
-}
 
 
 void BurnWindow::_ClearCache()

@@ -21,6 +21,8 @@ static const float kControlPadding = be_control_look->DefaultItemSpacing();
 const int32 kChooseDirectoryMessage = 'Cusd';
 const int32 kFromScratchMessage = 'Scrh';
 const int32 kBurnerMessage = 'Brnr';
+const int32 kBuildImageMessage = 'IMAG';
+const int32 kBurnDiscMessage = 'BURN';
 
 // Misc variable(s)
 int mode = 0;
@@ -47,23 +49,36 @@ CompilationDataView::CompilationDataView(BurnWindow &parent)
 		fBurnerInfoTextView, 0, true, true);
 
 	BButton* chooseDirectoryButton = new BButton("ChooseDirectoryButton",
-		"Choose directory to burn", new BMessage(kChooseDirectoryMessage));
+		"Choose folder to burn", new BMessage(kChooseDirectoryMessage));
 	chooseDirectoryButton->SetTarget(this);
-	
-	BStringView* stringView = new BStringView("", "or");
-	
+	chooseDirectoryButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
 	BButton* fromScratchButton = new BButton("FromScratchButton",
-		"Prepare compilation from scratch", new BMessage(kFromScratchMessage));
+		"Prepare compilation", new BMessage(kFromScratchMessage));
 	fromScratchButton->SetTarget(this);
+	fromScratchButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+	BButton* buildImageButton = new BButton("BuildImageButton",
+		"Build image", new BMessage(kBuildImageMessage));
+	buildImageButton->SetTarget(this);
+	buildImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+	BButton* burnImageButton = new BButton("BurnImageButton",
+		"Burn disc", new BMessage(kBurnDiscMessage));
+	burnImageButton->SetTarget(this);
+	burnImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
-		.AddGroup(B_HORIZONTAL)
-			.AddGlue()
-			.Add(chooseDirectoryButton)
-			.Add(stringView)
-			.Add(fromScratchButton)
-			.AddGlue()
+		.AddGrid(kControlPadding * 2, kControlPadding / 2)
+			.Add(new BStringView("", "Step 1:"), 0, 0)
+			.Add(chooseDirectoryButton, 1, 0)
+			.Add(new BStringView("", "or"), 2, 0)
+			.Add(fromScratchButton, 3, 0)
+			.Add(new BStringView("", "Step 2:"), 0, 1)
+			.Add(buildImageButton, 1, 1)
+			.Add(new BStringView("", "or"), 2, 1)
+			.Add(burnImageButton, 3, 1)
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fBurnerInfoBox)
@@ -92,6 +107,14 @@ void CompilationDataView::AttachedToWindow()
 	BButton* fromScratchButton = dynamic_cast<BButton*>(FindView("FromScratchButton"));
 	if (fromScratchButton != NULL)
 		fromScratchButton->SetTarget(this);
+
+	BButton* buildImageButton = dynamic_cast<BButton*>(FindView("BuildImageButton"));
+	if (buildImageButton != NULL)
+		buildImageButton->SetTarget(this);
+
+	BButton* burnImageButton = dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	if (burnImageButton != NULL)
+		burnImageButton->SetTarget(this);
 }
 
 
@@ -103,6 +126,12 @@ void CompilationDataView::MessageReceived(BMessage* message)
 			break;
 		case kFromScratchMessage:
 			_FromScratch();
+			break;
+		case kBurnDiscMessage:
+			BurnDisc();
+			break;
+		case kBuildImageMessage:
+			BuildISO();
 			break;
 		case B_REFS_RECEIVED:
 			_OpenDirectory(message);
@@ -126,7 +155,6 @@ void CompilationDataView::_ChooseDirectory()
 
 	fOpenPanel->Show();
 }
-
 
 void CompilationDataView::_FromScratch()
 {
@@ -161,7 +189,7 @@ void CompilationDataView::_OpenDirectory(BMessage* message)
 	fDirPath->SetTo(&dirRef);
 	
 	(new BAlert("DirectoryOpenedAlert",
-		"Now you can build the ISO or burn the disc.", "OK"))->Go();
+		"Now you can build the image or burn the disc.", "OK"))->Go();
 }
 
 
@@ -242,12 +270,12 @@ void CompilationDataView::BurnDisc()
 
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+	BString device = windowParent->GetSelectedDevice().number.String();
 
 	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
-	
 	fBurnerThread->AddArgument("cdrecord")
-		->AddArgument("-dev=")
-		->AddArgument(windowParent->GetSelectedDevice().number.String());
+		->AddArgument("dev=")
+		->AddArgument(device);
 	
 	if (windowParent->GetSessionMode())
 		fBurnerThread->AddArgument("-sao")->AddArgument(fDirPath->Path())->Run();

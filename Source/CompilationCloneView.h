@@ -36,7 +36,6 @@ private:
 	BTextView* fClonerInfoTextView;
 	BurnWindow* windowParent;
 	BSeparatorView* fClonerInfoBox;
-	BMenu* fSourceDeviceMenu;
 };
 
 

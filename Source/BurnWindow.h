@@ -38,8 +38,6 @@ private:
 	BTabView* _CreateTabView();
 	BView* _CreateDiskUsageView();
 
-	void _BurnDisc();
-	void _BuildImage();
 	void _ClearCache();
 	void _OpenSettings();
 	void _OpenWebSite();

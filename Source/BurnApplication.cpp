@@ -32,9 +32,9 @@ void BurnApplication::AboutRequested()
 {
 	// TODO Replace with real about window
 	(new BAlert("AboutAlert",
-		"BurnItNow2\nCopyright 2010-2012, BurnItNow Team. "
+		"BurnItNow2\nCopyright 2010-2016, BurnItNow Team.\n"
 		"All rights reserved.\n"
-		"Distributed under the terms of the MIT License.\n"
+		"Distributed under the terms of the MIT License.\n\n"
 		"https://github.com/przemub/burnitnow\n"
 		"https://github.com/HaikuArchives/BurnItNow", "OK"))->Go();
 }

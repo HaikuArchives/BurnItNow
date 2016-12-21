@@ -51,42 +51,21 @@ CompilationCloneView::CompilationCloneView(BurnWindow &parent)
 	BScrollView* infoScrollView = new BScrollView("CloneInfoScrollView",
 		fClonerInfoTextView, 0, true, true);
 
-	fSourceDeviceMenu = new BMenu("CloneModeMenu");
-	fSourceDeviceMenu->SetLabelFromMarked(true);
-	
-	windowParent->FindDevices(srcDevices);
-	
-	for (unsigned int ix=0; ix<MAX_DEVICES; ++ix) {
-		if (srcDevices[ix].number.IsEmpty())
-			break;
-		BString deviceString("");
-		deviceString << srcDevices[ix].manufacturer << srcDevices[ix].model
-			<< "(" << srcDevices[ix].number << ")";
-		BMenuItem* deviceItem = new BMenuItem(deviceString,
-			new BMessage(kDeviceChangeMessage[ix]));
-		deviceItem->SetEnabled(true);
-		if (ix == 0)
-			deviceItem->SetMarked(true);
-		fSourceDeviceMenu->AddItem(deviceItem);
-	}
-	
-	BMenuField* sourceDeviceMenuField = new BMenuField("SourceDeviceMenuField",
-		"Source:", fSourceDeviceMenu);
-
 	BButton* createImageButton = new BButton("CreateImageButton",
-		"Step 1: Create disc ISO", new BMessage(kCreateImageMessage));
+		"Step 1: Create image", new BMessage(kCreateImageMessage));
 	createImageButton->SetTarget(this);
 	
 	BButton* burnImageButton = new BButton("BurnImageButton",
-		"Step 2: Burn ISO", new BMessage(kBurnImageMessage));
+		"Step 2: Burn image", new BMessage(kBurnImageMessage));
 	burnImageButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
-			.Add(sourceDeviceMenuField)
+			.AddGlue()
 			.Add(createImageButton)
 			.Add(burnImageButton)
+			.AddGlue()
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fClonerInfoBox)
@@ -191,7 +170,6 @@ void CompilationCloneView::_BurnImage()
 
 	status_t ret = path.Append("burnitnow_cache.iso");
 	if (ret == B_OK) {
-printf("CompilationCloneView::_BurnImage() - %s\n", path.Path());
 		if (windowParent->GetSessionMode())
 			fClonerThread->AddArgument("-sao")->AddArgument(path.Path())->Run();
 		else
@@ -229,7 +207,6 @@ void CompilationCloneView::_ClonerOutput(BMessage* message)
 			BPath path;
 			if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
 				return;
-printf("CompilationCloneView::_ClonerOutput - %s\n", path.Path());
 			if (resp == 0)
 			{
 				CommandThread* command = new CommandThread(NULL,

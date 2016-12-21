@@ -19,6 +19,7 @@ static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
 const int32 kBurnerMessage = 'Brnr';
+const int32 kBurnDiscMessage = 'BURN';
 
 CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 	:
@@ -41,6 +42,11 @@ CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
 		fBurnerInfoTextView, 0, true, true);
 
+	BButton* burnDiscButton = new BButton("BurnDiscButton",
+		"Burn disc", new BMessage(kBurnDiscMessage));
+	burnDiscButton->SetTarget(this);
+	burnDiscButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fAudioBox->SetFont(be_bold_font);
 	fAudioBox->SetLabel("Drop tracks here (only WAV files)");
@@ -53,6 +59,11 @@ CompilationAudioView::CompilationAudioView(BurnWindow &parent)
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
+		.AddGroup(B_HORIZONTAL)
+			.AddGlue()
+			.Add(burnDiscButton)
+			.AddGlue()
+			.End()
 		.AddGroup(B_HORIZONTAL)
 			.AddGroup(B_VERTICAL)
 				.Add(fBurnerInfoBox)
@@ -81,6 +92,9 @@ void CompilationAudioView::MessageReceived(BMessage* message)
 	switch (message->what) {
 		case kBurnerMessage:
 			_BurnerParserOutput(message);
+			break;
+		case kBurnDiscMessage:
+			BurnDisc();
 			break;
 		case B_REFS_RECEIVED:
 			_AddTrack(message);
@@ -136,15 +150,19 @@ void CompilationAudioView::_AddTrack(BMessage* message) {
 
 
 void CompilationAudioView::BurnDisc() {
+	if (fAudioList->IsEmpty())
+		return;
+
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+	BString device = windowParent->GetSelectedDevice().number.String();
 	
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
 	
 	fBurnerThread->AddArgument("cdrecord")
-		->AddArgument("-dev=")
-		->AddArgument(windowParent->GetSelectedDevice().number.String())
+		->AddArgument("dev=")
+		->AddArgument(device)
 		->AddArgument("-audio")
 		->AddArgument("-pad");
 	
