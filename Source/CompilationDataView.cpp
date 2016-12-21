@@ -246,6 +246,12 @@ void CompilationDataView::BuildISO()
 	status_t ret = fImagePath->Append("burnitnow_iso.iso");
 	if (ret == B_OK) {
 		fBurnerThread->AddArgument("mkisofs")
+		->AddArgument("-iso-level 3")
+		->AddArgument("-J")
+		->AddArgument("-joliet-long")
+		->AddArgument("-rock")
+		->AddArgument("-V")
+		->AddArgument(fDirPath->Leaf())
 		->AddArgument("-o")
 		->AddArgument(fImagePath->Path())
 		->AddArgument(fDirPath->Path())
