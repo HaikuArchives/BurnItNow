@@ -14,12 +14,12 @@ class BurnWindow;
 
 class BurnApplication : public BApplication {
 public:
-	BurnApplication();
+					BurnApplication();
 
-	virtual void AboutRequested();
+	virtual void	AboutRequested();
 
 private:
-	BurnWindow* fWindow;
+	BurnWindow*		fWindow;
 };
 
 

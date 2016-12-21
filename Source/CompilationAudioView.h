@@ -23,27 +23,27 @@ class CommandThread;
 
 class CompilationAudioView : public BView {
 public:
-	CompilationAudioView(BurnWindow &parent);
-	virtual ~CompilationAudioView();
+					CompilationAudioView(BurnWindow& parent);
+	virtual 		~CompilationAudioView();
 
-	virtual void MessageReceived(BMessage* message);
+	virtual void	MessageReceived(BMessage* message);
 	
-	void BurnDisc();
+	void 			BurnDisc();
 
 private:
-	void _BurnerParserOutput(BMessage* message);
-	void _AddTrack(BMessage* message);
+	void 			_BurnerParserOutput(BMessage* message);
+	void 			_AddTrack(BMessage* message);
 	
-	CommandThread* fBurnerThread;
-	BTextView* fBurnerInfoTextView;
-	BListView* fAudioList;
-	BurnWindow* windowParent;
-	BSeparatorView* fBurnerInfoBox;
-	BSeparatorView* fAudioBox;
+	CommandThread*	fBurnerThread;
+	BTextView* 		fBurnerInfoTextView;
+	BListView* 		fAudioList;
+	BurnWindow* 	windowParent;
+	BSeparatorView*	fBurnerInfoBox;
+	BSeparatorView*	fAudioBox;
 	
-	BPath* fTrackPath;
-	BPath* fTrackPaths[MAX_TRACKS];
-	int fCurrentPath;
+	BPath* 			fTrackPath;
+	BPath* 			fTrackPaths[MAX_TRACKS];
+	int 			fCurrentPath;
 };
 
 

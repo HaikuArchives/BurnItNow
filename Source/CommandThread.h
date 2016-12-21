@@ -15,28 +15,29 @@
 
 class CommandThread : public BLocker {
 public:
-	CommandThread(BObjectList<BString>* argList = NULL, BInvoker* invoker = NULL);
-	virtual ~CommandThread();
+					CommandThread(BObjectList<BString>* argList = NULL,
+						BInvoker* invoker = NULL);
+	virtual 		~CommandThread();
 
 	BObjectList<BString>* Arguments();
-	void SetArguments(BObjectList<BString>* argList);
-	CommandThread* AddArgument(const char* argument);
+	void 			SetArguments(BObjectList<BString>* argList);
+	CommandThread*	AddArgument(const char* argument);
 
-	BInvoker* Invoker();
-	void SetInvoker(BInvoker* invoker);
+	BInvoker* 		Invoker();
+	void 			SetInvoker(BInvoker* invoker);
 
-	status_t Run();
-	status_t Stop();
-	status_t Wait();
-	bool IsRunning();
+	status_t 		Run();
+	status_t 		Stop();
+	status_t 		Wait();
+	bool 			IsRunning();
 
 private:
-	static int32 _Thread(void* data);
-	static void _ThreadExit(void* data);
+	static int32 	_Thread(void* data);
+	static void 	_ThreadExit(void* data);
 
 	BObjectList<BString>* fArgumentList;
-	BInvoker* fInvoker;
-	thread_id fThread;
+	BInvoker* 		fInvoker;
+	thread_id 		fThread;
 };
 
 

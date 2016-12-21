@@ -27,7 +27,7 @@ const int32 kBurnDiscMessage = 'BURN';
 // Misc variable(s)
 int mode = 0;
 
-CompilationDataView::CompilationDataView(BurnWindow &parent)
+CompilationDataView::CompilationDataView(BurnWindow& parent)
 	:
 	BView("Data", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
@@ -52,7 +52,8 @@ CompilationDataView::CompilationDataView(BurnWindow &parent)
 	BButton* chooseDirectoryButton = new BButton("ChooseDirectoryButton",
 		"Choose folder to burn", new BMessage(kChooseDirectoryMessage));
 	chooseDirectoryButton->SetTarget(this);
-	chooseDirectoryButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	chooseDirectoryButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
+		B_SIZE_UNSET));
 
 	BButton* fromScratchButton = new BButton("FromScratchButton",
 		"Prepare compilation", new BMessage(kFromScratchMessage));
@@ -97,29 +98,35 @@ CompilationDataView::~CompilationDataView()
 #pragma mark -- BView Overrides --
 
 
-void CompilationDataView::AttachedToWindow()
+void
+CompilationDataView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* chooseDirectoryButton = dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
+	BButton* chooseDirectoryButton
+		= dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
 	if (chooseDirectoryButton != NULL)
 		chooseDirectoryButton->SetTarget(this);
 	
-	BButton* fromScratchButton = dynamic_cast<BButton*>(FindView("FromScratchButton"));
+	BButton* fromScratchButton
+		= dynamic_cast<BButton*>(FindView("FromScratchButton"));
 	if (fromScratchButton != NULL)
 		fromScratchButton->SetTarget(this);
 
-	BButton* buildImageButton = dynamic_cast<BButton*>(FindView("BuildImageButton"));
+	BButton* buildImageButton
+		= dynamic_cast<BButton*>(FindView("BuildImageButton"));
 	if (buildImageButton != NULL)
 		buildImageButton->SetTarget(this);
 
-	BButton* burnImageButton = dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
 	if (burnImageButton != NULL)
 		burnImageButton->SetTarget(this);
 }
 
 
-void CompilationDataView::MessageReceived(BMessage* message)
+void
+CompilationDataView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kChooseDirectoryMessage:
@@ -148,16 +155,19 @@ void CompilationDataView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
-void CompilationDataView::_ChooseDirectory()
+void
+CompilationDataView::_ChooseDirectory()
 {
-	if (fOpenPanel == NULL)
+	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
 			B_DIRECTORY_NODE, false, NULL, NULL, true);
-
+	}
 	fOpenPanel->Show();
 }
 
-void CompilationDataView::_FromScratch()
+
+void
+CompilationDataView::_FromScratch()
 {
 	// Create cache directory
 	BPath path;
@@ -175,12 +185,15 @@ void CompilationDataView::_FromScratch()
 			"build the ISO or burn the disc.", "OK"))->Go();
 
 		// Display cache directory
-		CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
+		CommandThread* command = new CommandThread(NULL,
+			new BInvoker(new BMessage(), this));
 		command->AddArgument("open")->AddArgument(path.Path())->Run();
 	}
 }
 
-void CompilationDataView::_OpenDirectory(BMessage* message)
+
+void
+CompilationDataView::_OpenDirectory(BMessage* message)
 {
 	entry_ref dirRef;
 
@@ -194,7 +207,8 @@ void CompilationDataView::_OpenDirectory(BMessage* message)
 }
 
 
-void CompilationDataView::_BurnerOutput(BMessage* message)
+void
+CompilationDataView::_BurnerOutput(BMessage* message)
 {
 	BString data;
 
@@ -205,28 +219,29 @@ void CompilationDataView::_BurnerOutput(BMessage* message)
 
 	fBurnerInfoTextView->Insert(data.String());
 	
-	if (!fBurnerThread->IsRunning() && mode == 1)
-	{
+	if (!fBurnerThread->IsRunning() && mode == 1) {
 		BPath path;
 		if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
 			return;
 		fBurnerInfoBox->SetLabel("Ready");
-		CommandThread* command = new CommandThread(NULL, new BInvoker(new BMessage(), this));
+		CommandThread* command = new CommandThread(NULL,
+			new BInvoker(new BMessage(), this));
 		command->AddArgument("open")->AddArgument(path.Path())->Run();
 		mode = 0;
-	}
-	else if (!fBurnerThread->IsRunning() && mode == 2)
+	} else if (!fBurnerThread->IsRunning() && mode == 2)
 		fBurnerInfoBox->SetLabel("Ready");
 }
 
+
 #pragma mark -- Public Methods --
 
-void CompilationDataView::BuildISO()
+
+void
+CompilationDataView::BuildISO()
 {
 	mode = 1;
 	
-	if (fDirPath->Path() == NULL)
-	{
+	if (fDirPath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
 			"First choose the folder to burn.", "OK"))->Go();
 		return;
@@ -238,7 +253,8 @@ void CompilationDataView::BuildISO()
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Building in progress" B_UTF8_ELLIPSIS);
 	
-	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBurnerMessage), this));
 
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, fImagePath) != B_OK)
 		return;
@@ -260,12 +276,12 @@ void CompilationDataView::BuildISO()
 }
 
 
-void CompilationDataView::BurnDisc()
+void
+CompilationDataView::BurnDisc()
 {
 	mode = 1;
 
-	if (fImagePath->Path() == NULL)
-	{
+	if (fImagePath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
 			"First choose the folder to burn.", "OK"))->Go();
 		return;
@@ -278,13 +294,17 @@ void CompilationDataView::BurnDisc()
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
 	BString device = windowParent->GetSelectedDevice().number.String();
 
-	fBurnerThread = new CommandThread(NULL, new BInvoker(new BMessage(kBurnerMessage), this));
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBurnerMessage), this));
 	fBurnerThread->AddArgument("cdrecord")
 		->AddArgument("dev=")
 		->AddArgument(device);
 	
-	if (windowParent->GetSessionMode())
-		fBurnerThread->AddArgument("-sao")->AddArgument(fImagePath->Path())->Run();
-	else
-		fBurnerThread->AddArgument("-tao")->AddArgument(fImagePath->Path())->Run();
+	if (windowParent->GetSessionMode()) {
+		fBurnerThread->AddArgument("-sao")
+			->AddArgument(fImagePath->Path())->Run();
+	} else {
+		fBurnerThread->AddArgument("-tao")
+			->AddArgument(fImagePath->Path())->Run();
+	}
 }

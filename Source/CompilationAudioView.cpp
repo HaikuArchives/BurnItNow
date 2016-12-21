@@ -3,7 +3,6 @@
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationAudioView.h"
-
 #include "CommandThread.h"
 
 #include <Alert.h>
@@ -21,7 +20,7 @@ static const float kControlPadding = be_control_look->DefaultItemSpacing();
 const int32 kBurnerMessage = 'Brnr';
 const int32 kBurnDiscMessage = 'BURN';
 
-CompilationAudioView::CompilationAudioView(BurnWindow &parent)
+CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	:
 	BView("Audio", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBurnerThread(NULL),
@@ -87,7 +86,8 @@ CompilationAudioView::~CompilationAudioView()
 #pragma mark -- BView Overrides --
 
 
-void CompilationAudioView::MessageReceived(BMessage* message)
+void
+CompilationAudioView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kBurnerMessage:
@@ -108,7 +108,8 @@ void CompilationAudioView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
-void CompilationAudioView::_BurnerParserOutput(BMessage* message)
+void
+CompilationAudioView::_BurnerParserOutput(BMessage* message)
 {
 	BString data;
 
@@ -123,16 +124,17 @@ void CompilationAudioView::_BurnerParserOutput(BMessage* message)
 		fBurnerInfoBox->SetLabel("Ready");
 }
 
-void CompilationAudioView::_AddTrack(BMessage* message) {
+
+void
+CompilationAudioView::_AddTrack(BMessage* message)
+{
 	// TODO Verify that the file is a WAV file
-	
 	entry_ref trackRef;
 
 	if (message->FindRef("refs", &trackRef) != B_OK)
 		return;
 	
-	if (fCurrentPath == 0)
-	{
+	if (fCurrentPath == 0) {
 		// fAudioList->RemoveItem(0) returns error
 		int32 tmp = 0;
 		fAudioList->RemoveItem(tmp);
@@ -149,7 +151,9 @@ void CompilationAudioView::_AddTrack(BMessage* message) {
 #pragma mark -- Public Methods --
 
 
-void CompilationAudioView::BurnDisc() {
+void
+CompilationAudioView::BurnDisc()
+{
 	if (fAudioList->IsEmpty())
 		return;
 
@@ -171,11 +175,9 @@ void CompilationAudioView::BurnDisc() {
 	else
 		fBurnerThread->AddArgument("-tao");
 		
-	for (unsigned int ix = 0; ix<=MAX_TRACKS; ix++)
-	{
+	for (unsigned int ix = 0; ix<=MAX_TRACKS; ix++) {
 		if (fTrackPaths[ix] == NULL)
 			break;
-
 		fBurnerThread->AddArgument(fTrackPaths[ix]->Path());
 	}
 	

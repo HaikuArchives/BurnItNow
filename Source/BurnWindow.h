@@ -24,27 +24,27 @@ typedef struct sdevice {
 
 class BurnWindow : public BWindow {
 public:
-	BurnWindow(BRect frame, const char* title);
+					BurnWindow(BRect frame, const char* title);
 
-	virtual void MessageReceived(BMessage* message);
+	virtual void	MessageReceived(BMessage* message);
 	
-	void FindDevices(sdevice *array);
-	sdevice GetSelectedDevice();
-	bool GetSessionMode();
+	void			FindDevices(sdevice* array);
+	sdevice			GetSelectedDevice();
+	bool			GetSessionMode();
 
 private:
-	BMenuBar* _CreateMenuBar();
-	BView* _CreateToolBar();
-	BTabView* _CreateTabView();
-	BView* _CreateDiskUsageView();
+	BMenuBar*		_CreateMenuBar();
+	BView*			_CreateToolBar();
+	BTabView*		_CreateTabView();
+	BView*			_CreateDiskUsageView();
 
-	void _ClearCache();
-	void _OpenSettings();
-	void _OpenWebSite();
-	void _OpenHelp();
-	void _UpdateSpeedSlider(BMessage* message);
+	void 			_ClearCache();
+	void 			_OpenSettings();
+	void 			_OpenWebSite();
+	void 			_OpenHelp();
+	void 			_UpdateSpeedSlider(BMessage* message);
 	
-	BTabView* fTabView;
+	BTabView* 		fTabView;
 };
 
 #endif	// _BURNWINDOW_H_

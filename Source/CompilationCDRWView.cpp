@@ -2,9 +2,8 @@
  * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-#include "CompilationCDRWView.h"
-
 #include "CommandThread.h"
+#include "CompilationCDRWView.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -21,7 +20,7 @@ static const float kControlPadding = be_control_look->DefaultItemSpacing();
 const int32 kBlankMessage = 'Blnk';
 const int32 kBlankerMessage = 'Blkr';
 
-CompilationCDRWView::CompilationCDRWView(BurnWindow &parent)
+CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	:
 	BView("CDRW", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
@@ -85,7 +84,8 @@ CompilationCDRWView::~CompilationCDRWView()
 #pragma mark -- BView Overrides --
 
 
-void CompilationCDRWView::AttachedToWindow()
+void
+CompilationCDRWView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
@@ -95,7 +95,8 @@ void CompilationCDRWView::AttachedToWindow()
 }
 
 
-void CompilationCDRWView::MessageReceived(BMessage* message)
+void
+CompilationCDRWView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kBlankMessage:
@@ -113,7 +114,8 @@ void CompilationCDRWView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
-void CompilationCDRWView::_Blank()
+void
+CompilationCDRWView::_Blank()
 {
 	BString mode = fBlankModeMenu->FindMarked()->Label();
 	mode.ToLower();
@@ -135,7 +137,8 @@ void CompilationCDRWView::_Blank()
 }
 
 
-void CompilationCDRWView::_BlankerParserOutput(BMessage* message)
+void
+CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 {
 	BString data;
 

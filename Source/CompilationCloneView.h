@@ -20,22 +20,22 @@ class CommandThread;
 
 class CompilationCloneView : public BView {
 public:
-	CompilationCloneView(BurnWindow &parent);
-	virtual ~CompilationCloneView();
+					CompilationCloneView(BurnWindow& parent);
+	virtual 		~CompilationCloneView();
 
-	virtual void MessageReceived(BMessage* message);
-	virtual void AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+	virtual void	AttachedToWindow();
 
 private:
-	void _CreateImage();
-	void _BurnImage();
-	void _ClonerOutput(BMessage* message);
+	void 			_CreateImage();
+	void 			_BurnImage();
+	void 			_ClonerOutput(BMessage* message);
 
-	BFilePanel* fOpenPanel;
-	CommandThread* fClonerThread;
-	BTextView* fClonerInfoTextView;
-	BurnWindow* windowParent;
-	BSeparatorView* fClonerInfoBox;
+	BFilePanel*		fOpenPanel;
+	CommandThread*	fClonerThread;
+	BTextView*		fClonerInfoTextView;
+	BurnWindow*		windowParent;
+	BSeparatorView*	fClonerInfoBox;
 };
 
 

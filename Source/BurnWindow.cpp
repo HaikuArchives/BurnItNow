@@ -38,7 +38,8 @@ const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
 
-const uint32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
+const uint32 kDeviceChangeMessage[MAX_DEVICES]
+	= { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
 // Misc constants
 const int32 kMinBurnSpeed = 2;
@@ -62,8 +63,8 @@ CompilationImageView* fCompilationImageView;
 
 BurnWindow::BurnWindow(BRect frame, const char* title)
 	:
-	BWindow(frame, title, B_TITLED_WINDOW,
-		B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
+	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS
+		| B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	fTabView = _CreateTabView();
 	fTabView->SetBorder(B_NO_BORDER);
@@ -79,7 +80,8 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 #pragma mark --BWindow Overrides--
 
 
-void BurnWindow::MessageReceived(BMessage* message)
+void
+BurnWindow::MessageReceived(BMessage* message)
 {
 	if (message->WasDropped()) {
 		entry_ref ref;
@@ -107,18 +109,29 @@ void BurnWindow::MessageReceived(BMessage* message)
 			break;
 		case B_REFS_RECEIVED:
 			// Redirect message to current tab
-			if(fTabView->FocusTab() == 1)
+			if (fTabView->FocusTab() == 1)
 				fCompilationAudioView->MessageReceived(message);
-			else if(fTabView->FocusTab() == 2)
+			else if (fTabView->FocusTab() == 2)
 				fCompilationImageView->MessageReceived(message);
 			break;
 		default:
-		if( kDeviceChangeMessage[0] == message->what ){selectedDevice=0; break;}
-		else if( kDeviceChangeMessage[1] == message->what ){selectedDevice=1; break;}
-		else if( kDeviceChangeMessage[2] == message->what ){selectedDevice=2; break;}
-		else if( kDeviceChangeMessage[3] == message->what ){selectedDevice=3; break;}
-		else if( kDeviceChangeMessage[4] == message->what ){selectedDevice=4; break;}
-			BWindow::MessageReceived(message);
+		if (kDeviceChangeMessage[0] == message->what) {
+			selectedDevice = 0;
+			break;
+		} else if (kDeviceChangeMessage[1] == message->what) {
+			selectedDevice = 1;
+			break;
+		} else if (kDeviceChangeMessage[2] == message->what) {
+			selectedDevice = 2;
+			break;
+		} else if (kDeviceChangeMessage[3] == message->what) {
+			selectedDevice = 3;
+			break;
+		} else if (kDeviceChangeMessage[4] == message->what) {
+			selectedDevice = 4;
+			break;
+		}
+		BWindow::MessageReceived(message);
 	}
 }
 
@@ -126,7 +139,8 @@ void BurnWindow::MessageReceived(BMessage* message)
 #pragma mark --Private Interface Builders--
 
 
-BMenuBar* BurnWindow::_CreateMenuBar()
+BMenuBar*
+BurnWindow::_CreateMenuBar()
 {
 	BMenuBar* menuBar = new BMenuBar("GlobalMenuBar");
 
@@ -137,26 +151,31 @@ BMenuBar* BurnWindow::_CreateMenuBar()
 		new BMessage(B_ABOUT_REQUESTED));
 	aboutItem->SetTarget(be_app);
 	fileMenu->AddItem(aboutItem);
-	fileMenu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
+	fileMenu->AddItem(new BMenuItem("Quit",
+		new BMessage(B_QUIT_REQUESTED), 'Q'));
 
 	BMenu* toolsMenu = new BMenu("Tools & settings");
 	menuBar->AddItem(toolsMenu);
 	
-	toolsMenu->AddItem(new BMenuItem("Clear cache", new BMessage(kClearCacheMessage)));
+	toolsMenu->AddItem(new BMenuItem("Clear cache",
+		new BMessage(kClearCacheMessage)));
 	toolsMenu->AddItem(new BMenuItem("Settings" B_UTF8_ELLIPSIS,
 		new BMessage(kOpenSettingsMessage), 'S'));
 
 	BMenu* helpMenu = new BMenu("Help");
 	menuBar->AddItem(helpMenu);
 
-	helpMenu->AddItem(new BMenuItem("Usage instructions", new BMessage(kOpenHelpMessage)));
-	helpMenu->AddItem(new BMenuItem("Project website", new BMessage(kOpenWebsiteMessage)));
+	helpMenu->AddItem(new BMenuItem("Usage instructions",
+		new BMessage(kOpenHelpMessage)));
+	helpMenu->AddItem(new BMenuItem("Project website",
+		new BMessage(kOpenWebsiteMessage)));
 
 	return menuBar;
 }
 
 
-BView* BurnWindow::_CreateToolBar()
+BView*
+BurnWindow::_CreateToolBar()
 {
 	BGroupView* groupView = new BGroupView(B_HORIZONTAL, kControlPadding);
 
@@ -166,7 +185,8 @@ BView* BurnWindow::_CreateToolBar()
 	daoItem->SetMarked(true);
 	sessionMenu->AddItem(daoItem);
 	sessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
-	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "", sessionMenu);
+	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "",
+		sessionMenu);
 	sessionMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	deviceMenu = new BMenu("DeviceMenu");
@@ -174,24 +194,29 @@ BView* BurnWindow::_CreateToolBar()
 
 	// Checking for devices
 	FindDevices(devices);
-	for (unsigned int ix=0; ix<MAX_DEVICES; ++ix) {
+	for (unsigned int ix = 0; ix < MAX_DEVICES; ++ix) {
 		if (devices[ix].number.IsEmpty())
 			break;
 		BString deviceString("");
-		deviceString << devices[ix].manufacturer << devices[ix].model << "(" << devices[ix].number << ")";
-		BMenuItem* deviceItem = new BMenuItem(deviceString, new BMessage(kDeviceChangeMessage[ix]));
+		deviceString << devices[ix].manufacturer << devices[ix].model
+			<< "(" << devices[ix].number << ")";
+		BMenuItem* deviceItem = new BMenuItem(deviceString,
+			new BMessage(kDeviceChangeMessage[ix]));
 		deviceItem->SetEnabled(true);
 		if (ix == 0)
 			deviceItem->SetMarked(true);
 		deviceMenu->AddItem(deviceItem);
 	}
 	
-	BMenuField* deviceMenuField = new BMenuField("DeviceMenuField", "", deviceMenu);
+	BMenuField* deviceMenuField = new BMenuField("DeviceMenuField", "",
+		deviceMenu);
 	deviceMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	// TODO These values should be obtained from the capabilities of the drive and the type of media
+	// TODO These values should be obtained from the capabilities
+	// of the drive and the type of media
 	BSlider* burnSlider = new BSlider("SpeedSlider", "Burn speed: 2X",
-		new BMessage(kSpeedSliderMessage), kMinBurnSpeed, kMaxBurnSpeed, B_HORIZONTAL);
+		new BMessage(kSpeedSliderMessage), kMinBurnSpeed, kMaxBurnSpeed,
+		B_HORIZONTAL);
 	burnSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
 	burnSlider->SetLimitLabels("2X", "52X");
 	burnSlider->SetHashMarks(B_HASH_MARKS_BOTH);
@@ -204,10 +229,14 @@ BView* BurnWindow::_CreateToolBar()
 			.AddGroup(B_VERTICAL)
 				.AddGlue()
 				.AddGrid(kControlPadding, 0.0)
-					.Add(new BCheckBox("MultiSessionCheckBox", "MultiSession", new BMessage()), 0, 0)
-					.Add(new BCheckBox("OnTheFlyCheckBox", "On-the-fly", new BMessage()), 1, 0)
-					.Add(new BCheckBox("DummyModeCheckBox", "Dummy mode", new BMessage()), 0, 1)
-					.Add(new BCheckBox("EjectCheckBox", "Eject after burning", new BMessage()), 1, 1)
+					.Add(new BCheckBox("MultiSessionCheckBox", "MultiSession",
+						new BMessage()), 0, 0)
+					.Add(new BCheckBox("OnTheFlyCheckBox", "On-the-fly",
+						new BMessage()), 1, 0)
+					.Add(new BCheckBox("DummyModeCheckBox", "Dummy mode",
+						new BMessage()), 0, 1)
+					.Add(new BCheckBox("EjectCheckBox", "Eject after burning",
+						new BMessage()), 1, 1)
 					.End()
 				.AddGlue()
 				.End()
@@ -223,7 +252,8 @@ BView* BurnWindow::_CreateToolBar()
 }
 
 
-BTabView* BurnWindow::_CreateTabView()
+BTabView*
+BurnWindow::_CreateTabView()
 {
 	BTabView* tabView = new BTabView("CompilationsTabView", B_WIDTH_FROM_LABEL);
 
@@ -244,7 +274,8 @@ BTabView* BurnWindow::_CreateTabView()
 #pragma mark --Private Message Handlers--
 
 
-void BurnWindow::_ClearCache()
+void
+BurnWindow::_ClearCache()
 {
 	BPath cachePath;
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &cachePath) != B_OK)
@@ -266,8 +297,7 @@ void BurnWindow::_ClearCache()
 
 		BDirectory* dir = new BDirectory(path.Path());
 
-		while (true)
-		{
+		while (true) {
 			if (dir->GetNextEntry(entry) != B_OK)
 				break;
 
@@ -277,30 +307,37 @@ void BurnWindow::_ClearCache()
 		entry = new BEntry(path.Path());
 		entry->Remove();
 
-		(new BAlert("ClearCacheAlert", "Cache cleared successfully.", "OK"))->Go();
+		(new BAlert("ClearCacheAlert", "Cache cleared successfully.",
+			"OK"))->Go();
 	}
 }
 
-void BurnWindow::_OpenSettings()
+
+void
+BurnWindow::_OpenSettings()
 {
 	(new BAlert("OpenSettingsAlert", "Not implemented yet", "OK"))->Go();
 }
 
-void BurnWindow::_OpenWebSite()
+
+void
+BurnWindow::_OpenWebSite()
 {
 	// TODO Ask BRoster to launch a browser for the project website
 	(new BAlert("OpenWebSiteAlert", "Not implemented yet", "OK"))->Go();
 }
 
 
-void BurnWindow::_OpenHelp()
+void
+BurnWindow::_OpenHelp()
 {
 	// TODO Ask BRoster to launch a browser for the local documentation
 	(new BAlert("OpenHelpAlert", "Not implemented yet", "OK"))->Go();
 }
 
 
-void BurnWindow::_UpdateSpeedSlider(BMessage* message)
+void
+BurnWindow::_UpdateSpeedSlider(BMessage* message)
 {
 	BSlider* speedSlider = NULL;
 	if (message->FindPointer("source", (void**)&speedSlider) != B_OK)
@@ -314,9 +351,11 @@ void BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	speedSlider->SetLabel(speedString.String());
 }
 
+
 #pragma mark -- Public Methods --
 
-void BurnWindow::FindDevices(sdevice *array)
+void
+BurnWindow::FindDevices(sdevice* array)
 {
 	FILE* f;
 	char buff[512];
@@ -325,16 +364,15 @@ void BurnWindow::FindDevices(sdevice *array)
 	int xdev = 0;
 	
 	f = popen("cdrecord -scanbus", "r");
-	while (fgets(buff, sizeof(buff), f)!=NULL){
+	while (fgets(buff, sizeof(buff), f)!=NULL) {
 		output[lineNumber] = buff;
 		lineNumber++;
 	}
 	pclose(f);
 	
-	for (BString *i=output; i<(output+512) ; i++)
+	for (BString* i = output; i < (output + 512); i++)
 	{
-		if (i->FindFirst('*') == B_ERROR && i->FindFirst("\' ") != B_ERROR)
-		{
+		if (i->FindFirst('*') == B_ERROR && i->FindFirst("\' ") != B_ERROR) {
 			BString device = i->Trim();
 			
 			// find device number
@@ -346,13 +384,13 @@ void BurnWindow::FindDevices(sdevice *array)
 			int manuStart = device.FindFirst('\'');
 			int manuEnd = device.FindFirst('\'', manuStart);
 			BString manu;
-			device.CopyInto(manu, manuStart+1, manuEnd-3);
+			device.CopyInto(manu, manuStart + 1, manuEnd - 3);
 			
 			// find model
-			int modelStart = device.FindFirst('\'', manuEnd+1);
-			int modelEnd = device.FindFirst('\'', modelStart+1);
+			int modelStart = device.FindFirst('\'', manuEnd + 1);
+			int modelEnd = device.FindFirst('\'', modelStart + 1);
 			BString model;
-			device.CopyInto(model, modelStart+3, modelEnd-6);
+			device.CopyInto(model, modelStart + 3, modelEnd - 6);
 			
 			sdevice dev = { number, manu, model };
 			if (xdev <= MAX_DEVICES)
@@ -361,7 +399,10 @@ void BurnWindow::FindDevices(sdevice *array)
 	}
 }
 
-sdevice BurnWindow::GetSelectedDevice() {
+
+sdevice
+BurnWindow::GetSelectedDevice()
+{
 	return devices[selectedDevice];
 }
 
@@ -369,9 +410,11 @@ sdevice BurnWindow::GetSelectedDevice() {
 * true - DAO/SAO
 * false - TAO
 */
-bool BurnWindow::GetSessionMode() {
+bool
+BurnWindow::GetSessionMode()
+{
 	BString modeLabel = sessionMenu->FindMarked()->Label();
-	if(modeLabel.FindFirst("DAO") == B_ERROR)
+	if (modeLabel.FindFirst("DAO") == B_ERROR)
 		return false;
 	return true;
 }

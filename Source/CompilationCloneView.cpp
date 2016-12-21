@@ -2,9 +2,8 @@
  * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-#include "CompilationCloneView.h"
-
 #include "CommandThread.h"
+#include "CompilationCloneView.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -23,7 +22,8 @@ const int32 kCreateImageMessage = 'Crat';
 const int32 kBurnImageMessage = 'Wrte';
 const int32 kClonerMessage = 'Clnr';
 
-const uint32 kDeviceChangeMessage[MAX_DEVICES] = { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
+const uint32 kDeviceChangeMessage[MAX_DEVICES]
+	= { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
 
 // Misc variables
 sdevice srcDevices[MAX_DEVICES];
@@ -31,7 +31,7 @@ int selectedSrcDevice;
 
 int step = 0;
 
-CompilationCloneView::CompilationCloneView(BurnWindow &parent)
+CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	:
 	BView("Clone", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
@@ -83,21 +83,25 @@ CompilationCloneView::~CompilationCloneView()
 #pragma mark -- BView Overrides --
 
 
-void CompilationCloneView::AttachedToWindow()
+void
+CompilationCloneView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* createImageButton = dynamic_cast<BButton*>(FindView("CreateImageButton"));
+	BButton* createImageButton
+		= dynamic_cast<BButton*>(FindView("CreateImageButton"));
 	if (createImageButton != NULL)
 		createImageButton->SetTarget(this);
 		
-	BButton* burnImageButton = dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
 	if (burnImageButton != NULL)
 		burnImageButton->SetTarget(this);
 }
 
 
-void CompilationCloneView::MessageReceived(BMessage* message)
+void
+CompilationCloneView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kCreateImageMessage:
@@ -110,12 +114,23 @@ void CompilationCloneView::MessageReceived(BMessage* message)
 			_ClonerOutput(message);
 			break;
 		default:
-		if( kDeviceChangeMessage[0] == message->what ){selectedSrcDevice=0; break;}
-		else if( kDeviceChangeMessage[1] == message->what ){selectedSrcDevice=1; break;}
-		else if( kDeviceChangeMessage[2] == message->what ){selectedSrcDevice=2; break;}
-		else if( kDeviceChangeMessage[3] == message->what ){selectedSrcDevice=3; break;}
-		else if( kDeviceChangeMessage[4] == message->what ){selectedSrcDevice=4; break;}
-			BView::MessageReceived(message);
+		if (kDeviceChangeMessage[0] == message->what) {
+			selectedSrcDevice = 0;
+			break;
+		} else if (kDeviceChangeMessage[1] == message->what) {
+			selectedSrcDevice = 1;
+			break;
+		} else if (kDeviceChangeMessage[2] == message->what) {
+			selectedSrcDevice = 2;
+			break;
+		} else if (kDeviceChangeMessage[3] == message->what) {
+			selectedSrcDevice = 3;
+			break;
+		} else if (kDeviceChangeMessage[4] == message->what) {
+			selectedSrcDevice = 4;
+			break;
+		}
+		BView::MessageReceived(message);
 	}
 }
 
@@ -123,7 +138,8 @@ void CompilationCloneView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
-void CompilationCloneView::_CreateImage()
+void
+CompilationCloneView::_CreateImage()
 {
 	const char* device = srcDevices[selectedSrcDevice].number.String();
 
@@ -140,7 +156,8 @@ void CompilationCloneView::_CreateImage()
 		parameter.Append(path.Path());
 		BString device = windowParent->GetSelectedDevice().number.String();
 		
-		fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));
+		fClonerThread = new CommandThread(NULL,
+			new BInvoker(new BMessage(kClonerMessage), this));
 		fClonerThread->AddArgument("readcd")
 			->AddArgument("-s")
 			->AddArgument(parameter)
@@ -153,13 +170,15 @@ void CompilationCloneView::_CreateImage()
 }
 
 
-void CompilationCloneView::_BurnImage()
+void
+CompilationCloneView::_BurnImage()
 {
 	fClonerInfoTextView->SetText(NULL);
 	fClonerInfoBox->SetLabel("Image burning in progress" B_UTF8_ELLIPSIS);
 	BString device = windowParent->GetSelectedDevice().number.String();
 
-	fClonerThread = new CommandThread(NULL, new BInvoker(new BMessage(kClonerMessage), this));	
+	fClonerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kClonerMessage), this));
 	fClonerThread->AddArgument("cdrecord")
 		->AddArgument("dev=")
 		->AddArgument(device);
@@ -180,7 +199,8 @@ void CompilationCloneView::_BurnImage()
 }
 
 
-void CompilationCloneView::_ClonerOutput(BMessage* message)
+void
+CompilationCloneView::_ClonerOutput(BMessage* message)
 {
 	BString data;
 
@@ -191,13 +211,12 @@ void CompilationCloneView::_ClonerOutput(BMessage* message)
 
 	fClonerInfoTextView->Insert(data.String());
 
-	if (!fClonerThread->IsRunning() && step == 1)
-	{
+	if (!fClonerThread->IsRunning() && step == 1) {
 		fClonerInfoBox->SetLabel("Ready");
 		BString result(fClonerInfoTextView->Text());
+
 		// Last output line always (expect error) contains speed statistics
-		if (result.FindFirst(" kB/sec.") != B_ERROR)
-		{
+		if (result.FindFirst(" kB/sec.") != B_ERROR) {
 			BAlert* finishAlert = new BAlert("CreateImageFinishAlert", 
 				"The image file has been created successfully.\n"
 				"Would you like to open the destination folder?",
@@ -207,14 +226,12 @@ void CompilationCloneView::_ClonerOutput(BMessage* message)
 			BPath path;
 			if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
 				return;
-			if (resp == 0)
-			{
+			if (resp == 0) {
 				CommandThread* command = new CommandThread(NULL,
 					new BInvoker(new BMessage(), this));
 				command->AddArgument("open")->AddArgument(path.Path())->Run();
 			}
 		}
-	}
-	else if (!fClonerThread->IsRunning() && step == 2)
+	} else if (!fClonerThread->IsRunning() && step == 2)
 		fClonerInfoBox->SetLabel("Ready");
 }

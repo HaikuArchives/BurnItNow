@@ -20,22 +20,22 @@ class CommandThread;
 
 class CompilationCDRWView : public BView {
 public:
-	CompilationCDRWView(BurnWindow &parent);
-	virtual ~CompilationCDRWView();
+					CompilationCDRWView(BurnWindow& parent);
+	virtual 		~CompilationCDRWView();
 
-	virtual void MessageReceived(BMessage* message);
-	virtual void AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+	virtual void	AttachedToWindow();
 
 private:
-	void _Blank();
-	void _BlankerParserOutput(BMessage* message);
+	void 			_Blank();
+	void 			_BlankerParserOutput(BMessage* message);
 
-	BFilePanel* fOpenPanel;
-	CommandThread* fBlankerThread;
-	BTextView* fBlankerInfoTextView;
-	BurnWindow* windowParent;
-	BSeparatorView* fBlankerInfoBox;
-	BMenu* fBlankModeMenu;
+	BFilePanel*		fOpenPanel;
+	CommandThread*	fBlankerThread;
+	BTextView*		fBlankerInfoTextView;
+	BurnWindow*		windowParent;
+	BSeparatorView*	fBlankerInfoBox;
+	BMenu*			fBlankModeMenu;
 };
 
 

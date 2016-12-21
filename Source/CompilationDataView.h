@@ -20,28 +20,28 @@ class CommandThread;
 
 class CompilationDataView : public BView {
 public:
-	CompilationDataView(BurnWindow &parent);
-	virtual ~CompilationDataView();
+					CompilationDataView(BurnWindow& parent);
+	virtual 		~CompilationDataView();
 
-	virtual void MessageReceived(BMessage* message);
-	virtual void AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+	virtual void	AttachedToWindow();
 	
-	void BuildISO();
-	void BurnDisc();
+	void			BuildISO();
+	void			BurnDisc();
 
 private:
-	void _ChooseDirectory();
-	void _FromScratch();
-	void _OpenDirectory(BMessage* message);
-	void _BurnerOutput(BMessage* message);
+	void 			_ChooseDirectory();
+	void 			_FromScratch();
+	void 			_OpenDirectory(BMessage* message);
+	void 			_BurnerOutput(BMessage* message);
 
-	BFilePanel* fOpenPanel;
-	CommandThread* fBurnerThread;
-	BTextView* fBurnerInfoTextView;
-	BurnWindow* windowParent;
-	BSeparatorView* fBurnerInfoBox;
-	BPath* fDirPath;
-	BPath* fImagePath;
+	BFilePanel* 	fOpenPanel;
+	CommandThread* 	fBurnerThread;
+	BTextView* 		fBurnerInfoTextView;
+	BurnWindow* 	windowParent;
+	BSeparatorView*	fBurnerInfoBox;
+	BPath* 			fDirPath;
+	BPath* 			fImagePath;
 };
 
 

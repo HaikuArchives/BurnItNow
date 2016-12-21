@@ -3,7 +3,6 @@
  * Distributed under the terms of the MIT License.
  */
 #include "BurnApplication.h"
-
 #include "BurnWindow.h"
 
 #include <Alert.h>
@@ -28,7 +27,8 @@ BurnApplication::BurnApplication()
 #pragma mark --BApplication Overrides--
 
 
-void BurnApplication::AboutRequested()
+void
+BurnApplication::AboutRequested()
 {
 	// TODO Replace with real about window
 	(new BAlert("AboutAlert",
@@ -43,10 +43,10 @@ void BurnApplication::AboutRequested()
 #pragma mark --Application Entry--
 
 
-int main(int argc, char** argv)
+int
+main(int argc, char** argv)
 {
 	BurnApplication app;
-
 	app.Run();
 
 	return 0;

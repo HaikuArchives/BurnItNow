@@ -19,24 +19,24 @@ class CommandThread;
 
 class CompilationImageView : public BView {
 public:
-	CompilationImageView(BurnWindow &parent);
-	virtual ~CompilationImageView();
+					CompilationImageView(BurnWindow& parent);
+	virtual 		~CompilationImageView();
 
-	virtual void MessageReceived(BMessage* message);
-	virtual void AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+	virtual void 	AttachedToWindow();
 
 private:
-	void _ChooseImage();
-	void _BurnImage();
-	void _OpenImage(BMessage* message);
-	void _ImageParserOutput(BMessage* message);
+	void 			_ChooseImage();
+	void 			_BurnImage();
+	void 			_OpenImage(BMessage* message);
+	void 			_ImageParserOutput(BMessage* message);
 
-	BFilePanel* fOpenPanel;
-	BPath* fImagePath;
-	CommandThread* fImageParserThread;
-	BTextView* fImageInfoTextView;
-	BurnWindow* windowParent;
-	BSeparatorView* fImageInfoBox;
+	BFilePanel* 	fOpenPanel;
+	BPath* 			fImagePath;
+	CommandThread* 	fImageParserThread;
+	BTextView*		fImageInfoTextView;
+	BurnWindow*		windowParent;
+	BSeparatorView*	fImageInfoBox;
 };
 
 

@@ -2,9 +2,9 @@
  * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-#include "CompilationImageView.h"
 
 #include "CommandThread.h"
+#include "CompilationImageView.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -22,9 +22,10 @@ const int32 kBurnImageMessage = 'Burn';
 const int32 kChooseImageMessage = 'Chus';
 const int32 kParserMessage = 'Scan';
 
-CompilationImageView::CompilationImageView(BurnWindow &parent)
+CompilationImageView::CompilationImageView(BurnWindow& parent)
 	:
-	BView("Image File (ISO/CUE)", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
+	BView("Image file (ISO/CUE)", B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
+		kControlPadding)),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
 	fImageParserThread(NULL)
@@ -79,21 +80,25 @@ CompilationImageView::~CompilationImageView()
 #pragma mark -- BView Overrides --
 
 
-void CompilationImageView::AttachedToWindow()
+void
+CompilationImageView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* chooseImageButton = dynamic_cast<BButton*>(FindView("ChooseImageButton"));
+	BButton* chooseImageButton
+		= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
 	if (chooseImageButton != NULL)
 		chooseImageButton->SetTarget(this);
 		
-	BButton* burnImageButton = dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
 	if (burnImageButton != NULL)
 		burnImageButton->SetTarget(this);
 }
 
 
-void CompilationImageView::MessageReceived(BMessage* message)
+void
+CompilationImageView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kChooseImageMessage:
@@ -117,7 +122,8 @@ void CompilationImageView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
-void CompilationImageView::_ChooseImage()
+void
+CompilationImageView::_ChooseImage()
 {
 	// TODO Create a RefFilter for the panel?
 	if (fOpenPanel == NULL)
@@ -127,7 +133,9 @@ void CompilationImageView::_ChooseImage()
 	fOpenPanel->Show();
 }
 
-void CompilationImageView::_BurnImage()
+
+void
+CompilationImageView::_BurnImage()
 {
 	BString imageFile = fImagePath->Path();
 	
@@ -145,24 +153,30 @@ void CompilationImageView::_BurnImage()
 		->AddArgument("dev=")
 		->AddArgument(device);
 	
-	if (windowParent->GetSessionMode())
-		fImageParserThread->AddArgument("-sao")->AddArgument(fImagePath->Path())->Run();
-	else
-		fImageParserThread->AddArgument("-tao")->AddArgument(fImagePath->Path())->Run();
+	if (windowParent->GetSessionMode()) {
+		fImageParserThread->AddArgument("-sao")
+			->AddArgument(fImagePath->Path())->Run();
+	} else {
+		fImageParserThread->AddArgument("-tao")
+			->AddArgument(fImagePath->Path())->Run();
+	}
 }
 
-void CompilationImageView::_OpenImage(BMessage* message)
+
+void
+CompilationImageView::_OpenImage(BMessage* message)
 {
 	entry_ref imageRef;
 
 	if (message->FindRef("refs", &imageRef) != B_OK)
 		return;
 
-	BStringView* imageFileStringView = dynamic_cast<BStringView*>(FindView("ImageFileStringView"));
+	BStringView* imageFileStringView
+		= dynamic_cast<BStringView*>(FindView("ImageFileStringView"));
 	if (imageFileStringView == NULL)
 		return;
 
-	BString imageFileString("Image File: ");
+	BString imageFileString("Image file: ");
 
 	fImagePath->SetTo(&imageRef);
 	imageFileString << fImagePath->Path();
@@ -175,7 +189,8 @@ void CompilationImageView::_OpenImage(BMessage* message)
 	if (fImageParserThread != NULL)
 		delete fImageParserThread;
 
-	fImageParserThread = new CommandThread(NULL, new BInvoker(new BMessage(kParserMessage), this));
+	fImageParserThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kParserMessage), this));
 
 	// TODO Search for 'isoinfo' in case it isn't in the $PATH
 
@@ -189,7 +204,8 @@ void CompilationImageView::_OpenImage(BMessage* message)
 }
 
 
-void CompilationImageView::_ImageParserOutput(BMessage* message)
+void
+CompilationImageView::_ImageParserOutput(BMessage* message)
 {
 	BString data;
 
