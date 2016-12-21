@@ -23,7 +23,7 @@ const int32 kCreateImageMessage = 'Crat';
 const int32 kBurnImageMessage = 'Wrte';
 const int32 kClonerMessage = 'Clnr';
 
-const int32 kDeviceChangeMessage[MAX_DEVICES] = { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
+const uint32 kDeviceChangeMessage[MAX_DEVICES] = { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
 
 // Misc variables
 sdevice srcDevices[MAX_DEVICES];

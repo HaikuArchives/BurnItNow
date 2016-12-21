@@ -38,7 +38,7 @@ const int32 kSpeedSliderMessage = 'Sped';
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
 
-const int32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
+const uint32 kDeviceChangeMessage[MAX_DEVICES] = { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
 // Misc constants
 const int32 kMinBurnSpeed = 2;
