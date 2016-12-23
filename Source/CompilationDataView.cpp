@@ -19,13 +19,10 @@ static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
 const int32 kChooseDirectoryMessage = 'Cusd';
-const int32 kFromScratchMessage = 'Scrh';
 const int32 kBurnerMessage = 'Brnr';
 const int32 kBuildImageMessage = 'IMAG';
 const int32 kBurnDiscMessage = 'BURN';
 
-// Misc variable(s)
-int mode = 0;
 
 CompilationDataView::CompilationDataView(BurnWindow& parent)
 	:
@@ -36,12 +33,13 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fImagePath(new BPath())
 {
 	windowParent = &parent;
+	step = 0;
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel("Ready");
+	fBurnerInfoBox->SetLabel("Choose the folder to burn");
 
 	fBurnerInfoTextView = new BTextView("DataInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(false);
@@ -50,15 +48,10 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 		fBurnerInfoTextView, 0, true, true);
 
 	BButton* chooseDirectoryButton = new BButton("ChooseDirectoryButton",
-		"Choose folder to burn", new BMessage(kChooseDirectoryMessage));
+		"Choose folder", new BMessage(kChooseDirectoryMessage));
 	chooseDirectoryButton->SetTarget(this);
 	chooseDirectoryButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
 		B_SIZE_UNSET));
-
-	BButton* fromScratchButton = new BButton("FromScratchButton",
-		"Prepare compilation", new BMessage(kFromScratchMessage));
-	fromScratchButton->SetTarget(this);
-	fromScratchButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BButton* buildImageButton = new BButton("BuildImageButton",
 		"Build image", new BMessage(kBuildImageMessage));
@@ -72,15 +65,14 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
-		.AddGrid(kControlPadding * 2, kControlPadding / 2)
-			.Add(new BStringView("", "Step 1:"), 0, 0)
-			.Add(chooseDirectoryButton, 1, 0)
-			.Add(new BStringView("", "or"), 2, 0)
-			.Add(fromScratchButton, 3, 0)
-			.Add(new BStringView("", "Step 2:"), 0, 1)
-			.Add(buildImageButton, 1, 1)
-			.Add(new BStringView("", "or"), 2, 1)
-			.Add(burnImageButton, 3, 1)
+		.AddGroup(B_HORIZONTAL)
+			.Add(new BStringView("FolderStringView", "Folder: <none>"))
+			.AddGlue()
+			.AddGroup(B_HORIZONTAL)
+				.Add(chooseDirectoryButton)
+				.Add(buildImageButton)
+				.Add(burnImageButton)
+				.End()
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fBurnerInfoBox)
@@ -105,23 +97,23 @@ CompilationDataView::AttachedToWindow()
 
 	BButton* chooseDirectoryButton
 		= dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
-	if (chooseDirectoryButton != NULL)
+	if (chooseDirectoryButton != NULL) {
 		chooseDirectoryButton->SetTarget(this);
-	
-	BButton* fromScratchButton
-		= dynamic_cast<BButton*>(FindView("FromScratchButton"));
-	if (fromScratchButton != NULL)
-		fromScratchButton->SetTarget(this);
+		chooseDirectoryButton->SetEnabled(true);
+	}
 
 	BButton* buildImageButton
 		= dynamic_cast<BButton*>(FindView("BuildImageButton"));
-	if (buildImageButton != NULL)
+	if (buildImageButton != NULL) {
 		buildImageButton->SetTarget(this);
-
+		buildImageButton->SetEnabled(false);
+	}
 	BButton* burnImageButton
 		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL)
+	if (burnImageButton != NULL) {
 		burnImageButton->SetTarget(this);
+		burnImageButton->SetEnabled(false);
+	}
 }
 
 
@@ -131,9 +123,6 @@ CompilationDataView::MessageReceived(BMessage* message)
 	switch (message->what) {
 		case kChooseDirectoryMessage:
 			_ChooseDirectory();
-			break;
-		case kFromScratchMessage:
-			_FromScratch();
 			break;
 		case kBurnDiscMessage:
 			BurnDisc();
@@ -167,32 +156,6 @@ CompilationDataView::_ChooseDirectory()
 
 
 void
-CompilationDataView::_FromScratch()
-{
-	// Create cache directory
-	BPath path;
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
-		return;
-
-	status_t ret = path.Append("burnitnow_cache");
-	if (ret == B_OK) {
-		BDirectory* dir = new BDirectory();
-		dir->CreateDirectory(path.Path(), NULL);
-		fDirPath->SetTo(path.Path());
-
-		(new BAlert("DirectoryOpenedAlert",
-			"Prepare the compilation in the opened folder. Then close it and "
-			"build the ISO or burn the disc.", "OK"))->Go();
-
-		// Display cache directory
-		CommandThread* command = new CommandThread(NULL,
-			new BInvoker(new BMessage(), this));
-		command->AddArgument("open")->AddArgument(path.Path())->Run();
-	}
-}
-
-
-void
 CompilationDataView::_OpenDirectory(BMessage* message)
 {
 	entry_ref dirRef;
@@ -200,10 +163,26 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 	if (message->FindRef("refs", &dirRef) != B_OK)
 		return;
 
+	BStringView* folderStringView
+		= dynamic_cast<BStringView*>(FindView("FolderStringView"));
+	if (folderStringView == NULL)
+		return;
+
 	fDirPath->SetTo(&dirRef);
-	
-	(new BAlert("DirectoryOpenedAlert",
-		"Now you can build the image or burn the disc.", "OK"))->Go();
+
+	folderStringView->SetText(fDirPath->Path());
+
+	BButton* buildImageButton
+		= dynamic_cast<BButton*>(FindView("BuildImageButton"));
+	if (buildImageButton != NULL)
+		buildImageButton->SetEnabled(true);
+
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	if (burnImageButton != NULL)
+		burnImageButton->SetEnabled(false);
+
+	fBurnerInfoBox->SetLabel("Build the image");
 }
 
 
@@ -218,18 +197,43 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 	data << "\n";
 
 	fBurnerInfoTextView->Insert(data.String());
+
+	if (!fBurnerThread->IsRunning() && step == 1) {
+		fBurnerInfoBox->SetLabel("Burn the disc");
+
+		BButton* buildImageButton
+			= dynamic_cast<BButton*>(FindView("BuildImageButton"));
+		if (buildImageButton != NULL)
+			buildImageButton->SetEnabled(false);
+
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
+
+		step = 0;
+
+	} else if (!fBurnerThread->IsRunning() && step == 2) {
+		fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
+
+		BButton* chooseDirectoryButton
+			= dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
+		if (chooseDirectoryButton != NULL)
+			chooseDirectoryButton->SetEnabled(true);
+
+		BButton* buildImageButton
+			= dynamic_cast<BButton*>(FindView("BuildImageButton"));
+		if (buildImageButton != NULL)
+			buildImageButton->SetEnabled(false);
+
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
+
+		step = 0;
+	}
 	
-	if (!fBurnerThread->IsRunning() && mode == 1) {
-		BPath path;
-		if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
-			return;
-		fBurnerInfoBox->SetLabel("Ready");
-		CommandThread* command = new CommandThread(NULL,
-			new BInvoker(new BMessage(), this));
-		command->AddArgument("open")->AddArgument(path.Path())->Run();
-		mode = 0;
-	} else if (!fBurnerThread->IsRunning() && mode == 2)
-		fBurnerInfoBox->SetLabel("Ready");
 }
 
 
@@ -239,7 +243,7 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 void
 CompilationDataView::BuildISO()
 {
-	mode = 1;
+	step = 1;	// flag we're building ISO
 	
 	if (fDirPath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
@@ -279,11 +283,11 @@ CompilationDataView::BuildISO()
 void
 CompilationDataView::BurnDisc()
 {
-	mode = 1;
+	step = 2;	// flag we're burning
 
 	if (fImagePath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
-			"First choose the folder to burn.", "OK"))->Go();
+			"First build an image to burn.", "OK"))->Go();
 		return;
 	}
 
@@ -292,19 +296,39 @@ CompilationDataView::BurnDisc()
 
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-	BString device = windowParent->GetSelectedDevice().number.String();
+
+	BButton* chooseDirectoryButton
+		= dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
+	if (chooseDirectoryButton != NULL)
+		chooseDirectoryButton->SetEnabled(false);
+
+	BButton* buildImageButton
+		= dynamic_cast<BButton*>(FindView("BuildImageButton"));
+	if (buildImageButton != NULL)
+		buildImageButton->SetEnabled(false);
+
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	if (burnImageButton != NULL)
+		burnImageButton->SetEnabled(false);
+
+	BString device("dev=");
+	device.Append(windowParent->GetSelectedDevice().number.String());
+	sessionConfig config = windowParent->GetSessionConfig();
 
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
-	fBurnerThread->AddArgument("cdrecord")
-		->AddArgument("dev=")
-		->AddArgument(device);
+	fBurnerThread->AddArgument("cdrecord");
+
+	if (config.simulation)
+		fBurnerThread->AddArgument("-dummy");
+	if (config.eject)
+		fBurnerThread->AddArgument("-eject");
+	if (config.speed != "")
+		fBurnerThread->AddArgument(config.speed);
 	
-	if (windowParent->GetSessionMode()) {
-		fBurnerThread->AddArgument("-sao")
-			->AddArgument(fImagePath->Path())->Run();
-	} else {
-		fBurnerThread->AddArgument("-tao")
-			->AddArgument(fImagePath->Path())->Run();
-	}
+	fBurnerThread->AddArgument(config.mode)
+		->AddArgument(device)
+		->AddArgument(fImagePath->Path())
+		->Run();
 }

@@ -23,8 +23,7 @@ const int32 kBurnDiscMessage = 'BURN';
 CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	:
 	BView("Audio", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fBurnerThread(NULL),
-	fTrackPath(new BPath())
+	fBurnerThread(NULL)
 {
 	windowParent = &parent;
 	fCurrentPath = 0;
@@ -43,7 +42,6 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	BButton* burnDiscButton = new BButton("BurnDiscButton",
 		"Burn disc", new BMessage(kBurnDiscMessage));
-	burnDiscButton->SetTarget(this);
 	burnDiscButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -79,11 +77,24 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 CompilationAudioView::~CompilationAudioView()
 {
 	delete fBurnerThread;
-	delete fTrackPath;
 }
 
 
 #pragma mark -- BView Overrides --
+
+
+void
+CompilationAudioView::AttachedToWindow()
+{
+	BView::AttachedToWindow();
+
+	BButton* burnDiscButton
+		= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
+	if (burnDiscButton != NULL) {
+		burnDiscButton->SetTarget(this);
+		burnDiscButton->SetEnabled(false);
+	}
+}
 
 
 void
@@ -133,17 +144,20 @@ CompilationAudioView::_AddTrack(BMessage* message)
 
 	if (message->FindRef("refs", &trackRef) != B_OK)
 		return;
-	
+
 	if (fCurrentPath == 0) {
 		// fAudioList->RemoveItem(0) returns error
 		int32 tmp = 0;
 		fAudioList->RemoveItem(tmp);
-	}
-	
-	fTrackPath->SetTo(&trackRef);
-	fTrackPaths[fCurrentPath++] = fTrackPath;
 
-	BStringItem* item = new BStringItem(fTrackPath->Leaf());
+		BButton* burnDiscButton
+			= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
+		if (burnDiscButton != NULL)
+			burnDiscButton->SetEnabled(true);
+	}
+	BPath* trackPath = new BPath(&trackRef);
+	fTrackPaths[fCurrentPath++] = trackPath;
+	BStringItem* item = new BStringItem(trackPath->Leaf());
 	fAudioList->AddItem(item);
 }
 
@@ -159,27 +173,40 @@ CompilationAudioView::BurnDisc()
 
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-	BString device = windowParent->GetSelectedDevice().number.String();
+
+	BButton* burnDiscButton
+		= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
+	if (burnDiscButton != NULL)
+		burnDiscButton->SetEnabled(false);
+
+	BString device("dev=");
+	device.Append(windowParent->GetSelectedDevice().number.String());
+	sessionConfig config = windowParent->GetSessionConfig();
 	
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
 	
-	fBurnerThread->AddArgument("cdrecord")
-		->AddArgument("dev=")
+	fBurnerThread->AddArgument("cdrecord");
+
+	if (config.simulation)
+		fBurnerThread->AddArgument("-dummy");
+	if (config.eject)
+		fBurnerThread->AddArgument("-eject");
+	if (config.mode == "-sao")
+		fBurnerThread->AddArgument("-dao");	// burn audio explicitely with -dao (?)
+	else
+		fBurnerThread->AddArgument(config.mode);
+
+	fBurnerThread->AddArgument("-speed=4")	// sure?
 		->AddArgument(device)
 		->AddArgument("-audio")
+		->AddArgument("-copy")
 		->AddArgument("-pad");
-	
-	if (windowParent->GetSessionMode())
-		fBurnerThread->AddArgument("-sao");
-	else
-		fBurnerThread->AddArgument("-tao");
-		
-	for (unsigned int ix = 0; ix<=MAX_TRACKS; ix++) {
+
+	for (unsigned int ix = 0; ix <= MAX_TRACKS; ix++) {
 		if (fTrackPaths[ix] == NULL)
 			break;
 		fBurnerThread->AddArgument(fTrackPaths[ix]->Path());
 	}
-	
 	fBurnerThread->Run();
 }

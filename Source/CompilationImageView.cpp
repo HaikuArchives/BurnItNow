@@ -22,21 +22,23 @@ const int32 kBurnImageMessage = 'Burn';
 const int32 kChooseImageMessage = 'Chus';
 const int32 kParserMessage = 'Scan';
 
+
 CompilationImageView::CompilationImageView(BurnWindow& parent)
 	:
-	BView("Image file (ISO/CUE)", B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
+	BView("Image file", B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
 		kControlPadding)),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
 	fImageParserThread(NULL)
 {
 	windowParent = &parent;
+	step = 0;
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fImageInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fImageInfoBox->SetFont(be_bold_font);
-	fImageInfoBox->SetLabel("Image information");
+	fImageInfoBox->SetLabel("Choose the image to burn");
 
 	fImageInfoTextView = new BTextView("ImageInfoTextView");
 	fImageInfoTextView->SetWordWrap(false);
@@ -45,17 +47,17 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 		fImageInfoTextView, 0, true, true);
 
 	BButton* chooseImageButton = new BButton("ChooseImageButton",
-		"Step 1: Choose ISO/CUE", new BMessage(kChooseImageMessage));
+		"Choose image", new BMessage(kChooseImageMessage));
 	chooseImageButton->SetTarget(this);
 	
 	BButton* burnImageButton = new BButton("BurnImageButton",
-		"Step 2: Burn image", new BMessage(kBurnImageMessage));
+		"Burn disc", new BMessage(kBurnImageMessage));
 	burnImageButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
-			.Add(new BStringView("ImageFileStringView", "Image file: "))
+			.Add(new BStringView("ImageFileStringView", "Image: <none>"))
 			.AddGlue()
 			.AddGroup(B_HORIZONTAL)
 				.AddGlue()
@@ -87,15 +89,17 @@ CompilationImageView::AttachedToWindow()
 
 	BButton* chooseImageButton
 		= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
-	if (chooseImageButton != NULL)
+	if (chooseImageButton != NULL) {
 		chooseImageButton->SetTarget(this);
-		
+		chooseImageButton->SetEnabled(true);
+	}
 	BButton* burnImageButton
 		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL)
+	if (burnImageButton != NULL) {
 		burnImageButton->SetTarget(this);
+		burnImageButton->SetEnabled(false);
+	}
 }
-
 
 void
 CompilationImageView::MessageReceived(BMessage* message)
@@ -135,35 +139,6 @@ CompilationImageView::_ChooseImage()
 
 
 void
-CompilationImageView::_BurnImage()
-{
-	BString imageFile = fImagePath->Path();
-	
-	if (fImageParserThread != NULL)
-		delete fImageParserThread;
-		
-	fImageInfoTextView->SetText(NULL);
-	fImageInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-		
-	fImageParserThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kParserMessage), this));
-
-	BString device = windowParent->GetSelectedDevice().number.String();
-	fImageParserThread->AddArgument("cdrecord")
-		->AddArgument("dev=")
-		->AddArgument(device);
-	
-	if (windowParent->GetSessionMode()) {
-		fImageParserThread->AddArgument("-sao")
-			->AddArgument(fImagePath->Path())->Run();
-	} else {
-		fImageParserThread->AddArgument("-tao")
-			->AddArgument(fImagePath->Path())->Run();
-	}
-}
-
-
-void
 CompilationImageView::_OpenImage(BMessage* message)
 {
 	entry_ref imageRef;
@@ -176,11 +151,14 @@ CompilationImageView::_OpenImage(BMessage* message)
 	if (imageFileStringView == NULL)
 		return;
 
-	BString imageFileString("Image file: ");
-
 	fImagePath->SetTo(&imageRef);
-	imageFileString << fImagePath->Path();
-	imageFileStringView->SetText(imageFileString.String());
+
+	imageFileStringView->SetText(fImagePath->Path());
+
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	if (burnImageButton != NULL)
+		burnImageButton->SetEnabled(true);
 
 	fImageInfoTextView->SetText(NULL);
 
@@ -191,16 +169,64 @@ CompilationImageView::_OpenImage(BMessage* message)
 
 	fImageParserThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kParserMessage), this));
-
-	// TODO Search for 'isoinfo' in case it isn't in the $PATH
-
 	fImageParserThread->AddArgument("isoinfo")
 		->AddArgument("-d")
 		->AddArgument("-i")
 		->AddArgument(fImagePath->Path())
 		->Run();
+
+	step = 1;	// flag we're opening ISO
+}
+
+void
+CompilationImageView::_BurnImage()
+{
+	BString imageFile = fImagePath->Path();
+
+	if (fImagePath->Path() == NULL) {
+		(new BAlert("ChooseImageFirstAlert",
+			"First choose an image to burn.", "OK"))->Go();
+		return;
+	}
+
+	if (fImageParserThread != NULL)
+		delete fImageParserThread;
+
+	fImageInfoTextView->SetText(NULL);
+	fImageInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+
+	BButton* chooseImageButton
+		= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
+	if (chooseImageButton != NULL)
+		chooseImageButton->SetEnabled(false);
+
+	BButton* burnImageButton
+		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+	if (burnImageButton != NULL)
+		burnImageButton->SetEnabled(false);
+
+	BString device("dev=");
+	device.Append(windowParent->GetSelectedDevice().number.String());
+	sessionConfig config = windowParent->GetSessionConfig();
+
+	fImageParserThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kParserMessage), this));
+
+	fImageParserThread->AddArgument("cdrecord");
+
+	if (config.simulation)
+		fImageParserThread->AddArgument("-dummy");
+	if (config.eject)
+		fImageParserThread->AddArgument("-eject");
+	if (config.speed != "")
+		fImageParserThread->AddArgument(config.speed);
 	
-	fImageInfoBox->SetLabel("Image information");
+	fImageParserThread->AddArgument(config.mode)
+		->AddArgument(device)
+		->AddArgument(fImagePath->Path())
+		->Run();
+
+	step = 2;	// flag we're burning
 }
 
 
@@ -216,6 +242,33 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 	fImageInfoTextView->Insert(data.String());
 	
-	if (!fImageParserThread->IsRunning())
-		fImageInfoBox->SetLabel("Ready");
+	if (!fImageParserThread->IsRunning() && step == 1) {	// opened image
+		fImageInfoBox->SetLabel("Burn the disc");
+
+		BButton* chooseImageButton
+			= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
+		if (chooseImageButton != NULL)
+			chooseImageButton->SetEnabled(true);
+
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
+
+		step = 0;
+	} else if (!fImageParserThread->IsRunning() && step == 2) {
+		fImageInfoBox->SetLabel("Burning complete. Burn another disc?");
+
+		BButton* chooseImageButton
+			= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
+		if (chooseImageButton != NULL)
+			chooseImageButton->SetEnabled(true);
+
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
+
+		step = 0;
+	}
 }

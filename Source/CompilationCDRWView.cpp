@@ -22,7 +22,7 @@ const int32 kBlankerMessage = 'Blkr';
 
 CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	:
-	BView("CDRW", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
+	BView("Blank CD-RW", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBlankerThread(NULL)
 {
@@ -54,9 +54,9 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankModeMenu->AddItem(new BMenuItem("Unclose", new BMessage()));
 	
 	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
-		"Blank:", fBlankModeMenu);
+		"Type:", fBlankModeMenu);
 
-	BButton* blankButton = new BButton("BlankButton", "Blank!",
+	BButton* blankButton = new BButton("BlankButton", "Blank disc",
 		new BMessage(kBlankMessage));
 	blankButton->SetTarget(this);
 	
@@ -122,18 +122,29 @@ CompilationCDRWView::_Blank()
 	
 	if (mode == "track tail")
 		mode = "trtail";		
-		
+
+	mode.Prepend("blank=");
+
 	fBlankerInfoTextView->SetText(NULL);
 	fBlankerInfoBox->SetLabel("Blanking in progress" B_UTF8_ELLIPSIS);
+
+	BString device("dev=");
+	device.Append(windowParent->GetSelectedDevice().number.String());
+	sessionConfig config = windowParent->GetSessionConfig();
 	
 	fBlankerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBlankerMessage), this));
+
 	fBlankerThread->AddArgument("cdrecord")
-		->AddArgument("blank=")
-		->AddArgument(mode)
-		->AddArgument("dev=")
-		->AddArgument(windowParent->GetSelectedDevice().number.String())
-		->Run();
+		->AddArgument(mode);
+
+	if (config.simulation)
+		fBlankerThread->AddArgument("-dummy");
+	if (config.eject)
+		fBlankerThread->AddArgument("-eject");
+
+	fBlankerThread->AddArgument(device);
+	fBlankerThread->Run();
 }
 
 

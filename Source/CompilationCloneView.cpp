@@ -26,10 +26,8 @@ const uint32 kDeviceChangeMessage[MAX_DEVICES]
 	= { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
 
 // Misc variables
-sdevice srcDevices[MAX_DEVICES];
 int selectedSrcDevice;
 
-int step = 0;
 
 CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	:
@@ -43,7 +41,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 
 	fClonerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fClonerInfoBox->SetFont(be_bold_font);
-	fClonerInfoBox->SetLabel("Ready");
+	fClonerInfoBox->SetLabel("Insert the disc and create an image");
 
 	fClonerInfoTextView = new BTextView("CloneInfoTextView");
 	fClonerInfoTextView->SetWordWrap(false);
@@ -52,20 +50,22 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		fClonerInfoTextView, 0, true, true);
 
 	BButton* createImageButton = new BButton("CreateImageButton",
-		"Step 1: Create image", new BMessage(kCreateImageMessage));
+		"Create image", new BMessage(kCreateImageMessage));
 	createImageButton->SetTarget(this);
 	
 	BButton* burnImageButton = new BButton("BurnImageButton",
-		"Step 2: Burn image", new BMessage(kBurnImageMessage));
+		"Burn image", new BMessage(kBurnImageMessage));
 	burnImageButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
+			.Add(new BStringView("ImageFileStringView", "Image: <none>"))
 			.AddGlue()
-			.Add(createImageButton)
-			.Add(burnImageButton)
-			.AddGlue()
+			.AddGroup(B_HORIZONTAL)
+				.Add(createImageButton)
+				.Add(burnImageButton)
+				.End()
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fClonerInfoBox)
@@ -90,13 +90,16 @@ CompilationCloneView::AttachedToWindow()
 
 	BButton* createImageButton
 		= dynamic_cast<BButton*>(FindView("CreateImageButton"));
-	if (createImageButton != NULL)
+	if (createImageButton != NULL) {
 		createImageButton->SetTarget(this);
-		
+		createImageButton->SetEnabled(true);
+	}
 	BButton* burnImageButton
 		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL)
+	if (burnImageButton != NULL) {
 		burnImageButton->SetTarget(this);
+		burnImageButton->SetEnabled(false);
+	}
 }
 
 
@@ -141,10 +144,13 @@ CompilationCloneView::MessageReceived(BMessage* message)
 void
 CompilationCloneView::_CreateImage()
 {
-	const char* device = srcDevices[selectedSrcDevice].number.String();
-
 	fClonerInfoTextView->SetText(NULL);
 	fClonerInfoBox->SetLabel("Image creating in progress" B_UTF8_ELLIPSIS);
+
+	BButton* createImageButton
+		= dynamic_cast<BButton*>(FindView("CreateImageButton"));
+	if (createImageButton != NULL)
+		createImageButton->SetEnabled(false);
 
 	BPath path;
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
@@ -154,14 +160,14 @@ CompilationCloneView::_CreateImage()
 	if (ret == B_OK) {
 		BString parameter = "f=";
 		parameter.Append(path.Path());
-		BString device = windowParent->GetSelectedDevice().number.String();
+		BString device("dev=");
+		device.Append(windowParent->GetSelectedDevice().number.String());
 		
 		fClonerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kClonerMessage), this));
 		fClonerThread->AddArgument("readcd")
 			->AddArgument("-s")
 			->AddArgument(parameter)
-			->AddArgument("dev=")
 			->AddArgument(device)
 			->Run();
 
@@ -173,27 +179,35 @@ CompilationCloneView::_CreateImage()
 void
 CompilationCloneView::_BurnImage()
 {
-	fClonerInfoTextView->SetText(NULL);
-	fClonerInfoBox->SetLabel("Image burning in progress" B_UTF8_ELLIPSIS);
-	BString device = windowParent->GetSelectedDevice().number.String();
-
-	fClonerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kClonerMessage), this));
-	fClonerThread->AddArgument("cdrecord")
-		->AddArgument("dev=")
-		->AddArgument(device);
-
 	BPath path;
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
 		return;
 
 	status_t ret = path.Append("burnitnow_cache.iso");
 	if (ret == B_OK) {
-		if (windowParent->GetSessionMode())
-			fClonerThread->AddArgument("-sao")->AddArgument(path.Path())->Run();
-		else
-			fClonerThread->AddArgument("-tao")->AddArgument(path.Path())->Run();
-		
+		fClonerInfoTextView->SetText(NULL);
+		fClonerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+
+		BString device("dev=");
+		device.Append(windowParent->GetSelectedDevice().number.String());
+		sessionConfig config = windowParent->GetSessionConfig();
+
+		fClonerThread = new CommandThread(NULL,
+			new BInvoker(new BMessage(kClonerMessage), this));
+		fClonerThread->AddArgument("cdrecord");
+
+		if (config.simulation)
+			fClonerThread->AddArgument("-dummy");
+		if (config.eject)
+			fClonerThread->AddArgument("-eject");
+		if (config.speed != "")
+			fClonerThread->AddArgument(config.speed);
+
+		fClonerThread->AddArgument(config.mode)
+			->AddArgument(device)
+			->AddArgument(path.Path())
+			->Run();
+
 		step = 2;
 	}
 }
@@ -211,27 +225,52 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 
 	fClonerInfoTextView->Insert(data.String());
 
-	if (!fClonerThread->IsRunning() && step == 1) {
-		fClonerInfoBox->SetLabel("Ready");
+	if (!fClonerThread->IsRunning() && step == 1) {	// built image
 		BString result(fClonerInfoTextView->Text());
 
 		// Last output line always (expect error) contains speed statistics
 		if (result.FindFirst(" kB/sec.") != B_ERROR) {
-			BAlert* finishAlert = new BAlert("CreateImageFinishAlert", 
-				"The image file has been created successfully.\n"
-				"Would you like to open the destination folder?",
-				"Open folder", "Cancel");
-			int resp = finishAlert->Go();
+			fClonerInfoBox->SetLabel("Insert a blank disc and burn the image");
 
-			BPath path;
-			if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
-				return;
-			if (resp == 0) {
-				CommandThread* command = new CommandThread(NULL,
-					new BInvoker(new BMessage(), this));
-				command->AddArgument("open")->AddArgument(path.Path())->Run();
-			}
+			BString device("dev=");
+			device.Append(windowParent->GetSelectedDevice().number.String());
+
+			fClonerThread = new CommandThread(NULL,
+				new BInvoker(new BMessage(kClonerMessage), this));
+			fClonerThread->AddArgument("cdrecord")
+				->AddArgument("-eject")
+				->AddArgument(device)
+				->Run();
+		} else {
+			fClonerInfoBox->SetLabel("Failed to create image");
+			step = 0;
+			return;
 		}
-	} else if (!fClonerThread->IsRunning() && step == 2)
-		fClonerInfoBox->SetLabel("Ready");
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
+
+		BButton* createImageButton
+			= dynamic_cast<BButton*>(FindView("CreateImageButton"));
+		if (createImageButton != NULL)
+			createImageButton->SetEnabled(true);
+
+		step = 0;
+
+	} else if (!fClonerThread->IsRunning() && step == 2) {	// burnt disc
+		fClonerInfoBox->SetLabel("Burning complete. Burn another disc?");
+
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
+
+		BButton* createImageButton
+			= dynamic_cast<BButton*>(FindView("CreateImageButton"));
+		if (createImageButton != NULL)
+			createImageButton->SetEnabled(true);
+
+		step = 0;
+	}
 }

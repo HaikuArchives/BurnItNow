@@ -36,6 +36,7 @@ private:
 	BTextView*		fClonerInfoTextView;
 	BurnWindow*		windowParent;
 	BSeparatorView*	fClonerInfoBox;
+	int				step;
 };
 
 

@@ -42,6 +42,8 @@ private:
 	BSeparatorView*	fBurnerInfoBox;
 	BPath* 			fDirPath;
 	BPath* 			fImagePath;
+	int				step;
+
 };
 
 

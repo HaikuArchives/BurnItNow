@@ -17,14 +17,12 @@
 #include <Application.h>
 #include <Box.h>
 #include <Button.h>
-#include <CheckBox.h>
 #include <ControlLook.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <MenuItem.h>
 #include <RadioButton.h>
 #include <SpaceLayoutItem.h>
-#include <Slider.h>
 #include <StatusBar.h>
 
 
@@ -33,26 +31,19 @@ const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
 const int32 kOpenSettingsMessage = 'Stng';
 const int32 kClearCacheMessage = 'Cche';
-
 const int32 kSpeedSliderMessage = 'Sped';
+
 const int32 kBurnDiscMessage = 'BURN';
 const int32 kBuildImageMessage = 'IMAG';
 
 const uint32 kDeviceChangeMessage[MAX_DEVICES]
 	= { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
-// Misc constants
-const int32 kMinBurnSpeed = 2;
-const int32 kMaxBurnSpeed = 52;
-
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Misc variables
 sdevice devices[MAX_DEVICES];
 int selectedDevice;
-
-BMenu* sessionMenu;
-BMenu* deviceMenu;
 
 CompilationDataView* fCompilationDataView;
 CompilationAudioView* fCompilationAudioView;
@@ -179,18 +170,18 @@ BurnWindow::_CreateToolBar()
 {
 	BGroupView* groupView = new BGroupView(B_HORIZONTAL, kControlPadding);
 
-	sessionMenu = new BMenu("SessionMenu");
-	sessionMenu->SetLabelFromMarked(true);
+	fSessionMenu = new BMenu("SessionMenu");
+	fSessionMenu->SetLabelFromMarked(true);
 	BMenuItem* daoItem = new BMenuItem("Disc At Once (DAO)", new BMessage());
 	daoItem->SetMarked(true);
-	sessionMenu->AddItem(daoItem);
-	sessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
-	BMenuField* sessionMenuField = new BMenuField("SessionMenuField", "",
-		sessionMenu);
-	sessionMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fSessionMenu->AddItem(daoItem);
+	fSessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
+	BMenuField* fSessionMenuField = new BMenuField("SessionMenuField", "",
+		fSessionMenu);
+	fSessionMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	deviceMenu = new BMenu("DeviceMenu");
-	deviceMenu->SetLabelFromMarked(true);
+	fDeviceMenu = new BMenu("DeviceMenu");
+	fDeviceMenu->SetLabelFromMarked(true);
 
 	// Checking for devices
 	FindDevices(devices);
@@ -205,23 +196,33 @@ BurnWindow::_CreateToolBar()
 		deviceItem->SetEnabled(true);
 		if (ix == 0)
 			deviceItem->SetMarked(true);
-		deviceMenu->AddItem(deviceItem);
+		fDeviceMenu->AddItem(deviceItem);
 	}
 	
-	BMenuField* deviceMenuField = new BMenuField("DeviceMenuField", "",
-		deviceMenu);
-	deviceMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	BMenuField* fDeviceMenuField = new BMenuField("DeviceMenuField", "",
+		fDeviceMenu);
+	fDeviceMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	// TODO These values should be obtained from the capabilities
 	// of the drive and the type of media
-	BSlider* burnSlider = new BSlider("SpeedSlider", "Burn speed: 2X",
-		new BMessage(kSpeedSliderMessage), kMinBurnSpeed, kMaxBurnSpeed,
-		B_HORIZONTAL);
-	burnSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
-	burnSlider->SetLimitLabels("2X", "52X");
-	burnSlider->SetHashMarks(B_HASH_MARKS_BOTH);
-	burnSlider->SetHashMarkCount(17);
-	burnSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+	fMultiCheck = new BCheckBox("MultiSessionCheckBox", "MultiSession",
+						new BMessage());
+	fOntheflyCheck = new BCheckBox("OnTheFlyCheckBox", "On-the-fly",
+						new BMessage());
+	fSimulationCheck = new BCheckBox("SimulationCheckBox", "Simulation",
+						new BMessage());
+	fEjectCheck = new BCheckBox("EjectCheckBox", "Eject after burning",
+						new BMessage());
+
+	fSpeedSlider = new BSlider("SpeedSlider", "Burn speed: Max",
+		new BMessage(kSpeedSliderMessage), 0, 4, B_HORIZONTAL);
+	fSpeedSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
+	fSpeedSlider->SetLimitLabels("Min", "Max");
+	fSpeedSlider->SetHashMarks(B_HASH_MARKS_BOTH);
+	fSpeedSlider->SetHashMarkCount(5);
+	fSpeedSlider->SetValue(4);	// initial speed: max
+	fSpeedSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
 		.SetInsets(kControlPadding, 0, kControlPadding, kControlPadding)
@@ -229,22 +230,18 @@ BurnWindow::_CreateToolBar()
 			.AddGroup(B_VERTICAL)
 				.AddGlue()
 				.AddGrid(kControlPadding, 0.0)
-					.Add(new BCheckBox("MultiSessionCheckBox", "MultiSession",
-						new BMessage()), 0, 0)
-					.Add(new BCheckBox("OnTheFlyCheckBox", "On-the-fly",
-						new BMessage()), 1, 0)
-					.Add(new BCheckBox("DummyModeCheckBox", "Dummy mode",
-						new BMessage()), 0, 1)
-					.Add(new BCheckBox("EjectCheckBox", "Eject after burning",
-						new BMessage()), 1, 1)
+					.Add(fMultiCheck, 0, 0)
+					.Add(fOntheflyCheck, 1, 0)
+					.Add(fSimulationCheck, 0, 1)
+					.Add(fEjectCheck, 1, 1)
 					.End()
 				.AddGlue()
 				.End()
-				.Add(burnSlider)
+				.Add(fSpeedSlider)
 		.End()
 		.AddGroup(B_HORIZONTAL)
-			.Add(sessionMenuField)
-			.Add(deviceMenuField)
+			.Add(fSessionMenuField)
+			.Add(fDeviceMenuField)
 			.End()
 		.End();
 
@@ -339,16 +336,25 @@ BurnWindow::_OpenHelp()
 void
 BurnWindow::_UpdateSpeedSlider(BMessage* message)
 {
-	BSlider* speedSlider = NULL;
-	if (message->FindPointer("source", (void**)&speedSlider) != B_OK)
-		return;
-
-	if (speedSlider == NULL)
-		return;
-
 	BString speedString("Burn speed: ");
-	speedString << speedSlider->Value() << "X";
-	speedSlider->SetLabel(speedString.String());
+	if (fSpeedSlider->Value() == 0) {
+		speedString << "Min";
+		fConfig.speed = "-speed=0";
+	} else if (fSpeedSlider->Value() == 1) {
+		speedString << "8x";
+		fConfig.speed = "-speed=8";
+	} else if (fSpeedSlider->Value() == 2) {
+		speedString << "16x";
+		fConfig.speed = "-speed=16";
+	} else if (fSpeedSlider->Value() == 3) {
+		speedString << "32x";
+		fConfig.speed = "-speed=32";
+	} else if (fSpeedSlider->Value() == 4) {
+		speedString << "Max";
+		fConfig.speed = "";
+	}
+
+	fSpeedSlider->SetLabel(speedString.String());
 }
 
 
@@ -406,15 +412,21 @@ BurnWindow::GetSelectedDevice()
 	return devices[selectedDevice];
 }
 
-/*
-* true - DAO/SAO
-* false - TAO
-*/
-bool
-BurnWindow::GetSessionMode()
+
+sessionConfig
+BurnWindow::GetSessionConfig()
 {
-	BString modeLabel = sessionMenu->FindMarked()->Label();
+	BString modeLabel = fSessionMenu->FindMarked()->Label();
 	if (modeLabel.FindFirst("DAO") == B_ERROR)
-		return false;
-	return true;
+		fConfig.mode = "-tao";
+	else
+		fConfig.mode = "-sao";
+
+	fConfig.multisession = fMultiCheck->Value();
+	fConfig.onthefly = fOntheflyCheck->Value();
+	fConfig.simulation = fSimulationCheck->Value();
+	fConfig.eject = fEjectCheck->Value();
+	// Speed slider value get's updated in _UpdateSpeedSlider()
+
+	return fConfig;
 }

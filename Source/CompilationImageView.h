@@ -30,6 +30,7 @@ private:
 	void 			_BurnImage();
 	void 			_OpenImage(BMessage* message);
 	void 			_ImageParserOutput(BMessage* message);
+	void 			_ImageBurnerOutput(BMessage* message);
 
 	BFilePanel* 	fOpenPanel;
 	BPath* 			fImagePath;
@@ -37,6 +38,7 @@ private:
 	BTextView*		fImageInfoTextView;
 	BurnWindow*		windowParent;
 	BSeparatorView*	fImageInfoBox;
+	int				step;
 };
 
 

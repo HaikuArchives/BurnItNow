@@ -6,7 +6,9 @@
 #define _BURNWINDOW_H_
 
 
+#include <CheckBox.h>
 #include <MenuBar.h>
+#include <Slider.h>
 #include <String.h>
 #include <TabView.h>
 #include <View.h>
@@ -22,6 +24,16 @@ typedef struct sdevice {
 } sdevice;
 
 
+typedef struct sessionConfig {
+	int32 multisession;
+	int32 onthefly;
+	int32 simulation;
+	int32 eject;
+	BString speed;
+	BString mode;
+} sessionConfig;
+
+
 class BurnWindow : public BWindow {
 public:
 					BurnWindow(BRect frame, const char* title);
@@ -30,7 +42,7 @@ public:
 	
 	void			FindDevices(sdevice* array);
 	sdevice			GetSelectedDevice();
-	bool			GetSessionMode();
+	sessionConfig	GetSessionConfig();
 
 private:
 	BMenuBar*		_CreateMenuBar();
@@ -45,6 +57,16 @@ private:
 	void 			_UpdateSpeedSlider(BMessage* message);
 	
 	BTabView* 		fTabView;
+
+	BMenu* 			fSessionMenu;
+	BMenu* 			fDeviceMenu;
+	BCheckBox* 		fMultiCheck;
+	BCheckBox* 		fOntheflyCheck;
+	BCheckBox* 		fSimulationCheck;
+	BCheckBox* 		fEjectCheck;
+	BSlider* 		fSpeedSlider;
+
+	sessionConfig	fConfig;
 };
 
 #endif	// _BURNWINDOW_H_

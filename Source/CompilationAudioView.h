@@ -26,6 +26,7 @@ public:
 					CompilationAudioView(BurnWindow& parent);
 	virtual 		~CompilationAudioView();
 
+	virtual void	AttachedToWindow();
 	virtual void	MessageReceived(BMessage* message);
 	
 	void 			BurnDisc();
@@ -41,7 +42,6 @@ private:
 	BSeparatorView*	fBurnerInfoBox;
 	BSeparatorView*	fAudioBox;
 	
-	BPath* 			fTrackPath;
 	BPath* 			fTrackPaths[MAX_TRACKS];
 	int 			fCurrentPath;
 };

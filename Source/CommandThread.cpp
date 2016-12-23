@@ -168,6 +168,8 @@ CommandThread::_Thread(void* data)
 	for (int32 x = 0; x < args->CountItems(); x++)
 		pipe << *args->ItemAt(x);
 
+	pipe.PrintToStream();
+
 	FILE* stdOutAndErrPipe = NULL;
 
 	thread_id pipeThread = pipe.PipeInto(&stdOutAndErrPipe);
