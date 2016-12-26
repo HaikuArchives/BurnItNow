@@ -159,13 +159,17 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		BNodeInfo nodeInfo(&node);
 		char mimeTypeString[B_MIME_TYPE_LENGTH];
 
-		if (nodeInfo.GetType(mimeTypeString) == B_OK) {
-			if (strcmp("audio/x-wav", mimeTypeString) == 0) {
-				BPath* trackPath = new BPath(&trackRef);
-				fTrackPaths[fCurrentPath++] = trackPath;
-				BStringItem* item = new BStringItem(trackPath->Leaf());
-				fAudioList->AddItem(item);
-			}
+		nodeInfo.GetType(mimeTypeString);
+		BPath* trackPath = new BPath(&trackRef);
+		BString filename(trackPath->Leaf());
+
+		// Check for wav MIME type or file extension
+		if ((strcmp("audio/x-wav", mimeTypeString) == 0)
+			|| filename.IFindLast(".wav", filename.CountChars())
+				== filename.CountChars() - 4) {
+			fTrackPaths[fCurrentPath++] = trackPath;
+			BStringItem* item = new BStringItem(filename);
+			fAudioList->AddItem(item);
 		}
 
 		if (node.IsDirectory()) {
@@ -175,13 +179,18 @@ CompilationAudioView::_AddTrack(BMessage* message)
 			while (dir.GetNextRef(&ref) == B_OK) {
 				BNode inDirNode(&ref);
 				BNodeInfo InDirNodeInfo(&inDirNode);
-				if (InDirNodeInfo.GetType(mimeTypeString) == B_OK) {
-					if (strcmp("audio/x-wav", mimeTypeString) == 0) {
-						BPath* trackPath = new BPath(&ref);
-						fTrackPaths[fCurrentPath++] = trackPath;
-						BStringItem* item = new BStringItem(trackPath->Leaf());
-						fAudioList->AddItem(item);
-					}
+				InDirNodeInfo.GetType(mimeTypeString);
+
+				BPath* trackPath = new BPath(&ref);
+				BString filename(trackPath->Leaf());
+
+				// Check for wav MIME type or file extension
+				if ((strcmp("audio/x-wav", mimeTypeString) == 0)
+					|| filename.IFindLast(".wav", filename.CountChars())
+						== filename.CountChars() - 4) {
+					fTrackPaths[fCurrentPath++] = trackPath;
+					BStringItem* item = new BStringItem(filename);
+					fAudioList->AddItem(item);
 				}
 			}
 		}
