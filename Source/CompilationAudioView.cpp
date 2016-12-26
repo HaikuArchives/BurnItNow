@@ -8,8 +8,11 @@
 #include <Alert.h>
 #include <Button.h>
 #include <ControlLook.h>
+#include <Directory.h>
 #include <Entry.h>
 #include <LayoutBuilder.h>
+#include <Node.h>
+#include <NodeInfo.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
@@ -149,16 +152,40 @@ CompilationAudioView::_AddTrack(BMessage* message)
 			burnDiscButton->SetEnabled(true);
 	}
 
-	// TODO Verify that the file is a WAV file
 	entry_ref trackRef;
 	int32 i = 0;
 	while (message->FindRef("refs", i, &trackRef) == B_OK) {
-		BPath* trackPath = new BPath(&trackRef);
-		fTrackPaths[fCurrentPath++] = trackPath;
-		BStringItem* item = new BStringItem(trackPath->Leaf());
-		fAudioList->AddItem(item);
+		BNode node(&trackRef);
+		BNodeInfo nodeInfo(&node);
+		char mimeTypeString[B_MIME_TYPE_LENGTH];
 
-		i++;
+		if (nodeInfo.GetType(mimeTypeString) == B_OK) {
+			if (strcmp("audio/x-wav", mimeTypeString) == 0) {
+				BPath* trackPath = new BPath(&trackRef);
+				fTrackPaths[fCurrentPath++] = trackPath;
+				BStringItem* item = new BStringItem(trackPath->Leaf());
+				fAudioList->AddItem(item);
+			}
+		}
+
+		if (node.IsDirectory()) {
+			BDirectory dir(&trackRef);
+			entry_ref ref;
+
+			while (dir.GetNextRef(&ref) == B_OK) {
+				BNode inDirNode(&ref);
+				BNodeInfo InDirNodeInfo(&inDirNode);
+				if (InDirNodeInfo.GetType(mimeTypeString) == B_OK) {
+					if (strcmp("audio/x-wav", mimeTypeString) == 0) {
+						BPath* trackPath = new BPath(&ref);
+						fTrackPaths[fCurrentPath++] = trackPath;
+						BStringItem* item = new BStringItem(trackPath->Leaf());
+						fAudioList->AddItem(item);
+					}
+				}
+			}
+		}
+	i++;
 	}
 }
 
