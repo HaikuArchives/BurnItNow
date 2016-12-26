@@ -142,22 +142,24 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 void
 CompilationAudioView::_AddTrack(BMessage* message)
 {
-	// TODO Verify that the file is a WAV file
-	entry_ref trackRef;
-
-	if (message->FindRef("refs", &trackRef) != B_OK)
-		return;
-
 	if (fCurrentPath == 0) {
 		BButton* burnDiscButton
 			= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
 		if (burnDiscButton != NULL)
 			burnDiscButton->SetEnabled(true);
 	}
-	BPath* trackPath = new BPath(&trackRef);
-	fTrackPaths[fCurrentPath++] = trackPath;
-	BStringItem* item = new BStringItem(trackPath->Leaf());
-	fAudioList->AddItem(item);
+
+	// TODO Verify that the file is a WAV file
+	entry_ref trackRef;
+	int32 i = 0;
+	while (message->FindRef("refs", i, &trackRef) == B_OK) {
+		BPath* trackPath = new BPath(&trackRef);
+		fTrackPaths[fCurrentPath++] = trackPath;
+		BStringItem* item = new BStringItem(trackPath->Leaf());
+		fAudioList->AddItem(item);
+
+		i++;
+	}
 }
 
 
