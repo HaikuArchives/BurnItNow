@@ -167,6 +167,8 @@ CompilationImageView::_OpenImage(BMessage* message)
 	if (fImageParserThread != NULL)
 		delete fImageParserThread;
 
+	step = 1;	// flag we're opening ISO
+
 	fImageParserThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kParserMessage), this));
 	fImageParserThread->AddArgument("isoinfo")
@@ -175,7 +177,6 @@ CompilationImageView::_OpenImage(BMessage* message)
 		->AddArgument(fImagePath->Path())
 		->Run();
 
-	step = 1;	// flag we're opening ISO
 }
 
 void
@@ -192,9 +193,10 @@ CompilationImageView::_BurnImage()
 	if (fImageParserThread != NULL)
 		delete fImageParserThread;
 
+	step = 2;	// flag we're burning
+
 	fImageInfoTextView->SetText(NULL);
 	fImageInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-
 	BButton* chooseImageButton
 		= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
 	if (chooseImageButton != NULL)
@@ -226,7 +228,6 @@ CompilationImageView::_BurnImage()
 		->AddArgument(fImagePath->Path())
 		->Run();
 
-	step = 2;	// flag we're burning
 }
 
 
@@ -235,16 +236,13 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 {
 	BString data;
 
-	if (message->FindString("line", &data) != B_OK)
-		return;
-
-	data << "\n";
-
-	fImageInfoTextView->Insert(data.String());
-	
-	if (!fImageParserThread->IsRunning() && step == 1) {	// opened image
+	if (message->FindString("line", &data) == B_OK) {
+		data << "\n";
+		fImageInfoTextView->Insert(data.String());
+	}
+	int32 code = -1;
+	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
 		fImageInfoBox->SetLabel("Burn the disc");
-
 		BButton* chooseImageButton
 			= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
 		if (chooseImageButton != NULL)
@@ -256,9 +254,8 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 			burnImageButton->SetEnabled(true);
 
 		step = 0;
-	} else if (!fImageParserThread->IsRunning() && step == 2) {
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
 		fImageInfoBox->SetLabel("Burning complete. Burn another disc?");
-
 		BButton* chooseImageButton
 			= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
 		if (chooseImageButton != NULL)

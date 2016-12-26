@@ -218,32 +218,31 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 {
 	BString data;
 
-	if (message->FindString("line", &data) != B_OK)
-		return;
-
-	data << "\n";
-
-	fClonerInfoTextView->Insert(data.String());
-
-	if (!fClonerThread->IsRunning() && step == 1) {	// built image
+	if (message->FindString("line", &data) == B_OK) {
+		data << "\n";
+		fClonerInfoTextView->Insert(data.String());
+	}
+	int32 code = -1;
+	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
 		BString result(fClonerInfoTextView->Text());
 
-		// Last output line always (expect error) contains speed statistics
+		// Last output line always (except error) contains speed statistics
 		if (result.FindFirst(" kB/sec.") != B_ERROR) {
-			fClonerInfoBox->SetLabel("Insert a blank disc and burn the image");
+			step = 0;
 
+			fClonerInfoBox->SetLabel("Insert a blank disc and burn the image");
 			BString device("dev=");
 			device.Append(windowParent->GetSelectedDevice().number.String());
 
 			fClonerThread = new CommandThread(NULL,
-				new BInvoker(new BMessage(kClonerMessage), this));
+				new BInvoker(new BMessage(), this));	// no need for notification
 			fClonerThread->AddArgument("cdrecord")
 				->AddArgument("-eject")
 				->AddArgument(device)
 				->Run();
 		} else {
-			fClonerInfoBox->SetLabel("Failed to create image");
 			step = 0;
+			fClonerInfoBox->SetLabel("Failed to create image");
 			return;
 		}
 		BButton* burnImageButton
@@ -258,9 +257,8 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 
 		step = 0;
 
-	} else if (!fClonerThread->IsRunning() && step == 2) {	// burnt disc
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
 		fClonerInfoBox->SetLabel("Burning complete. Burn another disc?");
-
 		BButton* burnImageButton
 			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
 		if (burnImageButton != NULL)

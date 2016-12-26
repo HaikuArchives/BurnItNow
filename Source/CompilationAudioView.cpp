@@ -124,15 +124,20 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 {
 	BString data;
 
-	if (message->FindString("line", &data) != B_OK)
-		return;
-
-	data << "\n";
-
-	fBurnerInfoTextView->Insert(data.String());
-	
-	if (!fBurnerThread->IsRunning())
-		fBurnerInfoBox->SetLabel("Ready");
+	if (message->FindString("line", &data) == B_OK) {
+		data << "\n";
+		fBurnerInfoTextView->Insert(data.String());
+	}
+	int32 code = -1;
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
+		if (code == 0) {
+			fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
+			BButton* burnDiscButton
+				= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
+			if (burnDiscButton != NULL)
+				burnDiscButton->SetEnabled(true);
+		}
+	}
 }
 
 

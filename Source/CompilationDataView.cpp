@@ -191,16 +191,13 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 {
 	BString data;
 
-	if (message->FindString("line", &data) != B_OK)
-		return;
-
-	data << "\n";
-
-	fBurnerInfoTextView->Insert(data.String());
-
-	if (!fBurnerThread->IsRunning() && step == 1) {
+	if (message->FindString("line", &data) == B_OK) {
+		data << "\n";
+		fBurnerInfoTextView->Insert(data.String());
+	}
+	int32 code = -1;
+	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
 		fBurnerInfoBox->SetLabel("Burn the disc");
-
 		BButton* buildImageButton
 			= dynamic_cast<BButton*>(FindView("BuildImageButton"));
 		if (buildImageButton != NULL)
@@ -213,9 +210,8 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 
 		step = 0;
 
-	} else if (!fBurnerThread->IsRunning() && step == 2) {
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
 		fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
-
 		BButton* chooseDirectoryButton
 			= dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
 		if (chooseDirectoryButton != NULL)
@@ -233,7 +229,6 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 
 		step = 0;
 	}
-	
 }
 
 
@@ -243,8 +238,6 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 void
 CompilationDataView::BuildISO()
 {
-	step = 1;	// flag we're building ISO
-	
 	if (fDirPath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
 			"First choose the folder to burn.", "OK"))->Go();
@@ -256,7 +249,6 @@ CompilationDataView::BuildISO()
 		
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Building in progress" B_UTF8_ELLIPSIS);
-	
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
 
@@ -265,6 +257,8 @@ CompilationDataView::BuildISO()
 
 	status_t ret = fImagePath->Append("burnitnow_iso.iso");
 	if (ret == B_OK) {
+		step = 1;	// flag we're building ISO
+
 		fBurnerThread->AddArgument("mkisofs")
 		->AddArgument("-iso-level 3")
 		->AddArgument("-J")
@@ -283,8 +277,6 @@ CompilationDataView::BuildISO()
 void
 CompilationDataView::BurnDisc()
 {
-	step = 2;	// flag we're burning
-
 	if (fImagePath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
 			"First build an image to burn.", "OK"))->Go();
@@ -294,9 +286,10 @@ CompilationDataView::BurnDisc()
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
 
+	step = 2;	// flag we're burning
+
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-
 	BButton* chooseDirectoryButton
 		= dynamic_cast<BButton*>(FindView("ChooseDirectoryButton"));
 	if (chooseDirectoryButton != NULL)

@@ -153,13 +153,13 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 {
 	BString data;
 
-	if (message->FindString("line", &data) != B_OK)
-		return;
-
-	data << "\n";
-
-	fBlankerInfoTextView->Insert(data.String());
-	
-	if (!fBlankerThread->IsRunning())
-		fBlankerInfoBox->SetLabel("Ready");
+	if (message->FindString("line", &data) == B_OK) {
+		data << "\n";
+		fBlankerInfoTextView->Insert(data.String());
+	}
+	int32 code = -1;
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
+		if (code == 0)
+			fBlankerInfoBox->SetLabel("Ready");
+	}
 }
