@@ -52,19 +52,20 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	BButton* createImageButton = new BButton("CreateImageButton",
 		"Create image", new BMessage(kCreateImageMessage));
 	createImageButton->SetTarget(this);
+	createImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 	
 	BButton* burnImageButton = new BButton("BurnImageButton",
 		"Burn image", new BMessage(kBurnImageMessage));
-	burnImageButton->SetTarget(this);
+	burnImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
-			.Add(new BStringView("ImageFileStringView", "Image: <none>"))
-			.AddGlue()
 			.AddGroup(B_HORIZONTAL)
+				.AddGlue()
 				.Add(createImageButton)
 				.Add(burnImageButton)
+				.AddGlue()
 				.End()
 			.End()
 		.AddGroup(B_VERTICAL)
@@ -158,20 +159,22 @@ CompilationCloneView::_CreateImage()
 
 	status_t ret = path.Append("burnitnow_cache.iso");
 	if (ret == B_OK) {
-		BString parameter = "f=";
-		parameter.Append(path.Path());
+		step = 1;
+
+		BString file = "f=";
+		file.Append(path.Path());
 		BString device("dev=");
 		device.Append(windowParent->GetSelectedDevice().number.String());
+		sessionConfig config = windowParent->GetSessionConfig();
 		
 		fClonerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kClonerMessage), this));
 		fClonerThread->AddArgument("readcd")
-			->AddArgument("-s")
-			->AddArgument(parameter)
 			->AddArgument(device)
+			->AddArgument("-s")
+			->AddArgument("speed=10")	// for max compatibility
+			->AddArgument(file)
 			->Run();
-
-		step = 1;
 	}
 }
 
@@ -185,6 +188,8 @@ CompilationCloneView::_BurnImage()
 
 	status_t ret = path.Append("burnitnow_cache.iso");
 	if (ret == B_OK) {
+		step = 2;
+
 		fClonerInfoTextView->SetText(NULL);
 		fClonerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
 
@@ -204,11 +209,12 @@ CompilationCloneView::_BurnImage()
 			fClonerThread->AddArgument(config.speed);
 
 		fClonerThread->AddArgument(config.mode)
+			->AddArgument("fs=16m")
 			->AddArgument(device)
+			->AddArgument("-pad")
+			->AddArgument("padsize=63s")
 			->AddArgument(path.Path())
 			->Run();
-
-		step = 2;
 	}
 }
 

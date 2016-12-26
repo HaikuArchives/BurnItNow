@@ -224,7 +224,10 @@ CompilationImageView::_BurnImage()
 		fImageParserThread->AddArgument(config.speed);
 	
 	fImageParserThread->AddArgument(config.mode)
+		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-pad")
+		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
 

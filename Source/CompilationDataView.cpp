@@ -132,6 +132,7 @@ CompilationDataView::MessageReceived(BMessage* message)
 			break;
 		case B_REFS_RECEIVED:
 			_OpenDirectory(message);
+			break;
 		case kBurnerMessage:
 			_BurnerOutput(message);
 			break;
@@ -321,7 +322,10 @@ CompilationDataView::BurnDisc()
 		fBurnerThread->AddArgument(config.speed);
 	
 	fBurnerThread->AddArgument(config.mode)
+		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-pad")
+		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
 }

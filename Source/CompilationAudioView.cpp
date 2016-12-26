@@ -51,8 +51,6 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fAudioList = new BListView("AudioListView");
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
 		fAudioList, 0, true, true);
-	
-	fAudioList->AddItem(new BStringItem("<list is empty>"));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
@@ -151,10 +149,6 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		return;
 
 	if (fCurrentPath == 0) {
-		// fAudioList->RemoveItem(0) returns error
-		int32 tmp = 0;
-		fAudioList->RemoveItem(tmp);
-
 		BButton* burnDiscButton
 			= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
 		if (burnDiscButton != NULL)
@@ -198,15 +192,17 @@ CompilationAudioView::BurnDisc()
 	if (config.eject)
 		fBurnerThread->AddArgument("-eject");
 	if (config.mode == "-sao")
-		fBurnerThread->AddArgument("-dao");	// burn audio explicitely with -dao (?)
+		fBurnerThread->AddArgument("-dao");	// for max compatibility
 	else
 		fBurnerThread->AddArgument(config.mode);
 
-	fBurnerThread->AddArgument("-speed=4")	// sure?
+	fBurnerThread->AddArgument("speed=4")	// for max compatibility
+		->AddArgument("fs=4m")				// for max compatibility
 		->AddArgument(device)
 		->AddArgument("-audio")
 		->AddArgument("-copy")
-		->AddArgument("-pad");
+		->AddArgument("-pad")
+		->AddArgument("padsize=63s");
 
 	for (unsigned int ix = 0; ix <= MAX_TRACKS; ix++) {
 		if (fTrackPaths[ix] == NULL)

@@ -216,12 +216,12 @@ BurnWindow::_CreateToolBar()
 						new BMessage());
 
 	fSpeedSlider = new BSlider("SpeedSlider", "Burn speed: Max",
-		new BMessage(kSpeedSliderMessage), 0, 4, B_HORIZONTAL);
+		new BMessage(kSpeedSliderMessage), 0, 5, B_HORIZONTAL);
 	fSpeedSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
 	fSpeedSlider->SetLimitLabels("Min", "Max");
 	fSpeedSlider->SetHashMarks(B_HASH_MARKS_BOTH);
-	fSpeedSlider->SetHashMarkCount(5);
-	fSpeedSlider->SetValue(4);	// initial speed: max
+	fSpeedSlider->SetHashMarkCount(6);
+	fSpeedSlider->SetValue(5);	// initial speed: max
 	fSpeedSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
@@ -339,17 +339,20 @@ BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	BString speedString("Burn speed: ");
 	if (fSpeedSlider->Value() == 0) {
 		speedString << "Min";
-		fConfig.speed = "-speed=0";
+		fConfig.speed = "speed=0";
 	} else if (fSpeedSlider->Value() == 1) {
-		speedString << "8x";
-		fConfig.speed = "-speed=8";
+		speedString << "4x";
+		fConfig.speed = "speed=4";
 	} else if (fSpeedSlider->Value() == 2) {
-		speedString << "16x";
-		fConfig.speed = "-speed=16";
+		speedString << "8x";
+		fConfig.speed = "speed=8";
 	} else if (fSpeedSlider->Value() == 3) {
-		speedString << "32x";
-		fConfig.speed = "-speed=32";
+		speedString << "16x";
+		fConfig.speed = "speed=16";
 	} else if (fSpeedSlider->Value() == 4) {
+		speedString << "32x";
+		fConfig.speed = "speed=32";
+	} else if (fSpeedSlider->Value() == 5) {
 		speedString << "Max";
 		fConfig.speed = "";
 	}
