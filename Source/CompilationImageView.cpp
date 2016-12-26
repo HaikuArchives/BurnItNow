@@ -10,6 +10,8 @@
 #include <Button.h>
 #include <ControlLook.h>
 #include <LayoutBuilder.h>
+#include <Node.h>
+#include <NodeInfo.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
@@ -141,42 +143,59 @@ CompilationImageView::_ChooseImage()
 void
 CompilationImageView::_OpenImage(BMessage* message)
 {
-	entry_ref imageRef;
-
-	if (message->FindRef("refs", &imageRef) != B_OK)
+	entry_ref ref;
+	if (message->FindRef("refs", &ref) != B_OK)
 		return;
 
-	BStringView* imageFileStringView
-		= dynamic_cast<BStringView*>(FindView("ImageFileStringView"));
-	if (imageFileStringView == NULL)
+	BEntry entry(&ref, true);	// also accept symlinks
+	BNode node(&entry);
+	if (node.InitCheck() != B_OK)
 		return;
 
-	fImagePath->SetTo(&imageRef);
+	BNodeInfo nodeInfo(&node);
+	if (nodeInfo.InitCheck() != B_OK)
+		return;
 
-	imageFileStringView->SetText(fImagePath->Path());
+	char mimeTypeString[B_MIME_TYPE_LENGTH];
+	nodeInfo.GetType(mimeTypeString);
+	BPath* path = new BPath(&entry);
+	BString filename(path->Leaf());
 
-	BButton* burnImageButton
-		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL)
-		burnImageButton->SetEnabled(true);
+	// Check for wav MIME type or file extension
+	if ((strcmp("application/x-cd-image", mimeTypeString) == 0)
+		|| filename.IFindLast(".iso", filename.CountChars())
+			== (filename.CountChars() - 4)
+		|| filename.IFindLast(".img", filename.CountChars())
+			== (filename.CountChars() - 4)) {
 
-	fImageInfoTextView->SetText(NULL);
+		BStringView* imageFileStringView
+			= dynamic_cast<BStringView*>(FindView("ImageFileStringView"));
+		if (imageFileStringView == NULL)
+			return;
 
-	// TODO Verify that the file is a supported image type
+		fImagePath->SetTo(&entry);
+		imageFileStringView->SetText(fImagePath->Path());
 
-	if (fImageParserThread != NULL)
-		delete fImageParserThread;
+		BButton* burnImageButton
+			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
+		if (burnImageButton != NULL)
+			burnImageButton->SetEnabled(true);
 
-	step = 1;	// flag we're opening ISO
+		fImageInfoTextView->SetText(NULL);
 
-	fImageParserThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kParserMessage), this));
-	fImageParserThread->AddArgument("isoinfo")
-		->AddArgument("-d")
-		->AddArgument("-i")
-		->AddArgument(fImagePath->Path())
-		->Run();
+		if (fImageParserThread != NULL)
+			delete fImageParserThread;
 
+		step = 1;	// flag we're opening ISO
+
+		fImageParserThread = new CommandThread(NULL,
+			new BInvoker(new BMessage(kParserMessage), this));
+		fImageParserThread->AddArgument("isoinfo")
+			->AddArgument("-d")
+			->AddArgument("-i")
+			->AddArgument(fImagePath->Path())
+			->Run();
+	}
 }
 
 void

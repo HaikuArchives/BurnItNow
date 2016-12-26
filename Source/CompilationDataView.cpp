@@ -159,9 +159,13 @@ CompilationDataView::_ChooseDirectory()
 void
 CompilationDataView::_OpenDirectory(BMessage* message)
 {
-	entry_ref dirRef;
+	entry_ref ref;
+	if (message->FindRef("refs", &ref) != B_OK)
+		return;
 
-	if (message->FindRef("refs", &dirRef) != B_OK)
+	BEntry entry(&ref, true);	// also accept symlinks
+	BNode node(&entry);
+	if ((node.InitCheck() != B_OK) || !node.IsDirectory())
 		return;
 
 	BStringView* folderStringView
@@ -169,8 +173,7 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 	if (folderStringView == NULL)
 		return;
 
-	fDirPath->SetTo(&dirRef);
-
+	fDirPath->SetTo(&entry);
 	folderStringView->SetText(fDirPath->Path());
 
 	BButton* buildImageButton

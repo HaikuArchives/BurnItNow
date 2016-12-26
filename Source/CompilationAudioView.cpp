@@ -145,22 +145,21 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 void
 CompilationAudioView::_AddTrack(BMessage* message)
 {
-	if (fCurrentPath == 0) {
-		BButton* burnDiscButton
-			= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
-		if (burnDiscButton != NULL)
-			burnDiscButton->SetEnabled(true);
-	}
-
 	entry_ref trackRef;
 	int32 i = 0;
 	while (message->FindRef("refs", i, &trackRef) == B_OK) {
-		BNode node(&trackRef);
-		BNodeInfo nodeInfo(&node);
-		char mimeTypeString[B_MIME_TYPE_LENGTH];
+		BEntry entry(&trackRef, true);	// also accept symlinks
+		BNode node(&entry);
+		if (node.InitCheck() != B_OK)
+			return;
 
+		BNodeInfo nodeInfo(&node);
+		if (nodeInfo.InitCheck() != B_OK)
+			return;
+
+		char mimeTypeString[B_MIME_TYPE_LENGTH];
 		nodeInfo.GetType(mimeTypeString);
-		BPath* trackPath = new BPath(&trackRef);
+		BPath* trackPath = new BPath(&entry);
 		BString filename(trackPath->Leaf());
 
 		// Check for wav MIME type or file extension
@@ -173,12 +172,18 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		}
 
 		if (node.IsDirectory()) {
-			BDirectory dir(&trackRef);
+			BDirectory dir(&entry);
 			entry_ref ref;
 
 			while (dir.GetNextRef(&ref) == B_OK) {
 				BNode inDirNode(&ref);
+				if (inDirNode.InitCheck() != B_OK)
+					return;
+
 				BNodeInfo InDirNodeInfo(&inDirNode);
+				if (InDirNodeInfo.InitCheck() != B_OK)
+					return;
+
 				InDirNodeInfo.GetType(mimeTypeString);
 
 				BPath* trackPath = new BPath(&ref);
@@ -193,6 +198,12 @@ CompilationAudioView::_AddTrack(BMessage* message)
 					fAudioList->AddItem(item);
 				}
 			}
+		}
+		if (fCurrentPath > 0) {
+			BButton* burnDiscButton
+				= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
+			if (burnDiscButton != NULL)
+				burnDiscButton->SetEnabled(true);
 		}
 	i++;
 	}
