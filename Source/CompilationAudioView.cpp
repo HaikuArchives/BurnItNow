@@ -50,9 +50,9 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fAudioBox->SetFont(be_bold_font);
 	fAudioBox->SetLabel("Drop tracks here (only WAV files)");
 
-	fAudioList = new BListView("AudioListView");
+	fTrackList = new AudioListView("AudioListView");
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
-		fAudioList, 0, true, true);
+		fTrackList, 0, true, true);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
@@ -137,6 +137,14 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 void
 CompilationAudioView::_AddTrack(BMessage* message)
 {
+	int32 index;
+	if (message->WasDropped()) {
+		BPoint dropPoint = message->DropPoint();
+		index = fTrackList->IndexOf(fTrackList->ConvertFromScreen(dropPoint));
+		if (index < 0)
+			index = fTrackList->CountItems();
+	}
+
 	entry_ref trackRef;
 	int32 i = 0;
 	while (message->FindRef("refs", i, &trackRef) == B_OK) {
@@ -153,47 +161,53 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		nodeInfo.GetType(mimeTypeString);
 		BPath* trackPath = new BPath(&entry);
 		BString filename(trackPath->Leaf());
+		BString path(trackPath->Path());
 
 		// Check for wav MIME type or file extension
 		if ((strcmp("audio/x-wav", mimeTypeString) == 0)
 			|| filename.IFindLast(".wav", filename.CountChars())
 				== filename.CountChars() - 4) {
-			fTrackPaths[fCurrentPath++] = trackPath;
-			BStringItem* item = new BStringItem(filename);
-			fAudioList->AddItem(item);
-		}
+			if (!message->WasDropped())
+				index = fTrackList->CountItems();
 
+			fTrackList->AddItem(new AudioListItem(filename, path, i), index);
+		}
 		if (node.IsDirectory()) {
 			BDirectory dir(&entry);
 			entry_ref ref;
 
 			while (dir.GetNextRef(&ref) == B_OK) {
-				BNode inDirNode(&ref);
-				if (inDirNode.InitCheck() != B_OK)
+				BNode dNode(&ref);
+				if (dNode.InitCheck() != B_OK)
 					return;
 
-				BNodeInfo InDirNodeInfo(&inDirNode);
-				if (InDirNodeInfo.InitCheck() != B_OK)
+				BNodeInfo dNodeInfo(&dNode);
+				if (dNodeInfo.InitCheck() != B_OK)
 					return;
 
-				InDirNodeInfo.GetType(mimeTypeString);
+				dNodeInfo.GetType(mimeTypeString);
 
-				BPath* trackPath = new BPath(&ref);
-				BString filename(trackPath->Leaf());
+				BPath* dTrackPath = new BPath(&ref);
+				BString dFilename(dTrackPath->Leaf());
+				BString dPath(dTrackPath->Path());
 
 				// Check for wav MIME type or file extension
 				if ((strcmp("audio/x-wav", mimeTypeString) == 0)
-					|| filename.IFindLast(".wav", filename.CountChars())
-						== filename.CountChars() - 4) {
-					fTrackPaths[fCurrentPath++] = trackPath;
-					BStringItem* item = new BStringItem(filename);
-					fAudioList->AddItem(item);
+					|| dFilename.IFindLast(".wav", dFilename.CountChars())
+						== dFilename.CountChars() - 4) {
+					if (!message->WasDropped())
+						index = fTrackList->CountItems();
+
+					fTrackList->AddItem(new AudioListItem(dFilename, dPath, i),
+						index++);
 				}
 			}
 		}
-		if (fCurrentPath > 0)
-			fBurnButton->SetEnabled(true);
 		i++;
+	}
+	if (!fTrackList->IsEmpty()) {
+		fBurnButton->SetEnabled(true);
+		fTrackList->RenumberTracks();
 	}
 }
 
@@ -204,7 +218,7 @@ CompilationAudioView::_AddTrack(BMessage* message)
 void
 CompilationAudioView::BurnDisc()
 {
-	if (fAudioList->IsEmpty())
+	if (fTrackList->IsEmpty())
 		return;
 
 	fBurnerInfoTextView->SetText(NULL);
@@ -237,10 +251,15 @@ CompilationAudioView::BurnDisc()
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s");
 
-	for (unsigned int ix = 0; ix <= MAX_TRACKS; ix++) {
-		if (fTrackPaths[ix] == NULL)
+	for (unsigned int i = 0; i <= MAX_TRACKS; i++) {
+		AudioListItem* sItem = dynamic_cast<AudioListItem *>
+			(fTrackList->ItemAt(i));
+
+		if (sItem == NULL)
 			break;
-		fBurnerThread->AddArgument(fTrackPaths[ix]->Path());
+
+		BString track(sItem->GetPath());
+		fBurnerThread->AddArgument(track);
 	}
 	fBurnerThread->Run();
 }

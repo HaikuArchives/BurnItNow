@@ -6,6 +6,7 @@
 #define _COMPILATIONAUDIOVIEW_H_
 
 
+#include "AudioList.h"
 #include "BurnWindow.h"
 
 #include <Button.h>
@@ -38,7 +39,7 @@ private:
 	
 	CommandThread*	fBurnerThread;
 	BTextView* 		fBurnerInfoTextView;
-	BListView* 		fAudioList;
+	AudioListView* 	fTrackList;
 	BurnWindow* 	windowParent;
 	BSeparatorView*	fBurnerInfoBox;
 	BSeparatorView*	fAudioBox;
