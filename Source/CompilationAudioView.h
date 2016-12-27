@@ -8,6 +8,7 @@
 
 #include "BurnWindow.h"
 
+#include <Button.h>
 #include <ListView.h>
 #include <Path.h>
 #include <SeparatorView.h>
@@ -41,6 +42,7 @@ private:
 	BurnWindow* 	windowParent;
 	BSeparatorView*	fBurnerInfoBox;
 	BSeparatorView*	fAudioBox;
+	BButton*		fBurnButton;
 	
 	BPath* 			fTrackPaths[MAX_TRACKS];
 	int 			fCurrentPath;

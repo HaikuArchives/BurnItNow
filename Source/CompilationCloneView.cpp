@@ -6,7 +6,6 @@
 #include "CompilationCloneView.h"
 
 #include <Alert.h>
-#include <Button.h>
 #include <ControlLook.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
@@ -49,22 +48,22 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	BScrollView* infoScrollView = new BScrollView("CloneInfoScrollView",
 		fClonerInfoTextView, 0, true, true);
 
-	BButton* createImageButton = new BButton("CreateImageButton",
-		"Create image", new BMessage(kCreateImageMessage));
-	createImageButton->SetTarget(this);
-	createImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fImageButton = new BButton("CreateImageButton", "Create image",
+		new BMessage(kCreateImageMessage));
+	fImageButton->SetTarget(this);
+	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 	
-	BButton* burnImageButton = new BButton("BurnImageButton",
-		"Burn image", new BMessage(kBurnImageMessage));
-	burnImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fBurnButton = new BButton("BurnImageButton", "Burn image",
+		new BMessage(kBurnImageMessage));
+	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
 			.AddGroup(B_HORIZONTAL)
 				.AddGlue()
-				.Add(createImageButton)
-				.Add(burnImageButton)
+				.Add(fImageButton)
+				.Add(fBurnButton)
 				.AddGlue()
 				.End()
 			.End()
@@ -89,18 +88,11 @@ CompilationCloneView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* createImageButton
-		= dynamic_cast<BButton*>(FindView("CreateImageButton"));
-	if (createImageButton != NULL) {
-		createImageButton->SetTarget(this);
-		createImageButton->SetEnabled(true);
-	}
-	BButton* burnImageButton
-		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL) {
-		burnImageButton->SetTarget(this);
-		burnImageButton->SetEnabled(false);
-	}
+	fImageButton->SetTarget(this);
+	fImageButton->SetEnabled(true);
+
+	fBurnButton->SetTarget(this);
+	fBurnButton->SetEnabled(false);
 }
 
 
@@ -147,11 +139,7 @@ CompilationCloneView::_CreateImage()
 {
 	fClonerInfoTextView->SetText(NULL);
 	fClonerInfoBox->SetLabel("Image creating in progress" B_UTF8_ELLIPSIS);
-
-	BButton* createImageButton
-		= dynamic_cast<BButton*>(FindView("CreateImageButton"));
-	if (createImageButton != NULL)
-		createImageButton->SetEnabled(false);
+	fImageButton->SetEnabled(false);
 
 	BPath path;
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
@@ -251,29 +239,16 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 			fClonerInfoBox->SetLabel("Failed to create image");
 			return;
 		}
-		BButton* burnImageButton
-			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-		if (burnImageButton != NULL)
-			burnImageButton->SetEnabled(true);
 
-		BButton* createImageButton
-			= dynamic_cast<BButton*>(FindView("CreateImageButton"));
-		if (createImageButton != NULL)
-			createImageButton->SetEnabled(true);
+		fImageButton->SetEnabled(true);
+		fBurnButton->SetEnabled(true);
 
 		step = 0;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
 		fClonerInfoBox->SetLabel("Burning complete. Burn another disc?");
-		BButton* burnImageButton
-			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-		if (burnImageButton != NULL)
-			burnImageButton->SetEnabled(true);
-
-		BButton* createImageButton
-			= dynamic_cast<BButton*>(FindView("CreateImageButton"));
-		if (createImageButton != NULL)
-			createImageButton->SetEnabled(true);
+		fImageButton->SetEnabled(true);
+		fBurnButton->SetEnabled(true);
 
 		step = 0;
 	}

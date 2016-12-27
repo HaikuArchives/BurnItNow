@@ -6,7 +6,6 @@
 #include "CommandThread.h"
 
 #include <Alert.h>
-#include <Button.h>
 #include <ControlLook.h>
 #include <Directory.h>
 #include <Entry.h>
@@ -43,9 +42,9 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
 		fBurnerInfoTextView, 0, true, true);
 
-	BButton* burnDiscButton = new BButton("BurnDiscButton",
-		"Burn disc", new BMessage(kBurnDiscMessage));
-	burnDiscButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fBurnButton = new BButton("BurnDiscButton", "Burn disc",
+		new BMessage(kBurnDiscMessage));
+	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fAudioBox->SetFont(be_bold_font);
@@ -59,7 +58,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
 			.AddGlue()
-			.Add(burnDiscButton)
+			.Add(fBurnButton)
 			.AddGlue()
 			.End()
 		.AddGroup(B_HORIZONTAL)
@@ -89,12 +88,8 @@ CompilationAudioView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* burnDiscButton
-		= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
-	if (burnDiscButton != NULL) {
-		burnDiscButton->SetTarget(this);
-		burnDiscButton->SetEnabled(false);
-	}
+	fBurnButton->SetTarget(this);
+	fBurnButton->SetEnabled(false);
 }
 
 
@@ -133,10 +128,7 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		if (code == 0) {
 			fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
-			BButton* burnDiscButton
-				= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
-			if (burnDiscButton != NULL)
-				burnDiscButton->SetEnabled(true);
+			fBurnButton->SetEnabled(true);
 		}
 	}
 }
@@ -199,13 +191,9 @@ CompilationAudioView::_AddTrack(BMessage* message)
 				}
 			}
 		}
-		if (fCurrentPath > 0) {
-			BButton* burnDiscButton
-				= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
-			if (burnDiscButton != NULL)
-				burnDiscButton->SetEnabled(true);
-		}
-	i++;
+		if (fCurrentPath > 0)
+			fBurnButton->SetEnabled(true);
+		i++;
 	}
 }
 
@@ -221,11 +209,7 @@ CompilationAudioView::BurnDisc()
 
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-
-	BButton* burnDiscButton
-		= dynamic_cast<BButton*>(FindView("BurnDiscButton"));
-	if (burnDiscButton != NULL)
-		burnDiscButton->SetEnabled(false);
+	fBurnButton->SetEnabled(false);
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());

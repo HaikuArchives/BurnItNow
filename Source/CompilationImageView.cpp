@@ -7,7 +7,6 @@
 #include "CompilationImageView.h"
 
 #include <Alert.h>
-#include <Button.h>
 #include <ControlLook.h>
 #include <LayoutBuilder.h>
 #include <Node.h>
@@ -48,13 +47,13 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
 		fImageInfoTextView, 0, true, true);
 
-	BButton* chooseImageButton = new BButton("ChooseImageButton",
-		"Choose image", new BMessage(kChooseImageMessage));
-	chooseImageButton->SetTarget(this);
+	fChooseButton = new BButton("ChooseImageButton", "Choose image",
+		new BMessage(kChooseImageMessage));
+	fChooseButton->SetTarget(this);
 	
-	BButton* burnImageButton = new BButton("BurnImageButton",
-		"Burn disc", new BMessage(kBurnImageMessage));
-	burnImageButton->SetTarget(this);
+	fBurnButton = new BButton("BurnImageButton", "Burn disc",
+		new BMessage(kBurnImageMessage));
+	fBurnButton->SetTarget(this);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
@@ -63,8 +62,8 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 			.AddGlue()
 			.AddGroup(B_HORIZONTAL)
 				.AddGlue()
-				.Add(chooseImageButton)
-				.Add(burnImageButton)
+				.Add(fChooseButton)
+				.Add(fBurnButton)
 				.End()
 			.End()
 		.AddGroup(B_VERTICAL)
@@ -89,19 +88,13 @@ CompilationImageView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* chooseImageButton
-		= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
-	if (chooseImageButton != NULL) {
-		chooseImageButton->SetTarget(this);
-		chooseImageButton->SetEnabled(true);
-	}
-	BButton* burnImageButton
-		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL) {
-		burnImageButton->SetTarget(this);
-		burnImageButton->SetEnabled(false);
-	}
+	fChooseButton->SetTarget(this);
+	fChooseButton->SetEnabled(true);
+
+	fBurnButton->SetTarget(this);
+	fBurnButton->SetEnabled(false);
 }
+
 
 void
 CompilationImageView::MessageReceived(BMessage* message)
@@ -175,13 +168,8 @@ CompilationImageView::_OpenImage(BMessage* message)
 
 		fImagePath->SetTo(&entry);
 		imageFileStringView->SetText(fImagePath->Path());
-
-		BButton* burnImageButton
-			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-		if (burnImageButton != NULL)
-			burnImageButton->SetEnabled(true);
-
 		fImageInfoTextView->SetText(NULL);
+		fBurnButton->SetEnabled(true);
 
 		if (fImageParserThread != NULL)
 			delete fImageParserThread;
@@ -216,15 +204,8 @@ CompilationImageView::_BurnImage()
 
 	fImageInfoTextView->SetText(NULL);
 	fImageInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
-	BButton* chooseImageButton
-		= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
-	if (chooseImageButton != NULL)
-		chooseImageButton->SetEnabled(false);
-
-	BButton* burnImageButton
-		= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-	if (burnImageButton != NULL)
-		burnImageButton->SetEnabled(false);
+	fChooseButton->SetEnabled(false);
+	fBurnButton->SetEnabled(false);
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
@@ -249,7 +230,6 @@ CompilationImageView::_BurnImage()
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
-
 }
 
 
@@ -265,28 +245,15 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
 		fImageInfoBox->SetLabel("Burn the disc");
-		BButton* chooseImageButton
-			= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
-		if (chooseImageButton != NULL)
-			chooseImageButton->SetEnabled(true);
-
-		BButton* burnImageButton
-			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-		if (burnImageButton != NULL)
-			burnImageButton->SetEnabled(true);
+		fChooseButton->SetEnabled(true);
+		fBurnButton->SetEnabled(true);
 
 		step = 0;
+
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
 		fImageInfoBox->SetLabel("Burning complete. Burn another disc?");
-		BButton* chooseImageButton
-			= dynamic_cast<BButton*>(FindView("ChooseImageButton"));
-		if (chooseImageButton != NULL)
-			chooseImageButton->SetEnabled(true);
-
-		BButton* burnImageButton
-			= dynamic_cast<BButton*>(FindView("BurnImageButton"));
-		if (burnImageButton != NULL)
-			burnImageButton->SetEnabled(true);
+		fChooseButton->SetEnabled(true);
+		fBurnButton->SetEnabled(true);
 
 		step = 0;
 	}

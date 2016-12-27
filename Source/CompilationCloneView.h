@@ -8,6 +8,7 @@
 
 #include "BurnWindow.h"
 
+#include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
 #include <SeparatorView.h>
@@ -36,6 +37,9 @@ private:
 	BTextView*		fClonerInfoTextView;
 	BurnWindow*		windowParent;
 	BSeparatorView*	fClonerInfoBox;
+	BButton*		fBurnButton;
+	BButton*		fImageButton;
+
 	int				step;
 };
 
