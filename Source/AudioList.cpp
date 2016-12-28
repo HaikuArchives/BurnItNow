@@ -68,22 +68,6 @@ AudioListView::Draw(BRect rect)
 }
 
 
-void
-AudioListView::FrameResized(float width, float height)
-{
-	BListView::FrameResized(width, height);
-
-//	static const float spacing = be_control_look->DefaultLabelSpacing();
-//
-//	for (int32 i = 0; i < CountItems(); i++) {
-//		AudioListItem *sItem = dynamic_cast<AudioListItem *> (ItemAt(i));
-//		BString string(sItem->GetFilename());
-//		TruncateString(&string, B_TRUNCATE_END, width - spacing * 4);
-//		sItem->SetDisplayTitle(string);
-//	}
-}
-
-
 bool
 AudioListView::InitiateDrag(BPoint point, int32 dragIndex, bool)
 {

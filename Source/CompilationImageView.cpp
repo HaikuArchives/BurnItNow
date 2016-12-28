@@ -22,6 +22,7 @@ static const float kControlPadding = be_control_look->DefaultItemSpacing();
 const int32 kBurnImageMessage = 'Burn';
 const int32 kChooseImageMessage = 'Chus';
 const int32 kParserMessage = 'Scan';
+const int32 kNoPathMessage = 'Noph'; // defined in PathView
 
 
 CompilationImageView::CompilationImageView(BurnWindow& parent)
@@ -41,6 +42,8 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fImageInfoBox->SetFont(be_bold_font);
 	fImageInfoBox->SetLabel("Choose the image to burn");
 
+	fPathView = new PathView("ImageFileStringView", "Image: <none>");
+
 	fImageInfoTextView = new BTextView("ImageInfoTextView");
 	fImageInfoTextView->SetWordWrap(false);
 	fImageInfoTextView->MakeEditable(false);
@@ -58,7 +61,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
-			.Add(new BStringView("ImageFileStringView", "Image: <none>"))
+			.Add(fPathView)
 			.AddGlue()
 			.AddGroup(B_HORIZONTAL)
 				.AddGlue()
@@ -100,6 +103,7 @@ void
 CompilationImageView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
+		case kNoPathMessage:
 		case kChooseImageMessage:
 			_ChooseImage();
 			break;
@@ -161,13 +165,8 @@ CompilationImageView::_OpenImage(BMessage* message)
 		|| filename.IFindLast(".img", filename.CountChars())
 			== (filename.CountChars() - 4)) {
 
-		BStringView* imageFileStringView
-			= dynamic_cast<BStringView*>(FindView("ImageFileStringView"));
-		if (imageFileStringView == NULL)
-			return;
-
 		fImagePath->SetTo(&entry);
-		imageFileStringView->SetText(fImagePath->Path());
+		fPathView->SetText(fImagePath->Path());
 		fImageInfoTextView->SetText(NULL);
 		fBurnButton->SetEnabled(true);
 

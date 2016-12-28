@@ -31,7 +31,6 @@ public:
 
 	virtual void	AttachedToWindow();
 	virtual void	Draw(BRect rect);
-	virtual	void	FrameResized(float width, float height);
 	virtual bool	InitiateDrag(BPoint point, int32 dragIndex,
 						bool wasSelected);
 	virtual	void	MessageReceived(BMessage* message);

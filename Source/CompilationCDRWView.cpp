@@ -160,6 +160,6 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		if (code == 0)
-			fBlankerInfoBox->SetLabel("Ready");
+			fBlankerInfoBox->SetLabel("Blanking complete");
 	}
 }

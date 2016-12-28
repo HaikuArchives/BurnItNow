@@ -21,6 +21,7 @@ const int32 kChooseDirectoryMessage = 'Cusd';
 const int32 kBurnerMessage = 'Brnr';
 const int32 kBuildImageMessage = 'IMAG';
 const int32 kBurnDiscMessage = 'BURN';
+const int32 kNoPathMessage = 'Noph'; // defined in PathView
 
 
 CompilationDataView::CompilationDataView(BurnWindow& parent)
@@ -39,6 +40,8 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
 	fBurnerInfoBox->SetLabel("Choose the folder to burn");
+
+	fPathView = new PathView("FolderStringView", "Folder: <none>");
 
 	fBurnerInfoTextView = new BTextView("DataInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(false);
@@ -65,7 +68,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
-			.Add(new BStringView("FolderStringView", "Folder: <none>"))
+			.Add(fPathView)
 			.AddGlue()
 			.AddGroup(B_HORIZONTAL)
 				.Add(fChooseButton)
@@ -109,6 +112,7 @@ void
 CompilationDataView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
+		case kNoPathMessage:
 		case kChooseDirectoryMessage:
 			_ChooseDirectory();
 			break;
@@ -156,13 +160,8 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 	if ((node.InitCheck() != B_OK) || !node.IsDirectory())
 		return;
 
-	BStringView* folderStringView
-		= dynamic_cast<BStringView*>(FindView("FolderStringView"));
-	if (folderStringView == NULL)
-		return;
-
 	fDirPath->SetTo(&entry);
-	folderStringView->SetText(fDirPath->Path());
+	fPathView->SetText(fDirPath->Path());
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
 	fBurnerInfoBox->SetLabel("Build the image");

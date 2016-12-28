@@ -7,6 +7,7 @@
 
 
 #include "BurnWindow.h"
+#include "PathView.h"
 
 #include <Button.h>
 #include <FilePanel.h>
@@ -41,6 +42,7 @@ private:
 	BTextView* 		fBurnerInfoTextView;
 	BurnWindow* 	windowParent;
 	BSeparatorView*	fBurnerInfoBox;
+	PathView*		fPathView;
 	BButton*		fChooseButton;
 	BButton*		fImageButton;
 	BButton*		fBurnButton;
