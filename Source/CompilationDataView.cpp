@@ -48,6 +48,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fBurnerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("DataInfoScrollView",
 		fBurnerInfoTextView, 0, true, true);
+	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseDirectoryButton", "Choose folder",
 		new BMessage(kChooseDirectoryMessage));
@@ -176,6 +177,8 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fBurnerInfoTextView->Insert(data.String());
+		fBurnerInfoTextView->ScrollTo(0.0, 2000.0);
+
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {

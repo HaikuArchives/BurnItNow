@@ -39,6 +39,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
 		fBlankerInfoTextView, 0, true, true);
+	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBlankModeMenu = new BMenu("BlankModeMenu");
 	fBlankModeMenu->SetLabelFromMarked(true);
@@ -156,6 +157,7 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fBlankerInfoTextView->Insert(data.String());
+		fBlankerInfoTextView->ScrollTo(0.0, 2000.0);
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {

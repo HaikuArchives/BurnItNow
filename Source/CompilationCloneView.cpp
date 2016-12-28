@@ -47,6 +47,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fClonerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("CloneInfoScrollView",
 		fClonerInfoTextView, 0, true, true);
+	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fImageButton = new BButton("CreateImageButton", "Create image",
 		new BMessage(kCreateImageMessage));
@@ -215,6 +216,7 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fClonerInfoTextView->Insert(data.String());
+		fClonerInfoTextView->ScrollTo(0.0, 2000.0);
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {

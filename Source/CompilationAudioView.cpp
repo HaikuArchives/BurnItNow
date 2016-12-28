@@ -41,6 +41,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
 		fBurnerInfoTextView, 0, true, true);
+	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBurnButton = new BButton("BurnDiscButton", "Burn disc",
 		new BMessage(kBurnDiscMessage));
@@ -123,6 +124,7 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fBurnerInfoTextView->Insert(data.String());
+		fBurnerInfoTextView->ScrollTo(0.0, 2000.0);
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
