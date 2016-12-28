@@ -45,6 +45,12 @@ public:
 	void			RenumberTracks();
 
 private:
+			void	GetSelectedItems(BList& indices);
+			void	RemoveSelected(); // uses RemoveItemList()
+
+	virtual	void	MoveItems(const BList& indices, int32 toIndex);
+	virtual	void	RemoveItemList(const BList& indices);
+
 	void			_ShowPopUpMenu(BPoint screen);
 
 	bool			fShowingPopUpMenu;

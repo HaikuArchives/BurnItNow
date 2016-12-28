@@ -15,6 +15,10 @@
 #include <Bitmap.h>
 #include <ControlLook.h>
 
+
+#define MAX_DRAG_HEIGHT		200.0
+#define ALPHA				170
+
 // Message constants
 const int32 kDraggedItemMessage = 'drit';
 const int32 kDeleteItemMessage = 'deli';
@@ -25,7 +29,7 @@ const int32 kPopupClosedMessage = 'popc';
 
 AudioListView::AudioListView(const char* name)
 	:
-	BListView(name),
+	BListView(name, B_MULTIPLE_SELECTION_LIST),
 	fDropRect()
 {
 }
@@ -81,35 +85,93 @@ AudioListView::FrameResized(float width, float height)
 
 
 bool
-AudioListView::InitiateDrag(BPoint point, int32 dragIndex, bool wasSelected)
+AudioListView::InitiateDrag(BPoint point, int32 dragIndex, bool)
 {
-	AudioListItem* sItem = dynamic_cast<AudioListItem *> (ItemAt(CurrentSelection()));
-	if (sItem == NULL) {
+	BListItem* item = ItemAt(CurrentSelection(0));
+	if (item == NULL) {
 		// workaround for a timing problem (see Locale prefs)
-		sItem = dynamic_cast<AudioListItem *> (ItemAt(dragIndex));
 		Select(dragIndex);
-		if (sItem == NULL)
-			return false;
+		item = ItemAt(dragIndex);
 	}
-	BString string(sItem->GetFilename());
-	BMessage message(kDraggedItemMessage);
-	message.AddData("text/plain", B_MIME_TYPE, string, string.Length());
-	int32 index = CurrentSelection();
-	message.AddInt32("index", index);
+	if (item == NULL)
+		return false;
 
-	BRect dragRect(0.0f, 0.0f, Bounds().Width(), sItem->Height());
+	// create drag message
+	BMessage message(kDraggedItemMessage);
+	for (int32 i = 0;; i++) {
+		int32 index = CurrentSelection(i);
+		if (index < 0)
+			break;
+		message.AddPointer("trackitem", ItemAt(CurrentSelection(i)));
+	}
+
+	// figure out drag rect
+	BRect dragRect(0.0, 0.0, Bounds().Width(), -1.0);
+
+	// figure out, how many items fit into our bitmap
+	bool fade = false;
+
+	for (int32 i = 0; message.FindPointer("trackitem", i,
+		reinterpret_cast<void**>(&item)) == B_OK; i++) {
+
+		dragRect.bottom += ceilf(item->Height()) + 1.0;
+
+		if (dragRect.Height() > MAX_DRAG_HEIGHT) {
+			dragRect.bottom = MAX_DRAG_HEIGHT;
+			fade = true;
+			break;
+		}
+	}
+
 	BBitmap* dragBitmap = new BBitmap(dragRect, B_RGB32, true);
 	if (dragBitmap->IsValid()) {
 		BView* view = new BView(dragBitmap->Bounds(), "helper", B_FOLLOW_NONE,
 			B_WILL_DRAW);
 		dragBitmap->AddChild(view);
 		dragBitmap->Lock();
-
-		sItem->DrawItem(view, dragRect);
+		BRect itemBounds(dragRect) ;
+		itemBounds.bottom = 0.0;
+		// let all selected items, that fit into our drag_bitmap, draw
+		for (int32 i = 0; message.FindPointer("trackitem", i,
+				reinterpret_cast<void**>(&item)) == B_OK; i++) {
+			AudioListItem* item;
+			message.FindPointer("trackitem", i,
+				reinterpret_cast<void**>(&item));
+			itemBounds.bottom = itemBounds.top + ceilf(item->Height());
+			if (itemBounds.bottom > dragRect.bottom)
+				itemBounds.bottom = dragRect.bottom;
+			item->DrawItem(view, itemBounds);
+			itemBounds.top = itemBounds.bottom + 1.0;
+		}
+		// make a black frame around the edge
 		view->SetHighColor(0, 0, 0, 255);
 		view->StrokeRect(view->Bounds());
 		view->Sync();
 
+		uint8* bits = (uint8*)dragBitmap->Bits();
+		int32 height = (int32)dragBitmap->Bounds().Height() + 1;
+		int32 width = (int32)dragBitmap->Bounds().Width() + 1;
+		int32 bpr = dragBitmap->BytesPerRow();
+
+		if (fade) {
+			for (int32 y = 0; y < height - ALPHA / 2; y++, bits += bpr) {
+				uint8* line = bits + 3;
+				for (uint8* end = line + 4 * width; line < end; line += 4)
+					*line = ALPHA;
+			}
+			for (int32 y = height - ALPHA / 2; y < height;
+				y++, bits += bpr) {
+				uint8* line = bits + 3;
+				for (uint8* end = line + 4 * width; line < end; line += 4)
+					*line = (height - y) << 1;
+			}
+		} else {
+			for (int32 y = 0; y < height; y++, bits += bpr) {
+				uint8* line = bits + 3;
+				for (uint8* end = line + 4 * width; line < end; line += 4)
+					*line = ALPHA;
+			}
+		}
 		dragBitmap->Unlock();
 	} else {
 		delete dragBitmap;
@@ -126,41 +188,112 @@ AudioListView::InitiateDrag(BPoint point, int32 dragIndex, bool wasSelected)
 
 
 void
+AudioListView::GetSelectedItems(BList& indices)
+{
+	for (int32 i = 0; true; i++) {
+		int32 index = CurrentSelection(i);
+		if (index < 0)
+			break;
+		if (!indices.AddItem((void*)(addr_t)index))
+			break;
+	}
+}
+
+
+void
+AudioListView::RemoveSelected()
+{
+	BList indices;
+	GetSelectedItems(indices);
+	int32 index = CurrentSelection() - 1;
+
+	DeselectAll();
+
+	if (indices.CountItems() > 0)
+		RemoveItemList(indices);
+
+	if (CountItems() > 0) {
+		if (index < 0)
+			index = 0;
+
+		Select(index);
+	}
+}
+
+
+void
+AudioListView::RemoveItemList(const BList& indices)
+{
+	int32 count = indices.CountItems();
+	for (int32 i = 0; i < count; i++) {
+		int32 index = (int32)(addr_t)indices.ItemAtFast(i) - i;
+		delete RemoveItem(index);
+	}
+}
+
+
+void
+AudioListView::MoveItems(const BList& indices, int32 index)
+{
+	DeselectAll();
+	// we remove the items while we look at them, the insertion index is decreased
+	// when the items index is lower, so that we insert at the right spot after
+	// removal
+	BList removedItems;
+	int32 count = indices.CountItems();
+	for (int32 i = 0; i < count; i++) {
+		int32 removeIndex = (int32)(addr_t)indices.ItemAtFast(i) - i;
+		BListItem* item = RemoveItem(removeIndex);
+		if (item && removedItems.AddItem((void*)item)) {
+			if (removeIndex < index)
+				index--;
+		}
+		// else ??? -> blow up
+	}
+	count = removedItems.CountItems();
+	for (int32 i = 0; i < count; i++) {
+		BListItem* item = (BListItem*)removedItems.ItemAtFast(i);
+		if (AddItem(item, index)) {
+			// after we're done, the newly inserted items will be selected
+			Select(index, true);
+			// next items will be inserted after this one
+			index++;
+		} else
+			delete item;
+	}
+}
+
+
+void
 AudioListView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kDraggedItemMessage:
 		{
-			int32 origIndex;
-			int32 dropIndex;
-			BPoint dropPoint;
+			BPoint dropPoint = message->DropPoint();
+			int32 dropIndex = IndexOf(ConvertFromScreen(dropPoint));
+			int32 count = CountItems();
+			if (dropIndex < 0 || dropIndex > count)
+				dropIndex = count;
 
-			if (message->FindInt32("index", &origIndex) != B_OK)
-				origIndex = CountItems() - 1; // new Fav added at the bottom
-			dropPoint = message->DropPoint();
-			dropIndex = IndexOf(ConvertFromScreen(dropPoint));
-			if (dropIndex > origIndex)
-				dropIndex = dropIndex - 1;
-			if (dropIndex < 0)
-				dropIndex = CountItems() - 1; // move to bottom
+			BList indices;
+			GetSelectedItems(indices);
+			MoveItems(indices, dropIndex);
 
-			MoveItem(origIndex, dropIndex);
-			Select(dropIndex);
 			RenumberTracks();
 			break;
 		}
 		case kDeleteItemMessage:
 		{
 			if (!IsEmpty()) {
-				int32 index = CurrentSelection();
-				if (index < 0)
-					break;
-				RemoveItem(index);
+				RemoveSelected();
 
-				RenumberTracks();
-				int32 count = CountItems();
-				Select((index > count - 1) ? count - 1 : index);
+				if (!IsEmpty())
+					RenumberTracks();
+				else // fake to update button state
+					Looper()->PostMessage(B_REFS_RECEIVED);
 			}
+			break;
 		}
 		case kPopupClosedMessage:
 		{
@@ -183,14 +316,7 @@ AudioListView::KeyDown(const char* bytes, int32 numBytes)
 		case B_DELETE:
 		{
 			if (!IsEmpty()) {
-				int32 index = CurrentSelection();
-				if (index < 0)
-					break;
-				RemoveItem(index);
-
-				RenumberTracks();
-				int32 count = CountItems();
-				Select((index > count - 1) ? count - 1 : index);
+				Looper()->PostMessage(kDeleteItemMessage, this);
 			}
 			break;
 		}
@@ -206,14 +332,6 @@ AudioListView::KeyDown(const char* bytes, int32 numBytes)
 void
 AudioListView::MouseDown(BPoint position)
 {
-	MakeFocus(true);
-
-	BRect bounds(Bounds());
-	BRect itemFrame = ItemFrame(CountItems() - 1);
-	bounds.top = itemFrame.bottom;
-	if (bounds.Contains(position))
-		return;
-
 	uint32 buttons = 0;
 	if (Window() != NULL && Window()->CurrentMessage() != NULL)
 		buttons = Window()->CurrentMessage()->FindInt32("buttons");
@@ -230,15 +348,18 @@ AudioListView::MouseDown(BPoint position)
 void
 AudioListView::MouseUp(BPoint position)
 {
-	fDropRect = BRect(-1, -1, -1, -1);
-	Invalidate();
-
 	BListView::MouseUp(position);
+
+	if (fDropRect.IsValid()) {
+		Invalidate(fDropRect);
+		fDropRect = BRect();
+	}
 }
 
 
 void
-AudioListView::MouseMoved(BPoint where, uint32 transit, const BMessage* dragMessage)
+AudioListView::MouseMoved(BPoint where, uint32 transit,
+	const BMessage* dragMessage)
 {
 	if (dragMessage != NULL) {
 		switch (transit) {

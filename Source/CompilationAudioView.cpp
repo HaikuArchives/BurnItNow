@@ -169,8 +169,7 @@ CompilationAudioView::_AddTrack(BMessage* message)
 				== filename.CountChars() - 4) {
 			if (!message->WasDropped())
 				index = fTrackList->CountItems();
-
-			fTrackList->AddItem(new AudioListItem(filename, path, i), index);
+			fTrackList->AddItem(new AudioListItem(filename, path, i), index++);
 		}
 		if (node.IsDirectory()) {
 			BDirectory dir(&entry);
@@ -208,7 +207,8 @@ CompilationAudioView::_AddTrack(BMessage* message)
 	if (!fTrackList->IsEmpty()) {
 		fBurnButton->SetEnabled(true);
 		fTrackList->RenumberTracks();
-	}
+	} else
+		fBurnButton->SetEnabled(false);
 }
 
 
