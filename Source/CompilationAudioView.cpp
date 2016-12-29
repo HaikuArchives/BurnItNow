@@ -38,10 +38,10 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerInfoBox->SetLabel("Ready");
 
 	fBurnerInfoTextView = new BTextView("AudioInfoTextView");
-	fBurnerInfoTextView->SetWordWrap(false);
+	fBurnerInfoTextView->SetWordWrap(true);
 	fBurnerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
-		fBurnerInfoTextView, B_WILL_DRAW, true, true);
+		fBurnerInfoTextView, B_WILL_DRAW, false, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBurnButton = new BButton("BurnDiscButton", "Burn disc",
@@ -54,7 +54,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	fTrackList = new AudioListView("AudioListView");
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
-		fTrackList, B_WILL_DRAW, true, true);
+		fTrackList, B_WILL_DRAW, false, true);
+	audioScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)

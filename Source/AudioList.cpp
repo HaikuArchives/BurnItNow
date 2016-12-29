@@ -491,10 +491,7 @@ AudioListItem::DrawItem(BView* view, BRect rect, bool complete)
 	rect.top + fheight.ascent + fheight.descent + fheight.leading));
 
 	BString string(GetFilename());
-	if (fUpdateNeeded) {
-		view->TruncateString(&string, B_TRUNCATE_END, Width() - spacing * 4);
-		fUpdateNeeded = false;
-	}
+	view->TruncateString(&string, B_TRUNCATE_END, Width() - spacing * 4);
 
 	font.SetFace(B_REGULAR_FACE);
 	view->SetFont(&font);
@@ -517,10 +514,6 @@ AudioListItem::Update(BView* view, const BFont* finfo)
 	// we need to DefaultLabelSpacing the update method so we can make sure the
 	// list item size doesn't change
 	BListItem::Update(view, finfo);
-
-	static const float spacing = be_control_look->DefaultLabelSpacing();
-	BString string(GetFilename());
-	view->TruncateString(&string, B_TRUNCATE_END, Width() - spacing * 4);
 
 	font_height	fheight;
 	finfo->GetHeight(&fheight);

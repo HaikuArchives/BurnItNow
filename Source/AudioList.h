@@ -73,7 +73,7 @@ private:
 	BString			fFilename;
 	BString			fPath;
 	int32			fTrack;
-	bool			fUpdateNeeded;
+	BString			fDisplayTitle;
 };
 
 
