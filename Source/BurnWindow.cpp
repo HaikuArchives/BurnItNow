@@ -22,9 +22,10 @@
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <MenuItem.h>
+#include <PathFinder.h>
 #include <RadioButton.h>
+#include <Roster.h>
 #include <SpaceLayoutItem.h>
-#include <StatusBar.h>
 
 
 // Message constants
@@ -368,8 +369,23 @@ BurnWindow::_OpenWebSite()
 void
 BurnWindow::_OpenHelp()
 {
-	// TODO Ask BRoster to launch a browser for the local documentation
-	(new BAlert("OpenHelpAlert", "Not implemented yet", "OK"))->Go();
+	BPathFinder pathFinder;
+	BStringList paths;
+	BPath path;
+	BEntry entry;
+
+	status_t error = pathFinder.FindPaths(B_FIND_PATH_DOCUMENTATION_DIRECTORY,
+		"BurnItNow", paths);
+
+	for (int i = 0; i < paths.CountStrings(); ++i) {
+		if (error == B_OK && path.SetTo(paths.StringAt(i)) == B_OK
+			&& path.Append("ReadMe.html") == B_OK) {
+			entry = path.Path();
+			entry_ref ref;
+			entry.GetRef(&ref);
+			be_roster->Launch(&ref);
+		}
+	}
 }
 
 

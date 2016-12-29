@@ -429,8 +429,7 @@ AudioListView::_ShowPopUpMenu(BPoint screen)
 
 AudioListItem::AudioListItem(BString filename, BString path, int32 track)
 	:
-	BListItem(),
-	fUpdateNeeded(true)
+	BListItem()
 {
 	fFilename = filename;
 	fPath = path;
