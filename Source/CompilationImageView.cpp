@@ -126,13 +126,35 @@ CompilationImageView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
+bool
+ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
+	struct stat_beos* stat, const char* filetype)
+{
+	if (node->IsDirectory())
+		return true;
+
+	BPath* path = new BPath(ref);
+	BString filename(path->Leaf());
+
+
+	if ((strcmp("application/x-cd-image", filetype) == 0)
+		|| filename.IFindLast(".iso", filename.CountChars())
+			== (filename.CountChars() - 4)
+		|| filename.IFindLast(".img", filename.CountChars())
+			== (filename.CountChars() - 4)) {
+		return true;
+	}
+	return false;
+}
+
+
 void
 CompilationImageView::_ChooseImage()
 {
 	// TODO Create a RefFilter for the panel?
 	if (fOpenPanel == NULL)
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
-			NULL, B_FILE_NODE, false, NULL, NULL, true);
+			NULL, B_FILE_NODE, false, NULL, new ImageRefFilter(), true);
 
 	fOpenPanel->Show();
 }

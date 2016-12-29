@@ -19,6 +19,16 @@
 class CommandThread;
 
 
+class ImageRefFilter : public BRefFilter {
+public:
+					ImageRefFilter() {};
+	virtual			~ImageRefFilter() {};
+
+	bool			Filter(const entry_ref* ref, BNode* node,
+						struct stat_beos* st, const char* filetype);
+};
+
+
 class CompilationImageView : public BView {
 public:
 					CompilationImageView(BurnWindow& parent);

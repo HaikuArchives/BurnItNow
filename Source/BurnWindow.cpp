@@ -397,7 +397,7 @@ BurnWindow::_UpdateSpeedSlider(BMessage* message)
 		speedString << "Min";
 		fConfig.speed = "speed=0";
 	} else if (fSpeedSlider->Value() == 1) {
-		speedString << "4x";
+		speedString << "4x (best for audio CDs)";
 		fConfig.speed = "speed=4";
 	} else if (fSpeedSlider->Value() == 2) {
 		speedString << "8x";

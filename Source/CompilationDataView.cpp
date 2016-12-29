@@ -138,12 +138,23 @@ CompilationDataView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
+bool
+DataRefFilter::Filter(const entry_ref* ref, BNode* node,
+	struct stat_beos* stat, const char* filetype)
+{
+	if (node->IsDirectory())
+		return true;
+
+	return false;
+}
+
+
 void
 CompilationDataView::_ChooseDirectory()
 {
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
-			B_DIRECTORY_NODE, false, NULL, NULL, true);
+			B_DIRECTORY_NODE, false, NULL, new DataRefFilter(), true);
 	}
 	fOpenPanel->Show();
 }
