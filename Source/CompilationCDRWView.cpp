@@ -32,7 +32,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 
 	fBlankerInfoBox = new BSeparatorView("ImageInfoBBox");
 	fBlankerInfoBox->SetFont(be_bold_font);
-	fBlankerInfoBox->SetLabel("Ready");
+	fBlankerInfoBox->SetLabel("Insert the disc and blank it");
 
 	fBlankerInfoTextView = new BTextView("ImageInfoTextView");
 	fBlankerInfoTextView->SetWordWrap(false);

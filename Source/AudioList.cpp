@@ -332,7 +332,8 @@ AudioListView::MouseDown(BPoint position)
 			if (CurrentSelection() < 0 || !onSelection)
 				Select(IndexOf(position));
 
-			_ShowPopUpMenu(ConvertToScreen(position));
+			if (CurrentSelection() >= 0)
+				_ShowPopUpMenu(ConvertToScreen(position));
 			return;
 		}
 	}
