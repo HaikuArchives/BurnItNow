@@ -262,13 +262,19 @@ CompilationAudioView::BurnDisc()
 	if (config.eject)
 		fBurnerThread->AddArgument("-eject");
 	if (config.mode == "-sao")
-		fBurnerThread->AddArgument("-dao");	// for max compatibility
+		fBurnerThread->AddArgument("-dao"); // for max compatibility
 	else
 		fBurnerThread->AddArgument(config.mode);
 
-	fBurnerThread->AddArgument("speed=4")	// for max compatibility
-		->AddArgument("fs=4m")				// for max compatibility
-		->AddArgument(device)
+	if (config.speed != "")
+		fBurnerThread->AddArgument(config.speed);
+
+	if ((config.speed == "speed=0") || (config.speed == "speed=4"))
+		fBurnerThread->AddArgument("fs=4m"); // for max compatibility
+	else
+		fBurnerThread->AddArgument("fs=16m");
+
+	fBurnerThread->AddArgument(device)
 		->AddArgument("-audio")
 		->AddArgument("-copy")
 		->AddArgument("-pad")
