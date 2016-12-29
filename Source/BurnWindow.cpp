@@ -2,6 +2,7 @@
  * Copyright 2010-2016, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+#include "BurnApplication.h"
 #include "BurnWindow.h"
 
 #include "CompilationDataView.h"
@@ -69,6 +70,33 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 
 
 #pragma mark --BWindow Overrides--
+
+
+bool
+BurnWindow::QuitRequested()
+{
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		float infoWeight
+			= fCompilationAudioView->fAudioSplitView->ItemWeight((int32)0);
+		float tracksWeight
+			= fCompilationAudioView->fAudioSplitView->ItemWeight(1);
+		bool infoCollapse
+			= fCompilationAudioView->fAudioSplitView->IsItemCollapsed((int)0);
+		bool tracksCollapse
+			= fCompilationAudioView->fAudioSplitView->IsItemCollapsed(1);
+
+		settings->SetSplitWeight(infoWeight, tracksWeight);
+		settings->SetSplitCollapse(infoCollapse, tracksCollapse);
+		settings->SetEject((bool)fEjectCheck->Value());
+		settings->SetSpeed(fSpeedSlider->Value());
+		settings->SetWindowPosition(ConvertToScreen(Bounds()));
+		settings->Unlock();
+	}
+
+	be_app->PostMessage(B_QUIT_REQUESTED);
+	return true;
+}
 
 
 void
@@ -217,7 +245,7 @@ BurnWindow::_CreateToolBar()
 	fEjectCheck = new BCheckBox("EjectCheckBox", "Eject after burning",
 						new BMessage());
 
-	fSpeedSlider = new BSlider("SpeedSlider", "Burn speed: Max",
+	fSpeedSlider = new BSlider("SpeedSlider", "Burn speed: ",
 		new BMessage(kSpeedSliderMessage), 0, 5, B_HORIZONTAL);
 	fSpeedSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
 	fSpeedSlider->SetLimitLabels("Min", "Max");
@@ -226,6 +254,16 @@ BurnWindow::_CreateToolBar()
 	fSpeedSlider->SetValue(5);	// initial speed: max
 	fSpeedSlider->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
+	//Apply settings (and disable unimplemented options)
+	AppSettings* settings = my_app->Settings();
+
+	fMultiCheck->SetEnabled(false);
+	fEjectCheck->SetValue((int32)settings->GetEject());
+	fOntheflyCheck->SetEnabled(false);
+	fSpeedSlider->SetValue(settings->GetSpeed());
+	_UpdateSpeedSlider(NULL);
+
+	// Build layout
 	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
 		.SetInsets(kControlPadding, 0, kControlPadding, kControlPadding)
 		.AddGroup(B_HORIZONTAL, kControlPadding * 3)

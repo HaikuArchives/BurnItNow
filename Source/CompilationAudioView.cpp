@@ -2,6 +2,8 @@
  * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+
+#include "BurnApplication.h"
 #include "CompilationAudioView.h"
 #include "CommandThread.h"
 
@@ -39,7 +41,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerInfoTextView->SetWordWrap(false);
 	fBurnerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
-		fBurnerInfoTextView, 0, true, true);
+		fBurnerInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBurnButton = new BButton("BurnDiscButton", "Burn disc",
@@ -52,7 +54,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	fTrackList = new AudioListView("AudioListView");
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
-		fTrackList, 0, true, true);
+		fTrackList, B_WILL_DRAW, true, true);
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
@@ -72,6 +74,23 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 				.Add(audioScrollView)
 				.End()
 			.End();
+
+	// Apply settings to splitview
+	float infoWeight;
+	float tracksWeight;
+	bool infoCollapse;
+	bool tracksCollapse;
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetSplitWeight(infoWeight, tracksWeight);
+		settings->GetSplitCollapse(infoCollapse, tracksCollapse);
+		settings->Unlock();
+	}
+	fAudioSplitView->SetItemWeight(0, infoWeight, false);
+	fAudioSplitView->SetItemCollapsed(0, infoCollapse);
+
+	fAudioSplitView->SetItemWeight(1, tracksWeight, true);
+	fAudioSplitView->SetItemCollapsed(1, tracksCollapse);
 }
 
 

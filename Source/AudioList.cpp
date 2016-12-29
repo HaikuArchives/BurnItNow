@@ -316,23 +316,25 @@ AudioListView::KeyDown(const char* bytes, int32 numBytes)
 void
 AudioListView::MouseDown(BPoint position)
 {
-	bool onSelection = false;
-	BListItem* item = ItemAt(IndexOf(position));
+	if (!IsEmpty()) {
+		bool onSelection = false;
+		BListItem* item = ItemAt(IndexOf(position));
 
-	if (item != NULL && item->IsSelected())
-		onSelection = true;
+		if (item != NULL && item->IsSelected())
+			onSelection = true;
 
-	uint32 buttons = 0;
-	if (Window() != NULL && Window()->CurrentMessage() != NULL)
-		buttons = Window()->CurrentMessage()->FindInt32("buttons");
+		uint32 buttons = 0;
+		if (Window() != NULL && Window()->CurrentMessage() != NULL)
+			buttons = Window()->CurrentMessage()->FindInt32("buttons");
 
-	if ((buttons & B_SECONDARY_MOUSE_BUTTON) != 0) {
+		if ((buttons & B_SECONDARY_MOUSE_BUTTON) != 0) {
 
-		if (CurrentSelection() < 0 || !onSelection)
-			Select(IndexOf(position));
+			if (CurrentSelection() < 0 || !onSelection)
+				Select(IndexOf(position));
 
-		_ShowPopUpMenu(ConvertToScreen(position));
-		return;
+			_ShowPopUpMenu(ConvertToScreen(position));
+			return;
+		}
 	}
 
 	BListView::MouseDown(position);

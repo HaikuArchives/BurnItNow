@@ -33,6 +33,7 @@ public:
 	virtual void	MessageReceived(BMessage* message);
 	
 	void 			BurnDisc();
+	BSplitView*		fAudioSplitView;
 
 private:
 	void 			_BurnerParserOutput(BMessage* message);
@@ -46,7 +47,6 @@ private:
 	BSeparatorView*	fAudioBox;
 	BButton*		fBurnButton;
 
-	BSplitView*		fAudioSplitView;
 	AudioListView* 	fTrackList;
 };
 

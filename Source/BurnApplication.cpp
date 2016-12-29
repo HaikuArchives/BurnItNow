@@ -15,13 +15,19 @@ BurnApplication::BurnApplication()
 	:
 	BApplication("application/x-vnd.haikuarchives.BurnItNow2")
 {
-	// TODO Get window size/position from saved settings
-	fWindow = new BurnWindow(BRect(150, 150, 700, 800), "BurnItNow2");
-
-	fWindow->Lock();
-	fWindow->Show();
-	fWindow->Unlock();
 }
+
+
+void
+BurnApplication::ReadyToRun()
+{
+	BRect rect = fSettings.GetWindowPosition();
+	fWindow = new BurnWindow(rect, "BurnItNow2");
+
+	fWindow->Show();
+}
+
+
 
 
 #pragma mark --BApplication Overrides--

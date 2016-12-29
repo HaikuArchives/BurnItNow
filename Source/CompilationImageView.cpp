@@ -48,7 +48,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fImageInfoTextView->SetWordWrap(false);
 	fImageInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
-		fImageInfoTextView, 0, true, true);
+		fImageInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseImageButton", "Choose image",

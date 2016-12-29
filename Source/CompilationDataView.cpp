@@ -47,7 +47,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fBurnerInfoTextView->SetWordWrap(false);
 	fBurnerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("DataInfoScrollView",
-		fBurnerInfoTextView, 0, true, true);
+		fBurnerInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseDirectoryButton", "Choose folder",

@@ -38,7 +38,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankerInfoTextView->SetWordWrap(false);
 	fBlankerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
-		fBlankerInfoTextView, 0, true, true);
+		fBlankerInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBlankModeMenu = new BMenu("BlankModeMenu");

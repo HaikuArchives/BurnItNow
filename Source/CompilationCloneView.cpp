@@ -46,7 +46,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fClonerInfoTextView->SetWordWrap(false);
 	fClonerInfoTextView->MakeEditable(false);
 	BScrollView* infoScrollView = new BScrollView("CloneInfoScrollView",
-		fClonerInfoTextView, 0, true, true);
+		fClonerInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fImageButton = new BButton("CreateImageButton", "Create image",

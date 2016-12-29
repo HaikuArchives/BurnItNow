@@ -38,6 +38,7 @@ class BurnWindow : public BWindow {
 public:
 					BurnWindow(BRect frame, const char* title);
 
+	bool			QuitRequested();
 	virtual void	MessageReceived(BMessage* message);
 	
 	void			FindDevices(sdevice* array);
