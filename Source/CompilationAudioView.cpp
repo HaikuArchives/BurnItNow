@@ -28,7 +28,6 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerThread(NULL)
 {
 	windowParent = &parent;
-	fCurrentPath = 0;
 	
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -62,7 +61,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 			.Add(fBurnButton)
 			.AddGlue()
 			.End()
-		.AddGroup(B_HORIZONTAL)
+		.AddSplit(B_HORIZONTAL, B_USE_SMALL_SPACING)
+		.GetSplitView(&fAudioSplitView)
 			.AddGroup(B_VERTICAL)
 				.Add(fBurnerInfoBox)
 				.Add(infoScrollView)
@@ -208,6 +208,7 @@ CompilationAudioView::_AddTrack(BMessage* message)
 	}
 	if (!fTrackList->IsEmpty()) {
 		fBurnButton->SetEnabled(true);
+		fBurnerInfoBox->SetLabel("Burn the disc");
 		fTrackList->RenumberTracks();
 	} else
 		fBurnButton->SetEnabled(false);

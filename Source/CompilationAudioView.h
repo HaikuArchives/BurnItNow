@@ -13,6 +13,7 @@
 #include <ListView.h>
 #include <Path.h>
 #include <SeparatorView.h>
+#include <SplitView.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -38,15 +39,15 @@ private:
 	void 			_AddTrack(BMessage* message);
 	
 	CommandThread*	fBurnerThread;
-	BTextView* 		fBurnerInfoTextView;
-	AudioListView* 	fTrackList;
 	BurnWindow* 	windowParent;
+
+	BTextView* 		fBurnerInfoTextView;
 	BSeparatorView*	fBurnerInfoBox;
 	BSeparatorView*	fAudioBox;
 	BButton*		fBurnButton;
-	
-	BPath* 			fTrackPaths[MAX_TRACKS];
-	int 			fCurrentPath;
+
+	BSplitView*		fAudioSplitView;
+	AudioListView* 	fTrackList;
 };
 
 
