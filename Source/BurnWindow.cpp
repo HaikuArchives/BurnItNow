@@ -41,6 +41,7 @@ const int32 kBuildImageMessage = 'IMAG';
 const uint32 kDeviceChangeMessage[MAX_DEVICES]
 	= { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
+static const BString kWebsiteUrl = "https://github.com/HaikuArchives/BurnItNow";
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Misc variables
@@ -204,6 +205,9 @@ BurnWindow::_CreateMenuBar()
 
 	helpMenu->AddItem(new BMenuItem("Usage instructions",
 		new BMessage(kOpenHelpMessage)));
+
+	helpMenu->AddItem(new BMenuItem("Project website",
+		new BMessage(kOpenWebsiteMessage)));
 
 	//Apply settings (and disable unimplemented options)
 	AppSettings* settings = my_app->Settings();
@@ -378,8 +382,9 @@ BurnWindow::_OpenSettings()
 void
 BurnWindow::_OpenWebSite()
 {
-	// TODO Ask BRoster to launch a browser for the project website
-	(new BAlert("OpenWebSiteAlert", "Not implemented yet", "OK"))->Go();
+	BMessage message(B_REFS_RECEIVED);
+	message.AddString("url", kWebsiteUrl);
+	be_roster->Launch("text/html", &message);
 }
 
 

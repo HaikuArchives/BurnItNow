@@ -41,8 +41,8 @@ BurnApplication::AboutRequested()
 		"BurnItNow2\nCopyright 2010-2016, BurnItNow Team.\n"
 		"All rights reserved.\n"
 		"Distributed under the terms of the MIT License.\n\n"
-		"https://github.com/przemub/burnitnow\n"
-		"https://github.com/HaikuArchives/BurnItNow", "OK"))->Go();
+		"BurnItNow is a graphical frontend to cdrecord, readcd "
+		"and mkisofs.", "OK"))->Go();
 }
 
 
