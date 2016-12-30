@@ -3,8 +3,8 @@
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationDataView.h"
-
 #include "CommandThread.h"
+
 #include <Alert.h>
 #include <ControlLook.h>
 #include <FindDirectory.h>
@@ -233,7 +233,7 @@ CompilationDataView::BuildISO()
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, fImagePath) != B_OK)
 		return;
 
-	status_t ret = fImagePath->Append("burnitnow_iso.iso");
+	status_t ret = fImagePath->Append("burnitnow_data.iso");
 	if (ret == B_OK) {
 		step = 1;	// flag we're building ISO
 

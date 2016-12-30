@@ -341,13 +341,13 @@ BurnWindow::_ClearCache()
 		return;
 
 	BPath path = cachePath;
-	status_t ret = path.Append("burnitnow_cache.iso");
+	status_t ret = path.Append("burnitnow_clone.iso");
 	if (ret == B_OK) {
 		BEntry* entry = new BEntry(path.Path());
 		entry->Remove();
 
 		path = cachePath;
-		path.Append("burnitnow_iso.iso");
+		path.Append("burnitnow_data.iso");
 		entry = new BEntry(path.Path());
 		entry->Remove();
 

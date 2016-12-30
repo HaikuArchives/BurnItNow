@@ -146,7 +146,7 @@ CompilationCloneView::_CreateImage()
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
 		return;
 
-	status_t ret = path.Append("burnitnow_cache.iso");
+	status_t ret = path.Append("burnitnow_clone.iso");
 	if (ret == B_OK) {
 		step = 1;
 
@@ -175,7 +175,7 @@ CompilationCloneView::_BurnImage()
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
 		return;
 
-	status_t ret = path.Append("burnitnow_cache.iso");
+	status_t ret = path.Append("burnitnow_clone.iso");
 	if (ret == B_OK) {
 		step = 2;
 
