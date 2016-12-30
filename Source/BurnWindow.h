@@ -61,6 +61,7 @@ private:
 
 	BMenu* 			fSessionMenu;
 	BMenu* 			fDeviceMenu;
+	BMenuItem*		fCacheQuitItem;
 	BCheckBox* 		fMultiCheck;
 	BCheckBox* 		fOntheflyCheck;
 	BCheckBox* 		fSimulationCheck;

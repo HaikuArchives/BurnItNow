@@ -21,18 +21,21 @@ public:
 		void		Unlock();
 			
 		bool		GetEject();
+		bool		GetCache();
 		int32		GetSpeed();
 		BRect		GetWindowPosition();
 		void		GetSplitWeight(float& left, float& right);
 		void		GetSplitCollapse(bool& left, bool& right);
 
 		void		SetEject(bool eject);
+		void		SetCache(bool cache);
 		void		SetSpeed(int32 speed);
 		void		SetWindowPosition(BRect where);
 		void		SetSplitWeight(float left, float right);
 		void		SetSplitCollapse(bool left, bool right);
 private:
 		bool		fEject;
+		bool		fCache;
 		int32		fSpeed;
 		BRect		fPosition;
 		float		fInfoWeight;

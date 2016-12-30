@@ -21,6 +21,7 @@ static const char kSettingsFile[] = "BurnItNow_settings";
 AppSettings::AppSettings()
 	:
 	fEject(true),
+	fCache(false),
 	fSpeed(5),
 	fPosition(150, 150, 700, 600),
 	fInfoWeight(0.5),
@@ -39,12 +40,18 @@ AppSettings::AppSettings()
 			BFile file(path.Path(), B_READ_ONLY);
 
 			if ((file.InitCheck() == B_OK) && (msg.Unflatten(&file) == B_OK)) {
-				if (msg.FindBool("eject", &fEject) != B_OK)
+				if (msg.FindBool("eject", &fEject) != B_OK) {
 					fEject = true;
-
-				if (msg.FindInt32("speed", &fSpeed) != B_OK)
+					dirtySettings = true;
+				}
+				if (msg.FindBool("cache", &fCache) != B_OK) {
+					fCache = false;
+					dirtySettings = true;
+				}
+				if (msg.FindInt32("speed", &fSpeed) != B_OK) {
 					fSpeed = 5;
-
+					dirtySettings = true;
+				}
 				if (msg.FindRect("windowlocation", &fPosition) != B_OK)
 					fPosition.Set(150, 150, 700, 600);
 
@@ -83,6 +90,7 @@ AppSettings::~AppSettings()
 
 		if (ret == B_OK) {
 			msg.AddBool("eject", fEject);
+			msg.AddBool("cache", fCache);
 			msg.AddInt32("speed", fSpeed);
 			msg.AddRect("windowlocation", fPosition);
 			msg.AddFloat("audio_split_info", fInfoWeight);
@@ -106,6 +114,13 @@ void
 AppSettings::Unlock()
 {
 	fLock.Unlock();
+}
+
+
+bool
+AppSettings::GetCache()
+{
+	return fCache;
 }
 
 
@@ -152,6 +167,16 @@ AppSettings::SetEject(bool eject)
 	if (fEject == eject)
 		return;
 	fEject = eject;
+	dirtySettings = true;
+}
+
+
+void
+AppSettings::SetCache(bool cache)
+{
+	if (fCache == cache)
+		return;
+	fCache = cache;
 	dirtySettings = true;
 }
 

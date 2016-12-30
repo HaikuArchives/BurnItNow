@@ -31,7 +31,7 @@
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
-const int32 kOpenSettingsMessage = 'Stng';
+const int32 kCacheQuitMessage = 'Ccqt';
 const int32 kClearCacheMessage = 'Cche';
 const int32 kSpeedSliderMessage = 'Sped';
 
@@ -76,6 +76,9 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 bool
 BurnWindow::QuitRequested()
 {
+	if (fCacheQuitItem->IsMarked())
+		_ClearCache();
+
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
 		float infoWeight
@@ -90,6 +93,7 @@ BurnWindow::QuitRequested()
 		settings->SetSplitWeight(infoWeight, tracksWeight);
 		settings->SetSplitCollapse(infoCollapse, tracksCollapse);
 		settings->SetEject((bool)fEjectCheck->Value());
+		settings->SetCache(fCacheQuitItem->IsMarked());
 		settings->SetSpeed(fSpeedSlider->Value());
 		settings->SetWindowPosition(ConvertToScreen(Bounds()));
 		settings->Unlock();
@@ -112,11 +116,20 @@ BurnWindow::MessageReceived(BMessage* message)
 	}
 
 	switch (message->what) {
+		case kCacheQuitMessage:
+			{
+				AppSettings* settings = my_app->Settings();
+				bool mark = settings->GetCache();
+
+				if (settings->Lock())
+					settings->SetCache(!mark);
+				settings->Unlock();
+
+				fCacheQuitItem->SetMarked(!mark);
+				break;
+			}
 		case kClearCacheMessage:
 			_ClearCache();
-			break;
-		case kOpenSettingsMessage:
-			_OpenSettings();
 			break;
 		case kOpenWebsiteMessage:
 			_OpenWebSite();
@@ -166,7 +179,7 @@ BurnWindow::_CreateMenuBar()
 {
 	BMenuBar* menuBar = new BMenuBar("GlobalMenuBar");
 
-	BMenu* fileMenu = new BMenu("File");
+	BMenu* fileMenu = new BMenu("App");
 	menuBar->AddItem(fileMenu);
 
 	BMenuItem* aboutItem = new BMenuItem("About" B_UTF8_ELLIPSIS,
@@ -178,19 +191,23 @@ BurnWindow::_CreateMenuBar()
 
 	BMenu* toolsMenu = new BMenu("Tools & settings");
 	menuBar->AddItem(toolsMenu);
+
+	fCacheQuitItem = new BMenuItem("Clear cache on quit",
+		new BMessage(kCacheQuitMessage));
+	toolsMenu->AddItem(fCacheQuitItem);
 	
-	toolsMenu->AddItem(new BMenuItem("Clear cache",
+	toolsMenu->AddItem(new BMenuItem("Clear cache now",
 		new BMessage(kClearCacheMessage)));
-	toolsMenu->AddItem(new BMenuItem("Settings" B_UTF8_ELLIPSIS,
-		new BMessage(kOpenSettingsMessage), 'S'));
 
 	BMenu* helpMenu = new BMenu("Help");
 	menuBar->AddItem(helpMenu);
 
 	helpMenu->AddItem(new BMenuItem("Usage instructions",
 		new BMessage(kOpenHelpMessage)));
-	helpMenu->AddItem(new BMenuItem("Project website",
-		new BMessage(kOpenWebsiteMessage)));
+
+	//Apply settings (and disable unimplemented options)
+	AppSettings* settings = my_app->Settings();
+	fCacheQuitItem->SetMarked(settings->GetCache());
 
 	return menuBar;
 }
@@ -345,8 +362,8 @@ BurnWindow::_ClearCache()
 		entry = new BEntry(path.Path());
 		entry->Remove();
 
-		(new BAlert("ClearCacheAlert", "Cache cleared successfully.",
-			"OK"))->Go();
+//		(new BAlert("ClearCacheAlert", "Cache cleared successfully.",
+//			"OK"))->Go();
 	}
 }
 
