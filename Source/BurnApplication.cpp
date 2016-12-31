@@ -43,8 +43,8 @@ BurnApplication::AboutRequested()
 {
 	BString text = B_TRANSLATE_COMMENT(
 		"BurnItNow %version%\n"
-		"\twritten by the BurnItNow team.\n"
-		"\tcontributed by\n"
+		"\tby the BurnItNow team\n"
+		"\tand\n"
 		"\tHumdinger,\n"
 		"\tPrzemysław Buczkowski,\n"
 		"\tRobert Mercer.\n\n"

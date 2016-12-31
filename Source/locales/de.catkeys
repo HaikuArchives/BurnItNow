@@ -1,0 +1,79 @@
+1	German	application/x-vnd.haikuarchives.BurnItNow2	744208026
+Thank you	Application		Danke
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tvomBurnItNow Team\n\tund\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow ist eine grafische Oberfläche für cdrecord, readcd und mkisofs.\n\nBerichte zu Bugs oder gewünschten Features sind sehr willkommen. Kontaktinfos befinden sich in der Bedienungsanleitung aus dem 'Hilfe' Menü.
+Audio	Audio view		Audio
+Burn disc	Audio view		Disc brennen
+Drop tracks here (only WAV files)	Audio view		Tracks hier reinziehen (nur WAV Dateien)
+Burn the disc	Audio view	Status notification	Disc brennen
+Burning complete. Burn another disc?	Audio view	Status notification	Brennvorgang abgeschlossen. Eine weitere Disc brennen?
+Burning in progress…	Audio view	Status notification	Brennvorgang läuft…
+Ready	Audio view	Status notification	Bereit
+Blank CD-RW	Blank view		CD-RW löschen
+Blank disc	Blank view		Disc löschen
+Blanking types:\n\nAll\t\t\tBlank the entire disk. This may take a long time.\nFast\t\t\tMinimally blank the disk.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Blank view		Löschtyp:\n\nAlles\t\t\tLöscht die gesamte Disc. Das kann recht lange dauern.\nSchnell\t\t\tLöscht nur minimale Teile der Disc.\n\t\t\tDas löscht den PMA, den TOC und den Pregap.\nSitzung\t\tLöscht die letzte Sitzung\nTrack\t\tLöscht einen Track.\nTrack Ende\t\tLöscht das Ende eines Tracks\nEnt-Reservieren\tMacht die Reservierung eines Tracks rückgängig.\nEnt-Schließen\t\tMacht das Schließen der letzten Sitzung rückgängig.
+Track	Blank view	Blanking mode. From the man page: 'Blank a track.'	Track
+All	Blank view	Blanking mode. From the man page: 'Blank the entire disk. This may take a long time.'	Alles
+Session	Blank view	Blanking mode. From the man page: 'Blank the last session.'	Sitzung
+Track tail	Blank view	Blanking mode. From the man page: 'Blank the tail of a track.'	Track Ende
+Fast	Blank view	Blanking mode. From the man page: 'Minimally blank the disk. This results in erasing the PMA, the TOC and the pregap.'	Schnell
+Unclose	Blank view	Blanking mode. From the man page: 'Unclose last session.'	Ent-Schließen
+Unreserve	Blank view	Blanking mode. From the man page: 'Unreserve a reserved track.'	Ent-Reservieren
+Blanking complete	Blank view	Status notification	Löschvorgang abgeschlossen
+Blanking in progress…	Blank view	Status notification	Löschvorgang läuft…
+Insert the disc and blank it	Blank view	Status notification	Disc einlegen und löschen
+Burn image	Clone view		Image brennen
+Clone	Clone view		Kopie
+Create image	Clone view		Image erstellen
+Burning complete. Burn another disc?	Clone view	Status notification	Brennvorgang abgeschlossen. Eine weitere Disc brennen?
+Burning in progress…	Clone view	Status notification	Brennvorgang läuft…
+Failed to create image	Clone view	Status notification	Erstellung des Image fehlgeschlagen
+Image creating in progress…	Clone view	Status notification	Imageerstellung läuft…
+Insert a blank disc and burn the image	Clone view	Status notification	Leere Disc einlegen und Image brennen
+Insert the disc and create an image	Clone view	Status notification	Disc einlegen und Image erstellen
+Remove	Context menu		Entfernen
+Build image	Data view		Image erstellen
+Burn disc	Data view		Disc brennen
+Choose folder	Data view		Ordner wählen
+Data	Data view		Data
+First build an image to burn.	Data view		Vor dem Brennen muss ein Image erstellt werden.
+First choose the folder to burn.	Data view		Zuerst muss der Ordner gewählt werden, der gebrannt werden soll.
+Folder: <none>	Data view		Ordner: <keiner>
+OK	Data view		OK
+Build the image	Data view	Status notification	Image erstellen
+Building in progress…	Data view	Status notification	Erstellungsvorgang läuft…
+Burn the disc	Data view	Status notification	Disc brennen
+Burning complete. Burn another disc?	Data view	Status notification	Brennvorgang abgeschlossen. Eine weitere Disc brennen?
+Burning in progress…	Data view	Status notification	Brennvorgang läuft…
+Choose the folder to burn	Data view	Status notification	Zu brennenden Ordner wählen
+Burn disc	Image view		Disc brennen
+Choose image	Image view		Image wählen
+First choose an image to burn.	Image view		Zuerst das Image wählen, das gebrannt werden soll.
+Image file	Image view		Image
+Image: <none>	Image view		Image: <kein>
+OK	Image view		OK
+Burn the disc	Image view	Status notification	Disc brennen
+Burning complete. Burn another disc?	Image view	Status notification	Brennvorgang abgeschlossen. Eine weitere Disc brennen?
+Burning in progress…	Image view	Status notification	Brennvorgang läuft…
+Choose the image to burn	Image view	Status notification	Zu brennendes Image wählen
+About…	Main window		Über…
+App	Main window		App
+Burn speed:	Main window		Brenn-Speed:
+Clear cache now	Main window		Cache jetzt leeren
+Clear cache on quit	Main window		Cache beim Beenden leeren
+Eject after burning	Main window		Disc auswerfen
+Help	Main window		Hilfe
+MultiSession	Main window		MultiSession
+On-the-fly	Main window		On-the-fly
+Project website	Main window		Projekt Webseite
+Simulation	Main window		Simulation
+Tools & settings	Main window		Tools & Einstellungen
+Usage instructions	Main window		Bedienungsanleitung
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (empfohlen bei Audio CDs)
+8x	Main window	Multiplier for burn speed	8x
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+BurnItNow	System name		BurnItNow

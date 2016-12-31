@@ -252,8 +252,8 @@ CompilationAudioView::BurnDisc()
 		return;
 
 	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burning in progress",
-		"Status notification" B_UTF8_ELLIPSIS));
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burning in progress"
+		B_UTF8_ELLIPSIS, "Status notification"));
 	fBurnButton->SetEnabled(false);
 
 	BString device("dev=");

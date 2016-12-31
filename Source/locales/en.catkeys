@@ -1,0 +1,79 @@
+1	English	application/x-vnd.haikuarchives.BurnItNow2	744208026
+Thank you	Application		Thank you
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.
+Audio	Audio view		Audio
+Burn disc	Audio view		Burn disc
+Drop tracks here (only WAV files)	Audio view		Drop tracks here (only WAV files)
+Burn the disc	Audio view	Status notification	Burn the disc
+Burning complete. Burn another disc?	Audio view	Status notification	Burning complete. Burn another disc?
+Burning in progress…	Audio view	Status notification	Burning in progress…
+Ready	Audio view	Status notification	Ready
+Blank CD-RW	Blank view		Blank CD-RW
+Blank disc	Blank view		Blank disc
+Blanking types:\n\nAll\t\t\tBlank the entire disk. This may take a long time.\nFast\t\t\tMinimally blank the disk.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Blank view		Blanking types:\n\nAll\t\t\tBlank the entire disk. This may take a long time.\nFast\t\t\tMinimally blank the disk.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
+Track	Blank view	Blanking mode. From the man page: 'Blank a track.'	Track
+All	Blank view	Blanking mode. From the man page: 'Blank the entire disk. This may take a long time.'	All
+Session	Blank view	Blanking mode. From the man page: 'Blank the last session.'	Session
+Track tail	Blank view	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
+Fast	Blank view	Blanking mode. From the man page: 'Minimally blank the disk. This results in erasing the PMA, the TOC and the pregap.'	Fast
+Unclose	Blank view	Blanking mode. From the man page: 'Unclose last session.'	Unclose
+Unreserve	Blank view	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
+Blanking complete	Blank view	Status notification	Blanking complete
+Blanking in progress…	Blank view	Status notification	Blanking in progress…
+Insert the disc and blank it	Blank view	Status notification	Insert the disc and blank it
+Burn image	Clone view		Burn image
+Clone	Clone view		Clone
+Create image	Clone view		Create image
+Burning complete. Burn another disc?	Clone view	Status notification	Burning complete. Burn another disc?
+Burning in progress…	Clone view	Status notification	Burning in progress…
+Failed to create image	Clone view	Status notification	Failed to create image
+Image creating in progress…	Clone view	Status notification	Image creating in progress…
+Insert a blank disc and burn the image	Clone view	Status notification	Insert a blank disc and burn the image
+Insert the disc and create an image	Clone view	Status notification	Insert the disc and create an image
+Remove	Context menu		Remove
+Build image	Data view		Build image
+Burn disc	Data view		Burn disc
+Choose folder	Data view		Choose folder
+Data	Data view		Data
+First build an image to burn.	Data view		First build an image to burn.
+First choose the folder to burn.	Data view		First choose the folder to burn.
+Folder: <none>	Data view		Folder: <none>
+OK	Data view		OK
+Build the image	Data view	Status notification	Build the image
+Building in progress…	Data view	Status notification	Building in progress…
+Burn the disc	Data view	Status notification	Burn the disc
+Burning complete. Burn another disc?	Data view	Status notification	Burning complete. Burn another disc?
+Burning in progress…	Data view	Status notification	Burning in progress…
+Choose the folder to burn	Data view	Status notification	Choose the folder to burn
+Burn disc	Image view		Burn disc
+Choose image	Image view		Choose image
+First choose an image to burn.	Image view		First choose an image to burn.
+Image file	Image view		Image file
+Image: <none>	Image view		Image: <none>
+OK	Image view		OK
+Burn the disc	Image view	Status notification	Burn the disc
+Burning complete. Burn another disc?	Image view	Status notification	Burning complete. Burn another disc?
+Burning in progress…	Image view	Status notification	Burning in progress…
+Choose the image to burn	Image view	Status notification	Choose the image to burn
+About…	Main window		About…
+App	Main window		App
+Burn speed:	Main window		Burn speed:
+Clear cache now	Main window		Clear cache now
+Clear cache on quit	Main window		Clear cache on quit
+Eject after burning	Main window		Eject after burning
+Help	Main window		Help
+MultiSession	Main window		MultiSession
+On-the-fly	Main window		On-the-fly
+Project website	Main window		Project website
+Simulation	Main window		Simulation
+Tools & settings	Main window		Tools & settings
+Usage instructions	Main window		Usage instructions
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (best for audio CDs)
+8x	Main window	Multiplier for burn speed	8x
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+BurnItNow	System name		BurnItNow
