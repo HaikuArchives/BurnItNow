@@ -7,12 +7,16 @@
 
 #include <Alert.h>
 #include <Button.h>
+#include <Catalog.h>
 #include <ControlLook.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Blank view"
 
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
@@ -22,7 +26,8 @@ const int32 kBlankerMessage = 'Blkr';
 
 CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	:
-	BView("Blank CD-RW", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
+	BView(B_TRANSLATE("Blank CD-RW"), B_WILL_DRAW,
+		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBlankerThread(NULL)
 {
@@ -32,7 +37,8 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 
 	fBlankerInfoBox = new BSeparatorView("ImageInfoBBox");
 	fBlankerInfoBox->SetFont(be_bold_font);
-	fBlankerInfoBox->SetLabel("Insert the disc and blank it");
+	fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+	"Insert the disc and blank it", "Status notification"));
 
 	fBlankerInfoTextView = new BTextView("ImageInfoTextView");
 	fBlankerInfoTextView->SetWordWrap(false);
@@ -44,21 +50,36 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankModeMenu = new BMenu("BlankModeMenu");
 	fBlankModeMenu->SetLabelFromMarked(true);
 
-	BMenuItem* blankModeMenuItem = new BMenuItem("All", new BMessage());
+	BMenuItem* blankModeMenuItem = new BMenuItem(B_TRANSLATE_COMMENT("All",
+		"Blanking mode. From the man page: 'Blank the entire disk. This may "
+		"take a long time.'"), new BMessage());
 	blankModeMenuItem->SetMarked(true);
 	fBlankModeMenu->AddItem(blankModeMenuItem);
-	fBlankModeMenu->AddItem(new BMenuItem("Fast", new BMessage()));
-	fBlankModeMenu->AddItem(new BMenuItem("Session", new BMessage()));
-	fBlankModeMenu->AddItem(new BMenuItem("Track", new BMessage()));
-	fBlankModeMenu->AddItem(new BMenuItem("Track tail", new BMessage()));
-	fBlankModeMenu->AddItem(new BMenuItem("Unreserve", new BMessage()));
-	fBlankModeMenu->AddItem(new BMenuItem("Unclose", new BMessage()));
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Fast",
+		"Blanking mode. From the man page: 'Minimally blank the disk. This "
+		"results in erasing the PMA, the TOC and the pregap.'"),
+		new BMessage()));
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Session",
+		"Blanking mode. From the man page: 'Blank the last session.'"),
+		new BMessage()));
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Track",
+		"Blanking mode. From the man page: 'Blank a track.'"),
+		new BMessage()));
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Track tail",
+		"Blanking mode. From the man page: 'Blank the tail of a track.'"),
+		new BMessage()));
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Unreserve",
+		"Blanking mode. From the man page: 'Unreserve a reserved track.'"),
+		new BMessage()));
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Unclose",
+		"Blanking mode. From the man page: 'Unclose last session.'"),
+		new BMessage()));
 
 	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
 		"Type:", fBlankModeMenu);
 
-	BButton* blankButton = new BButton("BlankButton", "Blank disc",
-		new BMessage(kBlankMessage));
+	BButton* blankButton = new BButton("BlankButton",
+		B_TRANSLATE("Blank disc"), new BMessage(kBlankMessage));
 	blankButton->SetTarget(this);
 
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
@@ -127,7 +148,8 @@ CompilationCDRWView::_Blank()
 	mode.Prepend("blank=");
 
 	fBlankerInfoTextView->SetText(NULL);
-	fBlankerInfoBox->SetLabel("Blanking in progress" B_UTF8_ELLIPSIS);
+	fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
+		B_UTF8_ELLIPSIS, "Status notification"));
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
@@ -161,5 +183,6 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK)
-		fBlankerInfoBox->SetLabel("Blanking complete");
+		fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking complete",
+			"Status notification"));
 }

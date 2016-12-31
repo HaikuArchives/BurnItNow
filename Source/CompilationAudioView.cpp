@@ -8,6 +8,7 @@
 #include "CommandThread.h"
 
 #include <Alert.h>
+#include <Catalog.h>
 #include <ControlLook.h>
 #include <Directory.h>
 #include <Entry.h>
@@ -18,6 +19,9 @@
 #include <String.h>
 #include <StringView.h>
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Audio view"
+
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
@@ -26,7 +30,8 @@ const int32 kBurnDiscMessage = 'BURN';
 
 CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	:
-	BView("Audio", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
+	BView(B_TRANSLATE("Audio"), B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
+		kControlPadding)),
 	fBurnerThread(NULL)
 {
 	windowParent = &parent;
@@ -35,7 +40,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel("Ready");
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Ready",
+		"Status notification"));
 
 	fBurnerInfoTextView = new BTextView("AudioInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(true);
@@ -44,13 +50,13 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		fBurnerInfoTextView, B_WILL_DRAW, false, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fBurnButton = new BButton("BurnDiscButton", "Burn disc",
+	fBurnButton = new BButton("BurnDiscButton", B_TRANSLATE("Burn disc"),
 		new BMessage(kBurnDiscMessage));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fAudioBox->SetFont(be_bold_font);
-	fAudioBox->SetLabel("Drop tracks here (only WAV files)");
+	fAudioBox->SetLabel(B_TRANSLATE("Drop tracks here (only WAV files)"));
 
 	fTrackList = new AudioListView("AudioListView");
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
@@ -148,7 +154,9 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-			fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
+			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+				"Burning complete. Burn another disc?",
+				"Status notification"));
 			fBurnButton->SetEnabled(true);
 	}
 }
@@ -226,7 +234,8 @@ CompilationAudioView::_AddTrack(BMessage* message)
 	}
 	if (!fTrackList->IsEmpty()) {
 		fBurnButton->SetEnabled(true);
-		fBurnerInfoBox->SetLabel("Burn the disc");
+		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
+			"Status notification"));
 		fTrackList->RenumberTracks();
 	} else
 		fBurnButton->SetEnabled(false);
@@ -243,7 +252,8 @@ CompilationAudioView::BurnDisc()
 		return;
 
 	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burning in progress",
+		"Status notification" B_UTF8_ELLIPSIS));
 	fBurnButton->SetEnabled(false);
 
 	BString device("dev=");

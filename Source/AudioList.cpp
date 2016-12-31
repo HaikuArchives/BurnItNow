@@ -13,8 +13,11 @@
 #include <stdio.h>
 
 #include <Bitmap.h>
+#include <Catalog.h>
 #include <ControlLook.h>
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Context menu"
 
 #define MAX_DRAG_HEIGHT		200.0
 #define ALPHA				170
@@ -416,7 +419,7 @@ AudioListView::_ShowPopUpMenu(BPoint screen)
 	BMessage* msg = NULL;
 
 	msg = new BMessage(kDeleteItemMessage);
-	BMenuItem* item = new BMenuItem("Remove", msg);
+	BMenuItem* item = new BMenuItem(B_TRANSLATE("Remove"), msg);
 	menu->AddItem(item);
 
 	menu->SetTargetForItems(this);

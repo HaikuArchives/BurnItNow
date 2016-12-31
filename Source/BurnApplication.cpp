@@ -6,14 +6,21 @@
 #include "BurnWindow.h"
 
 #include <Alert.h>
+#include <Catalog.h>
+#include <TextView.h>
 
+static const char kVersion[] = "v1.0";
+static const char kCopyright[] = "2010-2016";
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Application"
 
 #pragma mark --Constructor/Destructor--
 
 
 BurnApplication::BurnApplication()
 	:
-	BApplication("application/x-vnd.haikuarchives.BurnItNow2")
+	BApplication("application/x-vnd.haikuarchives-BurnItNow")
 {
 }
 
@@ -22,12 +29,10 @@ void
 BurnApplication::ReadyToRun()
 {
 	BRect rect = fSettings.GetWindowPosition();
-	fWindow = new BurnWindow(rect, "BurnItNow2");
+	fWindow = new BurnWindow(rect, B_TRANSLATE_SYSTEM_NAME("BurnItNow"));
 
 	fWindow->Show();
 }
-
-
 
 
 #pragma mark --BApplication Overrides--
@@ -36,13 +41,34 @@ BurnApplication::ReadyToRun()
 void
 BurnApplication::AboutRequested()
 {
-	// TODO Replace with real about window
-	(new BAlert("AboutAlert",
-		"BurnItNow2\nCopyright 2010-2016, BurnItNow Team.\n"
-		"All rights reserved.\n"
-		"Distributed under the terms of the MIT License.\n\n"
+	BString text = B_TRANSLATE_COMMENT(
+		"BurnItNow %version%\n"
+		"\twritten by the BurnItNow team.\n"
+		"\tcontributed by\n"
+		"\tHumdinger,\n"
+		"\tPrzemysław Buczkowski,\n"
+		"\tRobert Mercer.\n\n"
+		"\tCopyright %years%\n\n"
 		"BurnItNow is a graphical frontend to cdrecord, readcd "
-		"and mkisofs.", "OK"))->Go();
+		"and mkisofs.\n\n"
+		"Please report the bugs you find or features you miss. "
+		"The contact info is in the usage instructions in the "
+		"'Help' menu.",
+		"Don't change the variables %years% and %version%.");
+	text.ReplaceAll("%years%", kCopyright);
+	text.ReplaceAll("%version%", kVersion);
+
+	BAlert *alert = new BAlert("about", text.String(),
+		B_TRANSLATE("Thank you"));
+
+	BTextView *view = alert->TextView();
+	BFont font;
+	view->SetStylable(true);
+	view->GetFont(&font);
+	font.SetSize(font.Size() + 4);
+	font.SetFace(B_BOLD_FACE);
+	view->SetFontAndColor(0, 9, &font);
+	alert->Go();
 }
 
 

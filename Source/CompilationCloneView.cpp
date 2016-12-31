@@ -6,6 +6,7 @@
 #include "CompilationCloneView.h"
 
 #include <Alert.h>
+#include <Catalog.h>
 #include <ControlLook.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
@@ -13,6 +14,9 @@
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Clone view"
 
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
@@ -30,7 +34,8 @@ int selectedSrcDevice;
 
 CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	:
-	BView("Clone", B_WILL_DRAW, new BGroupLayout(B_VERTICAL, kControlPadding)),
+	BView(B_TRANSLATE("Clone"), B_WILL_DRAW,
+		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fClonerThread(NULL)
 {
@@ -40,7 +45,9 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 
 	fClonerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fClonerInfoBox->SetFont(be_bold_font);
-	fClonerInfoBox->SetLabel("Insert the disc and create an image");
+	fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+		"Insert the disc and create an image",
+		"Status notification"));
 
 	fClonerInfoTextView = new BTextView("CloneInfoTextView");
 	fClonerInfoTextView->SetWordWrap(false);
@@ -49,12 +56,12 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		fClonerInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fImageButton = new BButton("CreateImageButton", "Create image",
-		new BMessage(kCreateImageMessage));
+	fImageButton = new BButton("CreateImageButton",
+		B_TRANSLATE("Create image"), new BMessage(kCreateImageMessage));
 	fImageButton->SetTarget(this);
 	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	fBurnButton = new BButton("BurnImageButton", "Burn image",
+	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn image"),
 		new BMessage(kBurnImageMessage));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
@@ -139,7 +146,8 @@ void
 CompilationCloneView::_CreateImage()
 {
 	fClonerInfoTextView->SetText(NULL);
-	fClonerInfoBox->SetLabel("Image creating in progress" B_UTF8_ELLIPSIS);
+	fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+		"Image creating in progress" B_UTF8_ELLIPSIS, "Status notification"));
 	fImageButton->SetEnabled(false);
 
 	BPath path;
@@ -180,7 +188,8 @@ CompilationCloneView::_BurnImage()
 		step = 2;
 
 		fClonerInfoTextView->SetText(NULL);
-		fClonerInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+		fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+		"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
 
 		BString device("dev=");
 		device.Append(windowParent->GetSelectedDevice().number.String());
@@ -226,7 +235,9 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 		if (result.FindFirst(" kB/sec.") != B_ERROR) {
 			step = 0;
 
-			fClonerInfoBox->SetLabel("Insert a blank disc and burn the image");
+			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+				"Insert a blank disc and burn the image",
+				"Status notification"));
 			BString device("dev=");
 			device.Append(windowParent->GetSelectedDevice().number.String());
 
@@ -238,7 +249,8 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 				->Run();
 		} else {
 			step = 0;
-			fClonerInfoBox->SetLabel("Failed to create image");
+			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+				"Failed to create image", "Status notification"));
 			return;
 		}
 
@@ -249,7 +261,8 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
 			&& (step == 2)) {
-		fClonerInfoBox->SetLabel("Burning complete. Burn another disc?");
+		fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			"Burning complete. Burn another disc?", "Status notification"));
 		fImageButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 

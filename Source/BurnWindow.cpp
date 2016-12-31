@@ -18,6 +18,7 @@
 #include <Application.h>
 #include <Box.h>
 #include <Button.h>
+#include <Catalog.h>
 #include <ControlLook.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
@@ -27,6 +28,8 @@
 #include <Roster.h>
 #include <SpaceLayoutItem.h>
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Main window"
 
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
@@ -180,33 +183,33 @@ BurnWindow::_CreateMenuBar()
 {
 	BMenuBar* menuBar = new BMenuBar("GlobalMenuBar");
 
-	BMenu* fileMenu = new BMenu("App");
+	BMenu* fileMenu = new BMenu(B_TRANSLATE("App"));
 	menuBar->AddItem(fileMenu);
 
-	BMenuItem* aboutItem = new BMenuItem("About" B_UTF8_ELLIPSIS,
+	BMenuItem* aboutItem = new BMenuItem(B_TRANSLATE("About" B_UTF8_ELLIPSIS),
 		new BMessage(B_ABOUT_REQUESTED));
 	aboutItem->SetTarget(be_app);
 	fileMenu->AddItem(aboutItem);
 	fileMenu->AddItem(new BMenuItem("Quit",
 		new BMessage(B_QUIT_REQUESTED), 'Q'));
 
-	BMenu* toolsMenu = new BMenu("Tools & settings");
+	BMenu* toolsMenu = new BMenu(B_TRANSLATE("Tools & settings"));
 	menuBar->AddItem(toolsMenu);
 
-	fCacheQuitItem = new BMenuItem("Clear cache on quit",
+	fCacheQuitItem = new BMenuItem(B_TRANSLATE("Clear cache on quit"),
 		new BMessage(kCacheQuitMessage));
 	toolsMenu->AddItem(fCacheQuitItem);
-	
-	toolsMenu->AddItem(new BMenuItem("Clear cache now",
+
+	toolsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
 		new BMessage(kClearCacheMessage)));
 
-	BMenu* helpMenu = new BMenu("Help");
+	BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
 	menuBar->AddItem(helpMenu);
 
-	helpMenu->AddItem(new BMenuItem("Usage instructions",
+	helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Usage instructions"),
 		new BMessage(kOpenHelpMessage)));
 
-	helpMenu->AddItem(new BMenuItem("Project website",
+	helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Project website"),
 		new BMessage(kOpenWebsiteMessage)));
 
 	//Apply settings (and disable unimplemented options)
@@ -224,10 +227,14 @@ BurnWindow::_CreateToolBar()
 
 	fSessionMenu = new BMenu("SessionMenu");
 	fSessionMenu->SetLabelFromMarked(true);
-	BMenuItem* daoItem = new BMenuItem("Disc At Once (DAO)", new BMessage());
+	BMenuItem* daoItem = new BMenuItem(B_TRANSLATE_COMMENT("Disc at once (DAO)",
+		"Official term of a burn mode, probably don't translate"),
+		new BMessage());
 	daoItem->SetMarked(true);
 	fSessionMenu->AddItem(daoItem);
-	fSessionMenu->AddItem(new BMenuItem("Track At Once (TAO)", new BMessage()));
+	fSessionMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Track at once (TAO)",
+		"Official term of a burn mode, probably don't translate"),
+		new BMessage()));
 	BMenuField* fSessionMenuField = new BMenuField("SessionMenuField", "",
 		fSessionMenu);
 	fSessionMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
@@ -250,7 +257,7 @@ BurnWindow::_CreateToolBar()
 			deviceItem->SetMarked(true);
 		fDeviceMenu->AddItem(deviceItem);
 	}
-	
+
 	BMenuField* fDeviceMenuField = new BMenuField("DeviceMenuField", "",
 		fDeviceMenu);
 	fDeviceMenuField->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
@@ -258,19 +265,21 @@ BurnWindow::_CreateToolBar()
 	// TODO These values should be obtained from the capabilities
 	// of the drive and the type of media
 
-	fMultiCheck = new BCheckBox("MultiSessionCheckBox", "MultiSession",
-						new BMessage());
-	fOntheflyCheck = new BCheckBox("OnTheFlyCheckBox", "On-the-fly",
-						new BMessage());
-	fSimulationCheck = new BCheckBox("SimulationCheckBox", "Simulation",
-						new BMessage());
-	fEjectCheck = new BCheckBox("EjectCheckBox", "Eject after burning",
-						new BMessage());
+	fMultiCheck = new BCheckBox("MultiSessionCheckBox",
+		B_TRANSLATE("MultiSession"), new BMessage());
+	fOntheflyCheck = new BCheckBox("OnTheFlyCheckBox",
+		B_TRANSLATE("On-the-fly"), new BMessage());
+	fSimulationCheck = new BCheckBox("SimulationCheckBox",
+		B_TRANSLATE("Simulation"), new BMessage());
+	fEjectCheck = new BCheckBox("EjectCheckBox",
+		B_TRANSLATE("Eject after burning"), new BMessage());
 
-	fSpeedSlider = new BSlider("SpeedSlider", "Burn speed: ",
+	fSpeedSlider = new BSlider("SpeedSlider", B_TRANSLATE("Burn speed:"),
 		new BMessage(kSpeedSliderMessage), 0, 5, B_HORIZONTAL);
 	fSpeedSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
-	fSpeedSlider->SetLimitLabels("Min", "Max");
+	fSpeedSlider->SetLimitLabels(B_TRANSLATE_COMMENT("Min",
+		"Abbreviation for minimal burn speed"), B_TRANSLATE_COMMENT("Max",
+		"Abbreviation for maximal burn speed"));
 	fSpeedSlider->SetHashMarks(B_HASH_MARKS_BOTH);
 	fSpeedSlider->SetHashMarkCount(6);
 	fSpeedSlider->SetValue(5);	// initial speed: max
@@ -414,24 +423,31 @@ BurnWindow::_OpenHelp()
 void
 BurnWindow::_UpdateSpeedSlider(BMessage* message)
 {
-	BString speedString("Burn speed: ");
+	BString speedString(B_TRANSLATE("Burn speed:"));
+	speedString << " ";
 	if (fSpeedSlider->Value() == 0) {
-		speedString << "Min";
+		speedString << B_TRANSLATE_COMMENT("Min",
+		"Abbreviation for minimal burn speed");
 		fConfig.speed = "speed=0";
 	} else if (fSpeedSlider->Value() == 1) {
-		speedString << "4x (best for audio CDs)";
+		speedString << B_TRANSLATE_COMMENT("4x (best for audio CDs)",
+			"Multiplier for burn speed");
 		fConfig.speed = "speed=4";
 	} else if (fSpeedSlider->Value() == 2) {
-		speedString << "8x";
+		speedString << B_TRANSLATE_COMMENT("8x",
+			"Multiplier for burn speed");
 		fConfig.speed = "speed=8";
 	} else if (fSpeedSlider->Value() == 3) {
-		speedString << "16x";
+		speedString << B_TRANSLATE_COMMENT("16x",
+			"Multiplier for burn speed");
 		fConfig.speed = "speed=16";
 	} else if (fSpeedSlider->Value() == 4) {
-		speedString << "32x";
+		speedString << B_TRANSLATE_COMMENT("32x",
+			"Multiplier for burn speed");
 		fConfig.speed = "speed=32";
 	} else if (fSpeedSlider->Value() == 5) {
-		speedString << "Max";
+		speedString << B_TRANSLATE_COMMENT("Max",
+		"Abbreviation for maximal burn speed");
 		fConfig.speed = "";
 	}
 
@@ -449,36 +465,36 @@ BurnWindow::FindDevices(sdevice* array)
 	BString output[512];
 	int lineNumber = 0;
 	int xdev = 0;
-	
+
 	f = popen("cdrecord -scanbus", "r");
 	while (fgets(buff, sizeof(buff), f)!=NULL) {
 		output[lineNumber] = buff;
 		lineNumber++;
 	}
 	pclose(f);
-	
+
 	for (BString* i = output; i < (output + 512); i++)
 	{
 		if (i->FindFirst('*') == B_ERROR && i->FindFirst("\' ") != B_ERROR) {
 			BString device = i->Trim();
-			
+
 			// find device number
 			int numberRange = device.FindFirst('\t');
 			BString number;
 			number.SetTo(device, numberRange);
-			
+
 			// find manufacturer
 			int manuStart = device.FindFirst('\'');
 			int manuEnd = device.FindFirst('\'', manuStart);
 			BString manu;
 			device.CopyInto(manu, manuStart + 1, manuEnd - 3);
-			
+
 			// find model
 			int modelStart = device.FindFirst('\'', manuEnd + 1);
 			int modelEnd = device.FindFirst('\'', modelStart + 1);
 			BString model;
 			device.CopyInto(model, modelStart + 3, modelEnd - 6);
-			
+
 			sdevice dev = { number, manu, model };
 			if (xdev <= MAX_DEVICES)
 				array[xdev++] = dev;

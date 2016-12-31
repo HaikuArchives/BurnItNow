@@ -8,6 +8,7 @@
 
 #include <Alert.h>
 #include <ControlLook.h>
+#include <Catalog.h>
 #include <LayoutBuilder.h>
 #include <Node.h>
 #include <NodeInfo.h>
@@ -17,6 +18,9 @@
 #include <StringView.h>
 
 #include <compat/sys/stat.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Image view"
 
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
@@ -29,8 +33,8 @@ const int32 kNoPathMessage = 'Noph'; // defined in PathView
 
 CompilationImageView::CompilationImageView(BurnWindow& parent)
 	:
-	BView("Image file", B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
-		kControlPadding)),
+	BView(B_TRANSLATE("Image file"), B_WILL_DRAW,
+		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
 	fImageParserThread(NULL)
@@ -42,9 +46,11 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 
 	fImageInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fImageInfoBox->SetFont(be_bold_font);
-	fImageInfoBox->SetLabel("Choose the image to burn");
+	fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose the image to burn",
+		"Status notification"));
 
-	fPathView = new PathView("ImageFileStringView", "Image: <none>");
+	fPathView = new PathView("ImageFileStringView",
+		B_TRANSLATE("Image: <none>"));
 
 	fImageInfoTextView = new BTextView("ImageInfoTextView");
 	fImageInfoTextView->SetWordWrap(false);
@@ -53,11 +59,11 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 		fImageInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fChooseButton = new BButton("ChooseImageButton", "Choose image",
-		new BMessage(kChooseImageMessage));
+	fChooseButton = new BButton("ChooseImageButton",
+		B_TRANSLATE("Choose image"), new BMessage(kChooseImageMessage));
 	fChooseButton->SetTarget(this);
 
-	fBurnButton = new BButton("BurnImageButton", "Burn disc",
+	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
 		new BMessage(kBurnImageMessage));
 	fBurnButton->SetTarget(this);
 
@@ -215,8 +221,8 @@ CompilationImageView::_BurnImage()
 	BString imageFile = fImagePath->Path();
 
 	if (fImagePath->Path() == NULL) {
-		(new BAlert("ChooseImageFirstAlert",
-			"First choose an image to burn.", "OK"))->Go();
+		(new BAlert("ChooseImageFirstAlert", B_TRANSLATE(
+			"First choose an image to burn."), B_TRANSLATE("OK")))->Go();
 		return;
 	}
 
@@ -226,7 +232,8 @@ CompilationImageView::_BurnImage()
 	step = 2;	// flag we're burning
 
 	fImageInfoTextView->SetText(NULL);
-	fImageInfoBox->SetLabel("Burning in progress" B_UTF8_ELLIPSIS);
+	fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+		"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
 	fChooseButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
@@ -268,7 +275,8 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
-		fImageInfoBox->SetLabel("Burn the disc");
+		fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
+			"Status notification"));
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
@@ -276,7 +284,8 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
 			&& (step == 2)) {
-		fImageInfoBox->SetLabel("Burning complete. Burn another disc?");
+		fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			"Burning complete. Burn another disc?", "Status notification"));
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
