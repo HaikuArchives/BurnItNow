@@ -1,0 +1,98 @@
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'ATAPI   '
+Identifikation : 'iHAS124   W     '
+Revision       : 'HL05'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'PIONEER '
+Identifikation : 'BD-RW   BDR-207D'
+Revision       : '1.21'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'hp      '
+Identifikation : 'DVD-RAM GH60L   '
+Revision       : 'RD01'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'TSSTcorp'
+Identifikation : 'CDDVDW TS-H653N '
+Revision       : 'HB02'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'hp      '
+Identifikation : 'DVD A  DH16ACSHR'
+Revision       : 'JHG7'
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'TSSTcorp'
+Identifikation : 'DVD+-RW TS-L633C'
+Revision       : 'DW40'
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'ASUS    '
+Identifikation : 'DRW-24F1ST   c  '
+Revision       : '1.00'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'Optiarc '
+Identifikation : 'DVD RW AD-7250H '
+Revision       : '1.D2'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'HL-DT-ST'
+Identifikation : 'DVD-RAM GSA-H30N'
+Revision       : '1.01'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'HL-DT-ST'
+Identifikation : 'DVD-RAM GH22NS30'
+Revision       : '1.00'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM.
+
+Device type    : Removable CD-ROM
+Version        : 2
+Response Format: 2
+Capabilities   :
+Vendor_info    : 'HL-DT-ST'
+Identifikation : 'DVDRAM GH22NS50 '
+Revision       : 'TN01'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW/DVD-RAM
+
+

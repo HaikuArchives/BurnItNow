@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="robots" content="all" />
+	<title>BurnItNow</title>
+
+<style type="text/css">
+
+body {
+    font-size: 0.9em;
+	font-family: "Noto Sans",Arial,Helvetica,sans-serif;
+	line-height: 1.5;
+	margin: 40px;
+	min-width: 45em;
+	max-width: 70em;
+}
+/* link colors and text decoration */
+
+a:link {
+	font-weight: bold;
+	text-decoration: none;
+	color: #dc3c01;
+}
+a:visited {
+	font-weight: bold;
+	text-decoration: none;
+	color: #892601;
+}
+a:hover, a:active {
+	text-decoration: underline;
+	color: #ff4500;
+}
+
+hr {
+	border: dotted thin #e0e0e0;
+}
+h1 {
+	font-size: 1.3em;
+	border-bottom: dotted thin #e0e0e0;
+	margin-bottom: 45px;
+}
+h2 {
+	font-size: 1.2em;
+	border-bottom: dotted thin #e0e0e0;
+	margin-top: 40px;
+}
+h3 {
+	font-size: 1em;
+	border-bottom: dotted thin #e0e0e0;
+	margin-bottom: 0px;
+}
+.key {				/* Shortcut (separate with &#160; */
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border-color: #c7c7c7;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px 2px 0px 2px;
+	background-color: #e8e8e8;
+    font-family: sans;
+	font-variant: small-caps;
+	font-size: 1em;
+}
+.menu {				/* Menu */
+    font-size: 1.0em;
+    font-family: serif;
+    font-style: italic;
+	color: #24225e;
+}
+.button {			/* Button */
+    font-size: 1.0em;
+    font-family: serif;
+    font-style: italic;
+	color: #33583c;
+}
+.path {				/* File path */
+    background-color: #e8e8e8;
+    font-size: 0.9em;
+    font-family: monospace;
+}
+/* printer only pretty stuff */
+@media /*screen,*/print {
+	/* suggest page orientation */
+	@page { size: portrait; }
+	.noprint {
+		display: none;
+	}
+	/* some links we want to print the url along with (CSS2) */
+	a.printurl:after {
+		content: " &lt;" attr(href) "&gt;";
+		font-weight: normal;
+		font-size: small;
+	}
+	/* override for those we really don't want to print */
+	a.noprinturl:after {
+		content: "";
+	}
+	pre.terminal {			/* Terminal output black on white*/
+		background-color: #ffffff;
+		color: #000000;
+	}
+	#content {
+		margin: 0px;
+		padding: 0px;
+	}
+	html {
+		background: #FFF;
+	}
+}
+
+</style>
+
+</head>
+<body>
+<div align = "center">
+<img width="64" height="64" src="./images/icon.png" alt="BurnItNow icon" />
+<p><span style="font-size: 1.5em; font-weight:bold">BurnItNow</span><br />
+for <a href="http://www.haiku-os.org">Haiku</a><br /></p>
+<hr />
+<p id="index"><a href="#menus">Menus</a> - <a href="#session">Session Settings</a> - <a href="#projectmodes">Project Modes</a><br />
+<a href="#tips">Tips &amp; Tricks</a> - <a href="#download">Download</a> - <a href="#bugs_feedback">Bug Reports &amp; Feedback</a></p>
+</div>
+<hr />
+<p><br /></p>
+<p>BurnItNow burns data, audio and ISO images on CD, and blanks rewritable CD-RW media. It is a graphical frontend to the commandline tools suite <i>cdrtools</i> by Jörg Schilling et al.</p>
+
+<p>BurnItNow's window consists of three parts: the menu bar, the session settings and several project modes in tabs at the bottom:</p>
+
+<div align = "center">
+<img src="./images/overview.png" alt="Overview of BurnItNow window" />
+</div>
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="menus" name="menus">The Menus</a></h2>
+
+<p>The available menu items are few and easy to understand.<br />
+Under <span class="menu">App</span> you can open the <span class="menu">About...</span> panel and <span class="menu">Quit</span> the application.</p>
+
+<p><span class="menu">Tools &amp; settings</span> provides options to clear images and folders that are created while using BurnItNow. They are located at <span class="path">/system/cache/</span>, in case you want to have a look or save an image for later use.<br />
+<span class="menu">Clear cache on quit</span> is a setting that can be toggled with a checkmark. Activated, it automatically clears the cache every time you quit BurnItNow.<br />
+<span class="menu">Clear cache now</span> does this 'manually' when you select it.</p>
+
+<p>Under <span class="menu">Help</span> you find the <span class="menu">Usage instructions</span> you're currently reading and can visit the <span class="menu">Project website</span>, for example to report an issue.</p>
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="session" name="session">The Session Settings</a></h2>
+
+<p>The Session settings at the top of the window apply to all the different project modes described further down (besides blanking a CD-RW which doesn't need all those settings).</p>
+
+<div align = "center">
+<img src="./images/session_settings.png" alt="The session settings" />
+</div>
+
+<h3>Checkboxes</h3>
+<p>The features of the top two checkmarks <span class="menu">MultiSession</span> and <span class="menu">On-the-fly</span> are currently not implemented and are therefore grayed out.<br />
+<span class="menu">Simulation</span> is a dummy mode that goes through all the motions without actually burning anything onto the disc.<br />
+<span class="menu">Eject after burning</span> does just that. A good way to remind you your CD's finished while you're busy elsewhere.</p>
+
+<h3>Speed slider</h3>
+<p>With the <span class="menu">Burn speed</span> slider you set the speed used when writing to the disc. The 'Min' and 'Max' settings are determined from the used media and your CD burner model by the "cdrecord" backend.<br />
+For best compatibility with stand-alone CD players, a speed of 4x is recommended.</p>
+<p>When cloning, the disc is read out with a speed of 10x. In our tests, increased speed resulted in ever more read errors.</p>
+
+<h3>Popup menus</h3>
+<p>Below checkmarks and speed slider are two popup menus:<br />
+First is the recording mode. It's either <span class="menu">Disc At Once (DAO)</span> (actually "Session at once" (SAO)) where the burning is done in one go for the whole disc and it's fixated at the end. With <span class="menu">Track At Once (TAO)</span> the laser is turned off after every track and the disc isn't closed automatically.<br />
+With BurnItNow's current feature set, you're probably good with always using DAO.</p>
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="projectmodes" name="projectmodes">Project Modes</a></h2>
+
+<p>Below the session settings are the different project modes of BurnItNow sorted in tabs. Each mode shows a number of buttons and a bold status line suggesting the next step for burning your project. Below that is a large area where cdrecord and the other commands working in the background print out their messages.</p>
+
+<h3>Data</h3>
+<div align = "center">
+<img src="./images/mode_data.png" alt="The Data mode" />
+</div>
+<p>In Data mode, you first use <span class="button">Choose folder</span> to select the folder that's to be burnt to disc. That folder has to be set up beforehand by copying all the files and folders to it. The folder's name will be used as the label for the disc.<br />
+Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the number of files and their size and the speed of your harddisk that may take some seconds.<br />
+Lastly, you check your session settings one more time, insert a blank disc, and click <span class="button">Burn disc</span> to start the writing.</p>
+
+<h3>Audio</h3>
+<div align = "center">
+<img src="./images/mode_audio.png" alt="The Audio mode" />
+</div>
+<p>To burn an audio CD, you first drag &amp; drop all tracks into the view to the right. These have to be WAV files! Now you can re-order them by dragging them around until you're satisfied. Remove tracks by selecting them and either press <span class="key">DEL</span> or right-click and choose <span class="menu">Remove</span>.<br />
+You can change the ratio between the info view to the left and the tracks view to the right by dragging the splitter handle between them around. You can even collapse one of the views completely.</p>
+<p>For best compatibility to stand-alone players, select a speed of 4x.<br />
+Finally, check your session settings once more, insert a blank disc and click <span class="button">Burn disc</span>.</p>
+
+<h3>Image file</h3>
+<div align = "center">
+<img src="./images/mode_image.png" alt="The Image mode" />
+</div>
+<p>To write an ISO image file to a CD, you click <span class="button">Choose image</span> and select the image to burn. Then check your session settings,  insert a blank disc and click <span class="button">Burn disc</span>.</p>
+
+<h3>Blank CD-RW</h3>
+<div align = "center">
+<img src="./images/mode_blank.png" alt="The Blank CD-RW mode" />
+</div>
+<p>You start by choosing the type of blanking from the popup menu. Not all devices support all types. You may have to choose <span class="menu">All</span> which is slowest. From the cdrecord documentation:</p>
+<table>
+<tr><td>All</td><td width="16"></td><td>Blank the entire disk. This may take a long time.</td></tr>
+<tr><td>Fast</td><td></td><td>Minimally blank the disk. This  results  in  erasing the PMA, the TOC and the pregap.</td></tr>
+<tr><td>Session</td><td></td><td>Blank the last session.</td></tr>
+<tr><td>Track</td><td></td><td> Blank a track.</td></tr>
+<tr><td>Track tail</td><td></td><td>Blank the tail of a track.</td></tr>
+<tr><td>Unreserve</td><td></td><td>Unreserve a reserved track.</td></tr>
+<tr><td>Unclose</td><td></td><td>Unclose last session.</td></tr>
+
+</table>
+<p>Now insert the CD-RW to blank and click <span class="button">Blank disc</span>. Keep an eye on the output in the text area below to see what cdrecord had to say of your choice of blanking type.</p>
+
+<h3>Clone</h3>
+<div align = "center">
+<img src="./images/mode_clone.png" alt="The Clone mode" />
+</div>
+<p>This mode is for making a 1:1 copy of a CD.<br />
+You start by inserting the disc to clone and click on <span class="button">Create image</span>. The disc will be ejected when its completely read out (at a fixed 10x speed). Now insert a blank disc, check your session settings  and click <span class="button">Burn image</span>.</p>
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="tips" name="tips">Tips &amp; Tricks</a></h2>
+<ul>
+<li><p>You can check if your project fits onto a CD with Haiku's DiskUsage. Just open the folder (or folder with the WAVs) to burn, right-click and choose <span class="menu">Add-ons | DiskUsage</span> from the context menu.</p></li>
+<li><p>Data and Image mode: You can drag &amp; drop the folder/image to burn instead of using the <span class="button">Choose folder/image</span> button that opens the file dialog.</p></li>
+<li><p>Data and Image mode: Once a folder/image is selected, clicking on its path to the left of the buttons opens its location in Tracker.</p></li>
+<li><p>Audio mode: You can drag &amp; drop folders with WAVs too.</p></li>
+<li><p>Audio mode: Use a speed of 4x for best compatibility with stand-alone players.</p></li>
+</ul>
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="download" name="download">Download</a></h2>
+<p>BurnItNow is directly available through HaikuDepot from the HaikuPorts repository. You can also build it yourself using <a class="printurl:after" href="https://github.com/haikuports">Haikuporter</a>. The source is hosted at <a class="printurl:after" href="https://github.com/HaikuArchives/BurnItNow">GitHub</a>.</p>
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="bugs_feedback" name="bugs_feedback">Bug Reports &amp; Feedback</a></h2>
+<p>Please use GitHub's <a class="printurl:after" href="https://github.com/HaikuArchives/BurnItNow/issues">issue tracker</a> if you experience unusual difficulties or would like to provide translations.</p>
+
+</body>
+</html>
