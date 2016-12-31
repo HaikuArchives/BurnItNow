@@ -78,6 +78,18 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
 		"Type:", fBlankModeMenu);
 
+	BString toolTip(B_TRANSLATE("Blanking types:\n\n"
+		"All\t\t\tBlank the entire disk. This may take a long time.\n"
+		"Fast\t\t\tMinimally blank the disk.\n"
+		"\t\t\tThis erases the PMA, the TOC and the pregap.\n"
+		"Session\t\tBlank the last session.\n"
+		"Track\t\tBlank a track.\n"
+		"Track tail\t\tBlank the tail of a track.\n"
+		"Unreserve\tUnreserve a reserved track.\n"
+		"Unclose\t\tUnclose last session."));
+
+	blankModeMenuField->SetToolTip(toolTip.String());
+
 	BButton* blankButton = new BButton("BlankButton",
 		B_TRANSLATE("Blank disc"), new BMessage(kBlankMessage));
 	blankButton->SetTarget(this);
