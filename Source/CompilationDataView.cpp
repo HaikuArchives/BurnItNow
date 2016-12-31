@@ -14,6 +14,8 @@
 #include <String.h>
 #include <StringView.h>
 
+#include <compat/sys/stat.h>
+
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
@@ -34,7 +36,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 {
 	windowParent = &parent;
 	step = 0;
-	
+
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -142,8 +144,14 @@ bool
 DataRefFilter::Filter(const entry_ref* ref, BNode* node,
 	struct stat_beos* stat, const char* filetype)
 {
-	if (node->IsDirectory())
+	if (S_ISDIR(stat->st_mode))
 		return true;
+
+	if (S_ISLNK(stat->st_mode)) {
+		// Traverse symlinks
+		BEntry entry(ref, true);
+		return entry.IsDirectory();
+	}
 
 	return false;
 }
@@ -189,7 +197,6 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 		data << "\n";
 		fBurnerInfoTextView->Insert(data.String());
 		fBurnerInfoTextView->ScrollTo(0.0, 2000.0);
-
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
@@ -199,7 +206,8 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 
 		step = 0;
 
-	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == 2)) {
 		fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
 		fChooseButton->SetEnabled(true);
 		fImageButton->SetEnabled(false);
@@ -224,7 +232,7 @@ CompilationDataView::BuildISO()
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
-		
+
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel("Building in progress" B_UTF8_ELLIPSIS);
 	fBurnerThread = new CommandThread(NULL,
@@ -286,7 +294,7 @@ CompilationDataView::BurnDisc()
 		fBurnerThread->AddArgument("-eject");
 	if (config.speed != "")
 		fBurnerThread->AddArgument(config.speed);
-	
+
 	fBurnerThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)

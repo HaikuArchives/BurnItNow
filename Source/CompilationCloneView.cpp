@@ -35,7 +35,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fClonerThread(NULL)
 {
 	windowParent = &parent;
-	
+
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fClonerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -53,7 +53,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		new BMessage(kCreateImageMessage));
 	fImageButton->SetTarget(this);
 	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
-	
+
 	fBurnButton = new BButton("BurnImageButton", "Burn image",
 		new BMessage(kBurnImageMessage));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
@@ -155,7 +155,7 @@ CompilationCloneView::_CreateImage()
 		BString device("dev=");
 		device.Append(windowParent->GetSelectedDevice().number.String());
 		sessionConfig config = windowParent->GetSessionConfig();
-		
+
 		fClonerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kClonerMessage), this));
 		fClonerThread->AddArgument("readcd")
@@ -231,7 +231,7 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 			device.Append(windowParent->GetSelectedDevice().number.String());
 
 			fClonerThread = new CommandThread(NULL,
-				new BInvoker(new BMessage(), this));	// no need for notification
+				new BInvoker(new BMessage(), this)); // no need for notification
 			fClonerThread->AddArgument("cdrecord")
 				->AddArgument("-eject")
 				->AddArgument(device)
@@ -247,7 +247,8 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 
 		step = 0;
 
-	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == 2)) {
 		fClonerInfoBox->SetLabel("Burning complete. Burn another disc?");
 		fImageButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);

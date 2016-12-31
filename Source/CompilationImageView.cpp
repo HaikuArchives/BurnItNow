@@ -16,6 +16,8 @@
 #include <String.h>
 #include <StringView.h>
 
+#include <compat/sys/stat.h>
+
 static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Message constants
@@ -35,7 +37,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 {
 	windowParent = &parent;
 	step = 0;
-	
+
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fImageInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -54,7 +56,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fChooseButton = new BButton("ChooseImageButton", "Choose image",
 		new BMessage(kChooseImageMessage));
 	fChooseButton->SetTarget(this);
-	
+
 	fBurnButton = new BButton("BurnImageButton", "Burn disc",
 		new BMessage(kBurnImageMessage));
 	fBurnButton->SetTarget(this);
@@ -130,12 +132,11 @@ bool
 ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 	struct stat_beos* stat, const char* filetype)
 {
-	if (node->IsDirectory())
+	if (S_ISDIR(stat->st_mode) || (S_ISLNK(stat->st_mode)))
 		return true;
 
 	BPath* path = new BPath(ref);
 	BString filename(path->Leaf());
-
 
 	if ((strcmp("application/x-cd-image", filetype) == 0)
 		|| filename.IFindLast(".iso", filename.CountChars())
@@ -244,7 +245,7 @@ CompilationImageView::_BurnImage()
 		fImageParserThread->AddArgument("-eject");
 	if (config.speed != "")
 		fImageParserThread->AddArgument(config.speed);
-	
+
 	fImageParserThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
@@ -273,7 +274,8 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 		step = 0;
 
-	} else if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 2)) {
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == 2)) {
 		fImageInfoBox->SetLabel("Burning complete. Burn another disc?");
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);

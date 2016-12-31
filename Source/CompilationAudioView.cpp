@@ -30,7 +30,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerThread(NULL)
 {
 	windowParent = &parent;
-	
+
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -148,10 +148,8 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		if (code == 0) {
 			fBurnerInfoBox->SetLabel("Burning complete. Burn another disc?");
 			fBurnButton->SetEnabled(true);
-		}
 	}
 }
 
@@ -251,10 +249,10 @@ CompilationAudioView::BurnDisc()
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
 	sessionConfig config = windowParent->GetSessionConfig();
-	
+
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
-	
+
 	fBurnerThread->AddArgument("cdrecord");
 
 	if (config.simulation)

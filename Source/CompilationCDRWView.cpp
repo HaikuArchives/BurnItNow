@@ -27,7 +27,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankerThread(NULL)
 {
 	windowParent = &parent;
-	
+
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fBlankerInfoBox = new BSeparatorView("ImageInfoBBox");
@@ -53,14 +53,14 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankModeMenu->AddItem(new BMenuItem("Track tail", new BMessage()));
 	fBlankModeMenu->AddItem(new BMenuItem("Unreserve", new BMessage()));
 	fBlankModeMenu->AddItem(new BMenuItem("Unclose", new BMessage()));
-	
+
 	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
 		"Type:", fBlankModeMenu);
 
 	BButton* blankButton = new BButton("BlankButton", "Blank disc",
 		new BMessage(kBlankMessage));
 	blankButton->SetTarget(this);
-	
+
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
@@ -120,9 +120,9 @@ CompilationCDRWView::_Blank()
 {
 	BString mode = fBlankModeMenu->FindMarked()->Label();
 	mode.ToLower();
-	
+
 	if (mode == "track tail")
-		mode = "trtail";		
+		mode = "trtail";
 
 	mode.Prepend("blank=");
 
@@ -132,7 +132,7 @@ CompilationCDRWView::_Blank()
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
 	sessionConfig config = windowParent->GetSessionConfig();
-	
+
 	fBlankerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBlankerMessage), this));
 
@@ -160,8 +160,6 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 		fBlankerInfoTextView->ScrollTo(0.0, 2000.0);
 	}
 	int32 code = -1;
-	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		if (code == 0)
-			fBlankerInfoBox->SetLabel("Blanking complete");
-	}
+	if (message->FindInt32("thread_exit", &code) == B_OK)
+		fBlankerInfoBox->SetLabel("Blanking complete");
 }

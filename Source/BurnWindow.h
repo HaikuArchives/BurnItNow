@@ -40,7 +40,7 @@ public:
 
 	bool			QuitRequested();
 	virtual void	MessageReceived(BMessage* message);
-	
+
 	void			FindDevices(sdevice* array);
 	sdevice			GetSelectedDevice();
 	sessionConfig	GetSessionConfig();
