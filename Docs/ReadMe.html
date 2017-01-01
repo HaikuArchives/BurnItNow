@@ -162,7 +162,7 @@ Under <span class="menu">App</span> you can open the <span class="menu">About...
 <h3>Checkboxes</h3>
 <p>The features of the top two checkmarks <span class="menu">MultiSession</span> and <span class="menu">On-the-fly</span> are currently not implemented and are therefore grayed out.<br />
 <span class="menu">Simulation</span> is a dummy mode that goes through all the motions without actually burning anything onto the disc.<br />
-<span class="menu">Eject after burning</span> does just that. A good way to remind you your CD's finished while you're busy elsewhere.</p>
+<span class="menu">Eject after burning</span> does just that. A good way to remind you that your CD's finished while you're busy elsewhere.</p>
 
 <h3>Speed slider</h3>
 <p>With the <span class="menu">Burn speed</span> slider you set the speed used when writing to the disc. The 'Min' and 'Max' settings are determined from the used media and your CD burner model by the "cdrecord" backend.<br />
@@ -207,7 +207,8 @@ Finally, check your session settings once more, insert a blank disc and click <s
 <div align = "center">
 <img src="./images/mode_blank.png" alt="The Blank CD-RW mode" />
 </div>
-<p>You start by choosing the type of blanking from the popup menu. Not all devices support all types. You may have to choose <span class="menu">All</span> which is slowest. From the cdrecord documentation:</p>
+<p>Blanking a CD has currently some issues under Haiku. Depending on your hardware, it may just not work. You can try to enter your computer's BIOS and set ATA instead of AHCI for your controller, but that doesn't guarantee success either...</p>
+<p>But you can at least try and start by choosing the type of blanking from the popup menu. Not all devices support all types. You may have to choose <span class="menu">All</span> which is slowest. From the cdrecord documentation:</p>
 <table>
 <tr><td>All</td><td width="16"></td><td>Blank the entire disk. This may take a long time.</td></tr>
 <tr><td>Fast</td><td></td><td>Minimally blank the disk. This  results  in  erasing the PMA, the TOC and the pregap.</td></tr>

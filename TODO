@@ -15,12 +15,11 @@
 
 * Replace Tracker in role of file manager for Data compilation view.
 
-* Add more functions to Audio view, like support for MP3/OGG files. This view cannot handle more than one dropped file at once.
+* Add more functions to Audio view, like support for MP3/OGG files.
 
-* Give more options to customize compilation, like CD label. 
+* Give more options to customize compilation, like CD label.
 
 * Write ATA/ATAPI devices support (dev=ATAPI).
 
 * Investigate UDF/DVD support
 
-* Localize the application

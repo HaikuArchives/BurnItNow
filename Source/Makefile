@@ -15,7 +15,7 @@ NAME = BurnItNow
 TYPE = APP
 
 # 	If you plan to use localization, specify the application's MIME signature.
-APP_MIME_SIG = application/x-vnd.haikuarchives.BurnItNow2
+APP_MIME_SIG = application/x-vnd.haikuarchives.BurnItNow
 
 #	The following lines tell Pe and Eddie where the SRCS, RDEFS, and RSRCS are
 #	so that Pe and Eddie can fill them in for you.
