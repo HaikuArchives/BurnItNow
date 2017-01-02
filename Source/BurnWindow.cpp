@@ -265,10 +265,11 @@ BurnWindow::_CreateToolBar()
 	// TODO These values should be obtained from the capabilities
 	// of the drive and the type of media
 
-	fMultiCheck = new BCheckBox("MultiSessionCheckBox",
-		B_TRANSLATE("MultiSession"), new BMessage());
-	fOntheflyCheck = new BCheckBox("OnTheFlyCheckBox",
-		B_TRANSLATE("On-the-fly"), new BMessage());
+//	Not implemented. Should be moved to DataView?
+//	fMultiCheck = new BCheckBox("MultiSessionCheckBox",
+//		B_TRANSLATE("MultiSession"), new BMessage());
+//	fOntheflyCheck = new BCheckBox("OnTheFlyCheckBox",
+//		B_TRANSLATE("On-the-fly"), new BMessage());
 	fSimulationCheck = new BCheckBox("SimulationCheckBox",
 		B_TRANSLATE("Simulation"), new BMessage());
 	fEjectCheck = new BCheckBox("EjectCheckBox",
@@ -288,9 +289,9 @@ BurnWindow::_CreateToolBar()
 	//Apply settings (and disable unimplemented options)
 	AppSettings* settings = my_app->Settings();
 
-	fMultiCheck->SetEnabled(false);
+//	fMultiCheck->SetEnabled(false);
+//	fOntheflyCheck->SetEnabled(false);
 	fEjectCheck->SetValue((int32)settings->GetEject());
-	fOntheflyCheck->SetEnabled(false);
 	fSpeedSlider->SetValue(settings->GetSpeed());
 	_UpdateSpeedSlider(NULL);
 
@@ -301,10 +302,10 @@ BurnWindow::_CreateToolBar()
 			.AddGroup(B_VERTICAL)
 				.AddGlue()
 				.AddGrid(kControlPadding, 0.0)
-					.Add(fMultiCheck, 0, 0)
-					.Add(fOntheflyCheck, 1, 0)
-					.Add(fSimulationCheck, 0, 1)
-					.Add(fEjectCheck, 1, 1)
+//					.Add(fMultiCheck, 0, 0)
+//					.Add(fOntheflyCheck, 1, 0)
+					.Add(fSimulationCheck, 0, 0)
+					.Add(fEjectCheck, 0, 1)
 					.End()
 				.AddGlue()
 				.End()
@@ -519,8 +520,8 @@ BurnWindow::GetSessionConfig()
 	else
 		fConfig.mode = "-sao";
 
-	fConfig.multisession = fMultiCheck->Value();
-	fConfig.onthefly = fOntheflyCheck->Value();
+//	fConfig.multisession = fMultiCheck->Value();
+//	fConfig.onthefly = fOntheflyCheck->Value();
 	fConfig.simulation = fSimulationCheck->Value();
 	fConfig.eject = fEjectCheck->Value();
 	// Speed slider value get's updated in _UpdateSpeedSlider()

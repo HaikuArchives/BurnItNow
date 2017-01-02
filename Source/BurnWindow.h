@@ -56,14 +56,14 @@ private:
 	void 			_OpenWebSite();
 	void 			_OpenHelp();
 	void 			_UpdateSpeedSlider(BMessage* message);
-	
+
 	BTabView* 		fTabView;
 
 	BMenu* 			fSessionMenu;
 	BMenu* 			fDeviceMenu;
 	BMenuItem*		fCacheQuitItem;
-	BCheckBox* 		fMultiCheck;
-	BCheckBox* 		fOntheflyCheck;
+//	BCheckBox* 		fMultiCheck;
+//	BCheckBox* 		fOntheflyCheck;
 	BCheckBox* 		fSimulationCheck;
 	BCheckBox* 		fEjectCheck;
 	BSlider* 		fSpeedSlider;

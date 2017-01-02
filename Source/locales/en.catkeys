@@ -1,4 +1,4 @@
-1	English	application/x-vnd.haikuarchives.BurnItNow2	744208026
+1	English	application/x-vnd.haikuarchives.BurnItNow	544233544
 Thank you	Application		Thank you
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.
 Audio	Audio view		Audio
@@ -62,8 +62,6 @@ Clear cache now	Main window		Clear cache now
 Clear cache on quit	Main window		Clear cache on quit
 Eject after burning	Main window		Eject after burning
 Help	Main window		Help
-MultiSession	Main window		MultiSession
-On-the-fly	Main window		On-the-fly
 Project website	Main window		Project website
 Simulation	Main window		Simulation
 Tools & settings	Main window		Tools & settings
