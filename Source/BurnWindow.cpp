@@ -407,7 +407,7 @@ BurnWindow::_OpenHelp()
 	BEntry entry;
 
 	status_t error = pathFinder.FindPaths(B_FIND_PATH_DOCUMENTATION_DIRECTORY,
-		"BurnItNow", paths);
+		"packages/burnitnow", paths);
 
 	for (int i = 0; i < paths.CountStrings(); ++i) {
 		if (error == B_OK && path.SetTo(paths.StringAt(i)) == B_OK
