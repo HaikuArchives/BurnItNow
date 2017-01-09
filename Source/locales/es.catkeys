@@ -1,0 +1,77 @@
+1	Spanish	application/x-vnd.haikuarchives.BurnItNow	544233544
+Thank you	Application		Gracias
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow es un frontend para  cdrecord, readcd y mkisofs.\n\nPor favor informe los errores que encuentre, o aquella funcionalidad que desee que sea incorporada en futuras versiones. La información de contacto se encuentra en las instrucciones de uso en el menu 'Ayuda'.
+Audio	Audio view		Audio
+Burn disc	Audio view		Grabar disco
+Drop tracks here (only WAV files)	Audio view		Soltar pistas aquí (sólo archivos WAV)
+Burn the disc	Audio view	Status notification	Grabar el disco
+Burning complete. Burn another disc?	Audio view	Status notification	Grabación finalizada. ¿Desea grabar otro disco?
+Burning in progress…	Audio view	Status notification	Grabación en proceso...
+Ready	Audio view	Status notification	Listo
+Blank CD-RW	Blank view		Borrar CD-RW
+Blank disc	Blank view		Borrar disco
+Blanking types:\n\nAll\t\t\tBlank the entire disk. This may take a long time.\nFast\t\t\tMinimally blank the disk.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Blank view		Blanking types:\n\nAll\t\t\tBorra el disco completo. Este proceso puede tardar bastante.insumir un largo tiempo.\nFast\t\t\tBorrado mínimo del disco.\n\t\t\tBorrado de PMA, TOC y pregap.\nSession\t\tBorra la última sesión.\nTrack\t\tBorra una pista.\nTrack tail\t\tBorra la cola de una pista.\nUnreserve\tLiberar una pista reservada.\nUnclose\t\tAbrir la última sesión.
+Track	Blank view	Blanking mode. From the man page: 'Blank a track.'	Track
+All	Blank view	Blanking mode. From the man page: 'Blank the entire disk. This may take a long time.'	All
+Session	Blank view	Blanking mode. From the man page: 'Blank the last session.'	Session
+Track tail	Blank view	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
+Fast	Blank view	Blanking mode. From the man page: 'Minimally blank the disk. This results in erasing the PMA, the TOC and the pregap.'	Fast
+Unclose	Blank view	Blanking mode. From the man page: 'Unclose last session.'	Unclose
+Unreserve	Blank view	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
+Blanking complete	Blank view	Status notification	Borrado completo
+Blanking in progress…	Blank view	Status notification	Borrado en proceso…
+Insert the disc and blank it	Blank view	Status notification	Inserte el disco para ser borrado
+Burn image	Clone view		Grabar imagen
+Clone	Clone view		Clonar
+Create image	Clone view		Crear imagen
+Burning complete. Burn another disc?	Clone view	Status notification	Grabación finalizada. ¿Desea grabar otro disco?
+Burning in progress…	Clone view	Status notification	Grabación en proceso…
+Failed to create image	Clone view	Status notification	Error al crear la imagen
+Image creating in progress…	Clone view	Status notification	Creación de imagen en proceso…
+Insert a blank disc and burn the image	Clone view	Status notification	Inserte un disco en blanco y grabe la imagen
+Insert the disc and create an image	Clone view	Status notification	Inserte el disco y cree la imagen
+Remove	Context menu		Quitar
+Build image	Data view		Crear imagen
+Burn disc	Data view		Grabar disco
+Choose folder	Data view		Elegir carpeta
+Data	Data view		Datos
+First build an image to burn.	Data view		Primero cree una imagen para grabar.
+First choose the folder to burn.	Data view		Primero elija la carpeta para grabar.
+Folder: <none>	Data view		Carpeta: <none>
+OK	Data view		OK
+Build the image	Data view	Status notification	Crear la imagen
+Building in progress…	Data view	Status notification	Creación en proceso…
+Burn the disc	Data view	Status notification	Grabar el disco
+Burning complete. Burn another disc?	Data view	Status notification	Grabación finalizada. ¿Desea grabar otro disco?
+Burning in progress…	Data view	Status notification	Grabación en proceso…
+Choose the folder to burn	Data view	Status notification	Elija la carpeta a grabar
+Burn disc	Image view		Grabar disco
+Choose image	Image view		Elegir imagen
+First choose an image to burn.	Image view		Primero elija una imagen para grabar.
+Image file	Image view		Archivo de imagen
+Image: <none>	Image view		Imagen: <none>
+OK	Image view		OK
+Burn the disc	Image view	Status notification	Grabar el disco
+Burning complete. Burn another disc?	Image view	Status notification	Grabación finalizada. ¿Desea grabar otro disco?
+Burning in progress…	Image view	Status notification	Grabación en proceso...
+Choose the image to burn	Image view	Status notification	Elija la imagen a grabar
+About…	Main window		Acerca de…
+App	Main window		Aplicación
+Burn speed:	Main window		Velocidad de grabación:
+Clear cache now	Main window		Limpiar cache ahora
+Clear cache on quit	Main window		Limpiar cache al salir
+Eject after burning	Main window		Expulsar después de grabar
+Help	Main window		Ayuda
+Project website	Main window		Sitio web del proyecto
+Simulation	Main window		Simulación
+Tools & settings	Main window		Herramientas & opciones
+Usage instructions	Main window		Instrucciones de uso
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (recomendado para CDs de audio)
+8x	Main window	Multiplier for burn speed	8x
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+BurnItNow	System name		BurnItNow
