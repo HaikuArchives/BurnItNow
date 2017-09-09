@@ -10,6 +10,7 @@
 #include "CompilationImageView.h"
 #include "CompilationCDRWView.h"
 #include "CompilationCloneView.h"
+#include "CompilationDVDView.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,6 +55,7 @@ int selectedDevice;
 CompilationDataView* fCompilationDataView;
 CompilationAudioView* fCompilationAudioView;
 CompilationImageView* fCompilationImageView;
+CompilationDVDView* fCompilationDVDView;
 
 #pragma mark --Constructor/Destructor--
 
@@ -152,6 +154,8 @@ BurnWindow::MessageReceived(BMessage* message)
 				fCompilationAudioView->MessageReceived(message);
 			else if (fTabView->FocusTab() == 2)
 				fCompilationImageView->MessageReceived(message);
+			else if (fTabView->FocusTab() == 3)
+				fCompilationDVDView->MessageReceived(message);
 			break;
 		default:
 		if (kDeviceChangeMessage[0] == message->what) {
@@ -329,10 +333,12 @@ BurnWindow::_CreateTabView()
 	fCompilationDataView = new CompilationDataView(*this);
 	fCompilationAudioView = new CompilationAudioView(*this);
 	fCompilationImageView = new CompilationImageView(*this);
+	fCompilationDVDView = new CompilationDVDView(*this);
 
 	tabView->AddTab(fCompilationDataView);
 	tabView->AddTab(fCompilationAudioView);
 	tabView->AddTab(fCompilationImageView);
+	tabView->AddTab(fCompilationDVDView);
 	tabView->AddTab(new CompilationCDRWView(*this));
 	tabView->AddTab(new CompilationCloneView(*this));
 
@@ -354,6 +360,11 @@ BurnWindow::_ClearCache()
 	status_t ret = path.Append("burnitnow_clone.iso");
 	if (ret == B_OK) {
 		BEntry* entry = new BEntry(path.Path());
+		entry->Remove();
+		
+		path = cachePath;
+		path.Append("burnitnow_dvd.iso");
+		entry = new BEntry(path.Path());
 		entry->Remove();
 
 		path = cachePath;

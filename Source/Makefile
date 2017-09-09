@@ -36,6 +36,7 @@ SRCS = \
 	CommandThread.cpp \
 	CompilationAudioView.cpp \
 	CompilationDataView.cpp \
+	CompilationDVDView.cpp \
 	CompilationImageView.cpp \
 	CompilationCDRWView.cpp \
 	CompilationCloneView.cpp \
