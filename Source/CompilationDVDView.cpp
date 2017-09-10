@@ -192,7 +192,7 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 	fPathView->SetText(fDirPath->Path());
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD UTF image",
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD UDF image",
 		"Status notification"));
 }
 
