@@ -46,7 +46,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose Video DVD folder to burn",
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose DVD Video to burn",
 		"Status notification"));
 
 	fPathView = new PathView("FolderStringView",
@@ -192,7 +192,7 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 	fPathView->SetText(fDirPath->Path());
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the image",
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD UTF image",
 		"Status notification"));
 }
 
