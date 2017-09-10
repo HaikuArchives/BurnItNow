@@ -53,8 +53,7 @@ private:
 	BurnWindow* 	windowParent;
 	BSeparatorView*	fBurnerInfoBox;
 	PathView*		fPathView;
-	BButton*		fVideoButton;
-	BButton*		fAudioButton;
+	BButton*		fDVDButton;
 	BButton*		fImageButton;
 	BButton*		fBurnButton;
 
