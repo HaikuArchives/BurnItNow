@@ -46,7 +46,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose DVD VIDEO_TS folder to burn",
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose Video DVD folder to burn",
 		"Status notification"));
 
 	fPathView = new PathView("FolderStringView",
@@ -59,18 +59,11 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 		fBurnerInfoTextView, B_WILL_DRAW, true, true);
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fVideoButton = new BButton("ChooseVideoButton",
-		B_TRANSLATE("Choose VIDEO_TS"),
+	fDVDButton = new BButton("ChooseDVDButton",
+		B_TRANSLATE("Choose DVD folder"),
 		new BMessage(kChooseDirectoryMessage));
-	fVideoButton->SetTarget(this);
-	fVideoButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
-		B_SIZE_UNSET));
-		
-	fAudioButton = new BButton("ChooseAudioButton",
-	    B_TRANSLATE("Choose AUDIO_TS"),
-		new BMessage(kChooseDirectoryMessage));
-	fAudioButton->SetTarget(this);
-	fAudioButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
+	fDVDButton->SetTarget(this);
+	fDVDButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
 		B_SIZE_UNSET));
 		
 	fImageButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
@@ -89,8 +82,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 			.Add(fPathView)
 			.AddGlue()
 			.AddGroup(B_HORIZONTAL)
-				.Add(fVideoButton)
-				.Add(fAudioButton)
+				.Add(fDVDButton)
 				.Add(fImageButton)
 				.Add(fBurnButton)
 				.End()
@@ -116,12 +108,9 @@ CompilationDVDView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	fVideoButton->SetTarget(this);
-	fVideoButton->SetEnabled(true);
+	fDVDButton->SetTarget(this);
+	fDVDButton->SetEnabled(true);
 	
-	fAudioButton->SetTarget(this);
-	fAudioButton->SetEnabled(true);
-
 	fImageButton->SetTarget(this);
 	fImageButton->SetEnabled(false);
 
@@ -231,8 +220,7 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 			&& (step == 2)) {
 		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
-		fVideoButton->SetEnabled(true);
-		fAudioButton->SetEnabled(true);
+		fDVDButton->SetEnabled(true);
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
@@ -266,17 +254,12 @@ CompilationDVDView::BuildISO()
 	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, fImagePath) != B_OK)
 		return;
 
-	status_t ret = fImagePath->Append("burnitnow_DVD.iso");
+	status_t ret = fImagePath->Append("burnitnow_dvd.iso");
 	if (ret == B_OK) {
 		step = 1;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
-		->AddArgument("-iso-level 3")
-		->AddArgument("-J")
-		->AddArgument("-joliet-long")
-		->AddArgument("-rock")
-		->AddArgument("-V")
-		->AddArgument(fDirPath->Leaf())
+		->AddArgument("-dvd-video")
 		->AddArgument("-o")
 		->AddArgument(fImagePath->Path())
 		->AddArgument(fDirPath->Path())
@@ -302,8 +285,7 @@ CompilationDVDView::BurnDisc()
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 		"Burning in progress" B_UTF8_ELLIPSIS,"Status notification"));
-	fVideoButton->SetEnabled(false);
-	fAudioButton->SetEnabled(false);
+	fDVDButton->SetEnabled(false);
 	fImageButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
