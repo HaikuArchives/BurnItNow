@@ -32,7 +32,7 @@ const int32 kNoPathMessage = 'Noph'; // defined in PathView
 
 CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("DVD"), B_WILL_DRAW,
+	BView(B_TRANSLATE("DVD-Video"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBurnerThread(NULL),
@@ -46,8 +46,8 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose DVD Video to burn",
-		"Status notification"));
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+		"Choose DVD Video folder to burn", "Status notification"));
 
 	fPathView = new PathView("FolderStringView",
 		B_TRANSLATE("Folder: <none>"));
@@ -189,11 +189,28 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 		return;
 
 	fDirPath->SetTo(&entry);
+	if (strcmp("VIDEO_TS", fDirPath->Leaf()) == 0)
+		fDirPath->GetParent(fDirPath);
+	else {
+		BPath testPath(fDirPath->Path());
+		testPath.Append("VIDEO_TS");
+		get_ref_for_path(testPath.Path(), &ref);
+		if (!BEntry(&ref).Exists()) {
+			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+				"Didn't find a VIDEO_TS folder", "Status notification"));
+			return;
+		}
+	}
+
 	fPathView->SetText(fDirPath->Path());
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD UDF image",
 		"Status notification"));
+
+	BPath audioTSPath(fDirPath->Path());
+	audioTSPath.Append("AUDIO_TS");
+	create_directory(audioTSPath.Path(), 0777);
 }
 
 
@@ -209,11 +226,19 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
-		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
-			"Status notification"));
-		fImageButton->SetEnabled(false);
-		fBurnButton->SetEnabled(true);
-
+		BString infoText(fBurnerInfoTextView->Text());
+		if (infoText.FindFirst(
+			"mkisofs: Unable to make a DVD-Video image.\n") != B_ERROR) {
+			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+				"Unable to make a DVD-Video image",
+				"Status notification"));
+			fBurnButton->SetEnabled(false);
+		} else {
+			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
+				"Status notification"));
+			fImageButton->SetEnabled(false);
+			fBurnButton->SetEnabled(true);
+		}
 		step = 0;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
@@ -259,6 +284,8 @@ CompilationDVDView::BuildISO()
 		step = 1;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
+		->AddArgument("-V")
+		->AddArgument(fDirPath->Leaf())
 		->AddArgument("-dvd-video")
 		->AddArgument("-o")
 		->AddArgument(fImagePath->Path())
