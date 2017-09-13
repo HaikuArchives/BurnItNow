@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2016, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "CompilationDVDView.h"

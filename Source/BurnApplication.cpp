@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2016, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #include "BurnApplication.h"
@@ -10,7 +10,7 @@
 #include <TextView.h>
 
 static const char kVersion[] = "v1.0";
-static const char kCopyright[] = "2010-2016";
+static const char kCopyright[] = "2010-2017";
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Application"
