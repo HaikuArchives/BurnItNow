@@ -85,6 +85,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 CompilationCloneView::~CompilationCloneView()
 {
 	delete fClonerThread;
+	delete fOpenPanel;
 }
 
 

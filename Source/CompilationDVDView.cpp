@@ -97,6 +97,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 CompilationDVDView::~CompilationDVDView()
 {
 	delete fBurnerThread;
+	delete fOpenPanel;
 }
 
 
@@ -284,13 +285,13 @@ CompilationDVDView::BuildISO()
 		step = 1;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
-		->AddArgument("-V")
-		->AddArgument(fDirPath->Leaf())
-		->AddArgument("-dvd-video")
-		->AddArgument("-o")
-		->AddArgument(fImagePath->Path())
-		->AddArgument(fDirPath->Path())
-		->Run();
+			->AddArgument("-V")
+			->AddArgument(fDirPath->Leaf())
+			->AddArgument("-dvd-video")
+			->AddArgument("-o")
+			->AddArgument(fImagePath->Path())
+			->AddArgument(fDirPath->Path())
+			->Run();
 	}
 }
 

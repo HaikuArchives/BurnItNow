@@ -89,6 +89,7 @@ CompilationImageView::~CompilationImageView()
 {
 	delete fImagePath;
 	delete fImageParserThread;
+	delete fOpenPanel;
 }
 
 

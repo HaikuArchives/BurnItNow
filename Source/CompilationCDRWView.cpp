@@ -112,6 +112,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 CompilationCDRWView::~CompilationCDRWView()
 {
 	delete fBlankerThread;
+	delete fOpenPanel;
 }
 
 

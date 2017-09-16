@@ -97,6 +97,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 CompilationDataView::~CompilationDataView()
 {
 	delete fBurnerThread;
+	delete fOpenPanel;
 }
 
 
@@ -259,16 +260,16 @@ CompilationDataView::BuildISO()
 		step = 1;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
-		->AddArgument("-iso-level 3")
-		->AddArgument("-J")
-		->AddArgument("-joliet-long")
-		->AddArgument("-rock")
-		->AddArgument("-V")
-		->AddArgument(fDirPath->Leaf())
-		->AddArgument("-o")
-		->AddArgument(fImagePath->Path())
-		->AddArgument(fDirPath->Path())
-		->Run();
+			->AddArgument("-iso-level 3")
+			->AddArgument("-J")
+			->AddArgument("-joliet-long")
+			->AddArgument("-rock")
+			->AddArgument("-V")
+			->AddArgument(fDirPath->Leaf())
+			->AddArgument("-o")
+			->AddArgument(fImagePath->Path())
+			->AddArgument(fDirPath->Path())
+			->Run();
 	}
 }
 
