@@ -12,7 +12,6 @@
 
 #define my_app dynamic_cast<BurnApplication*>(be_app)
 
-
 class BurnWindow;
 
 

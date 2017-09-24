@@ -8,6 +8,7 @@
 
 #include "BurnWindow.h"
 #include "PathView.h"
+#include "SizeBar.h"
 
 #include <Button.h>
 #include <FilePanel.h>
@@ -43,6 +44,7 @@ private:
 	void 			_OpenImage(BMessage* message);
 	void 			_ImageParserOutput(BMessage* message);
 	void 			_ImageBurnerOutput(BMessage* message);
+	void			_UpdateSizeBar();
 
 	BFilePanel* 	fOpenPanel;
 	BPath* 			fImagePath;
@@ -55,6 +57,8 @@ private:
 	BButton*		fBurnButton;
 
 	int				step;
+	SizeBar*		fSizeBar;
+	BStringView*	fSizeInfo;
 };
 
 

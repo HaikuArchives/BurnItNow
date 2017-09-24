@@ -65,6 +65,15 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		new BMessage(kBurnImageMessage));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
+	font_height	fontHeight;
+	be_plain_font->GetHeight(&fontHeight);
+	float height = fontHeight.ascent + fontHeight.descent + fontHeight.leading;
+	fSizeBar = new SizeBar();
+	fSizeBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, height));
+	fSizeBar->SetExplicitMinSize(BSize(B_SIZE_UNSET, height));
+
+	fSizeInfo = new BStringView("sizeinfo", "");
+
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
@@ -78,7 +87,13 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		.AddGroup(B_VERTICAL)
 			.Add(fClonerInfoBox)
 			.Add(infoScrollView)
+			.End()
+		.AddGroup(B_HORIZONTAL)
+			.Add(fSizeInfo)
+			.Add(fSizeBar, 10)
 			.End();
+
+	_UpdateSizeBar();
 }
 
 
@@ -111,6 +126,7 @@ CompilationCloneView::MessageReceived(BMessage* message)
 	switch (message->what) {
 		case kCreateImageMessage:
 			_CreateImage();
+			_UpdateSizeBar();
 			break;
 		case kBurnImageMessage:
 			_BurnImage();
@@ -269,4 +285,26 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 
 		step = 0;
 	}
+}
+
+
+void
+CompilationCloneView::_UpdateSizeBar()
+{
+	printf("Update SizeBar\n");
+	off_t fileSize = 0;
+
+	BPath path;
+	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+		return;
+
+	status_t ret = path.Append("burnitnow_clone.iso");
+	if (ret == B_OK) {
+		BEntry entry(path.Path());
+		entry.GetSize(&fileSize);
+		printf("fileSize: %i\n", fileSize);
+	}
+	fSizeInfo->SetText(fSizeBar->SetSizeAndMode(fileSize / 1024, AUDIO)); // size in KiB
+
+	printf("All fileSizeSum: %i\n", fileSize);
 }

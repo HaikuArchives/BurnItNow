@@ -7,6 +7,7 @@
 
 
 #include "BurnWindow.h"
+#include "SizeBar.h"
 
 #include <Button.h>
 #include <FilePanel.h>
@@ -31,6 +32,7 @@ private:
 	void 			_CreateImage();
 	void 			_BurnImage();
 	void 			_ClonerOutput(BMessage* message);
+	void			_UpdateSizeBar();
 
 	BFilePanel*		fOpenPanel;
 	CommandThread*	fClonerThread;
@@ -41,6 +43,9 @@ private:
 	BButton*		fImageButton;
 
 	int				step;
+
+	SizeBar*		fSizeBar;
+	BStringView*	fSizeInfo;
 };
 
 

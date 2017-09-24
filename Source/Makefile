@@ -40,7 +40,8 @@ SRCS = \
 	CompilationImageView.cpp \
 	CompilationCDRWView.cpp \
 	CompilationCloneView.cpp \
-	PathView.cpp
+	PathView.cpp\
+	SizeBar.cpp
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
@@ -113,7 +114,7 @@ SYMBOLS :=
 
 #	Includes debug information, which allows the binary to be debugged easily.
 #	If set to "TRUE", debug info will be created.
-DEBUGGER :=
+DEBUGGER :=TRUE
 
 #	Specify any additional compiler flags to be used.
 COMPILER_FLAGS = -Wall -Wno-multichar -Woverloaded-virtual -Wno-unknown-pragmas -std=c++0x

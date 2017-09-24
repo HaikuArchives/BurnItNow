@@ -63,6 +63,15 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		fTrackList, B_WILL_DRAW, false, true);
 	audioScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
+	font_height	fontHeight;
+	be_plain_font->GetHeight(&fontHeight);
+	float height = fontHeight.ascent + fontHeight.descent + fontHeight.leading;
+	fSizeBar = new SizeBar();
+	fSizeBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, height));
+	fSizeBar->SetExplicitMinSize(BSize(B_SIZE_UNSET, height));
+
+	fSizeInfo = new BStringView("sizeinfo", "");
+
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
@@ -80,6 +89,10 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 				.Add(fAudioBox)
 				.Add(audioScrollView)
 				.End()
+			.End()
+		.AddGroup(B_HORIZONTAL)
+			.Add(fSizeInfo)
+			.Add(fSizeBar, 10)
 			.End();
 
 	// Apply settings to splitview
@@ -98,6 +111,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	fAudioSplitView->SetItemWeight(1, tracksWeight, true);
 	fAudioSplitView->SetItemCollapsed(1, tracksCollapse);
+
+	_UpdateSizeBar();
 }
 
 
@@ -239,6 +254,32 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		fTrackList->RenumberTracks();
 	} else
 		fBurnButton->SetEnabled(false);
+
+	_UpdateSizeBar();
+}
+
+
+void
+CompilationAudioView::_UpdateSizeBar()
+{
+	printf("Update SizeBar\n");
+	off_t fileSize = 0;
+	off_t fileSizeSum = 0;
+	for (unsigned int i = 0; i <= MAX_TRACKS; i++) {
+		AudioListItem* sItem = dynamic_cast<AudioListItem *>
+			(fTrackList->ItemAt(i));
+
+		if (sItem == NULL)
+			break;
+
+		BEntry entry(sItem->GetPath());
+		entry.GetSize(&fileSize);
+		fileSizeSum += fileSize;
+		printf("fileSize %i: %i\n", i, fileSize);
+	}
+	fSizeInfo->SetText(fSizeBar->SetSizeAndMode(fileSizeSum / 1024, AUDIO)); // size in KiB
+
+	printf("All fileSizeSum: %i\n", fileSizeSum);
 }
 
 

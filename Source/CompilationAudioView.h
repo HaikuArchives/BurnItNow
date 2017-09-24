@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2016, BurnItNow Team. All rights reserved.
+ * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
 #ifndef _COMPILATIONAUDIOVIEW_H_
@@ -8,6 +8,7 @@
 
 #include "AudioList.h"
 #include "BurnWindow.h"
+#include "SizeBar.h"
 
 #include <Button.h>
 #include <ListView.h>
@@ -38,6 +39,7 @@ public:
 private:
 	void 			_BurnerParserOutput(BMessage* message);
 	void 			_AddTrack(BMessage* message);
+	void			_UpdateSizeBar();
 	
 	CommandThread*	fBurnerThread;
 	BurnWindow* 	windowParent;
@@ -48,6 +50,8 @@ private:
 	BButton*		fBurnButton;
 
 	AudioListView* 	fTrackList;
+	SizeBar*		fSizeBar;
+	BStringView*	fSizeInfo;
 };
 
 

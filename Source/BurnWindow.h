@@ -10,6 +10,7 @@
 #include <MenuBar.h>
 #include <Slider.h>
 #include <String.h>
+#include <StringView.h>
 #include <TabView.h>
 #include <View.h>
 #include <Window.h>

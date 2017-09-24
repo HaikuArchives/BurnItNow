@@ -15,6 +15,8 @@
 #include <String.h>
 #include <StringView.h>
 
+#include <stdio.h>
+
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "DVD view"
 
@@ -76,6 +78,15 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
+	font_height	fontHeight;
+	be_plain_font->GetHeight(&fontHeight);
+	float height = fontHeight.ascent + fontHeight.descent + fontHeight.leading;
+	fSizeBar = new SizeBar();
+	fSizeBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, height));
+	fSizeBar->SetExplicitMinSize(BSize(B_SIZE_UNSET, height));
+
+	fSizeInfo = new BStringView("sizeinfo", "");
+
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
@@ -90,7 +101,13 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 		.AddGroup(B_VERTICAL)
 			.Add(fBurnerInfoBox)
 			.Add(infoScrollView)
+			.End()
+		.AddGroup(B_HORIZONTAL)
+			.Add(fSizeInfo)
+			.Add(fSizeBar, 10)
 			.End();
+
+	_UpdateSizeBar();
 }
 
 
@@ -136,6 +153,7 @@ CompilationDVDView::MessageReceived(BMessage* message)
 			break;
 		case B_REFS_RECEIVED:
 			_OpenDirectory(message);
+			_UpdateSizeBar();
 			break;
 		case kBurnerMessage:
 			_BurnerOutput(message);
@@ -252,6 +270,36 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 
 		step = 0;
 	}
+}
+
+
+void
+CompilationDVDView::_UpdateSizeBar()
+{
+	printf("Update SizeBar\n");
+	off_t fileSize = 0;
+
+	if (fDirPath->InitCheck() == B_OK) {
+	    // command to be executed
+	    std::string cmd("du -sb ");
+	    cmd.append(fDirPath->Path());
+	    cmd.append(" | cut -f1 2>&1");
+	
+	    // execute above command and get the output
+	    FILE *stream = popen(cmd.c_str(), "r");
+	    if (stream) {
+	        const int max_size = 256;
+	        char readbuf[max_size];
+	        if (fgets(readbuf, max_size, stream) != NULL) {
+	            fileSize = atoll(readbuf);
+	        }   
+	        pclose(stream);            
+	    }
+	}
+
+	fSizeInfo->SetText(fSizeBar->SetSizeAndMode(fileSize / 1024, DATA)); // size in KiB
+
+	printf("All fileSize: %i\n", fileSize);
 }
 
 

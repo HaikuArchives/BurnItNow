@@ -277,9 +277,9 @@ AudioListView::MessageReceived(BMessage* message)
 
 				if (!IsEmpty())
 					RenumberTracks();
-				else // fake to update button state
-					Looper()->PostMessage(B_REFS_RECEIVED);
 			}
+			// fake to update button state and calculate SizeBar
+			Looper()->PostMessage(B_REFS_RECEIVED);
 			break;
 		}
 		case kPopupClosedMessage:
