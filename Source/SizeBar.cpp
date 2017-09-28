@@ -48,7 +48,7 @@ SizeBar::SizeBar()
 	fSize(0),
 	fMode(0)
 {
-	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	SetViewColor(B_TRANSPARENT_COLOR);
 }
 
 
@@ -66,7 +66,7 @@ SizeBar::Draw(BRect updateRect)
 
 	// draw frame
 	be_control_look->DrawTextControlBorder(this, allRect, updateRect,
-		ViewColor());
+		ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	float barWidth = allRect.Width();
 	if (allRect != fOldAllRect) {

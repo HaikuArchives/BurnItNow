@@ -329,6 +329,7 @@ BTabView*
 BurnWindow::_CreateTabView()
 {
 	BTabView* tabView = new BTabView("CompilationsTabView", B_WIDTH_FROM_LABEL);
+	tabView->SetViewColor(B_TRANSPARENT_COLOR);
 
 	fCompilationDataView = new CompilationDataView(*this);
 	fCompilationAudioView = new CompilationAudioView(*this);

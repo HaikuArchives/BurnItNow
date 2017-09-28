@@ -44,7 +44,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	windowParent = &parent;
 	step = 0;
 
-	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+//	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
