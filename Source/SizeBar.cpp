@@ -3,6 +3,7 @@
  * Distributed under the terms of the MIT License.
  */
 #include "BurnApplication.h"
+#include "Constants.h"
 #include "SizeBar.h"
 
 #include <Catalog.h>
@@ -14,31 +15,6 @@
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Size bar view"
-
-// colours
-const rgb_color colorCD650 = {5, 208, 5, 255};
-const rgb_color colorCD700 = {216, 255, 6, 255};
-const rgb_color colorCD800 = {255, 170, 6, 255};
-const rgb_color colorCD900 = {5, 144, 216, 255};
-const rgb_color colorDVD5 = {210, 185, 136, 255};
-const rgb_color colorDVD9 = {255, 95, 226, 255};
-const rgb_color colorTooBig = {255, 82, 82, 255};
-
-const rgb_color colorCD650_bg = {174, 242, 174, 255};
-const rgb_color colorCD700_bg = {233, 255, 174, 255};
-const rgb_color colorCD800_bg = {255, 221, 179, 255};
-const rgb_color colorCD900_bg = {174, 207, 247, 255};
-const rgb_color colorDVD5_bg = {233, 224, 207, 255};
-const rgb_color colorDVD9_bg = {255, 192, 241, 255};
-const rgb_color colorTooBig_bg = {255, 183, 183, 255};
-
-// capacities, audio [0] and data [1] in KiB
-static const float sizeCD650[] = { 764859, 666000 };
-static const float sizeCD700[] = { 826875, 720000 };
-static const float sizeCD800[] = { 930234, 810000 };
-static const float sizeCD900[] = { 1023257, 4592762 };
-static const float sizeDVD5[] = { 4592762, 4592762 };
-static const float sizeDVD9[] = { 8545894, 4592762 };
 
 
 SizeBar::SizeBar()

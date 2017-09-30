@@ -4,13 +4,12 @@
  */
 #include "BurnApplication.h"
 #include "BurnWindow.h"
+#include "Constants.h"
 
 #include <Alert.h>
 #include <Catalog.h>
 #include <TextView.h>
 
-static const char kVersion[] = "v1.0";
-static const char kCopyright[] = "2010-2017";
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Application"
@@ -20,7 +19,7 @@ static const char kCopyright[] = "2010-2017";
 
 BurnApplication::BurnApplication()
 	:
-	BApplication("application/x-vnd.haikuarchives-BurnItNow")
+	BApplication(kAppSignature)
 {
 }
 

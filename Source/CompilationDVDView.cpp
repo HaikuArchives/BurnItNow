@@ -4,6 +4,8 @@
  */
 #include "CompilationDVDView.h"
 #include "CommandThread.h"
+#include "Constants.h"
+#include "FolderSizeCount.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -21,15 +23,6 @@
 #define B_TRANSLATION_CONTEXT "DVD view"
 
 #include <compat/sys/stat.h>
-
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
-
-// Message constants
-const int32 kChooseDirectoryMessage = 'Cusd';
-const int32 kBurnerMessage = 'Brnr';
-const int32 kBuildImageMessage = 'IMAG';
-const int32 kBurnDiscMessage = 'BURN';
-const int32 kNoPathMessage = 'Noph'; // defined in PathView
 
 
 CompilationDVDView::CompilationDVDView(BurnWindow& parent)
@@ -152,9 +145,16 @@ CompilationDVDView::MessageReceived(BMessage* message)
 			BuildISO();
 			break;
 		case B_REFS_RECEIVED:
+		{
 			_OpenDirectory(message);
-			_UpdateSizeBar();
+			_GetFolderSize();
 			break;
+		}
+		case kSetFolderSize:
+		{
+			message->FindInt64("foldersize", &fFolderSize);
+			_UpdateSizeBar();
+		}
 		case kBurnerMessage:
 			_BurnerOutput(message);
 			break;
@@ -192,6 +192,23 @@ CompilationDVDView::_ChooseDirectory()
 			B_DIRECTORY_NODE, false, NULL, new DVDRefFilter(), true);
 	}
 	fOpenPanel->Show();
+}
+
+
+void
+CompilationDVDView::_GetFolderSize()
+{
+	BMessage* msg = new BMessage('NULL');
+	msg->AddString("path", fDirPath->Path());
+	msg->AddMessenger("from", this);
+
+	thread_id sizecount = spawn_thread(FolderSizeCount,
+		"Folder size counter", B_LOW_PRIORITY, msg);
+
+	if (sizecount >= B_OK)
+		resume_thread(sizecount);
+
+	fSizeInfo->SetText("calculating" B_UTF8_ELLIPSIS);
 }
 
 
@@ -276,30 +293,8 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 void
 CompilationDVDView::_UpdateSizeBar()
 {
-	printf("Update SizeBar\n");
-	off_t fileSize = 0;
-
-	if (fDirPath->InitCheck() == B_OK) {
-	    // command to be executed
-	    std::string cmd("du -sb ");
-	    cmd.append(fDirPath->Path());
-	    cmd.append(" | cut -f1 2>&1");
-	
-	    // execute above command and get the output
-	    FILE *stream = popen(cmd.c_str(), "r");
-	    if (stream) {
-	        const int max_size = 256;
-	        char readbuf[max_size];
-	        if (fgets(readbuf, max_size, stream) != NULL) {
-	            fileSize = atoll(readbuf);
-	        }   
-	        pclose(stream);            
-	    }
-	}
-
-	fSizeInfo->SetText(fSizeBar->SetSizeAndMode(fileSize / 1024, DATA)); // size in KiB
-
-	printf("All fileSize: %i\n", fileSize);
+	fSizeInfo->SetText(fSizeBar->SetSizeAndMode(fFolderSize, DATA));
+	// size in KiB
 }
 
 

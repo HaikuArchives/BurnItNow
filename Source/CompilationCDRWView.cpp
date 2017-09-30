@@ -4,6 +4,7 @@
  */
 #include "CommandThread.h"
 #include "CompilationCDRWView.h"
+#include "Constants.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -18,11 +19,6 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Blank view"
 
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
-
-// Message constants
-const int32 kBlankMessage = 'Blnk';
-const int32 kBlankerMessage = 'Blkr';
 
 CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	:

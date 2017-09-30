@@ -5,6 +5,7 @@
 
 #include "CommandThread.h"
 #include "CompilationImageView.h"
+#include "Constants.h"
 
 #include <Alert.h>
 #include <ControlLook.h>
@@ -21,14 +22,6 @@
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Image view"
-
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
-
-// Message constants
-const int32 kBurnImageMessage = 'Burn';
-const int32 kChooseImageMessage = 'Chus';
-const int32 kParserMessage = 'Scan';
-const int32 kNoPathMessage = 'Noph'; // defined in PathView
 
 
 CompilationImageView::CompilationImageView(BurnWindow& parent)

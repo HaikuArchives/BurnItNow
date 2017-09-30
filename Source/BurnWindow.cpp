@@ -4,13 +4,13 @@
  */
 #include "BurnApplication.h"
 #include "BurnWindow.h"
-
 #include "CompilationDataView.h"
 #include "CompilationAudioView.h"
 #include "CompilationImageView.h"
 #include "CompilationCDRWView.h"
 #include "CompilationCloneView.h"
 #include "CompilationDVDView.h"
+#include "Constants.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,21 +32,6 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Main window"
 
-// Message constants
-const int32 kOpenHelpMessage = 'Help';
-const int32 kOpenWebsiteMessage = 'Site';
-const int32 kCacheQuitMessage = 'Ccqt';
-const int32 kClearCacheMessage = 'Cche';
-const int32 kSpeedSliderMessage = 'Sped';
-
-const int32 kBurnDiscMessage = 'BURN';
-const int32 kBuildImageMessage = 'IMAG';
-
-const uint32 kDeviceChangeMessage[MAX_DEVICES]
-	= { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
-
-static const BString kWebsiteUrl = "https://github.com/HaikuArchives/BurnItNow";
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 // Misc variables
 sdevice devices[MAX_DEVICES];

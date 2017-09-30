@@ -5,7 +5,6 @@
 #ifndef _BURNWINDOW_H_
 #define _BURNWINDOW_H_
 
-
 #include <CheckBox.h>
 #include <MenuBar.h>
 #include <Slider.h>

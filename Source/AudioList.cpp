@@ -5,10 +5,9 @@
  * Author:
  *	Humdinger, humdingerb@gmail.com
  */
-
-
 #include "AudioList.h"
 #include "BurnWindow.h"
+#include "Constants.h"
 
 #include <stdio.h>
 
@@ -18,14 +17,6 @@
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Context menu"
-
-#define MAX_DRAG_HEIGHT		200.0
-#define ALPHA				170
-
-// Message constants
-const int32 kDraggedItemMessage = 'drit';
-const int32 kDeleteItemMessage = 'deli';
-const int32 kPopupClosedMessage = 'popc';
 
 
 // #pragma mark - Listview

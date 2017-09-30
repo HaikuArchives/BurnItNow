@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 
+#include "Constants.h"
 #include "PathView.h"
 
 #include <Entry.h>
@@ -15,8 +16,6 @@
 #include <Node.h>
 #include <String.h>
 
-// Message constants
-const int32 kNoPathMessage = 'Noph';
 
 PathView::PathView(const char* name, const char* text)
 	:

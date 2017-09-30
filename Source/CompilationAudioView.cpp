@@ -6,6 +6,7 @@
 #include "BurnApplication.h"
 #include "CompilationAudioView.h"
 #include "CommandThread.h"
+#include "Constants.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -22,11 +23,6 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Audio view"
 
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
-
-// Message constants
-const int32 kBurnerMessage = 'Brnr';
-const int32 kBurnDiscMessage = 'BURN';
 
 CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	:

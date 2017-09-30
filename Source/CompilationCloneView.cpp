@@ -4,6 +4,7 @@
  */
 #include "CommandThread.h"
 #include "CompilationCloneView.h"
+#include "Constants.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -18,15 +19,6 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Clone view"
 
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
-
-// Message constants
-const int32 kCreateImageMessage = 'Crat';
-const int32 kBurnImageMessage = 'Wrte';
-const int32 kClonerMessage = 'Clnr';
-
-const uint32 kDeviceChangeMessage[MAX_DEVICES]
-	= { 'CVC0', 'CVC1', 'CVC2', 'CVC3', 'CVC4' };
 
 // Misc variables
 int selectedSrcDevice;

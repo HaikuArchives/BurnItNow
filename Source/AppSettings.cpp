@@ -5,6 +5,8 @@
  * Author:
  *	Humdinger, humdingerb@gmail.com
  */
+#include "AppSettings.h"
+#include "Constants.h"
 
 #include <File.h>
 #include <FindDirectory.h>
@@ -14,9 +16,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "AppSettings.h"
 
-static const char kSettingsFile[] = "BurnItNow_settings";
+
 
 AppSettings::AppSettings()
 	:

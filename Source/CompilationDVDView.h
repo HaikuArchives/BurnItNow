@@ -46,6 +46,7 @@ private:
 	void 			_ChooseDirectory();
 	void 			_FromScratch();
 	void 			_OpenDirectory(BMessage* message);
+	void			_GetFolderSize();
 	void 			_BurnerOutput(BMessage* message);
 	void			_UpdateSizeBar();
 
@@ -63,6 +64,7 @@ private:
 	BPath* 			fImagePath;
 	int				step;
 
+	int64			fFolderSize;
 	SizeBar*		fSizeBar;
 	BStringView*	fSizeInfo;
 };
