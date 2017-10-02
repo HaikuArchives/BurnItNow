@@ -7,7 +7,7 @@
 
 
 #include "BurnWindow.h"
-#include "SizeBar.h"
+#include "SizeView.h"
 
 #include <Button.h>
 #include <FilePanel.h>
@@ -44,8 +44,7 @@ private:
 
 	int				step;
 
-	SizeBar*		fSizeBar;
-	BStringView*	fSizeInfo;
+	SizeView*		fSizeView;
 };
 
 

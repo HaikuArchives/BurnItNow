@@ -7,11 +7,8 @@
 
 #include <View.h>
 
-enum {
-	AUDIO = 0,
-	DATA
-};
 
+class BurnWindow;
 
 class SizeBar : public BView {
 public:
@@ -19,7 +16,8 @@ public:
 	virtual 		~SizeBar();
 	virtual void	Draw(BRect updateRect);
 
-	BString			SetSizeAndMode(off_t fileSize, int32 mode);
+	void			SetSizeModeMedium(off_t fileSize, int32 mode,
+						int32 medium);
 
 private:
 	BRect		fOldAllRect;
@@ -31,8 +29,9 @@ private:
 	BRect		fRectDVD9;
 	BRect		fTooBigRect;
 
-	float		fSize;
+	off_t		fSize;
 	int32		fMode;
+	int32		fMedium;
 };
 
 #endif	// _SIZEBAR_H_

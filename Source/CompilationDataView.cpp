@@ -72,14 +72,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	font_height	fontHeight;
-	be_plain_font->GetHeight(&fontHeight);
-	float height = fontHeight.ascent + fontHeight.descent + fontHeight.leading;
-	fSizeBar = new SizeBar();
-	fSizeBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, height));
-	fSizeBar->SetExplicitMinSize(BSize(B_SIZE_UNSET, height));
-
-	fSizeInfo = new BStringView("sizeinfo", "");
+	fSizeView = new SizeView();
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
@@ -97,8 +90,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 			.Add(infoScrollView)
 			.End()
 		.AddGroup(B_HORIZONTAL)
-			.Add(fSizeInfo)
-			.Add(fSizeBar, 10)
+			.Add(fSizeView)
 			.End();
 
 	_UpdateSizeBar();
@@ -209,7 +201,7 @@ CompilationDataView::_GetFolderSize()
 	if (sizecount >= B_OK)
 		resume_thread(sizecount);
 
-	fSizeInfo->SetText("calculating" B_UTF8_ELLIPSIS);
+	fSizeView->ShowInfoText("calculating" B_UTF8_ELLIPSIS);
 }
 
 
@@ -269,8 +261,7 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 void
 CompilationDataView::_UpdateSizeBar()
 {
-	fSizeInfo->SetText(fSizeBar->SetSizeAndMode(fFolderSize, DATA));
-	// size in KiB
+	fSizeView->UpdateSizeDisplay(fFolderSize, DATA, CD_OR_DVD); // size in KiB
 }
 
 

@@ -35,14 +35,15 @@ SRCS = \
 	BurnWindow.cpp \
 	CommandThread.cpp \
 	CompilationAudioView.cpp \
+	CompilationCDRWView.cpp \
+	CompilationCloneView.cpp \
 	CompilationDataView.cpp \
 	CompilationDVDView.cpp \
 	CompilationImageView.cpp \
-	CompilationCDRWView.cpp \
-	CompilationCloneView.cpp \
 	FolderSizeCount.cpp \
 	PathView.cpp\
-	SizeBar.cpp
+	SizeBar.cpp \
+	SizeView.cpp
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.

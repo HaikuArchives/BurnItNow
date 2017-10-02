@@ -13,6 +13,19 @@
 #define MAX_DRAG_HEIGHT		200.0
 #define ALPHA				170
 
+// AudioCDs have a larger capacity than DataCDs
+enum {
+	AUDIO = 0,
+	DATA
+};
+
+// some tabs deal with CDs/DVDs, some are CD only or DVD only
+enum {
+	CD_OR_DVD = 0,
+	CD_ONLY,
+	DVD_ONLY
+};
+
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
@@ -67,9 +80,9 @@ const rgb_color colorTooBig_bg = {255, 183, 183, 255};
 static const float sizeCD650[] = { 764859, 666000 };
 static const float sizeCD700[] = { 826875, 720000 };
 static const float sizeCD800[] = { 930234, 810000 };
-static const float sizeCD900[] = { 1023257, 4592762 };
+static const float sizeCD900[] = { 1023257, 890999 };
 static const float sizeDVD5[] = { 4592762, 4592762 };
-static const float sizeDVD9[] = { 8545894, 4592762 };
+static const float sizeDVD9[] = { 8545894, 8545894 };
 
 // constants
 static const BString kWebsiteUrl = "https://github.com/HaikuArchives/BurnItNow";

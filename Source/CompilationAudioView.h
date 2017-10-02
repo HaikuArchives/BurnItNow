@@ -8,7 +8,7 @@
 
 #include "AudioList.h"
 #include "BurnWindow.h"
-#include "SizeBar.h"
+#include "SizeView.h"
 
 #include <Button.h>
 #include <ListView.h>
@@ -50,8 +50,7 @@ private:
 	BButton*		fBurnButton;
 
 	AudioListView* 	fTrackList;
-	SizeBar*		fSizeBar;
-	BStringView*	fSizeInfo;
+	SizeView*		fSizeView;
 };
 
 
