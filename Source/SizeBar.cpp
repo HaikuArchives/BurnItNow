@@ -22,7 +22,7 @@
 
 SizeBar::SizeBar()
 	:
-	BView("SizeBar", B_WILL_DRAW),
+	BView("SizeBar", B_WILL_DRAW | B_FULL_UPDATE_ON_RESIZE),
 	fOldAllRect(-1, -1, -1, -1),
 	fSize(0),
 	fMode(0),
@@ -175,7 +175,6 @@ SizeBar::Draw(BRect updateRect)
 			barColor = colorCD650;
 			percentage = fSize / sizeCD650[fMode];
 			width = fRectCD650.Width() * percentage;
-			printf("Width: %f\n", width);
 		} else if (fSize <= sizeCD700[fMode]) {
 			barColor = colorCD700;
 			percentage = (fSize - sizeCD650[fMode])

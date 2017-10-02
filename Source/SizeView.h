@@ -15,14 +15,12 @@ class BurnWindow;
 
 class SizeView : public BView {
 public:
-			SizeView();
-			~SizeView();
+					SizeView();
+					~SizeView();
 
-	void	MouseDown(BPoint position);
-
-	void	UpdateSizeDisplay(off_t fileSize, int32 mode,
-				int32 medium);
-	void	ShowInfoText(const char* info);
+	void			UpdateSizeDisplay(off_t fileSize, int32 mode,
+						int32 medium);
+	void			ShowInfoText(const char* info);
 
 private:
 	SizeBar*		fSizeBar;

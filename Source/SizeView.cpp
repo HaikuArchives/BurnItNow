@@ -29,27 +29,23 @@ SizeView::SizeView()
 	float height = fontHeight.ascent + fontHeight.descent + fontHeight.leading;
 	fSizeBar = new SizeBar();
 	fSizeBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, height));
-	fSizeBar->SetExplicitMinSize(BSize(B_SIZE_UNSET, height));
+	fSizeBar->SetExplicitMinSize(BSize(16.0, height));
 
 	fSizeInfo = new BStringView("sizeinfo", "");
+	fSizeInfo->SetAlignment(B_ALIGN_CENTER);
+	float maxWidth(StringWidth(B_TRANSLATE_COMMENT("5,000.12 MiB left (CD-900)",
+		"Just for layouting, the widest string for the size info")));
+	fSizeInfo->SetExplicitMinSize(BSize(maxWidth, B_SIZE_UNSET));
 
 	BLayoutBuilder::Group<>(this, B_HORIZONTAL, kControlPadding)
 		.Add(fSizeInfo)
-		.Add(fSizeBar, 10)
+		.Add(fSizeBar)
 		.End();
 }
 
 
 SizeView::~SizeView()
 {
-}
-
-
-void
-SizeView::MouseDown(BPoint position)
-{
-
-	BView::MouseDown(position);
 }
 
 

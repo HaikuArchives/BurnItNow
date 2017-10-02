@@ -14,6 +14,7 @@ class SizeBar : public BView {
 public:
 					SizeBar();
 	virtual 		~SizeBar();
+
 	virtual void	Draw(BRect updateRect);
 
 	void			SetSizeModeMedium(off_t fileSize, int32 mode,
