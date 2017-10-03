@@ -27,7 +27,7 @@
 
 CompilationDataView::CompilationDataView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Data"), B_WILL_DRAW,
+	BView(B_TRANSLATE("Data disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBurnerThread(NULL),

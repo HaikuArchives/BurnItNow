@@ -26,7 +26,7 @@ int selectedSrcDevice;
 
 CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Clone"), B_WILL_DRAW,
+	BView(B_TRANSLATE("Clone disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fClonerThread(NULL)

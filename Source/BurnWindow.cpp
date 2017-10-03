@@ -57,6 +57,7 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 1)
 		.Add(_CreateMenuBar())
 		.Add(_CreateToolBar())
+		.Add(BSpaceLayoutItem::CreateVerticalStrut(kControlPadding))
 		.Add(fTabView);
 }
 
@@ -285,7 +286,7 @@ BurnWindow::_CreateToolBar()
 	_UpdateSpeedSlider(NULL);
 
 	// Build layout
-	BLayoutBuilder::Group<>(groupView, B_VERTICAL)
+	BLayoutBuilder::Group<>(groupView, B_VERTICAL, 0)
 		.SetInsets(kControlPadding, 0, kControlPadding, kControlPadding)
 		.AddGroup(B_HORIZONTAL, kControlPadding * 3)
 			.AddGroup(B_VERTICAL)

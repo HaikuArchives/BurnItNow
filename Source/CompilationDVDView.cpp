@@ -27,7 +27,7 @@
 
 CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("DVD-Video"), B_WILL_DRAW,
+	BView(B_TRANSLATE("Audio/Video DVD"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBurnerThread(NULL),
@@ -42,7 +42,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fBurnerInfoBox->SetFont(be_bold_font);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-		"Choose DVD Video folder to burn", "Status notification"));
+		"Choose DVD folder to burn", "Status notification"));
 
 	fPathView = new PathView("FolderStringView",
 		B_TRANSLATE("Folder: <none>"));
@@ -207,38 +207,66 @@ CompilationDVDView::_GetFolderSize()
 void
 CompilationDVDView::_OpenDirectory(BMessage* message)
 {
+	BString status(B_TRANSLATE_COMMENT(
+			"Didn't find valid files needed for a Audio or Video DVD",
+			"Status notification"));
+
 	entry_ref ref;
-	if (message->FindRef("refs", &ref) != B_OK)
+	if (message->FindRef("refs", &ref) != B_OK) {
+		fBurnerInfoBox->SetLabel(status);
 		return;
+	}
 
 	BEntry entry(&ref, true);	// also accept symlinks
 	BNode node(&entry);
-	if ((node.InitCheck() != B_OK) || !node.IsDirectory())
+	if ((node.InitCheck() != B_OK) || !node.IsDirectory()) {
+		fBurnerInfoBox->SetLabel(status);
 		return;
+	}
 
+	// get parent folder if user chose subfolder
 	fDirPath->SetTo(&entry);
-	if (strcmp("VIDEO_TS", fDirPath->Leaf()) == 0)
+	const char* name(fDirPath->Leaf());
+	if ((strcmp("VIDEO_TS", name) == 0) || (strcmp("AUDIO_TS", name) == 0))
 		fDirPath->GetParent(fDirPath);
+
+	// make sure there's a VIDEO_TS and AUDIO_TS folder
+	BDirectory folder(fDirPath->Path());
+
+	if ((folder.Contains("VIDEO_TS", B_DIRECTORY_NODE))
+			|| (folder.Contains("AUDIO_TS", B_DIRECTORY_NODE))) {
+		folder.CreateDirectory("VIDEO_TS", NULL);
+		folder.CreateDirectory("AUDIO_TS", NULL);
+	}
+
+	// check for Video/Audio/Hybrid DVD
+	BPath path(fDirPath->Path());
+	path.Append("VIDEO_TS");
+	folder.SetTo(path.Path());
+	bool hasVTS = folder.Contains("VIDEO_TS.IFO", B_FILE_NODE);
+
+	path.GetParent(&path);
+	path.Append("AUDIO_TS");
+	folder.SetTo(path.Path());
+	bool hasATS = folder.Contains("AUDIO_TS.IFO", B_FILE_NODE);
+
+	if (hasATS) {
+		if (hasVTS)
+			fDVDMode = "-dvd-hybrid";
+		else
+			fDVDMode = "-dvd-audio";
+	} else if (hasVTS)
+		fDVDMode = "-dvd-video";
 	else {
-		BPath testPath(fDirPath->Path());
-		testPath.Append("VIDEO_TS");
-		get_ref_for_path(testPath.Path(), &ref);
-		if (!BEntry(&ref).Exists()) {
-			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-				"Didn't find a VIDEO_TS folder", "Status notification"));
-			return;
-		}
+		fBurnerInfoBox->SetLabel(status);
+		return;
 	}
 
 	fPathView->SetText(fDirPath->Path());
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD UDF image",
+	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD image",
 		"Status notification"));
-
-	BPath audioTSPath(fDirPath->Path());
-	audioTSPath.Append("AUDIO_TS");
-	create_directory(audioTSPath.Path(), 0777);
 }
 
 
@@ -255,10 +283,12 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
 		BString infoText(fBurnerInfoTextView->Text());
+		// mkisofs has same errors for dvd-video and dvd-hybrid, but
+		// no error checking for dvd-audio, apparently
 		if (infoText.FindFirst(
 			"mkisofs: Unable to make a DVD-Video image.\n") != B_ERROR) {
 			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-				"Unable to make a DVD-Video image",
+				"Unable to create a DVD image",
 				"Status notification"));
 			fBurnButton->SetEnabled(false);
 		} else {
@@ -321,7 +351,7 @@ CompilationDVDView::BuildISO()
 		fBurnerThread->AddArgument("mkisofs")
 			->AddArgument("-V")
 			->AddArgument(fDirPath->Leaf())
-			->AddArgument("-dvd-video")
+			->AddArgument(fDVDMode)
 			->AddArgument("-o")
 			->AddArgument(fImagePath->Path())
 			->AddArgument(fDirPath->Path())

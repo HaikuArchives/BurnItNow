@@ -22,7 +22,7 @@
 
 CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Blank CD-RW"), B_WILL_DRAW,
+	BView(B_TRANSLATE("Blank RW-disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fBlankerThread(NULL)
@@ -95,8 +95,10 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
 		.AddGroup(B_HORIZONTAL)
+			.AddGlue()
 			.Add(blankModeMenuField)
 			.Add(blankButton)
+			.AddGlue()
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fBlankerInfoBox)

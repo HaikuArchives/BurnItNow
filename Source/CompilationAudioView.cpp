@@ -26,7 +26,7 @@
 
 CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Audio"), B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
+	BView(B_TRANSLATE("Audio CD"), B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
 		kControlPadding)),
 	fBurnerThread(NULL)
 {

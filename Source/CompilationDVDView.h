@@ -62,6 +62,7 @@ private:
 
 	BPath* 			fDirPath;
 	BPath* 			fImagePath;
+	const char*		fDVDMode;
 	int				step;
 
 	int64			fFolderSize;
