@@ -10,7 +10,9 @@
 #define APPSETTINGS_H
 
 #include <Locker.h>
+#include <Path.h>
 #include <Rect.h>
+#include <String.h>
 
 class AppSettings {
 public:
@@ -19,7 +21,8 @@ public:
 
 		bool		Lock();
 		void		Unlock();
-			
+
+		void		GetCacheFolder(BPath& folder);
 		bool		GetEject();
 		bool		GetCache();
 		int32		GetSpeed();
@@ -27,6 +30,7 @@ public:
 		void		GetSplitWeight(float& left, float& right);
 		void		GetSplitCollapse(bool& left, bool& right);
 
+		void		SetCacheFolder(BString folder);
 		void		SetEject(bool eject);
 		void		SetCache(bool cache);
 		void		SetSpeed(int32 speed);
@@ -34,6 +38,7 @@ public:
 		void		SetSplitWeight(float left, float right);
 		void		SetSplitCollapse(bool left, bool right);
 private:
+		BString		fFolder;
 		bool		fEject;
 		bool		fCache;
 		int32		fSpeed;

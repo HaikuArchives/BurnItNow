@@ -1,5 +1,5 @@
 /*
- * Copyright 2016. All rights reserved.
+ * Copyright 2016-2017. All rights reserved.
  * Distributed under the terms of the MIT license.
  *
  * Author:
@@ -17,10 +17,9 @@
 #include <stdlib.h>
 
 
-
-
 AppSettings::AppSettings()
 	:
+	fFolder(""),
 	fEject(true),
 	fCache(false),
 	fSpeed(5),
@@ -41,6 +40,12 @@ AppSettings::AppSettings()
 			BFile file(path.Path(), B_READ_ONLY);
 
 			if ((file.InitCheck() == B_OK) && (msg.Unflatten(&file) == B_OK)) {
+				if (msg.FindString("folder", &fFolder) != B_OK) {
+					BPath cache;
+					find_directory(B_SYSTEM_CACHE_DIRECTORY, &cache);
+					fFolder = cache.Path();
+					dirtySettings = true;
+				}
 				if (msg.FindBool("eject", &fEject) != B_OK) {
 					fEject = true;
 					dirtySettings = true;
@@ -90,6 +95,7 @@ AppSettings::~AppSettings()
 		ret = file.InitCheck();
 
 		if (ret == B_OK) {
+			msg.AddString("folder", fFolder);
 			msg.AddBool("eject", fEject);
 			msg.AddBool("cache", fCache);
 			msg.AddInt32("speed", fSpeed);
@@ -115,6 +121,13 @@ void
 AppSettings::Unlock()
 {
 	fLock.Unlock();
+}
+
+
+void
+AppSettings::GetCacheFolder(BPath& folder)
+{
+	folder.SetTo(fFolder);
 }
 
 
@@ -159,6 +172,16 @@ AppSettings::GetSplitCollapse(bool& left, bool& right)
 {
 	left = fInfoCollapse;
 	right = fTracksCollapse;
+}
+
+
+void
+AppSettings::SetCacheFolder(BString folder)
+{
+	if (fFolder == folder)
+		return;
+	fFolder = folder;
+	dirtySettings = true;
 }
 
 

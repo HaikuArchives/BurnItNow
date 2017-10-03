@@ -29,6 +29,7 @@ enum {
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
+const int32 kSetCacheFolderMessage = 'Scfo';
 const int32 kCacheQuitMessage = 'Ccqt';
 const int32 kClearCacheMessage = 'Cche';
 const int32 kSpeedSliderMessage = 'Sped';
@@ -88,6 +89,10 @@ static const float sizeDVD9[] = { 8545894, 8545894 };
 static const BString kWebsiteUrl = "https://github.com/HaikuArchives/BurnItNow";
 static const char kAppSignature[] = "application/x-vnd.haikuarchives-BurnItNow";
 static const char kSettingsFile[] = "BurnItNow_settings";
+static const char kCacheFileClone[] = "burnitnow_clone.iso";
+static const char kCacheFileDVD[] = "burnitnow_dvd.iso";
+static const char kCacheFileData[] = "burnitnow_data.iso";
+
 static const char kCopyright[] = "2010-2017";
 static const char kVersion[] = "v1.0";
 

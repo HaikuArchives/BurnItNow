@@ -2,9 +2,11 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+#include "BurnApplication.h"
 #include "CompilationDVDView.h"
 #include "CommandThread.h"
 #include "Constants.h"
+#include "DirRefFilter.h"
 #include "FolderSizeCount.h"
 
 #include <Alert.h>
@@ -21,8 +23,6 @@
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "DVD view"
-
-#include <compat/sys/stat.h>
 
 
 CompilationDVDView::CompilationDVDView(BurnWindow& parent)
@@ -159,29 +159,12 @@ CompilationDVDView::MessageReceived(BMessage* message)
 #pragma mark -- Private Methods --
 
 
-bool
-DVDRefFilter::Filter(const entry_ref* ref, BNode* node,
-	struct stat_beos* stat, const char* filetype)
-{
-	if (S_ISDIR(stat->st_mode))
-		return true;
-
-	if (S_ISLNK(stat->st_mode)) {
-		// Traverse symlinks
-		BEntry entry(ref, true);
-		return entry.IsDirectory();
-	}
-
-	return false;
-}
-
-
 void
 CompilationDVDView::_ChooseDirectory()
 {
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
-			B_DIRECTORY_NODE, false, NULL, new DVDRefFilter(), true);
+			B_DIRECTORY_NODE, false, NULL, new DirRefFilter(), true);
 	}
 	fOpenPanel->Show();
 }
@@ -341,10 +324,15 @@ CompilationDVDView::BuildISO()
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
 
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, fImagePath) != B_OK)
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(*fImagePath);
+		settings->Unlock();
+	}
+	if (fImagePath->InitCheck() != B_OK)
 		return;
 
-	status_t ret = fImagePath->Append("burnitnow_dvd.iso");
+	status_t ret = fImagePath->Append(kCacheFileDVD);
 	if (ret == B_OK) {
 		step = 1;	// flag we're building ISO
 

@@ -40,6 +40,7 @@ SRCS = \
 	CompilationDataView.cpp \
 	CompilationDVDView.cpp \
 	CompilationImageView.cpp \
+	DirRefFilter.cpp \
 	FolderSizeCount.cpp \
 	PathView.cpp\
 	SizeBar.cpp \

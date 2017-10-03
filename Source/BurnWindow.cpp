@@ -11,6 +11,7 @@
 #include "CompilationCloneView.h"
 #include "CompilationDVDView.h"
 #include "Constants.h"
+#include "DirRefFilter.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -108,6 +109,12 @@ BurnWindow::MessageReceived(BMessage* message)
 	}
 
 	switch (message->what) {
+		case kSetCacheFolderMessage:
+			_SetCacheFolder();
+			break;
+		case kChooseDirectoryMessage:
+			_ChangeCacheFolder(message);
+			break;
 		case kCacheQuitMessage:
 			{
 				AppSettings* settings = my_app->Settings();
@@ -176,21 +183,25 @@ BurnWindow::_CreateMenuBar()
 	BMenu* fileMenu = new BMenu(B_TRANSLATE("App"));
 	menuBar->AddItem(fileMenu);
 
-	BMenuItem* aboutItem = new BMenuItem(B_TRANSLATE("About" B_UTF8_ELLIPSIS),
+	BMenuItem* item = new BMenuItem(B_TRANSLATE("About" B_UTF8_ELLIPSIS),
 		new BMessage(B_ABOUT_REQUESTED));
-	aboutItem->SetTarget(be_app);
-	fileMenu->AddItem(aboutItem);
+	item->SetTarget(be_app);
+	fileMenu->AddItem(item);
 	fileMenu->AddItem(new BMenuItem("Quit",
 		new BMessage(B_QUIT_REQUESTED), 'Q'));
 
-	BMenu* toolsMenu = new BMenu(B_TRANSLATE("Tools & settings"));
-	menuBar->AddItem(toolsMenu);
+	BMenu* settingsMenu = new BMenu(B_TRANSLATE("Settings"));
+	menuBar->AddItem(settingsMenu);
+
+	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE(
+		"Set cache folder" B_UTF8_ELLIPSIS),
+		new BMessage(kSetCacheFolderMessage)));
 
 	fCacheQuitItem = new BMenuItem(B_TRANSLATE("Clear cache on quit"),
 		new BMessage(kCacheQuitMessage));
-	toolsMenu->AddItem(fCacheQuitItem);
+	settingsMenu->AddItem(fCacheQuitItem);
 
-	toolsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
+	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
 		new BMessage(kClearCacheMessage)));
 
 	BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
@@ -337,45 +348,104 @@ BurnWindow::_CreateTabView()
 
 
 void
+BurnWindow::_SetCacheFolder()
+{
+	if (fOpenPanel == NULL) {
+		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
+			B_DIRECTORY_NODE, false, new BMessage(kChooseDirectoryMessage),
+			new DirRefFilter(), true);
+	}
+	fOpenPanel->Show();
+}
+
+
+void
+BurnWindow::_ChangeCacheFolder(BMessage* message)
+{
+	if (_CheckOldCacheFolder() == false)
+		return;
+
+	entry_ref ref;
+	if (message->FindRef("refs", &ref) != B_OK)
+		return;
+
+	BPath newFolder(&ref);
+	if (newFolder.InitCheck() != B_OK)
+		return;
+
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->SetCacheFolder(newFolder.Path());
+		settings->Unlock();
+	}
+}
+
+
+bool
+BurnWindow::_CheckOldCacheFolder()
+{
+	BPath oldCacheFolder;
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(oldCacheFolder);
+		settings->Unlock();
+	}
+
+	int32 button = true;
+	BDirectory folder(oldCacheFolder.Path());
+	if ((folder.Contains(kCacheFileClone, B_FILE_NODE))
+		|| (folder.Contains(kCacheFileDVD, B_FILE_NODE))
+		|| (folder.Contains(kCacheFileData, B_FILE_NODE))) {
+
+		BString text = B_TRANSLATE(
+			"There are still cached ISO images in the old cache folder at "
+			"'%oldfolder%'.\n\n"
+			"Do you want to keep or delete those images, or cancel the "
+			"setting of a new cache folder?");
+		text.ReplaceFirst("%oldfolder%", oldCacheFolder.Path());
+
+		BAlert *alert = new BAlert("oldcache", text.String(),
+			B_TRANSLATE("Cancel"), B_TRANSLATE("Keep"), B_TRANSLATE("Delete"));
+
+		button = alert->Go();
+	}
+	if (button == 1)
+		button = true;
+	else if (button == 2) {
+		_ClearCache();
+		button = true;
+	}
+	return button;
+}
+
+
+void
 BurnWindow::_ClearCache()
 {
 	BPath cachePath;
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &cachePath) != B_OK)
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(cachePath);
+		settings->Unlock();
+	}
+	if (cachePath.InitCheck() != B_OK)
 		return;
 
 	BPath path = cachePath;
-	status_t ret = path.Append("burnitnow_clone.iso");
+	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
 		BEntry* entry = new BEntry(path.Path());
 		entry->Remove();
 		
 		path = cachePath;
-		path.Append("burnitnow_dvd.iso");
+		path.Append(kCacheFileDVD);
 		entry = new BEntry(path.Path());
 		entry->Remove();
 
 		path = cachePath;
-		path.Append("burnitnow_data.iso");
+		path.Append(kCacheFileData);
 		entry = new BEntry(path.Path());
 		entry->Remove();
-
-		path = cachePath;
-		path.Append("burnitnow_cache");
-
-		BDirectory* dir = new BDirectory(path.Path());
-
-		while (true) {
-			if (dir->GetNextEntry(entry) != B_OK)
-				break;
-
-			entry->Remove();
-		}
-
-		entry = new BEntry(path.Path());
-		entry->Remove();
-
-//		(new BAlert("ClearCacheAlert", "Cache cleared successfully.",
-//			"OK"))->Go();
 	}
 }
 

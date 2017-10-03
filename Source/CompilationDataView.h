@@ -21,16 +21,6 @@
 class CommandThread;
 
 
-class DataRefFilter : public BRefFilter {
-public:
-					DataRefFilter() {};
-	virtual			~DataRefFilter() {};
-
-	bool			Filter(const entry_ref* ref, BNode* node,
-						struct stat_beos* st, const char* filetype);
-};
-
-
 class CompilationDataView : public BView {
 public:
 					CompilationDataView(BurnWindow& parent);

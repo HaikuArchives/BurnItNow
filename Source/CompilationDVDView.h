@@ -21,16 +21,6 @@
 class CommandThread;
 
 
-class DVDRefFilter : public BRefFilter {
-public:
-					DVDRefFilter() {};
-	virtual			~DVDRefFilter() {};
-
-	bool			Filter(const entry_ref* ref, BNode* node,
-						struct stat_beos* st, const char* filetype);
-};
-
-
 class CompilationDVDView : public BView {
 public:
 					CompilationDVDView(BurnWindow& parent);

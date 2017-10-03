@@ -6,6 +6,7 @@
 #define _BURNWINDOW_H_
 
 #include <CheckBox.h>
+#include <FilePanel.h>
 #include <MenuBar.h>
 #include <Slider.h>
 #include <String.h>
@@ -51,6 +52,9 @@ private:
 	BTabView*		_CreateTabView();
 	BView*			_CreateDiskUsageView();
 
+	void			_SetCacheFolder();
+	void			_ChangeCacheFolder(BMessage* message);
+	bool			_CheckOldCacheFolder();
 	void 			_ClearCache();
 	void 			_OpenSettings();
 	void 			_OpenWebSite();
@@ -68,6 +72,7 @@ private:
 	BCheckBox* 		fEjectCheck;
 	BSlider* 		fSpeedSlider;
 
+	BFilePanel* 	fOpenPanel;
 	sessionConfig	fConfig;
 };
 

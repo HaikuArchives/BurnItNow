@@ -2,6 +2,7 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+#include "BurnApplication.h"
 #include "CommandThread.h"
 #include "CompilationCloneView.h"
 #include "Constants.h"
@@ -152,10 +153,15 @@ CompilationCloneView::_CreateImage()
 	fImageButton->SetEnabled(false);
 
 	BPath path;
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(path);
+		settings->Unlock();
+	}
+	if (path.InitCheck() != B_OK)
 		return;
 
-	status_t ret = path.Append("burnitnow_clone.iso");
+	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
 		step = 1;
 
@@ -181,10 +187,15 @@ void
 CompilationCloneView::_BurnImage()
 {
 	BPath path;
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(path);
+		settings->Unlock();
+	}
+	if (path.InitCheck() != B_OK)
 		return;
 
-	status_t ret = path.Append("burnitnow_clone.iso");
+	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
 		step = 2;
 
@@ -278,10 +289,15 @@ CompilationCloneView::_UpdateSizeBar()
 	off_t fileSize = 0;
 
 	BPath path;
-	if (find_directory(B_SYSTEM_CACHE_DIRECTORY, &path) != B_OK)
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(path);
+		settings->Unlock();
+	}
+	if (path.InitCheck() != B_OK)
 		return;
 
-	status_t ret = path.Append("burnitnow_clone.iso");
+	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
 		BEntry entry(path.Path());
 		entry.GetSize(&fileSize);
