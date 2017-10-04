@@ -38,6 +38,8 @@ public:
 		void		SetSplitWeight(float left, float right);
 		void		SetSplitCollapse(bool left, bool right);
 private:
+		void		_EnsureCacheIsValid();
+
 		BString		fFolder;
 		bool		fEject;
 		bool		fCache;

@@ -8,13 +8,18 @@
 #include "AppSettings.h"
 #include "Constants.h"
 
+#include <Alert.h>
+#include <Catalog.h>
+#include <Entry.h>
 #include <File.h>
 #include <FindDirectory.h>
-#include <Path.h>
 #include <Message.h>
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "App settings"
 
 
 AppSettings::AppSettings()
@@ -45,7 +50,8 @@ AppSettings::AppSettings()
 					find_directory(B_SYSTEM_CACHE_DIRECTORY, &cache);
 					fFolder = cache.Path();
 					dirtySettings = true;
-				}
+				} else
+					_EnsureCacheIsValid();
 				if (msg.FindBool("eject", &fEject) != B_OK) {
 					fEject = true;
 					dirtySettings = true;
@@ -124,6 +130,9 @@ AppSettings::Unlock()
 }
 
 
+#pragma mark -- Getter Methods --
+
+
 void
 AppSettings::GetCacheFolder(BPath& folder)
 {
@@ -185,6 +194,9 @@ AppSettings::SetCacheFolder(BString folder)
 }
 
 
+#pragma mark -- Setter Methods --
+
+
 void
 AppSettings::SetEject(bool eject)
 {
@@ -244,4 +256,50 @@ AppSettings::SetSplitCollapse(bool left, bool right)
 	fInfoCollapse = left;
 	fTracksCollapse = right;
 	dirtySettings = true;
+}
+
+
+#pragma mark -- Private Methods --
+
+
+void
+AppSettings::_EnsureCacheIsValid()
+{
+	// test if the new location is writable
+	BPath testPath;
+	BFile testFile;
+	entry_ref testRef;
+
+	testPath.SetTo(fFolder.String());
+	testPath.Append("testfile");
+	get_ref_for_path(testPath.Path(), &testRef);
+
+	testFile.SetTo(&testRef, B_READ_WRITE | B_CREATE_FILE);
+	status_t result = testFile.InitCheck();
+	if (result != B_OK) {
+		BString text = B_TRANSLATE(
+			"The cache folder '%folder%' isn't valid.\n"
+			"Reverting back to the default '/system/cache'.\n\n"
+			"Maybe the location is on a partition that isn't mounted or "
+			"mounted read-only?");
+		text.ReplaceFirst("%folder%", fFolder);
+
+		BAlert *alert = new BAlert("nonvalidcache", text.String(),
+			B_TRANSLATE("OK"));
+		alert->Go();
+
+		BEntry testEntry(&testRef);
+		testEntry.Remove();
+		testFile.Unset();
+
+		BPath cache;
+		find_directory(B_SYSTEM_CACHE_DIRECTORY, &cache);
+		fFolder = cache.Path();
+		dirtySettings = true;
+
+		return;
+	}
+	BEntry testEntry(&testRef);
+	testEntry.Remove();
+	testFile.Unset();
 }
