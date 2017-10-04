@@ -22,6 +22,7 @@
 #include <Button.h>
 #include <Catalog.h>
 #include <ControlLook.h>
+#include <File.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <MenuItem.h>
@@ -400,6 +401,36 @@ BurnWindow::_ChangeCacheFolder(BMessage* message)
 	BPath newFolder(&ref);
 	if (newFolder.InitCheck() != B_OK)
 		return;
+
+	// test if the new location is writable
+	BPath testPath;
+	BFile testFile;
+	entry_ref testRef;
+
+	testPath = newFolder;
+	testPath.Append("testfile");
+	get_ref_for_path(testPath.Path(), &testRef);
+
+	testFile.SetTo(&testRef, B_READ_WRITE | B_CREATE_FILE);
+	status_t result = testFile.InitCheck();
+	if (result != B_OK) {
+		BString text = B_TRANSLATE(
+			"Changing the cache folder to '%folder%' failed.\n\n"
+			"Maybe the location is read-only?");
+		text.ReplaceFirst("%folder%", newFolder.Path());
+
+		BAlert *alert = new BAlert("newcache", text.String(),
+			B_TRANSLATE("OK"));
+		alert->Go();
+
+		BEntry testEntry(&testRef);
+		testEntry.Remove();
+		testFile.Unset();
+		return;
+	}
+	BEntry testEntry(&testRef);
+	testEntry.Remove();
+	testFile.Unset();
 
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
