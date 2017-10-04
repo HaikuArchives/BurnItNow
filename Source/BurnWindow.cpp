@@ -112,6 +112,9 @@ BurnWindow::MessageReceived(BMessage* message)
 		case kSetCacheFolderMessage:
 			_SetCacheFolder();
 			break;
+		case kOpenCacheFolderMessage:
+			_OpenCacheFolder();
+			break;
 		case kChooseDirectoryMessage:
 			_ChangeCacheFolder(message);
 			break;
@@ -197,12 +200,15 @@ BurnWindow::_CreateMenuBar()
 		"Set cache folder" B_UTF8_ELLIPSIS),
 		new BMessage(kSetCacheFolderMessage)));
 
-	fCacheQuitItem = new BMenuItem(B_TRANSLATE("Clear cache on quit"),
-		new BMessage(kCacheQuitMessage));
-	settingsMenu->AddItem(fCacheQuitItem);
+	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE(
+		"Open cache folder"), new BMessage(kOpenCacheFolderMessage)));
 
 	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
 		new BMessage(kClearCacheMessage)));
+
+	fCacheQuitItem = new BMenuItem(B_TRANSLATE("Clear cache on quit"),
+		new BMessage(kCacheQuitMessage));
+	settingsMenu->AddItem(fCacheQuitItem);
 
 	BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
 	menuBar->AddItem(helpMenu);
@@ -356,6 +362,28 @@ BurnWindow::_SetCacheFolder()
 			new DirRefFilter(), true);
 	}
 	fOpenPanel->Show();
+}
+
+
+void
+BurnWindow::_OpenCacheFolder()
+{
+	BPath folder;
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(folder);
+		settings->Unlock();
+	}
+
+	entry_ref ref;
+	status_t status = get_ref_for_path(folder.Path(), &ref);
+	if (status != B_OK)
+		return;
+
+	BMessenger msgr("application/x-vnd.Be-TRAK");
+	BMessage refMsg(B_REFS_RECEIVED);
+	refMsg.AddRef("refs", &ref);
+	msgr.SendMessage(&refMsg);
 }
 
 

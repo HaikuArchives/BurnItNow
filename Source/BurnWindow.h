@@ -53,6 +53,7 @@ private:
 	BView*			_CreateDiskUsageView();
 
 	void			_SetCacheFolder();
+	void			_OpenCacheFolder();
 	void			_ChangeCacheFolder(BMessage* message);
 	bool			_CheckOldCacheFolder();
 	void 			_ClearCache();

@@ -30,6 +30,7 @@ enum {
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
 const int32 kSetCacheFolderMessage = 'Scfo';
+const int32 kOpenCacheFolderMessage = 'Ocfo';
 const int32 kCacheQuitMessage = 'Ccqt';
 const int32 kClearCacheMessage = 'Cche';
 const int32 kSpeedSliderMessage = 'Sped';
