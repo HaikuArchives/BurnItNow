@@ -314,6 +314,8 @@ CompilationDVDView::BuildISO()
 			B_TRANSLATE("OK")))->Go();
 		return;
 	}
+	if (fDirPath->InitCheck() != B_OK)
+		return;
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
@@ -356,6 +358,8 @@ CompilationDVDView::BurnDisc()
 			"First build an image to burn."), B_TRANSLATE("OK")))->Go();
 		return;
 	}
+	if (fImagePath->InitCheck() != B_OK)
+		return;
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;

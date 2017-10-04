@@ -322,7 +322,9 @@ CompilationAudioView::BurnDisc()
 			break;
 
 		BString track(sItem->GetPath());
-		fBurnerThread->AddArgument(track);
+		BPath test(track);
+		if (test.InitCheck() == B_OK)
+			fBurnerThread->AddArgument(track);
 	}
 	fBurnerThread->Run();
 }

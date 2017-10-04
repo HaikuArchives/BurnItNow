@@ -220,13 +220,13 @@ CompilationImageView::_OpenImage(BMessage* message)
 void
 CompilationImageView::_BurnImage()
 {
-	BString imageFile = fImagePath->Path();
-
 	if (fImagePath->Path() == NULL) {
 		(new BAlert("ChooseImageFirstAlert", B_TRANSLATE(
 			"First choose an image to burn."), B_TRANSLATE("OK")))->Go();
 		return;
 	}
+	if (fImagePath->InitCheck() != B_OK)
+		return;
 
 	if (fImageParserThread != NULL)
 		delete fImageParserThread;

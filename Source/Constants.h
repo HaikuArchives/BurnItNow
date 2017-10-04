@@ -12,6 +12,7 @@
 #define MAX_DEVICES 		5
 #define MAX_DRAG_HEIGHT		200.0
 #define ALPHA				170
+#define kControlPadding		(be_control_look->DefaultItemSpacing())
 
 // AudioCDs have a larger capacity than DataCDs
 enum {
@@ -96,7 +97,5 @@ static const char kCacheFileData[] = "burnitnow_data.iso";
 
 static const char kCopyright[] = "2010-2017";
 static const char kVersion[] = "v1.0";
-
-static const float kControlPadding = be_control_look->DefaultItemSpacing();
 
 #endif	// _CONSTANTS_H_
