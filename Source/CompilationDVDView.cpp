@@ -249,8 +249,10 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 
 	fPathView->SetText(fDirPath->Path());
 
-	if (fDiscLabel->TextView()->TextLength() == 0)
+	if (fDiscLabel->TextView()->TextLength() == 0) {
 		fDiscLabel->SetText(fDirPath->Leaf());
+		fDiscLabel->MakeFocus(true);
+	}
 
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
