@@ -79,9 +79,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 				.Add(audioScrollView)
 				.End()
 			.End()
-		.AddGroup(B_HORIZONTAL)
-			.Add(fSizeView)
-			.End();
+		.Add(fSizeView);
 
 	// Apply settings to splitview
 	float infoWeight;

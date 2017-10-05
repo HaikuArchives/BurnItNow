@@ -1,4 +1,4 @@
-1	English	application/x-vnd.haikuarchives.BurnItNow	544233544
+1	English	application/x-vnd.haikuarchives-BurnItNow	544233544
 Thank you	Application		Дякуємо
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tвід команди BurnItNow\n\tта\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow - це графічний інтерфейс для cdrecord, readcd та mkisofs.\n\nПовідомляйте про знайдені помилки або непрацюючі функції. Контактна інформація знаходиться в інструкції по використанню в меню 'Довідка'.
 Audio	Audio view		Аудіо

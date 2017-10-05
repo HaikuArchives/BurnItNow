@@ -1,5 +1,5 @@
 /*
- * Copyright 2016. All rights reserved.
+ * Copyright 2017. All rights reserved.
  * Distributed under the terms of the MIT license.
  *
  * Author:
@@ -21,6 +21,9 @@ PathView::PathView(const char* name, const char* text)
 	:
 	BStringView(name, text)
 {
+	SetFontSize(be_plain_font->Size() - 2);
+	SetHighColor(tint_color(ui_color(B_CONTROL_TEXT_COLOR), 0.7));
+	SetAlignment(B_ALIGN_RIGHT);
 }
 
 

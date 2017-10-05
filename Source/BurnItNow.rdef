@@ -4,7 +4,7 @@
  * Haiku Vector Icon by Michele Frau
  */
 
-resource app_signature "application/x-vnd.haikuarchives.BurnItNow";
+resource app_signature "application/x-vnd.haikuarchives-BurnItNow";
 
 resource app_flags B_EXCLUSIVE_LAUNCH;
 

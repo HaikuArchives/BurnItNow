@@ -1,4 +1,4 @@
-1	Spanish	application/x-vnd.haikuarchives.BurnItNow	544233544
+1	Spanish	application/x-vnd.haikuarchives-BurnItNow	544233544
 Thank you	Application		Gracias
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow es un frontend para  cdrecord, readcd y mkisofs.\n\nPor favor informe los errores que encuentre, o aquella funcionalidad que desee que sea incorporada en futuras versiones. La información de contacto se encuentra en las instrucciones de uso en el menu 'Ayuda'.
 Audio	Audio view		Audio

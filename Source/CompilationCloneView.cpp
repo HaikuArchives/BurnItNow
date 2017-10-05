@@ -74,9 +74,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 			.Add(fClonerInfoBox)
 			.Add(infoScrollView)
 			.End()
-		.AddGroup(B_HORIZONTAL)
-			.Add(fSizeView)
-			.End();
+		.Add(fSizeView);
 
 	_UpdateSizeBar();
 }

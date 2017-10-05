@@ -77,9 +77,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 			.Add(fImageInfoBox)
 			.Add(infoScrollView)
 			.End()
-		.AddGroup(B_HORIZONTAL)
-			.Add(fSizeView)
-			.End();
+		.Add(fSizeView);
 
 	_UpdateSizeBar();
 }

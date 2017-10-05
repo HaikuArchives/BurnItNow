@@ -14,6 +14,7 @@
 #include <FilePanel.h>
 #include <Menu.h>
 #include <SeparatorView.h>
+#include <TextControl.h>
 #include <TextView.h>
 #include <View.h>
 
@@ -46,6 +47,7 @@ private:
 	BurnWindow* 	windowParent;
 	BSeparatorView*	fBurnerInfoBox;
 	PathView*		fPathView;
+	BTextControl* 	fDiscLabel;
 	BButton*		fDVDButton;
 	BButton*		fImageButton;
 	BButton*		fBurnButton;

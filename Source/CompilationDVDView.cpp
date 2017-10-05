@@ -46,6 +46,11 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fPathView = new PathView("FolderStringView",
 		B_TRANSLATE("Folder: <none>"));
+	fPathView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+	fDiscLabel = new BTextControl("disclabel", B_TRANSLATE("Disc label:"), "",
+		NULL);
+	fDiscLabel->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnerInfoTextView = new BTextView("DVDInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(false);
@@ -75,22 +80,19 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
-		.AddGroup(B_HORIZONTAL)
-			.Add(fPathView)
-			.AddGlue()
-			.AddGroup(B_HORIZONTAL)
-				.Add(fDVDButton)
-				.Add(fImageButton)
-				.Add(fBurnButton)
-				.End()
+		.AddGrid(kControlPadding, 0, 0)
+			.Add(fDiscLabel, 0, 0)
+			.Add(fPathView, 0, 1)
+			.Add(fDVDButton, 1, 0)
+			.Add(fImageButton, 2, 0)
+			.Add(fBurnButton, 3, 0)
+			.SetColumnWeight(0, 10.f)
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fBurnerInfoBox)
 			.Add(infoScrollView)
 			.End()
-		.AddGroup(B_HORIZONTAL)
-			.Add(fSizeView)
-			.End();
+		.Add(fSizeView);
 
 	_UpdateSizeBar();
 }
@@ -246,6 +248,10 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 	}
 
 	fPathView->SetText(fDirPath->Path());
+
+	if (fDiscLabel->TextView()->TextLength() == 0)
+		fDiscLabel->SetText(fDirPath->Leaf());
+
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the DVD image",
@@ -334,13 +340,19 @@ CompilationDVDView::BuildISO()
 	if (fImagePath->InitCheck() != B_OK)
 		return;
 
+	BString discLabel;
+	if (fDiscLabel->TextView()->TextLength() == 0)
+		discLabel = fDirPath->Leaf();
+	else
+		discLabel = fDiscLabel->Text();
+
 	status_t ret = fImagePath->Append(kCacheFileDVD);
 	if (ret == B_OK) {
 		step = 1;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
 			->AddArgument("-V")
-			->AddArgument(fDirPath->Leaf())
+			->AddArgument(discLabel)
 			->AddArgument(fDVDMode)
 			->AddArgument("-o")
 			->AddArgument(fImagePath->Path())

@@ -47,6 +47,11 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 
 	fPathView = new PathView("FolderStringView",
 		B_TRANSLATE("Folder: <none>"));
+	fPathView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+	fDiscLabel = new BTextControl("disclabel", B_TRANSLATE("Disc label:"), "",
+		NULL);
+	fDiscLabel->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnerInfoTextView = new BTextView("DataInfoTextView");
 	fBurnerInfoTextView->SetWordWrap(false);
@@ -59,39 +64,32 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 		B_TRANSLATE("Choose folder"),
 		new BMessage(kChooseDirectoryMessage));
 	fChooseButton->SetTarget(this);
-	fChooseButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
-		B_SIZE_UNSET));
 
 	fImageButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
 		new BMessage(kBuildImageMessage));
 	fImageButton->SetTarget(this);
-	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
 		new BMessage(kBurnDiscMessage));
 	fBurnButton->SetTarget(this);
-	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fSizeView = new SizeView();
 
 	BLayoutBuilder::Group<>(dynamic_cast<BGroupLayout*>(GetLayout()))
 		.SetInsets(kControlPadding)
-		.AddGroup(B_HORIZONTAL)
-			.Add(fPathView)
-			.AddGlue()
-			.AddGroup(B_HORIZONTAL)
-				.Add(fChooseButton)
-				.Add(fImageButton)
-				.Add(fBurnButton)
-				.End()
+		.AddGrid(kControlPadding, 0, 0)
+			.Add(fDiscLabel, 0, 0)
+			.Add(fPathView, 0, 1)
+			.Add(fChooseButton, 1, 0)
+			.Add(fImageButton, 2, 0)
+			.Add(fBurnButton, 3, 0)
+			.SetColumnWeight(0, 10.f)
 			.End()
 		.AddGroup(B_VERTICAL)
 			.Add(fBurnerInfoBox)
 			.Add(infoScrollView)
 			.End()
-		.AddGroup(B_HORIZONTAL)
-			.Add(fSizeView)
-			.End();
+		.Add(fSizeView);
 
 	_UpdateSizeBar();
 }
@@ -202,6 +200,10 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 
 	fDirPath->SetTo(&entry);
 	fPathView->SetText(fDirPath->Path());
+
+	if (fDiscLabel->TextView()->TextLength() == 0)
+		fDiscLabel->SetText(fDirPath->Leaf());
+
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the image",
@@ -280,6 +282,12 @@ CompilationDataView::BuildISO()
 	if (fImagePath->InitCheck() != B_OK)
 		return;
 
+	BString discLabel;
+	if (fDiscLabel->TextView()->TextLength() == 0)
+		discLabel = fDirPath->Leaf();
+	else
+		discLabel = fDiscLabel->Text();
+
 	status_t ret = fImagePath->Append(kCacheFileData);
 	if (ret == B_OK) {
 		step = 1;	// flag we're building ISO
@@ -290,7 +298,7 @@ CompilationDataView::BuildISO()
 			->AddArgument("-joliet-long")
 			->AddArgument("-rock")
 			->AddArgument("-V")
-			->AddArgument(fDirPath->Leaf())
+			->AddArgument(discLabel)
 			->AddArgument("-o")
 			->AddArgument(fImagePath->Path())
 			->AddArgument(fDirPath->Path())
