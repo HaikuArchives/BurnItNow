@@ -28,6 +28,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankerThread(NULL)
 {
 	windowParent = &parent;
+	step = NONE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -179,6 +180,7 @@ CompilationCDRWView::_Blank()
 
 	fBlankerThread->AddArgument(device);
 	fBlankerThread->Run();
+	step = BLANKING;
 }
 
 
@@ -193,7 +195,16 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 		fBlankerInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if (message->FindInt32("thread_exit", &code) == B_OK)
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking complete",
 			"Status notification"));
+		step = NONE;
+	}
+}
+
+
+int32
+CompilationCDRWView::InProgress()
+{
+	return step;
 }

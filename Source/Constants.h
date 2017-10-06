@@ -27,6 +27,14 @@ enum {
 	DVD_ONLY
 };
 
+// flags which action is in progress
+enum {
+	NONE = 0,
+	BUILDING,
+	BURNING,
+	BLANKING
+};
+
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';

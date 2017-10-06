@@ -27,6 +27,7 @@ public:
 
 	virtual void	MessageReceived(BMessage* message);
 	virtual void	AttachedToWindow();
+	int32			InProgress();
 
 private:
 	void 			_CreateImage();

@@ -36,7 +36,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fFolderSize(0)
 {
 	windowParent = &parent;
-	step = 0;
+	step = NONE;
 
 //	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -224,23 +224,24 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 		fBurnerInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
+	if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == BUILDING)) {
 		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
 			"Status notification"));
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == 2)) {
+			&& (step == BURNING)) {
 		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fChooseButton->SetEnabled(true);
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 	}
 }
 
@@ -292,7 +293,7 @@ CompilationDataView::BuildISO()
 
 	status_t ret = fImagePath->Append(kCacheFileData);
 	if (ret == B_OK) {
-		step = 1;	// flag we're building ISO
+		step = BUILDING;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
 			->AddArgument("-iso-level 3")
@@ -323,7 +324,7 @@ CompilationDataView::BurnDisc()
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
 
-	step = 2;	// flag we're burning
+	step = BURNING;	// flag we're burning
 
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
@@ -354,4 +355,11 @@ CompilationDataView::BurnDisc()
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
+}
+
+
+int32
+CompilationDataView::InProgress()
+{
+	return step;
 }

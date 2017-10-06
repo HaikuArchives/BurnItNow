@@ -43,6 +43,8 @@ CompilationDataView* fCompilationDataView;
 CompilationAudioView* fCompilationAudioView;
 CompilationImageView* fCompilationImageView;
 CompilationDVDView* fCompilationDVDView;
+CompilationCDRWView* fCompilationCDRWView;
+CompilationCloneView* fCompilationCloneView;
 
 #pragma mark --Constructor/Destructor--
 
@@ -70,6 +72,19 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 bool
 BurnWindow::QuitRequested()
 {
+	BString text = _ActionInprogress();
+
+	if (text != "") {
+		text << B_TRANSLATE("\nDo you want to quit BurnItNow anyway (this "
+			"won't stop the action currently in progress...");
+		BAlert* alert = new BAlert("stopquit", text.String(),
+			B_TRANSLATE("Quit anyway"), B_TRANSLATE("Cancel"));
+
+		int32 button = alert->Go();
+		if (button)
+			return false;
+	}
+
 	if (fCacheQuitItem->IsMarked())
 		_ClearCache();
 
@@ -339,13 +354,15 @@ BurnWindow::_CreateTabView()
 	fCompilationAudioView = new CompilationAudioView(*this);
 	fCompilationImageView = new CompilationImageView(*this);
 	fCompilationDVDView = new CompilationDVDView(*this);
+	fCompilationCDRWView = new CompilationCDRWView(*this);
+	fCompilationCloneView = new CompilationCloneView(*this);
 
 	tabView->AddTab(fCompilationDataView);
 	tabView->AddTab(fCompilationAudioView);
 	tabView->AddTab(fCompilationImageView);
 	tabView->AddTab(fCompilationDVDView);
-	tabView->AddTab(new CompilationCDRWView(*this));
-	tabView->AddTab(new CompilationCloneView(*this));
+	tabView->AddTab(fCompilationCDRWView);
+	tabView->AddTab(fCompilationCloneView);
 
 	return tabView;
 }
@@ -580,6 +597,51 @@ BurnWindow::_UpdateSpeedSlider(BMessage* message)
 	}
 
 	fSpeedSlider->SetLabel(speedString.String());
+}
+
+
+#pragma mark -- Private Methods --
+
+BString
+BurnWindow::_ActionInprogress()
+{
+	BString text = "";
+
+	int32 dataProgress = fCompilationDataView->InProgress();
+	int32 audioProgress = fCompilationAudioView->InProgress();
+	int32 imageProgress = fCompilationImageView->InProgress();
+	int32 dvdProgress = fCompilationDVDView->InProgress();
+	int32 cdrwProgress	= fCompilationCDRWView->InProgress();
+	int32 cloneProgress = fCompilationCloneView->InProgress();
+
+	if ((dataProgress == NONE)
+		&& (audioProgress == NONE)
+		&& (imageProgress == NONE)
+		&& (dvdProgress == NONE)
+		&& (cloneProgress == NONE))
+			return text;
+
+	text = B_TRANSLATE("BurnItNow is currently busy.\n\n");
+
+	if ((dataProgress == BUILDING)
+		|| (dvdProgress == BUILDING)
+		|| (cloneProgress == BUILDING))
+		text << B_TRANSLATE("The building of an image is currently in "
+			"progress.\n");
+
+	if ((dataProgress == BURNING)
+		|| (audioProgress == BURNING)
+		|| (imageProgress == BURNING)
+		|| (dvdProgress == BURNING)
+		|| (cloneProgress == BURNING))
+		text << B_TRANSLATE("The burning of a disc is currently in "
+			"progress.\n");
+
+	if (cdrwProgress == BLANKING)
+		text << B_TRANSLATE("The blanking of a disc is currently in "
+			"progress.\n");
+
+	return text;
 }
 
 

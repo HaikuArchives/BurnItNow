@@ -35,7 +35,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fImagePath(new BPath())
 {
 	windowParent = &parent;
-	step = 0;
+	step = NONE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -272,7 +272,8 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 		fBurnerInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
+	if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == BUILDING)) {
 		BString infoText(fBurnerInfoTextView->Text());
 		// mkisofs has same errors for dvd-video and dvd-hybrid, but
 		// no error checking for dvd-audio, apparently
@@ -288,17 +289,17 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 			fImageButton->SetEnabled(false);
 			fBurnButton->SetEnabled(true);
 		}
-		step = 0;
+		step = NONE;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == 2)) {
+			&& (step == BURNING)) {
 		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fDVDButton->SetEnabled(true);
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 	}
 }
 
@@ -350,7 +351,7 @@ CompilationDVDView::BuildISO()
 
 	status_t ret = fImagePath->Append(kCacheFileDVD);
 	if (ret == B_OK) {
-		step = 1;	// flag we're building ISO
+		step = BUILDING;	// flag we're building ISO
 
 		fBurnerThread->AddArgument("mkisofs")
 			->AddArgument("-V")
@@ -378,7 +379,7 @@ CompilationDVDView::BurnDisc()
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
 
-	step = 2;	// flag we're burning
+	step = BURNING;	// flag we're burning
 
 	fBurnerInfoTextView->SetText(NULL);
 	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
@@ -409,4 +410,11 @@ CompilationDVDView::BurnDisc()
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
+}
+
+
+int32
+CompilationDVDView::InProgress()
+{
+	return step;
 }

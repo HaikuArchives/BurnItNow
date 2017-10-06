@@ -33,7 +33,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fImageParserThread(NULL)
 {
 	windowParent = &parent;
-	step = 0;
+	step = NONE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -202,7 +202,7 @@ CompilationImageView::_OpenImage(BMessage* message)
 		if (fImageParserThread != NULL)
 			delete fImageParserThread;
 
-		step = 1;	// flag we're opening ISO
+		step = BUILDING;	// flag we're opening ISO
 
 		fImageParserThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kParserMessage), this));
@@ -229,7 +229,7 @@ CompilationImageView::_BurnImage()
 	if (fImageParserThread != NULL)
 		delete fImageParserThread;
 
-	step = 2;	// flag we're burning
+	step = BURNING;	// flag we're burning
 
 	fImageInfoTextView->SetText(NULL);
 	fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT(
@@ -274,22 +274,23 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 		fImageInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
+	if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == BUILDING)) {
 		fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
 			"Status notification"));
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == 2)) {
+			&& (step == BURNING)) {
 		fImageInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 	}
 }
 
@@ -304,4 +305,11 @@ CompilationImageView::_UpdateSizeBar()
 
 	fSizeView->UpdateSizeDisplay(fileSize / 1024, DATA, CD_OR_DVD);
 	// size in KiB
+}
+
+
+int32
+CompilationImageView::InProgress()
+{
+	return step;
 }

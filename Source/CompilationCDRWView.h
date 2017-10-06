@@ -25,6 +25,7 @@ public:
 
 	virtual void	MessageReceived(BMessage* message);
 	virtual void	AttachedToWindow();
+	int32			InProgress();
 
 private:
 	void 			_Blank();
@@ -36,6 +37,7 @@ private:
 	BurnWindow*		windowParent;
 	BSeparatorView*	fBlankerInfoBox;
 	BMenu*			fBlankModeMenu;
+	int32			step;
 };
 
 

@@ -161,7 +161,7 @@ CompilationCloneView::_CreateImage()
 
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
-		step = 1;
+		step = BUILDING;
 
 		BString file = "f=";
 		file.Append(path.Path());
@@ -195,7 +195,7 @@ CompilationCloneView::_BurnImage()
 
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
-		step = 2;
+		step = BURNING;
 
 		fClonerInfoTextView->SetText(NULL);
 		fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
@@ -238,12 +238,13 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 		fClonerInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
+	if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (step == BUILDING)) {
 		BString result(fClonerInfoTextView->Text());
 
 		// Last output line always (except error) contains speed statistics
 		if (result.FindFirst(" kB/sec.") != B_ERROR) {
-			step = 0;
+			step = NONE;
 
 			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 				"Insert a blank disc and burn the image",
@@ -258,7 +259,7 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 				->AddArgument(device)
 				->Run();
 		} else {
-			step = 0;
+			step = NONE;
 			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 				"Failed to create image", "Status notification"));
 			return;
@@ -267,16 +268,16 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 		fImageButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == 2)) {
+			&& (step == BURNING)) {
 		fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fImageButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
-		step = 0;
+		step = NONE;
 	}
 }
 
@@ -302,4 +303,11 @@ CompilationCloneView::_UpdateSizeBar()
 	}
 	fSizeView->UpdateSizeDisplay(fileSize / 1024, DATA, CD_OR_DVD);
 	// size in KiB
+}
+
+
+int32
+CompilationCloneView::InProgress()
+{
+	return step;
 }

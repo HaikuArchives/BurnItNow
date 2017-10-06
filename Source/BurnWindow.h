@@ -62,6 +62,8 @@ private:
 	void 			_OpenHelp();
 	void 			_UpdateSpeedSlider(BMessage* message);
 
+	BString			_ActionInprogress();
+
 	BTabView* 		fTabView;
 
 	BMenu* 			fSessionMenu;

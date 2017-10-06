@@ -159,6 +159,7 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 				"Burning complete. Burn another disc?",
 				"Status notification"));
 			fBurnButton->SetEnabled(true);
+			step = NONE;
 	}
 }
 
@@ -325,4 +326,12 @@ CompilationAudioView::BurnDisc()
 			fBurnerThread->AddArgument(track);
 	}
 	fBurnerThread->Run();
+	step = BURNING;
+}
+
+
+int32
+CompilationAudioView::InProgress()
+{
+	return step;
 }

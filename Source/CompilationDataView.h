@@ -32,6 +32,7 @@ public:
 	
 	void			BuildISO();
 	void			BurnDisc();
+	int32			InProgress();
 
 private:
 	void 			_ChooseDirectory();

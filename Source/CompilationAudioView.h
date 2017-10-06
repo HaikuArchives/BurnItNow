@@ -35,6 +35,7 @@ public:
 	
 	void 			BurnDisc();
 	BSplitView*		fAudioSplitView;
+	int32			InProgress();
 
 private:
 	void 			_BurnerParserOutput(BMessage* message);
@@ -51,6 +52,7 @@ private:
 
 	AudioListView* 	fTrackList;
 	SizeView*		fSizeView;
+	int				step;
 };
 
 
