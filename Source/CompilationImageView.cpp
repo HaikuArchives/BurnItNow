@@ -271,7 +271,7 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fImageInfoTextView->Insert(data.String());
-		fImageInfoTextView->ScrollTo(0.0, 2000.0);
+		fImageInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {

@@ -269,7 +269,7 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 	if (message->FindString("line", &DVD) == B_OK) {
 		DVD << "\n";
 		fBurnerInfoTextView->Insert(DVD.String());
-		fBurnerInfoTextView->ScrollTo(0.0, 2000.0);
+		fBurnerInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {

@@ -235,7 +235,7 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fClonerInfoTextView->Insert(data.String());
-		fClonerInfoTextView->ScrollTo(0.0, 2000.0);
+		fClonerInfoTextView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {
