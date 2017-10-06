@@ -26,21 +26,29 @@ SizeView::SizeView()
 {
 	font_height	fontHeight;
 	be_plain_font->GetHeight(&fontHeight);
-	float height = fontHeight.ascent + fontHeight.descent + fontHeight.leading;
+	float height = 1.2 * (fontHeight.ascent + fontHeight.descent
+		+ fontHeight.leading);
 	fSizeBar = new SizeBar();
 	fSizeBar->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, height));
 	fSizeBar->SetExplicitMinSize(BSize(16.0, height));
 
-	fSizeInfo = new BStringView("sizeinfo", "");
-	fSizeInfo->SetAlignment(B_ALIGN_CENTER);
+	fSpaceLeft = new BStringView("spaceleft", "");
+	fSpaceLeft->SetAlignment(B_ALIGN_CENTER);
 	float maxWidth(StringWidth(B_TRANSLATE_COMMENT("5,000.12 MiB left (CD-900)",
 		"Just for layouting, the widest string for the size info")));
-	fSizeInfo->SetExplicitMinSize(BSize(maxWidth, B_SIZE_UNSET));
+	fSpaceLeft->SetExplicitMinSize(BSize(maxWidth, B_SIZE_UNSET));
+
+	fProjectSize = new BStringView("projectsize", "");
+	fProjectSize->SetAlignment(B_ALIGN_CENTER);
+	fProjectSize->SetFontSize(be_plain_font->Size() - 2);
+	fProjectSize->SetHighColor(tint_color(ui_color(B_CONTROL_TEXT_COLOR), 0.7));
 
 	BLayoutBuilder::Group<>(this, B_HORIZONTAL, kControlPadding)
-		.Add(fSizeInfo)
-		.Add(fSizeBar)
-		.End();
+		.AddGroup(B_VERTICAL, 0)
+			.Add(fSpaceLeft)
+			.Add(fProjectSize)
+			.End()
+		.Add(fSizeBar);
 }
 
 
@@ -56,19 +64,22 @@ SizeView::UpdateSizeDisplay(off_t fileSize, int32 mode,
 	fSizeBar->SetSizeModeMedium(fileSize, mode, medium);	
 
 	if (fileSize == 0) {
-		fSizeInfo->SetText(B_TRANSLATE("~ Empty project ~"));
-		fSizeInfo->SetToolTip("");
+		fSpaceLeft->SetText(B_TRANSLATE("~ Empty project ~"));
+		if (!fProjectSize->IsHidden())
+			fProjectSize->Hide();
 		return;
 	}
+
+	if (fProjectSize->IsHidden())
+		fProjectSize->Show();
 
 	char label[B_PATH_NAME_LENGTH];
 	string_for_size(fileSize * 1024, label, sizeof(label));	// size in bytes
 	BString space(B_TRANSLATE_COMMENT("Project size: %size%",
 		"Tooltip, don't translate the variable %size%"));
 	space.ReplaceFirst("%size%", label);
+	fProjectSize->SetText(space);
 
-	fSizeInfo->SetToolTip(space);
-	
 	off_t spaceLeft;
 	BString capacity;	
 	if (medium == DVD_ONLY) {
@@ -151,12 +162,12 @@ SizeView::UpdateSizeDisplay(off_t fileSize, int32 mode,
 			space.ReplaceFirst("%size%", label);
 		}
 	}
-	fSizeInfo->SetText(space);
+	fSpaceLeft->SetText(space);
 }
 
 
 void
 SizeView::ShowInfoText(const char* info)
 {
-	fSizeInfo->SetText(info);
+	fSpaceLeft->SetText(info);
 }

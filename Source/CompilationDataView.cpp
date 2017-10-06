@@ -221,7 +221,7 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		data << "\n";
 		fBurnerInfoTextView->Insert(data.String());
-		fBurnerInfoTextView->ScrollTo(0.0, 2000.0);
+		fBurnerInfoTextView->ScrollTo(0.0, Bounds().bottom);
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK) && (step == 1)) {

@@ -24,7 +24,8 @@ public:
 
 private:
 	SizeBar*		fSizeBar;
-	BStringView*	fSizeInfo;
+	BStringView*	fSpaceLeft;
+	BStringView*	fProjectSize;
 };
 
 #endif	// _SIZEVIEW_H_

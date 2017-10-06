@@ -29,6 +29,9 @@ SizeBar::SizeBar()
 	fMedium(0)
 {
 	SetViewColor(B_TRANSPARENT_COLOR);
+	SetToolTip(B_TRANSLATE("Medium capacities:\n"
+		"  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n"
+		"  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple"));
 }
 
 
