@@ -209,22 +209,22 @@ BurnWindow::_CreateMenuBar()
 	fileMenu->AddItem(new BMenuItem("Quit",
 		new BMessage(B_QUIT_REQUESTED), 'Q'));
 
-	BMenu* settingsMenu = new BMenu(B_TRANSLATE("Settings"));
-	menuBar->AddItem(settingsMenu);
+	BMenu* cacheMenu = new BMenu(B_TRANSLATE("Cache"));
+	menuBar->AddItem(cacheMenu);
 
-	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE(
+	cacheMenu->AddItem(new BMenuItem(B_TRANSLATE(
 		"Set cache folder" B_UTF8_ELLIPSIS),
 		new BMessage(kSetCacheFolderMessage)));
 
-	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE(
+	cacheMenu->AddItem(new BMenuItem(B_TRANSLATE(
 		"Open cache folder"), new BMessage(kOpenCacheFolderMessage)));
 
-	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
+	cacheMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
 		new BMessage(kClearCacheMessage)));
 
 	fCacheQuitItem = new BMenuItem(B_TRANSLATE("Clear cache on quit"),
 		new BMessage(kCacheQuitMessage));
-	settingsMenu->AddItem(fCacheQuitItem);
+	cacheMenu->AddItem(fCacheQuitItem);
 
 	BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
 	menuBar->AddItem(helpMenu);
