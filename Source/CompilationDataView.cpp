@@ -48,6 +48,9 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fPathView = new PathView("FolderStringView",
 		B_TRANSLATE("Folder: <none>"));
 	fPathView->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fPathView->SetExplicitMinSize(BSize(
+		be_plain_font->StringWidth("A really fairly long disc label goes here"),
+		B_SIZE_UNSET));
 
 	fDiscLabel = new BTextControl("disclabel", B_TRANSLATE("Disc label:"), "",
 		NULL);
