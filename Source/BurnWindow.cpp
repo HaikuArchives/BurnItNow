@@ -378,6 +378,7 @@ BurnWindow::_SetCacheFolder()
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
 			B_DIRECTORY_NODE, false, new BMessage(kChooseCacheFolderMessage),
 			new DirRefFilter(), true);
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose cache folder"));
 	}
 	fOpenPanel->Show();
 }

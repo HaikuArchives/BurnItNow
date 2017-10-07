@@ -157,10 +157,11 @@ void
 CompilationImageView::_ChooseImage()
 {
 	// TODO Create a RefFilter for the panel?
-	if (fOpenPanel == NULL)
+	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
 			NULL, B_FILE_NODE, false, NULL, new ImageRefFilter(), true);
-
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose image"));
+	}
 	fOpenPanel->Show();
 }
 

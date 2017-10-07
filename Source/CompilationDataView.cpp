@@ -163,6 +163,7 @@ CompilationDataView::_ChooseDirectory()
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
 			B_DIRECTORY_NODE, false, NULL, new DirRefFilter(), true);
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose data folder"));
 	}
 	fOpenPanel->Show();
 }
