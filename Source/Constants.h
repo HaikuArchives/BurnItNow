@@ -40,32 +40,27 @@ const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';
 const int32 kSetCacheFolderMessage = 'Scfo';
 const int32 kOpenCacheFolderMessage = 'Ocfo';
+const int32 kChooseCacheFolderMessage = 'Cusd';
 const int32 kCacheQuitMessage = 'Ccqt';
 const int32 kClearCacheMessage = 'Cche';
 const int32 kSpeedSliderMessage = 'Sped';
 
 const int32 kBurnDiscMessage = 'BURN';
-const int32 kBurnerMessage = 'Brnr';
+const int32 kChooseMessage = 'Chus';
 const int32 kBuildImageMessage = 'IMAG';
+
+const int32 kBurnerMessage = 'Brnr';
+const int32 kBlankMessage = 'Blnk';
+const int32 kBlankerMessage = 'Blkr';
+const int32 kClonerMessage = 'Clnr';
+const int32 kParserMessage = 'Scan';
 
 const int32 kDraggedItemMessage = 'drit';
 const int32 kDeleteItemMessage = 'deli';
 const int32 kPopupClosedMessage = 'popc';
 
-const int32 kBlankMessage = 'Blnk';
-const int32 kBlankerMessage = 'Blkr';
-
-const int32 kCreateImageMessage = 'Crat';
-const int32 kBurnImageMessage = 'Wrte';
-const int32 kClonerMessage = 'Clnr';
-const int32 kChooseDirectoryMessage = 'Cusd';
-
-const int32 kChooseImageMessage = 'Chus';
-const int32 kParserMessage = 'Scan';
-
 const int32 kCalculateSize = 'clcs';
 const int32 kSetFolderSize = 'stsz';
-const int32 kNoPathMessage = 'Noph';
 
 const uint32 kDeviceChangeMessage[MAX_DEVICES]
 	= { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };

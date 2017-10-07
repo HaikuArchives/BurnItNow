@@ -131,7 +131,7 @@ BurnWindow::MessageReceived(BMessage* message)
 		case kOpenCacheFolderMessage:
 			_OpenCacheFolder();
 			break;
-		case kChooseDirectoryMessage:
+		case kChooseCacheFolderMessage:
 			_ChangeCacheFolder(message);
 			break;
 		case kCacheQuitMessage:
@@ -217,7 +217,7 @@ BurnWindow::_CreateMenuBar()
 		new BMessage(kSetCacheFolderMessage)));
 
 	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE(
-		"Open cache folder"), new BMessage(kOpenCacheFolderMessage)));
+		"Open cache folder"), new BMessage(kChooseCacheFolderMessage)));
 
 	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
 		new BMessage(kClearCacheMessage)));
@@ -376,7 +376,7 @@ BurnWindow::_SetCacheFolder()
 {
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
-			B_DIRECTORY_NODE, false, new BMessage(kChooseDirectoryMessage),
+			B_DIRECTORY_NODE, false, new BMessage(kChooseCacheFolderMessage),
 			new DirRefFilter(), true);
 	}
 	fOpenPanel->Show();

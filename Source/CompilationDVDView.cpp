@@ -61,7 +61,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fDVDButton = new BButton("ChooseDVDButton",
 		B_TRANSLATE("Choose DVD folder"),
-		new BMessage(kChooseDirectoryMessage));
+		new BMessage(kChooseMessage));
 	fDVDButton->SetTarget(this);
 	fDVDButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
 		B_SIZE_UNSET));
@@ -128,8 +128,7 @@ void
 CompilationDVDView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kNoPathMessage:
-		case kChooseDirectoryMessage:
+		case kChooseMessage:
 			_ChooseDirectory();
 			break;
 		case kBurnDiscMessage:

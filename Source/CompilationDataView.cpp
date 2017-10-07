@@ -62,7 +62,7 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 
 	fChooseButton = new BButton("ChooseDirectoryButton",
 		B_TRANSLATE("Choose folder"),
-		new BMessage(kChooseDirectoryMessage));
+		new BMessage(kChooseMessage));
 	fChooseButton->SetTarget(this);
 
 	fImageButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
@@ -125,8 +125,7 @@ void
 CompilationDataView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kNoPathMessage:
-		case kChooseDirectoryMessage:
+		case kChooseMessage:
 			_ChooseDirectory();
 			break;
 		case kBurnDiscMessage:

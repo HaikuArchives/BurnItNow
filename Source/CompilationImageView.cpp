@@ -53,11 +53,11 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseImageButton",
-		B_TRANSLATE("Choose image"), new BMessage(kChooseImageMessage));
+		B_TRANSLATE("Choose image"), new BMessage(kChooseMessage));
 	fChooseButton->SetTarget(this);
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnImageMessage));
+		new BMessage(kBurnDiscMessage));
 	fBurnButton->SetTarget(this);
 
 	fSizeView = new SizeView();
@@ -111,11 +111,10 @@ void
 CompilationImageView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kNoPathMessage:
-		case kChooseImageMessage:
+		case kChooseMessage:
 			_ChooseImage();
 			break;
-		case kBurnImageMessage:
+		case kBurnDiscMessage:
 			_BurnImage();
 			break;
 		case kParserMessage:

@@ -50,12 +50,12 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fImageButton = new BButton("CreateImageButton",
-		B_TRANSLATE("Create image"), new BMessage(kCreateImageMessage));
+		B_TRANSLATE("Create image"), new BMessage(kBuildImageMessage));
 	fImageButton->SetTarget(this);
 	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn image"),
-		new BMessage(kBurnImageMessage));
+		new BMessage(kBurnDiscMessage));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fSizeView = new SizeView();
@@ -107,11 +107,11 @@ void
 CompilationCloneView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kCreateImageMessage:
+		case kBuildImageMessage:
 			_CreateImage();
 			_UpdateSizeBar();
 			break;
-		case kBurnImageMessage:
+		case kBurnDiscMessage:
 			_BurnImage();
 			break;
 		case kClonerMessage:
