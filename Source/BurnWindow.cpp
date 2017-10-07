@@ -217,7 +217,7 @@ BurnWindow::_CreateMenuBar()
 		new BMessage(kSetCacheFolderMessage)));
 
 	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE(
-		"Open cache folder"), new BMessage(kChooseCacheFolderMessage)));
+		"Open cache folder"), new BMessage(kOpenCacheFolderMessage)));
 
 	settingsMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
 		new BMessage(kClearCacheMessage)));
@@ -484,12 +484,13 @@ BurnWindow::_CheckOldCacheFolder()
 			B_TRANSLATE("Cancel"), B_TRANSLATE("Keep"), B_TRANSLATE("Delete"));
 
 		button = alert->Go();
-	}
-	if (button == 1)
-		button = true;
-	else if (button == 2) {
-		_ClearCache();
-		button = true;
+
+		if (button == 1)
+			button = true;
+		else if (button == 2) {
+			_ClearCache();
+			button = true;
+		}
 	}
 	return button;
 }
