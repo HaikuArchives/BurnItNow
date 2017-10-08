@@ -316,6 +316,7 @@ CompilationAudioView::BurnDisc()
 		fBurnerThread->AddArgument("fs=16m");
 
 	fBurnerThread->AddArgument(device)
+		->AddArgument("-gracetime=2")
 		->AddArgument("-audio")
 		->AddArgument("-copy")
 		->AddArgument("-pad")
