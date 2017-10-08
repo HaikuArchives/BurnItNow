@@ -6,6 +6,7 @@
 #include "CommandThread.h"
 #include "CompilationImageView.h"
 #include "Constants.h"
+#include "OutputParser.h"
 
 #include <Alert.h>
 #include <ControlLook.h>
@@ -269,9 +270,16 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		data << "\n";
-		fImageInfoTextView->Insert(data.String());
-		fImageInfoTextView->ScrollBy(0.0, 50.0);
+		BString text = fImageInfoTextView->Text();
+		bool modified = OutputParser(text, data);
+		if (modified) {
+			fImageInfoTextView->SetText(text);
+			fImageInfoTextView->ScrollTo(0.0, 1000000.0);
+		} else {
+			data << "\n";
+			fImageInfoTextView->Insert(data.String());
+			fImageInfoTextView->ScrollBy(0.0, 50.0);
+		}
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK)

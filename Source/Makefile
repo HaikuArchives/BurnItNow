@@ -42,6 +42,7 @@ SRCS = \
 	CompilationImageView.cpp \
 	DirRefFilter.cpp \
 	FolderSizeCount.cpp \
+	OutputParser.cpp \
 	PathView.cpp\
 	SizeBar.cpp \
 	SizeView.cpp

@@ -6,6 +6,7 @@
 #include "CommandThread.h"
 #include "CompilationCloneView.h"
 #include "Constants.h"
+#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -233,9 +234,16 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		data << "\n";
-		fClonerInfoTextView->Insert(data.String());
-		fClonerInfoTextView->ScrollBy(0.0, 50.0);
+		BString text = fClonerInfoTextView->Text();
+		bool modified = OutputParser(text, data);
+		if (modified) {
+			fClonerInfoTextView->SetText(text);
+			fClonerInfoTextView->ScrollTo(0.0, 1000000.0);
+		} else {
+			data << "\n";
+			fClonerInfoTextView->Insert(data.String());
+			fClonerInfoTextView->ScrollBy(0.0, 50.0);
+		}
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK)

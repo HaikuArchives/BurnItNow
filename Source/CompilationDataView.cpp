@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "DirRefFilter.h"
 #include "FolderSizeCount.h"
+#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -222,9 +223,16 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		data << "\n";
-		fBurnerInfoTextView->Insert(data.String());
-		fBurnerInfoTextView->ScrollBy(0.0, 50.0);
+		BString text = fBurnerInfoTextView->Text();
+		bool modified = OutputParser(text, data);
+		if (modified) {
+			fBurnerInfoTextView->SetText(text);
+			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
+		} else {
+			data << "\n";
+			fBurnerInfoTextView->Insert(data.String());
+			fBurnerInfoTextView->ScrollBy(0.0, 50.0);
+		}
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK)

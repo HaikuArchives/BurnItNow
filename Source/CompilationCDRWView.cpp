@@ -5,6 +5,7 @@
 #include "CommandThread.h"
 #include "CompilationCDRWView.h"
 #include "Constants.h"
+#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -190,9 +191,16 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		data << "\n";
-		fBlankerInfoTextView->Insert(data.String());
-		fBlankerInfoTextView->ScrollBy(0.0, 50.0);
+		BString text = fBlankerInfoTextView->Text();
+		bool modified = OutputParser(text, data);
+		if (modified) {
+			fBlankerInfoTextView->SetText(text);
+			fBlankerInfoTextView->ScrollTo(0.0, 1000000.0);
+		} else {
+			data << "\n";
+			fBlankerInfoTextView->Insert(data.String());
+			fBlankerInfoTextView->ScrollBy(0.0, 50.0);
+		}
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
