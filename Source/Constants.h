@@ -35,6 +35,13 @@ enum {
 	BLANKING
 };
 
+// flags from the OutputParser
+enum {
+	PERCENT = -1,
+	NOCHANGE = 0,
+	CHANGE
+};
+
 // Message constants
 const int32 kOpenHelpMessage = 'Help';
 const int32 kOpenWebsiteMessage = 'Site';

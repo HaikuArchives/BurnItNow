@@ -33,7 +33,10 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fOpenPanel(NULL),
 	fBurnerThread(NULL),
 	fDirPath(new BPath()),
-	fImagePath(new BPath())
+	fImagePath(new BPath()),
+	fNotification(B_PROGRESS_NOTIFICATION),
+	fProgress(0),
+	fETAtime("--")
 {
 	windowParent = &parent;
 	step = NONE;
@@ -269,14 +272,16 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		bool modified = OutputParser(text, data);
-		if (modified) {
-			fBurnerInfoTextView->SetText(text);
-			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-		} else {
+		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
 			fBurnerInfoTextView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fBurnerInfoTextView->SetText(text);
+			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
@@ -313,6 +318,17 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 
 
 void
+CompilationDVDView::_UpdateProgress()
+{
+//	BString content(B_TRANSLATE("Finished in %time%");
+//	content.ReplaceFirst("%time%", fETAtime);
+//	fNotification.SetContent(&content);
+	fNotification.SetProgress(fProgress);
+	fNotification.Send(5 * 1000000);	// 5 seconds
+}
+
+
+void
 CompilationDVDView::_UpdateSizeBar()
 {
 	fSizeView->UpdateSizeDisplay(fFolderSize, DATA, DVD_ONLY); // size in KiB
@@ -342,6 +358,9 @@ CompilationDVDView::BuildISO()
 		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
+
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetTitle(B_TRANSLATE("Building DVD image"));
 
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
@@ -395,6 +414,9 @@ CompilationDVDView::BurnDisc()
 	fDVDButton->SetEnabled(false);
 	fImageButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
+
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetTitle(B_TRANSLATE("Burning DVD"));
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());

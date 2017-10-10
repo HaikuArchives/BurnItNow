@@ -13,6 +13,7 @@
 #include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
+#include <Notification.h>
 #include <SeparatorView.h>
 #include <TextControl.h>
 #include <TextView.h>
@@ -40,6 +41,7 @@ private:
 	void 			_OpenDirectory(BMessage* message);
 	void			_GetFolderSize();
 	void 			_BurnerOutput(BMessage* message);
+	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
 	BFilePanel* 	fOpenPanel;
@@ -59,6 +61,10 @@ private:
 
 	int64			fFolderSize;
 	SizeView*		fSizeView;
+
+	BNotification	fNotification;
+	float			fProgress;
+	BString			fETAtime;
 };
 
 

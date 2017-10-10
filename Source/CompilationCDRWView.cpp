@@ -26,7 +26,10 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	BView(B_TRANSLATE("Blank RW-disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
-	fBlankerThread(NULL)
+	fBlankerThread(NULL),
+	fNotification(B_PROGRESS_NOTIFICATION),
+	fProgress(0),
+	fETAtime("--")
 {
 	windowParent = &parent;
 	step = NONE;
@@ -164,6 +167,9 @@ CompilationCDRWView::_Blank()
 	fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
 
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetTitle(B_TRANSLATE("Blanking disc"));
+
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
 	sessionConfig config = windowParent->GetSessionConfig();
@@ -192,14 +198,16 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBlankerInfoTextView->Text();
-		bool modified = OutputParser(text, data);
-		if (modified) {
-			fBlankerInfoTextView->SetText(text);
-			fBlankerInfoTextView->ScrollTo(0.0, 1000000.0);
-		} else {
+		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		if (modified == NOCHANGE) {
 			data << "\n";
 			fBlankerInfoTextView->Insert(data.String());
 			fBlankerInfoTextView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fBlankerInfoTextView->SetText(text);
+			fBlankerInfoTextView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
@@ -208,6 +216,17 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 			"Status notification"));
 		step = NONE;
 	}
+}
+
+
+void
+CompilationCDRWView::_UpdateProgress()
+{
+//	BString content(B_TRANSLATE("Finished in %time%");
+//	content.ReplaceFirst("%time%", fETAtime);
+//	fNotification.SetContent(&content);
+	fNotification.SetProgress(fProgress);
+	fNotification.Send(5 * 1000000);	// 5 seconds
 }
 
 

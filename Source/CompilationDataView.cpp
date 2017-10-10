@@ -34,7 +34,10 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fBurnerThread(NULL),
 	fDirPath(new BPath()),
 	fImagePath(new BPath()),
-	fFolderSize(0)
+	fFolderSize(0),
+	fNotification(B_PROGRESS_NOTIFICATION),
+	fProgress(0),
+	fETAtime("--")
 {
 	windowParent = &parent;
 	step = NONE;
@@ -224,14 +227,16 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		bool modified = OutputParser(text, data);
-		if (modified) {
-			fBurnerInfoTextView->SetText(text);
-			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-		} else {
+		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
 			fBurnerInfoTextView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fBurnerInfoTextView->SetText(text);
+			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
@@ -241,6 +246,11 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 			"Status notification"));
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
+
+		fNotification.SetMessageID("BurnItNow_Data");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Building finished!"));
+		fNotification.Send(5 * 1000000);	// 5 seconds
 
 		step = NONE;
 
@@ -252,10 +262,24 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
+		fNotification.SetMessageID("BurnItNow_Data");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		fNotification.Send(5 * 1000000);	// 5 seconds
+
 		step = NONE;
 	}
 }
 
+
+void
+CompilationDataView::_UpdateProgress()
+{
+	fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_Data");
+	fNotification.SetProgress(fProgress / 100);
+	fNotification.Send();
+}
 
 void
 CompilationDataView::_UpdateSizeBar()
@@ -295,6 +319,14 @@ CompilationDataView::BuildISO()
 	}
 	if (fImagePath->InitCheck() != B_OK)
 		return;
+
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Data");
+	fNotification.SetTitle(B_TRANSLATE("Building data image"));
+	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetProgress(0);
+	 // It may take a while for the building to start...
+	fNotification.Send(60 * 1000000LL);
 
 	BString discLabel;
 	if (fDiscLabel->TextView()->TextLength() == 0)
@@ -344,6 +376,12 @@ CompilationDataView::BurnDisc()
 	fImageButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Data");
+	fNotification.SetTitle(B_TRANSLATE("Burning data disc"));
+	fNotification.SetProgress(0);
+	fNotification.Send(60 * 1000000LL);
+
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
 	sessionConfig config = windowParent->GetSessionConfig();
@@ -373,5 +411,6 @@ CompilationDataView::BurnDisc()
 int32
 CompilationDataView::InProgress()
 {
+	printf("step: %i\n", step);
 	return step;
 }

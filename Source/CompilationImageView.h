@@ -12,6 +12,7 @@
 
 #include <Button.h>
 #include <FilePanel.h>
+#include <Notification.h>
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
@@ -45,6 +46,7 @@ private:
 	void 			_OpenImage(BMessage* message);
 	void 			_ImageParserOutput(BMessage* message);
 	void 			_ImageBurnerOutput(BMessage* message);
+	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
 	BFilePanel* 	fOpenPanel;
@@ -59,6 +61,10 @@ private:
 
 	int				step;
 	SizeView*		fSizeView;
+
+	BNotification	fNotification;
+	float			fProgress;
+	BString			fETAtime;
 };
 
 

@@ -12,7 +12,7 @@
 #include <SupportDefs.h>
 
 
-bool OutputParser(BString& text, BString newline);
-
+int32
+OutputParser(float& progress, BString& eta, BString& text, BString newline);
 
 #endif // OUTPUTPARSER_H

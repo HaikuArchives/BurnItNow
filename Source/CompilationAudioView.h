@@ -12,6 +12,7 @@
 
 #include <Button.h>
 #include <ListView.h>
+#include <Notification.h>
 #include <Path.h>
 #include <SeparatorView.h>
 #include <SplitView.h>
@@ -40,6 +41,7 @@ public:
 private:
 	void 			_BurnerParserOutput(BMessage* message);
 	void 			_AddTrack(BMessage* message);
+	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 	
 	CommandThread*	fBurnerThread;
@@ -52,6 +54,11 @@ private:
 
 	AudioListView* 	fTrackList;
 	SizeView*		fSizeView;
+
+	BNotification	fNotification;
+	float			fProgress;
+	BString			fETAtime;
+
 	int				step;
 };
 

@@ -31,7 +31,10 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
-	fImageParserThread(NULL)
+	fImageParserThread(NULL),
+	fNotification(B_PROGRESS_NOTIFICATION),
+	fProgress(0),
+	fETAtime("--")
 {
 	windowParent = &parent;
 	step = NONE;
@@ -238,6 +241,9 @@ CompilationImageView::_BurnImage()
 	fChooseButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetTitle(B_TRANSLATE("Burning image"));
+
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
 	sessionConfig config = windowParent->GetSessionConfig();
@@ -272,14 +278,16 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fImageInfoTextView->Text();
-		bool modified = OutputParser(text, data);
-		if (modified) {
-			fImageInfoTextView->SetText(text);
-			fImageInfoTextView->ScrollTo(0.0, 1000000.0);
-		} else {
+		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		if (modified == NOCHANGE) {
 			data << "\n";
 			fImageInfoTextView->Insert(data.String());
 			fImageInfoTextView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fImageInfoTextView->SetText(text);
+			fImageInfoTextView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
@@ -301,6 +309,17 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 		step = NONE;
 	}
+}
+
+
+void
+CompilationImageView::_UpdateProgress()
+{
+//	BString content(B_TRANSLATE("Finished in %time%");
+//	content.ReplaceFirst("%time%", fETAtime);
+//	fNotification.SetContent(&content);
+	fNotification.SetProgress(fProgress);
+	fNotification.Send(5 * 1000000);	// 5 seconds
 }
 
 

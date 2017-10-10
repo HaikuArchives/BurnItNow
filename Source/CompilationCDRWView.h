@@ -10,6 +10,7 @@
 
 #include <FilePanel.h>
 #include <Menu.h>
+#include <Notification.h>
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
@@ -30,6 +31,7 @@ public:
 private:
 	void 			_Blank();
 	void 			_BlankerParserOutput(BMessage* message);
+	void			_UpdateProgress();
 
 	BFilePanel*		fOpenPanel;
 	CommandThread*	fBlankerThread;
@@ -37,6 +39,11 @@ private:
 	BurnWindow*		windowParent;
 	BSeparatorView*	fBlankerInfoBox;
 	BMenu*			fBlankModeMenu;
+
+	BNotification	fNotification;
+	float			fProgress;
+	BString			fETAtime;
+
 	int32			step;
 };
 
