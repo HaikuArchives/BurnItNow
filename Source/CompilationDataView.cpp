@@ -8,7 +8,6 @@
 #include "Constants.h"
 #include "DirRefFilter.h"
 #include "FolderSizeCount.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -37,7 +36,8 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fFolderSize(0),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 	step = NONE;
@@ -227,7 +227,7 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
@@ -250,7 +250,7 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 		fNotification.SetMessageID("BurnItNow_Data");
 		fNotification.SetProgress(100);
 		fNotification.SetContent(B_TRANSLATE("Building finished!"));
-		fNotification.Send(5 * 1000000);	// 5 seconds
+		fNotification.Send();
 
 		step = NONE;
 
@@ -265,9 +265,10 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 		fNotification.SetMessageID("BurnItNow_Data");
 		fNotification.SetProgress(100);
 		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
-		fNotification.Send(5 * 1000000);	// 5 seconds
+		fNotification.Send();
 
 		step = NONE;
+		fParser.Reset();
 	}
 }
 
@@ -275,9 +276,12 @@ CompilationDataView::_BurnerOutput(BMessage* message)
 void
 CompilationDataView::_UpdateProgress()
 {
-	fNotification.SetContent(fETAtime);
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
 	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetProgress(fProgress / 100);
+	fNotification.SetProgress(fProgress);
 	fNotification.Send();
 }
 
@@ -400,17 +404,19 @@ CompilationDataView::BurnDisc()
 	fBurnerThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
 		->AddArgument("-gracetime=2")
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
+
+	fParser.Reset();
 }
 
 
 int32
 CompilationDataView::InProgress()
 {
-	printf("step: %i\n", step);
 	return step;
 }

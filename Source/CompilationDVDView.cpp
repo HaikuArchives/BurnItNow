@@ -8,7 +8,6 @@
 #include "Constants.h"
 #include "DirRefFilter.h"
 #include "FolderSizeCount.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -36,9 +35,11 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fImagePath(new BPath()),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
+
 	step = NONE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
@@ -272,7 +273,7 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
@@ -295,6 +296,12 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 				"Unable to create a DVD image",
 				"Status notification"));
+
+			fNotification.SetMessageID("BurnItNow_DVD");
+			fNotification.SetProgress(100);
+			fNotification.SetContent(B_TRANSLATE("Unable to create DVD image"));
+			fNotification.Send();
+
 			fBurnButton->SetEnabled(false);
 		} else {
 			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
@@ -312,7 +319,13 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 		fImageButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
+		fNotification.SetMessageID("BurnItNow_DVD");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		fNotification.Send();
+
 		step = NONE;
+		fParser.Reset();
 	}
 }
 
@@ -320,11 +333,13 @@ CompilationDVDView::_BurnerOutput(BMessage* message)
 void
 CompilationDVDView::_UpdateProgress()
 {
-//	BString content(B_TRANSLATE("Finished in %time%");
-//	content.ReplaceFirst("%time%", fETAtime);
-//	fNotification.SetContent(&content);
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_DVD");
 	fNotification.SetProgress(fProgress);
-	fNotification.Send(5 * 1000000);	// 5 seconds
+	fNotification.Send();
 }
 
 
@@ -360,7 +375,12 @@ CompilationDVDView::BuildISO()
 		new BInvoker(new BMessage(kBurnerMessage), this));
 
 	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_DVD");
 	fNotification.SetTitle(B_TRANSLATE("Building DVD image"));
+	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetProgress(0);
+	 // It may take a while for the building to start...
+	fNotification.Send(60 * 1000000LL);
 
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
@@ -416,7 +436,10 @@ CompilationDVDView::BurnDisc()
 	fBurnButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_DVD");
 	fNotification.SetTitle(B_TRANSLATE("Burning DVD"));
+	fNotification.SetProgress(0);
+	fNotification.Send(60 * 1000000LL);
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
@@ -436,11 +459,14 @@ CompilationDVDView::BurnDisc()
 	fBurnerThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
 		->AddArgument("-gracetime=2")
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
+
+	fParser.Reset();
 }
 
 

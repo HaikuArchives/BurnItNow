@@ -6,7 +6,6 @@
 #include "CommandThread.h"
 #include "CompilationImageView.h"
 #include "Constants.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <ControlLook.h>
@@ -34,7 +33,8 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fImageParserThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 	step = NONE;
@@ -242,7 +242,10 @@ CompilationImageView::_BurnImage()
 	fBurnButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Image");
 	fNotification.SetTitle(B_TRANSLATE("Burning image"));
+	fNotification.SetProgress(0);
+	fNotification.Send(60 * 1000000LL);
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
@@ -263,11 +266,14 @@ CompilationImageView::_BurnImage()
 	fImageParserThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
 		->AddArgument("-gracetime=2")
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
 		->Run();
+
+	fParser.Reset();
 }
 
 
@@ -278,7 +284,7 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fImageInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fImageInfoTextView->Insert(data.String());
@@ -307,7 +313,13 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
+		fNotification.SetMessageID("BurnItNow_Image");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		fNotification.Send();
+
 		step = NONE;
+		fParser.Reset();
 	}
 }
 
@@ -315,11 +327,13 @@ CompilationImageView::_ImageParserOutput(BMessage* message)
 void
 CompilationImageView::_UpdateProgress()
 {
-//	BString content(B_TRANSLATE("Finished in %time%");
-//	content.ReplaceFirst("%time%", fETAtime);
-//	fNotification.SetContent(&content);
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_Image");
 	fNotification.SetProgress(fProgress);
-	fNotification.Send(5 * 1000000);	// 5 seconds
+	fNotification.Send();
 }
 
 

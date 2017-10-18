@@ -7,6 +7,7 @@
 
 
 #include "BurnWindow.h"
+#include "OutputParser.h"
 #include "PathView.h"
 #include "SizeView.h"
 
@@ -65,6 +66,7 @@ private:
 	BNotification	fNotification;
 	float			fProgress;
 	BString			fETAtime;
+	OutputParser	fParser;
 };
 
 

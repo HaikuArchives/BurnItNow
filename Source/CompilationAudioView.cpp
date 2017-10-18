@@ -32,7 +32,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fBurnerThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 
@@ -154,7 +155,7 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBurnerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBurnerInfoTextView->Insert(data.String());
@@ -168,11 +169,18 @@ CompilationAudioView::_BurnerParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-			fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-				"Burning complete. Burn another disc?",
-				"Status notification"));
-			fBurnButton->SetEnabled(true);
-			step = NONE;
+		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			"Burning complete. Burn another disc?",
+			"Status notification"));
+		fBurnButton->SetEnabled(true);
+
+		fNotification.SetMessageID("BurnItNow_Audio");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		fNotification.Send();
+
+		step = NONE;
+		fParser.Reset();
 	}
 }
 
@@ -283,11 +291,13 @@ CompilationAudioView::_UpdateSizeBar()
 void
 CompilationAudioView::_UpdateProgress()
 {
-//	BString content(B_TRANSLATE("Finished in %time%");
-//	content.ReplaceFirst("%time%", fETAtime);
-//	fNotification.SetContent(&content);
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_Audio");
 	fNotification.SetProgress(fProgress);
-	fNotification.Send(5 * 1000000);	// 5 seconds
+	fNotification.Send();
 }
 
 
@@ -312,6 +322,14 @@ CompilationAudioView::BurnDisc()
 	device.Append(windowParent->GetSelectedDevice().number.String());
 	sessionConfig config = windowParent->GetSessionConfig();
 
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Audio");
+	fNotification.SetTitle(B_TRANSLATE("Building data image"));
+	fNotification.SetContent(B_TRANSLATE("Burning Audio CD" B_UTF8_ELLIPSIS));
+	fNotification.SetProgress(0);
+	 // It may take a while for the burning to start...
+	fNotification.Send(60 * 1000000LL);
+
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnerMessage), this));
 
@@ -335,6 +353,7 @@ CompilationAudioView::BurnDisc()
 		fBurnerThread->AddArgument("fs=16m");
 
 	fBurnerThread->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
 		->AddArgument("-gracetime=2")
 		->AddArgument("-audio")
 		->AddArgument("-copy")
@@ -354,6 +373,7 @@ CompilationAudioView::BurnDisc()
 			fBurnerThread->AddArgument(track);
 	}
 	fBurnerThread->Run();
+	fParser.Reset();
 	step = BURNING;
 }
 

@@ -8,6 +8,7 @@
 
 #include "AudioList.h"
 #include "BurnWindow.h"
+#include "OutputParser.h"
 #include "SizeView.h"
 
 #include <Button.h>
@@ -58,6 +59,7 @@ private:
 	BNotification	fNotification;
 	float			fProgress;
 	BString			fETAtime;
+	OutputParser	fParser;
 
 	int				step;
 };

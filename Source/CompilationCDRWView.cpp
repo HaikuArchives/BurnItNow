@@ -5,7 +5,6 @@
 #include "CommandThread.h"
 #include "CompilationCDRWView.h"
 #include "Constants.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Button.h>
@@ -29,7 +28,8 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	fBlankerThread(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
-	fETAtime("--")
+	fETAtime("--"),
+	fParser(fProgress, fETAtime)
 {
 	windowParent = &parent;
 	step = NONE;
@@ -168,7 +168,10 @@ CompilationCDRWView::_Blank()
 		B_UTF8_ELLIPSIS, "Status notification"));
 
 	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Blank");
 	fNotification.SetTitle(B_TRANSLATE("Blanking disc"));
+	fNotification.SetProgress(0);
+	fNotification.Send();
 
 	BString device("dev=");
 	device.Append(windowParent->GetSelectedDevice().number.String());
@@ -187,6 +190,8 @@ CompilationCDRWView::_Blank()
 
 	fBlankerThread->AddArgument(device);
 	fBlankerThread->Run();
+
+	fParser.Reset();
 	step = BLANKING;
 }
 
@@ -198,7 +203,7 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fBlankerInfoTextView->Text();
-		int32 modified = OutputParser(fProgress, fETAtime, text, data);
+		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fBlankerInfoTextView->Insert(data.String());
@@ -212,9 +217,16 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking complete",
+		fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking finished",
 			"Status notification"));
+
+		fNotification.SetMessageID("BurnItNow_Blank");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Blanking finished!"));
+		fNotification.Send();
+
 		step = NONE;
+		fParser.Reset();
 	}
 }
 
@@ -222,11 +234,13 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 void
 CompilationCDRWView::_UpdateProgress()
 {
-//	BString content(B_TRANSLATE("Finished in %time%");
-//	content.ReplaceFirst("%time%", fETAtime);
-//	fNotification.SetContent(&content);
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_Clone");
 	fNotification.SetProgress(fProgress);
-	fNotification.Send(5 * 1000000);	// 5 seconds
+	fNotification.Send();
 }
 
 

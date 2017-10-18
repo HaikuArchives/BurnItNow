@@ -5,6 +5,7 @@
  * Author:
  *	Humdinger, humdingerb@gmail.com
  */
+
 #ifndef OUTPUTPARSER_H
 #define OUTPUTPARSER_H
 
@@ -12,7 +13,20 @@
 #include <SupportDefs.h>
 
 
-int32
-OutputParser(float& progress, BString& eta, BString& text, BString newline);
+class OutputParser {
+public:
+				OutputParser(float& noteProgress, BString& noteEta);
+	virtual		~OutputParser();
+
+	int32		ParseLine(BString& text, BString newline);
+	void		Reset();
+
+private:
+	float&		progress;
+	BString& 	eta;
+
+	bigtime_t	fLastTime;
+	float		fLastSize;
+};
 
 #endif // OUTPUTPARSER_H

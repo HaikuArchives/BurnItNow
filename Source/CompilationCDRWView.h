@@ -7,6 +7,7 @@
 
 
 #include "BurnWindow.h"
+#include "OutputParser.h"
 
 #include <FilePanel.h>
 #include <Menu.h>
@@ -43,6 +44,7 @@ private:
 	BNotification	fNotification;
 	float			fProgress;
 	BString			fETAtime;
+	OutputParser	fParser;
 
 	int32			step;
 };
