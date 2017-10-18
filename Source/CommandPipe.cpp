@@ -282,7 +282,7 @@ BCommandPipe::ReadLines(FILE* file, LineReader* lineReader)
 		if (c != 255)
 			line << (char)c;
 
-		if (c == '\n') {
+		if (c == '\n' || c == '\r') {
 			status_t ret = lineReader->ReadLine(line);
 			if (ret != B_OK)
 				return ret;
