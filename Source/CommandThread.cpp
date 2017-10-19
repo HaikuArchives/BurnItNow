@@ -2,6 +2,7 @@
  * Copyright 2010-2012, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+
 #include "CommandThread.h"
 #include "CommandPipe.h"
 

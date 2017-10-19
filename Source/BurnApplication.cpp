@@ -10,6 +10,7 @@
 #include <Catalog.h>
 #include <TextView.h>
 
+#include <stdlib.h>
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Application"
@@ -27,6 +28,8 @@ BurnApplication::BurnApplication()
 void
 BurnApplication::ReadyToRun()
 {
+	putenv("LC_ALL=C");	// force English environment for parsing output
+
 	BRect rect = fSettings.GetWindowPosition();
 	fWindow = new BurnWindow(rect, B_TRANSLATE_SYSTEM_NAME("BurnItNow"));
 
