@@ -32,9 +32,10 @@ public:
 	int32			InProgress();
 
 private:
-	void 			_BurnImage();
-	void 			_CreateImage();
-	void 			_CloneOutput(BMessage* message);
+	void 			_Build();
+	void 			_BuildOutput(BMessage* message);
+	void 			_Burn();
+	void 			_BurnOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 

@@ -38,7 +38,7 @@ public:
 
 private:
 	void 			_AddTrack(BMessage* message);
-	void 			_BurnDisc();
+	void 			_Burn();
 	void 			_BurnOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();

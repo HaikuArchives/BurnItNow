@@ -5,9 +5,9 @@
  * Author:
  *	Humdinger, humdingerb@gmail.com
  */
-
-#include "Constants.h"
-#include "OutputParser.h"
+#include <parsedate.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <Catalog.h>
 #include <DateTimeFormat.h>
@@ -15,9 +15,8 @@
 #include <StringList.h>
 #include <TimeFormat.h>
 
-#include <parsedate.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "Constants.h"
+#include "OutputParser.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Parser"
@@ -37,49 +36,18 @@ OutputParser::~OutputParser()
 
 
 int32
-OutputParser::ParseLine(BString& text, BString newline)
+OutputParser::ParseBlankLine(BString& text, BString newline)
+{
+	return NOCHANGE;
+}
+
+
+int32
+OutputParser::ParseCdrecordLine(BString& text, BString newline)
 {
 	int32 resultNewline;
 	int32 resultText;
 printf("New line: %s\n", newline.String());
-	// detect progress of makeisofs
-	resultNewline = newline.FindFirst("done, estimate finish");
-	if (resultNewline != B_ERROR) {
-		// get the percentage
-		BStringList percentList;
-		newline.Split("%", true, percentList);
-		printf("mkisofs percentage: %s\n", percentList.StringAt(0).String());
-		progress = atof(percentList.StringAt(0)) / 100;
-
-		// get the ETA
-		BString when;
-		int32 charCount = newline.FindFirst("finish");
-		newline.CopyInto(when, charCount + 6, newline.CountChars());
-
-		const char* dateformat("A B d H:M:S Y");
-		set_dateformats(&dateformat);
-		bigtime_t finishTime = parsedate(when, -1);
-		bigtime_t now = (bigtime_t)real_time_clock_usecs();
-
-		BString duration;
-		BDurationFormat formatter;
-		// add 1 sec, otherwise the last second of the progress isn't shown...
-		formatter.Format(duration, now - 1000000LL, finishTime * 1000000LL);
-		eta = B_TRANSLATE("Finished in %duration%");
-		eta.ReplaceFirst("%duration%", duration);
-
-		// print on top of the last line (not if this is the first progress line)
-		resultText = text.FindFirst("done, estimate finish");
-		if (resultText != B_ERROR) {
-			int32 offset = text.FindLast("\n");
-			if (offset != B_ERROR)
-				text.Remove(offset, text.CountChars() - offset);
-		}
-		text << "\n" << newline;
-		return PERCENT;
-	}
-
-	// detect progress of cdrecord -v
 	resultNewline = newline.FindFirst(" MB written (fifo");
 	if (resultNewline != B_ERROR) {
 		// calculate percentage
@@ -126,6 +94,66 @@ printf("New line: %s\n", newline.String());
 //		return CHANGE;
 //	}
 
+	return NOCHANGE;
+}
+
+
+int32
+OutputParser::ParseIsoinfo(BString& text, BString newline)
+{
+	return NOCHANGE;
+}
+
+
+int32
+OutputParser::ParseMkisofsLine(BString& text, BString newline)
+{
+	int32 resultNewline;
+	int32 resultText;
+printf("New line: %s\n", newline.String());
+	// detect progress of makeisofs
+	resultNewline = newline.FindFirst("done, estimate finish");
+	if (resultNewline != B_ERROR) {
+		// get the percentage
+		BStringList percentList;
+		newline.Split("%", true, percentList);
+		printf("mkisofs percentage: %s\n", percentList.StringAt(0).String());
+		progress = atof(percentList.StringAt(0)) / 100;
+
+		// get the ETA
+		BString when;
+		int32 charCount = newline.FindFirst("finish");
+		newline.CopyInto(when, charCount + 6, newline.CountChars());
+
+		const char* dateformat("A B d H:M:S Y");
+		set_dateformats(&dateformat);
+		bigtime_t finishTime = parsedate(when, -1);
+		bigtime_t now = (bigtime_t)real_time_clock_usecs();
+
+		BString duration;
+		BDurationFormat formatter;
+		// add 1 sec, otherwise the last second of the progress isn't shown...
+		formatter.Format(duration, now - 1000000LL, finishTime * 1000000LL);
+		eta = B_TRANSLATE("Finished in %duration%");
+		eta.ReplaceFirst("%duration%", duration);
+
+		// print on top of the last line (not if this is the first progress line)
+		resultText = text.FindFirst("done, estimate finish");
+		if (resultText != B_ERROR) {
+			int32 offset = text.FindLast("\n");
+			if (offset != B_ERROR)
+				text.Remove(offset, text.CountChars() - offset);
+		}
+		text << "\n" << newline;
+		return PERCENT;
+	}
+	return NOCHANGE;
+}
+
+
+int32
+OutputParser::ParseReadcdLine(BString& text, BString newline)
+{
 	return NOCHANGE;
 }
 

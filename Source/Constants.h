@@ -52,15 +52,18 @@ const int32 kCacheQuit = 'Ccqt';
 const int32 kClearCache = 'Cche';
 const int32 kSpeedSlider = 'Sped';
 
-const int32 kBurnDisc = 'BURN';
-const int32 kChoose = 'Chus';
-const int32 kBuildImage = 'IMAG';
+const int32 kChooseButton = 'ChoB';
 
-const int32 kBurner = 'Brnr';
-const int32 kBlank = 'Blnk';
-const int32 kBlanker = 'Blkr';
-const int32 kCloner = 'Clnr';
-const int32 kParser = 'Scan';
+const int32 kBurnButton = 'BurB';
+const int32 kBurnOutput = 'BrnO';
+
+const int32 kBuildButton = 'BilB';
+const int32 kBuildOutput = 'BilO';
+
+const int32 kBlankButton = 'BlnB';
+const int32 kBlankOutput = 'BlnO';
+
+const int32 kParser = 'Scan';	// used?
 
 const int32 kDraggedItem = 'drit';
 const int32 kDeleteItem = 'deli';

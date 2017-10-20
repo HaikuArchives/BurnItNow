@@ -67,18 +67,18 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fDVDButton = new BButton("ChooseDVDButton",
 		B_TRANSLATE("Choose DVD folder"),
-		new BMessage(kChoose));
+		new BMessage(kChooseButton));
 	fDVDButton->SetTarget(this);
 	fDVDButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
 		B_SIZE_UNSET));
 		
 	fImageButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
-	    new BMessage(kBuildImage));
+	    new BMessage(kBuildButton));
 	fImageButton->SetTarget(this);
 	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnDisc));
+		new BMessage(kBurnButton));
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
@@ -134,14 +134,20 @@ void
 CompilationDVDView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kChoose:
+		case kChooseButton:
 			_ChooseDirectory();
 			break;
-		case kBurnDisc:
-			_BurnDisc();
+		case kBuildButton:
+			_Build();
 			break;
-		case kBuildImage:
-			_BuildISO();
+		case kBuildOutput:
+			_BuildOutput(message);
+			break;
+		case kBurnButton:
+			_Burn();
+			break;
+		case kBurnOutput:
+			_BurnOutput(message);
 			break;
 		case B_REFS_RECEIVED:
 		{
@@ -153,10 +159,9 @@ CompilationDVDView::MessageReceived(BMessage* message)
 		{
 			message->FindInt64("foldersize", &fFolderSize);
 			_UpdateSizeBar();
-		}
-		case kBurner:
-			_BurnOutput(message);
 			break;
+		}
+
 		default:
 			BView::MessageReceived(message);
 	}
@@ -177,7 +182,7 @@ CompilationDVDView::InProgress()
 
 
 void
-CompilationDVDView::_BuildISO()
+CompilationDVDView::_Build()
 {
 	if (fDirPath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
@@ -195,7 +200,7 @@ CompilationDVDView::_BuildISO()
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
 	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBurner), this));
+		new BInvoker(new BMessage(kBuildOutput), this));
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_DVD");
@@ -236,7 +241,54 @@ CompilationDVDView::_BuildISO()
 
 
 void
-CompilationDVDView::_BurnDisc()
+CompilationDVDView::_BuildOutput(BMessage* message)
+{
+	BString data;
+
+	if (message->FindString("line", &data) == B_OK) {
+		BString text = fOutputView->Text();
+		int32 modified = fParser.ParseMkisofsLine(text, data);
+		if (modified == NOCHANGE) {
+			data << "\n";
+			fOutputView->Insert(data.String());
+			fOutputView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fOutputView->SetText(text);
+			fOutputView->ScrollTo(0.0, 1000000.0);
+		}
+	}
+	int32 code = -1;
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
+		BString infoText(fOutputView->Text());
+		// mkisofs has same errors for dvd-video and dvd-hybrid, but
+		// no error checking for dvd-audio, apparently
+		if (infoText.FindFirst(
+			"mkisofs: Unable to make a DVD-Video image.\n") != B_ERROR) {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Unable to create a DVD image",
+				"Status notification"));
+
+			fNotification.SetMessageID("BurnItNow_DVD");
+			fNotification.SetProgress(100);
+			fNotification.SetContent(B_TRANSLATE("Unable to create DVD image"));
+			fNotification.Send();
+
+			fBurnButton->SetEnabled(false);
+		} else {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
+				"Status notification"));
+			fImageButton->SetEnabled(false);
+			fBurnButton->SetEnabled(true);
+		}
+		fAction = IDLE;
+	}
+}
+
+
+void
+CompilationDVDView::_Burn()
 {
 	if (fImagePath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert", B_TRANSLATE(
@@ -269,7 +321,7 @@ CompilationDVDView::_BurnDisc()
 	sessionConfig config = fWindowParent->GetSessionConfig();
 
 	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBurner), this));
+		new BInvoker(new BMessage(kBurnOutput), this));
 	fBurnerThread->AddArgument("cdrecord");
 
 	if (config.simulation)
@@ -300,7 +352,7 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
-		int32 modified = fParser.ParseLine(text, data);
+		int32 modified = fParser.ParseCdrecordLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fOutputView->Insert(data.String());
@@ -313,33 +365,7 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 		}
 	}
 	int32 code = -1;
-	if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (fAction == BUILDING)) {
-		BString infoText(fOutputView->Text());
-		// mkisofs has same errors for dvd-video and dvd-hybrid, but
-		// no error checking for dvd-audio, apparently
-		if (infoText.FindFirst(
-			"mkisofs: Unable to make a DVD-Video image.\n") != B_ERROR) {
-			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-				"Unable to create a DVD image",
-				"Status notification"));
-
-			fNotification.SetMessageID("BurnItNow_DVD");
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Unable to create DVD image"));
-			fNotification.Send();
-
-			fBurnButton->SetEnabled(false);
-		} else {
-			fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
-				"Status notification"));
-			fImageButton->SetEnabled(false);
-			fBurnButton->SetEnabled(true);
-		}
-		fAction = IDLE;
-
-	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (fAction == BURNING)) {
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fDVDButton->SetEnabled(true);

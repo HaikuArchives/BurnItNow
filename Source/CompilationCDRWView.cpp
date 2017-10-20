@@ -93,7 +93,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	blankModeMenuField->SetToolTip(toolTip.String());
 
 	BButton* blankButton = new BButton("BlankButton",
-		B_TRANSLATE("Blank disc"), new BMessage(kBlank));
+		B_TRANSLATE("Blank disc"), new BMessage(kBlankButton));
 	blankButton->SetTarget(this);
 
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
@@ -138,10 +138,10 @@ void
 CompilationCDRWView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kBlank:
+		case kBlankButton:
 			_Blank();
 			break;
-		case kBlanker:
+		case kBlankOutput:
 			_BlankOutput(message);
 			break;
 		default:
@@ -189,7 +189,7 @@ CompilationCDRWView::_Blank()
 	sessionConfig config = fWindowParent->GetSessionConfig();
 
 	fBlankerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBlanker), this));
+		new BInvoker(new BMessage(kBlankOutput), this));
 
 	fBlankerThread->AddArgument("cdrecord")
 		->AddArgument(mode);
@@ -214,7 +214,7 @@ CompilationCDRWView::_BlankOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
-		int32 modified = fParser.ParseLine(text, data);
+		int32 modified = fParser.ParseBlankLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fOutputView->Insert(data.String());

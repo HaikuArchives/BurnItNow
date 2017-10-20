@@ -51,7 +51,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBurnButton = new BButton("BurnDiscButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnDisc));
+		new BMessage(kBurnButton));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -129,11 +129,11 @@ void
 CompilationAudioView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kBurner:
+		case kBurnOutput:
 			_BurnOutput(message);
 			break;
-		case kBurnDisc:
-			_BurnDisc();
+		case kBurnButton:
+			_Burn();
 			break;
 		case B_REFS_RECEIVED:
 			_AddTrack(message);
@@ -241,7 +241,7 @@ CompilationAudioView::_AddTrack(BMessage* message)
 
 
 void
-CompilationAudioView::_BurnDisc()
+CompilationAudioView::_Burn()
 {
 	if (fTrackList->IsEmpty())
 		return;
@@ -267,7 +267,7 @@ CompilationAudioView::_BurnDisc()
 	fNotification.Send(60 * 1000000LL);
 
 	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBurner), this));
+		new BInvoker(new BMessage(kBurnOutput), this));
 
 	fBurnerThread->AddArgument("cdrecord");
 
@@ -321,7 +321,7 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
-		int32 modified = fParser.ParseLine(text, data);
+		int32 modified = fParser.ParseCdrecordLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fOutputView->Insert(data.String());

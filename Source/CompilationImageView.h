@@ -42,10 +42,11 @@ public:
 	int32			InProgress();
 
 private:
-	void 			_BurnImage();
+	void 			_Burn();
 	void 			_BurnOutput(BMessage* message);
 	void 			_ChooseImage();
 	void 			_OpenImage(BMessage* message);
+	void 			_OpenOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 

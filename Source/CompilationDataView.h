@@ -34,8 +34,9 @@ public:
 	int32			InProgress();
 
 private:
-	void			_BuildISO();
-	void			_BurnDisc();
+	void			_Build();
+	void 			_BuildOutput(BMessage* message);
+	void			_Burn();
 	void 			_BurnOutput(BMessage* message);
 	void 			_ChooseDirectory();
 	void			_GetFolderSize();
