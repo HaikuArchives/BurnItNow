@@ -6,15 +6,16 @@
 #define _COMPILATIONCDRWVIEW_H_
 
 
-#include "BurnWindow.h"
-#include "OutputParser.h"
-
 #include <FilePanel.h>
 #include <Menu.h>
 #include <Notification.h>
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
+
+#include "BurnWindow.h"
+#include "OutputParser.h"
+
 
 
 class CommandThread;
@@ -25,20 +26,22 @@ public:
 					CompilationCDRWView(BurnWindow& parent);
 	virtual 		~CompilationCDRWView();
 
-	virtual void	MessageReceived(BMessage* message);
 	virtual void	AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+
 	int32			InProgress();
 
 private:
 	void 			_Blank();
-	void 			_BlankerParserOutput(BMessage* message);
+	void 			_BlankOutput(BMessage* message);
 	void			_UpdateProgress();
 
-	BFilePanel*		fOpenPanel;
 	CommandThread*	fBlankerThread;
-	BTextView*		fBlankerInfoTextView;
-	BurnWindow*		windowParent;
-	BSeparatorView*	fBlankerInfoBox;
+	BurnWindow*		fWindowParent;
+
+	BFilePanel*		fOpenPanel;
+	BTextView*		fOutputView;
+	BSeparatorView*	fInfoView;
 	BMenu*			fBlankModeMenu;
 
 	BNotification	fNotification;
@@ -46,7 +49,7 @@ private:
 	BString			fETAtime;
 	OutputParser	fParser;
 
-	int32			step;
+	int32			fAction;
 };
 
 

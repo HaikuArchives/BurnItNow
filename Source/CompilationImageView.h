@@ -5,18 +5,17 @@
 #ifndef _COMPILATIONIMAGEVIEW_H_
 #define _COMPILATIONIMAGEVIEW_H_
 
-
-#include "BurnWindow.h"
-#include "OutputParser.h"
-#include "PathView.h"
-#include "SizeView.h"
-
 #include <Button.h>
 #include <FilePanel.h>
 #include <Notification.h>
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
+
+#include "BurnWindow.h"
+#include "OutputParser.h"
+#include "PathView.h"
+#include "SizeView.h"
 
 
 class CommandThread;
@@ -37,36 +36,38 @@ public:
 					CompilationImageView(BurnWindow& parent);
 	virtual 		~CompilationImageView();
 
-	virtual void	MessageReceived(BMessage* message);
 	virtual void 	AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+
 	int32			InProgress();
 
 private:
-	void 			_ChooseImage();
 	void 			_BurnImage();
+	void 			_BurnOutput(BMessage* message);
+	void 			_ChooseImage();
 	void 			_OpenImage(BMessage* message);
-	void 			_ImageParserOutput(BMessage* message);
-	void 			_ImageBurnerOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
-	BFilePanel* 	fOpenPanel;
-	BPath* 			fImagePath;
 	CommandThread* 	fImageParserThread;
-	BTextView*		fImageInfoTextView;
-	BurnWindow*		windowParent;
-	BSeparatorView*	fImageInfoBox;
+	BurnWindow*		fWindowParent;
+
+	BFilePanel* 	fOpenPanel;
+	BTextView*		fOutputView;
+	BSeparatorView*	fInfoView;
 	PathView*		fPathView;
+	BPath* 			fImagePath;
 	BButton*		fChooseButton;
 	BButton*		fBurnButton;
 
-	int				step;
 	SizeView*		fSizeView;
 
 	BNotification	fNotification;
 	float			fProgress;
 	BString			fETAtime;
 	OutputParser	fParser;
+
+	int				fAction;
 };
 
 

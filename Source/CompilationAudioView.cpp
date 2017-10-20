@@ -2,13 +2,6 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-
-#include "BurnApplication.h"
-#include "CompilationAudioView.h"
-#include "CommandThread.h"
-#include "Constants.h"
-#include "OutputParser.h"
-
 #include <Alert.h>
 #include <Catalog.h>
 #include <ControlLook.h>
@@ -20,6 +13,12 @@
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
+
+#include "BurnApplication.h"
+#include "CompilationAudioView.h"
+#include "CommandThread.h"
+#include "Constants.h"
+#include "OutputParser.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Audio view"
@@ -35,24 +34,24 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fETAtime("--"),
 	fParser(fProgress, fETAtime)
 {
-	windowParent = &parent;
+	fWindowParent = &parent;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
-	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Ready",
+	fInfoView = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
+	fInfoView->SetFont(be_bold_font);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Ready",
 		"Status notification"));
 
-	fBurnerInfoTextView = new BTextView("AudioInfoTextView");
-	fBurnerInfoTextView->SetWordWrap(true);
-	fBurnerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("AudioInfoScrollView",
-		fBurnerInfoTextView, B_WILL_DRAW, false, true);
-	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
+	fOutputView = new BTextView("AudioInfoTextView");
+	fOutputView->SetWordWrap(true);
+	fOutputView->MakeEditable(false);
+	BScrollView* fOutputScrollView = new BScrollView("AudioInfoScrollView",
+		fOutputView, B_WILL_DRAW, false, true);
+	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBurnButton = new BButton("BurnDiscButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnDiscMessage));
+		new BMessage(kBurnDisc));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -76,8 +75,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		.AddSplit(B_HORIZONTAL, B_USE_SMALL_SPACING)
 		.GetSplitView(&fAudioSplitView)
 			.AddGroup(B_VERTICAL)
-				.Add(fBurnerInfoBox)
-				.Add(infoScrollView)
+				.Add(fInfoView)
+				.Add(fOutputScrollView)
 				.End()
 			.AddGroup(B_VERTICAL)
 				.Add(fAudioBox)
@@ -130,11 +129,11 @@ void
 CompilationAudioView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kBurnerMessage:
-			_BurnerParserOutput(message);
+		case kBurner:
+			_BurnOutput(message);
 			break;
-		case kBurnDiscMessage:
-			BurnDisc();
+		case kBurnDisc:
+			_BurnDisc();
 			break;
 		case B_REFS_RECEIVED:
 			_AddTrack(message);
@@ -145,44 +144,17 @@ CompilationAudioView::MessageReceived(BMessage* message)
 }
 
 
-#pragma mark -- Private Methods --
+#pragma mark -- Public Methods --
 
 
-void
-CompilationAudioView::_BurnerParserOutput(BMessage* message)
+int32
+CompilationAudioView::InProgress()
 {
-	BString data;
-
-	if (message->FindString("line", &data) == B_OK) {
-		BString text = fBurnerInfoTextView->Text();
-		int32 modified = fParser.ParseLine(text, data);
-		if (modified == NOCHANGE) {
-			data << "\n";
-			fBurnerInfoTextView->Insert(data.String());
-			fBurnerInfoTextView->ScrollBy(0.0, 50.0);
-		} else {
-			if (modified == PERCENT)
-				_UpdateProgress();
-			fBurnerInfoTextView->SetText(text);
-			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-		}
-	}
-	int32 code = -1;
-	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-			"Burning complete. Burn another disc?",
-			"Status notification"));
-		fBurnButton->SetEnabled(true);
-
-		fNotification.SetMessageID("BurnItNow_Audio");
-		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
-		fNotification.Send();
-
-		step = NONE;
-		fParser.Reset();
-	}
+	return fAction;
 }
+
+
+#pragma mark -- Private Methods --
 
 
 void
@@ -257,7 +229,7 @@ CompilationAudioView::_AddTrack(BMessage* message)
 	}
 	if (!fTrackList->IsEmpty()) {
 		fBurnButton->SetEnabled(true);
-		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
 			"Status notification"));
 		fTrackList->RenumberTracks();
 	} else
@@ -267,51 +239,15 @@ CompilationAudioView::_AddTrack(BMessage* message)
 }
 
 
-void
-CompilationAudioView::_UpdateSizeBar()
-{
-	off_t fileSize = 0;
-	off_t fileSizeSum = 0;
-	for (unsigned int i = 0; i <= MAX_TRACKS; i++) {
-		AudioListItem* sItem = dynamic_cast<AudioListItem *>
-			(fTrackList->ItemAt(i));
-
-		if (sItem == NULL)
-			break;
-
-		BEntry entry(sItem->GetPath());
-		entry.GetSize(&fileSize);
-		fileSizeSum += fileSize;
-	}
-	fSizeView->UpdateSizeDisplay(fileSizeSum / 1024, AUDIO, CD_ONLY);
-	// size in KiB
-}
-
 
 void
-CompilationAudioView::_UpdateProgress()
-{
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Audio");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
-}
-
-
-#pragma mark -- Public Methods --
-
-
-void
-CompilationAudioView::BurnDisc()
+CompilationAudioView::_BurnDisc()
 {
 	if (fTrackList->IsEmpty())
 		return;
 
-	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burning in progress"
+	fOutputView->SetText(NULL);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burning in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
 	fBurnButton->SetEnabled(false);
 
@@ -319,8 +255,8 @@ CompilationAudioView::BurnDisc()
 	fNotification.SetTitle(B_TRANSLATE("Burning Audio CD"));
 
 	BString device("dev=");
-	device.Append(windowParent->GetSelectedDevice().number.String());
-	sessionConfig config = windowParent->GetSessionConfig();
+	device.Append(fWindowParent->GetSelectedDevice().number.String());
+	sessionConfig config = fWindowParent->GetSessionConfig();
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Audio");
@@ -331,7 +267,7 @@ CompilationAudioView::BurnDisc()
 	fNotification.Send(60 * 1000000LL);
 
 	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBurnerMessage), this));
+		new BInvoker(new BMessage(kBurner), this));
 
 	fBurnerThread->AddArgument("cdrecord");
 
@@ -374,12 +310,76 @@ CompilationAudioView::BurnDisc()
 	}
 	fBurnerThread->Run();
 	fParser.Reset();
-	step = BURNING;
+	fAction = BURNING;
 }
 
 
-int32
-CompilationAudioView::InProgress()
+void
+CompilationAudioView::_BurnOutput(BMessage* message)
 {
-	return step;
+	BString data;
+
+	if (message->FindString("line", &data) == B_OK) {
+		BString text = fOutputView->Text();
+		int32 modified = fParser.ParseLine(text, data);
+		if (modified == NOCHANGE) {
+			data << "\n";
+			fOutputView->Insert(data.String());
+			fOutputView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fOutputView->SetText(text);
+			fOutputView->ScrollTo(0.0, 1000000.0);
+		}
+	}
+	int32 code = -1;
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+			"Burning complete. Burn another disc?",
+			"Status notification"));
+		fBurnButton->SetEnabled(true);
+
+		fNotification.SetMessageID("BurnItNow_Audio");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		fNotification.Send();
+
+		fAction = IDLE;
+		fParser.Reset();
+	}
+}
+
+
+void
+CompilationAudioView::_UpdateProgress()
+{
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_Audio");
+	fNotification.SetProgress(fProgress);
+	fNotification.Send();
+}
+
+
+void
+CompilationAudioView::_UpdateSizeBar()
+{
+	off_t fileSize = 0;
+	off_t fileSizeSum = 0;
+	for (unsigned int i = 0; i <= MAX_TRACKS; i++) {
+		AudioListItem* sItem = dynamic_cast<AudioListItem *>
+			(fTrackList->ItemAt(i));
+
+		if (sItem == NULL)
+			break;
+
+		BEntry entry(sItem->GetPath());
+		entry.GetSize(&fileSize);
+		fileSizeSum += fileSize;
+	}
+	fSizeView->UpdateSizeDisplay(fileSizeSum / 1024, AUDIO, CD_ONLY);
+	// size in KiB
 }

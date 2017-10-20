@@ -5,12 +5,6 @@
 #ifndef _COMPILATIONAUDIOVIEW_H_
 #define _COMPILATIONAUDIOVIEW_H_
 
-
-#include "AudioList.h"
-#include "BurnWindow.h"
-#include "OutputParser.h"
-#include "SizeView.h"
-
 #include <Button.h>
 #include <ListView.h>
 #include <Notification.h>
@@ -20,6 +14,10 @@
 #include <TextView.h>
 #include <View.h>
 
+#include "AudioList.h"
+#include "BurnWindow.h"
+#include "OutputParser.h"
+#include "SizeView.h"
 
 #define MAX_TRACKS 255
 
@@ -35,21 +33,21 @@ public:
 	virtual void	AttachedToWindow();
 	virtual void	MessageReceived(BMessage* message);
 	
-	void 			BurnDisc();
-	BSplitView*		fAudioSplitView;
 	int32			InProgress();
+	BSplitView*		fAudioSplitView;
 
 private:
-	void 			_BurnerParserOutput(BMessage* message);
 	void 			_AddTrack(BMessage* message);
+	void 			_BurnDisc();
+	void 			_BurnOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 	
 	CommandThread*	fBurnerThread;
-	BurnWindow* 	windowParent;
+	BurnWindow* 	fWindowParent;
 
-	BTextView* 		fBurnerInfoTextView;
-	BSeparatorView*	fBurnerInfoBox;
+	BTextView* 		fOutputView;
+	BSeparatorView*	fInfoView;
 	BSeparatorView*	fAudioBox;
 	BButton*		fBurnButton;
 
@@ -61,7 +59,7 @@ private:
 	BString			fETAtime;
 	OutputParser	fParser;
 
-	int				step;
+	int				fAction;
 };
 
 

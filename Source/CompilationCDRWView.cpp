@@ -2,10 +2,6 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-#include "CommandThread.h"
-#include "CompilationCDRWView.h"
-#include "Constants.h"
-
 #include <Alert.h>
 #include <Button.h>
 #include <Catalog.h>
@@ -16,6 +12,11 @@
 #include <String.h>
 #include <StringView.h>
 
+#include "CommandThread.h"
+#include "CompilationCDRWView.h"
+#include "Constants.h"
+
+
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Blank view"
 
@@ -24,29 +25,29 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	:
 	BView(B_TRANSLATE("Blank RW-disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fOpenPanel(NULL),
 	fBlankerThread(NULL),
+	fOpenPanel(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime)
 {
-	windowParent = &parent;
-	step = NONE;
+	fWindowParent = &parent;
+	fAction = IDLE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fBlankerInfoBox = new BSeparatorView("ImageInfoBBox");
-	fBlankerInfoBox->SetFont(be_bold_font);
-	fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+	fInfoView = new BSeparatorView("InfoView");
+	fInfoView->SetFont(be_bold_font);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 	"Insert the disc and blank it", "Status notification"));
 
-	fBlankerInfoTextView = new BTextView("ImageInfoTextView");
-	fBlankerInfoTextView->SetWordWrap(false);
-	fBlankerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("ImageInfoScrollView",
-		fBlankerInfoTextView, B_WILL_DRAW, true, true);
-	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
+	fOutputView = new BTextView("OutputView");
+	fOutputView->SetWordWrap(false);
+	fOutputView->MakeEditable(false);
+	BScrollView* fOutputScrollView = new BScrollView("OutputScroller",
+		fOutputView, B_WILL_DRAW, true, true);
+	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fBlankModeMenu = new BMenu("BlankModeMenu");
 	fBlankModeMenu->SetLabelFromMarked(true);
@@ -92,7 +93,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 	blankModeMenuField->SetToolTip(toolTip.String());
 
 	BButton* blankButton = new BButton("BlankButton",
-		B_TRANSLATE("Blank disc"), new BMessage(kBlankMessage));
+		B_TRANSLATE("Blank disc"), new BMessage(kBlank));
 	blankButton->SetTarget(this);
 
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
@@ -106,8 +107,8 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 			.AddGlue()
 			.End()
 		.AddGroup(B_VERTICAL)
-			.Add(fBlankerInfoBox)
-			.Add(infoScrollView)
+			.Add(fInfoView)
+			.Add(fOutputScrollView)
 			.End();
 }
 
@@ -137,15 +138,25 @@ void
 CompilationCDRWView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kBlankMessage:
+		case kBlank:
 			_Blank();
 			break;
-		case kBlankerMessage:
-			_BlankerParserOutput(message);
+		case kBlanker:
+			_BlankOutput(message);
 			break;
 		default:
 			BView::MessageReceived(message);
 	}
+}
+
+
+#pragma mark -- Public Methods --
+
+
+int32
+CompilationCDRWView::InProgress()
+{
+	return fAction;
 }
 
 
@@ -163,8 +174,8 @@ CompilationCDRWView::_Blank()
 
 	mode.Prepend("blank=");
 
-	fBlankerInfoTextView->SetText(NULL);
-	fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
+	fOutputView->SetText(NULL);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
 
 	fNotification.SetGroup("BurnItNow");
@@ -174,11 +185,11 @@ CompilationCDRWView::_Blank()
 	fNotification.Send();
 
 	BString device("dev=");
-	device.Append(windowParent->GetSelectedDevice().number.String());
-	sessionConfig config = windowParent->GetSessionConfig();
+	device.Append(fWindowParent->GetSelectedDevice().number.String());
+	sessionConfig config = fWindowParent->GetSessionConfig();
 
 	fBlankerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBlankerMessage), this));
+		new BInvoker(new BMessage(kBlanker), this));
 
 	fBlankerThread->AddArgument("cdrecord")
 		->AddArgument(mode);
@@ -192,32 +203,32 @@ CompilationCDRWView::_Blank()
 	fBlankerThread->Run();
 
 	fParser.Reset();
-	step = BLANKING;
+	fAction = BLANKING;
 }
 
 
 void
-CompilationCDRWView::_BlankerParserOutput(BMessage* message)
+CompilationCDRWView::_BlankOutput(BMessage* message)
 {
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		BString text = fBlankerInfoTextView->Text();
+		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
-			fBlankerInfoTextView->Insert(data.String());
-			fBlankerInfoTextView->ScrollBy(0.0, 50.0);
+			fOutputView->Insert(data.String());
+			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
 				_UpdateProgress();
-			fBlankerInfoTextView->SetText(text);
-			fBlankerInfoTextView->ScrollTo(0.0, 1000000.0);
+			fOutputView->SetText(text);
+			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		fBlankerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Blanking finished",
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT("Blanking finished",
 			"Status notification"));
 
 		fNotification.SetMessageID("BurnItNow_Blank");
@@ -225,7 +236,7 @@ CompilationCDRWView::_BlankerParserOutput(BMessage* message)
 		fNotification.SetContent(B_TRANSLATE("Blanking finished!"));
 		fNotification.Send();
 
-		step = NONE;
+		fAction = IDLE;
 		fParser.Reset();
 	}
 }
@@ -241,11 +252,4 @@ CompilationCDRWView::_UpdateProgress()
 	fNotification.SetMessageID("BurnItNow_Clone");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();
-}
-
-
-int32
-CompilationCDRWView::InProgress()
-{
-	return step;
 }

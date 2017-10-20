@@ -2,12 +2,7 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-#include "BurnApplication.h"
-#include "CompilationDataView.h"
-#include "CommandThread.h"
-#include "Constants.h"
-#include "DirRefFilter.h"
-#include "FolderSizeCount.h"
+#include <stdio.h>
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -19,7 +14,13 @@
 #include <String.h>
 #include <StringView.h>
 
-#include <stdio.h>
+#include "BurnApplication.h"
+#include "CompilationDataView.h"
+#include "CommandThread.h"
+#include "Constants.h"
+#include "DirRefFilter.h"
+#include "FolderSizeCount.h"
+
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Data view"
@@ -29,8 +30,8 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	:
 	BView(B_TRANSLATE("Data disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fOpenPanel(NULL),
 	fBurnerThread(NULL),
+	fOpenPanel(NULL),
 	fDirPath(new BPath()),
 	fImagePath(new BPath()),
 	fFolderSize(0),
@@ -39,14 +40,14 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fETAtime("--"),
 	fParser(fProgress, fETAtime)
 {
-	windowParent = &parent;
-	step = NONE;
+	fWindowParent = &parent;
+	fAction = IDLE;
 
 //	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fBurnerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
-	fBurnerInfoBox->SetFont(be_bold_font);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Choose the folder to burn",
+	fInfoView = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
+	fInfoView->SetFont(be_bold_font);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Choose the folder to burn",
 		"Status notification"));
 
 	fPathView = new PathView("FolderStringView",
@@ -60,24 +61,24 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 		NULL);
 	fDiscLabel->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	fBurnerInfoTextView = new BTextView("DataInfoTextView");
-	fBurnerInfoTextView->SetWordWrap(false);
-	fBurnerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("DataInfoScrollView",
-		fBurnerInfoTextView, B_WILL_DRAW, true, true);
-	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
+	fOutputView = new BTextView("DataInfoTextView");
+	fOutputView->SetWordWrap(false);
+	fOutputView->MakeEditable(false);
+	BScrollView* fOutputScrollView = new BScrollView("DataInfoScrollView",
+		fOutputView, B_WILL_DRAW, true, true);
+	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseDirectoryButton",
 		B_TRANSLATE("Choose folder"),
-		new BMessage(kChooseMessage));
+		new BMessage(kChoose));
 	fChooseButton->SetTarget(this);
 
 	fImageButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
-		new BMessage(kBuildImageMessage));
+		new BMessage(kBuildImage));
 	fImageButton->SetTarget(this);
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnDiscMessage));
+		new BMessage(kBurnDisc));
 	fBurnButton->SetTarget(this);
 
 	fSizeView = new SizeView();
@@ -93,8 +94,8 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 			.SetColumnWeight(0, 10.f)
 			.End()
 		.AddGroup(B_VERTICAL)
-			.Add(fBurnerInfoBox)
-			.Add(infoScrollView)
+			.Add(fInfoView)
+			.Add(fOutputScrollView)
 			.End()
 		.Add(fSizeView);
 
@@ -132,14 +133,14 @@ void
 CompilationDataView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kChooseMessage:
+		case kChoose:
 			_ChooseDirectory();
 			break;
-		case kBurnDiscMessage:
-			BurnDisc();
+		case kBurnDisc:
+			_BurnDisc();
 			break;
-		case kBuildImageMessage:
-			BuildISO();
+		case kBuildImage:
+			_BuildISO();
 			break;
 		case B_REFS_RECEIVED:
 		{
@@ -152,8 +153,8 @@ CompilationDataView::MessageReceived(BMessage* message)
 			message->FindInt64("foldersize", &fFolderSize);
 			_UpdateSizeBar();
 		}
-		case kBurnerMessage:
-			_BurnerOutput(message);
+		case kBurner:
+			_BurnOutput(message);
 			break;
 		default:
 			BView::MessageReceived(message);
@@ -161,7 +162,190 @@ CompilationDataView::MessageReceived(BMessage* message)
 }
 
 
+#pragma mark -- Public Methods --
+
+
+int32
+CompilationDataView::InProgress()
+{
+	return fAction;
+}
+
+
 #pragma mark -- Private Methods --
+
+
+void
+CompilationDataView::_BuildISO()
+{
+	if (fDirPath->Path() == NULL) {
+		(new BAlert("ChooseDirectoryFirstAlert",
+			B_TRANSLATE("First choose the folder to burn."),
+			B_TRANSLATE("OK")))->Go();
+		return;
+	}
+	if (fDirPath->InitCheck() != B_OK)
+		return;
+
+	if (fBurnerThread != NULL)
+		delete fBurnerThread;
+
+	fOutputView->SetText(NULL);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBurner), this));
+
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(*fImagePath);
+		settings->Unlock();
+	}
+	if (fImagePath->InitCheck() != B_OK)
+		return;
+
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Data");
+	fNotification.SetTitle(B_TRANSLATE("Building data image"));
+	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetProgress(0);
+	 // It may take a while for the building to start...
+	fNotification.Send(60 * 1000000LL);
+
+	BString discLabel;
+	if (fDiscLabel->TextView()->TextLength() == 0)
+		discLabel = fDirPath->Leaf();
+	else
+		discLabel = fDiscLabel->Text();
+
+	status_t ret = fImagePath->Append(kCacheFileData);
+	if (ret == B_OK) {
+		fAction = BUILDING;	// flag we're building ISO
+
+		fBurnerThread->AddArgument("mkisofs")
+			->AddArgument("-iso-level 3")
+			->AddArgument("-J")
+			->AddArgument("-joliet-long")
+			->AddArgument("-rock")
+			->AddArgument("-V")
+			->AddArgument(discLabel)
+			->AddArgument("-o")
+			->AddArgument(fImagePath->Path())
+			->AddArgument(fDirPath->Path())
+			->Run();
+	}
+}
+
+
+void
+CompilationDataView::_BurnDisc()
+{
+	if (fImagePath->Path() == NULL) {
+		(new BAlert("ChooseDirectoryFirstAlert", B_TRANSLATE(
+			"First build an image to burn."), B_TRANSLATE("OK")))->Go();
+		return;
+	}
+	if (fImagePath->InitCheck() != B_OK)
+		return;
+
+	if (fBurnerThread != NULL)
+		delete fBurnerThread;
+
+	fAction = BURNING;	// flag we're burning
+
+	fOutputView->SetText(NULL);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+		"Burning in progress" B_UTF8_ELLIPSIS,"Status notification"));
+	fChooseButton->SetEnabled(false);
+	fImageButton->SetEnabled(false);
+	fBurnButton->SetEnabled(false);
+
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Data");
+	fNotification.SetTitle(B_TRANSLATE("Burning data disc"));
+	fNotification.SetProgress(0);
+	fNotification.Send(60 * 1000000LL);
+
+	BString device("dev=");
+	device.Append(fWindowParent->GetSelectedDevice().number.String());
+	sessionConfig config = fWindowParent->GetSessionConfig();
+
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBurner), this));
+	fBurnerThread->AddArgument("cdrecord");
+
+	if (config.simulation)
+		fBurnerThread->AddArgument("-dummy");
+	if (config.eject)
+		fBurnerThread->AddArgument("-eject");
+	if (config.speed != "")
+		fBurnerThread->AddArgument(config.speed);
+
+	fBurnerThread->AddArgument(config.mode)
+		->AddArgument("fs=16m")
+		->AddArgument(device)
+		->AddArgument("-v")	// to get progress output
+		->AddArgument("-gracetime=2")
+		->AddArgument("-pad")
+		->AddArgument("padsize=63s")
+		->AddArgument(fImagePath->Path())
+		->Run();
+
+	fParser.Reset();
+}
+
+
+void
+CompilationDataView::_BurnOutput(BMessage* message)
+{
+	BString data;
+
+	if (message->FindString("line", &data) == B_OK) {
+		BString text = fOutputView->Text();
+		int32 modified = fParser.ParseLine(text, data);
+		if (modified == NOCHANGE) {
+			data << "\n";
+			fOutputView->Insert(data.String());
+			fOutputView->ScrollBy(0.0, 50.0);
+		} else {
+			if (modified == PERCENT)
+				_UpdateProgress();
+			fOutputView->SetText(text);
+			fOutputView->ScrollTo(0.0, 1000000.0);
+		}
+	}
+	int32 code = -1;
+	if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (fAction == BUILDING)) {
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
+			"Status notification"));
+		fImageButton->SetEnabled(false);
+		fBurnButton->SetEnabled(true);
+
+		fNotification.SetMessageID("BurnItNow_Data");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Building finished!"));
+		fNotification.Send();
+
+		fAction = IDLE;
+
+	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
+			&& (fAction == BURNING)) {
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+			"Burning complete. Burn another disc?", "Status notification"));
+		fChooseButton->SetEnabled(true);
+		fImageButton->SetEnabled(false);
+		fBurnButton->SetEnabled(true);
+
+		fNotification.SetMessageID("BurnItNow_Data");
+		fNotification.SetProgress(100);
+		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		fNotification.Send();
+
+		fAction = IDLE;
+		fParser.Reset();
+	}
+}
 
 
 void
@@ -215,61 +399,15 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 
 	fImageButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Build the image",
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Build the image",
 		"Status notification"));
 }
 
 
 void
-CompilationDataView::_BurnerOutput(BMessage* message)
+CompilationDataView::_UpdateSizeBar()
 {
-	BString data;
-
-	if (message->FindString("line", &data) == B_OK) {
-		BString text = fBurnerInfoTextView->Text();
-		int32 modified = fParser.ParseLine(text, data);
-		if (modified == NOCHANGE) {
-			data << "\n";
-			fBurnerInfoTextView->Insert(data.String());
-			fBurnerInfoTextView->ScrollBy(0.0, 50.0);
-		} else {
-			if (modified == PERCENT)
-				_UpdateProgress();
-			fBurnerInfoTextView->SetText(text);
-			fBurnerInfoTextView->ScrollTo(0.0, 1000000.0);
-		}
-	}
-	int32 code = -1;
-	if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == BUILDING)) {
-		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
-			"Status notification"));
-		fImageButton->SetEnabled(false);
-		fBurnButton->SetEnabled(true);
-
-		fNotification.SetMessageID("BurnItNow_Data");
-		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE("Building finished!"));
-		fNotification.Send();
-
-		step = NONE;
-
-	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == BURNING)) {
-		fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-			"Burning complete. Burn another disc?", "Status notification"));
-		fChooseButton->SetEnabled(true);
-		fImageButton->SetEnabled(false);
-		fBurnButton->SetEnabled(true);
-
-		fNotification.SetMessageID("BurnItNow_Data");
-		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
-		fNotification.Send();
-
-		step = NONE;
-		fParser.Reset();
-	}
+	fSizeView->UpdateSizeDisplay(fFolderSize, DATA, CD_OR_DVD); // size in KiB
 }
 
 
@@ -283,140 +421,4 @@ CompilationDataView::_UpdateProgress()
 	fNotification.SetMessageID("BurnItNow_Data");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();
-}
-
-void
-CompilationDataView::_UpdateSizeBar()
-{
-	fSizeView->UpdateSizeDisplay(fFolderSize, DATA, CD_OR_DVD); // size in KiB
-}
-
-
-#pragma mark -- Public Methods --
-
-
-void
-CompilationDataView::BuildISO()
-{
-	if (fDirPath->Path() == NULL) {
-		(new BAlert("ChooseDirectoryFirstAlert",
-			B_TRANSLATE("First choose the folder to burn."),
-			B_TRANSLATE("OK")))->Go();
-		return;
-	}
-	if (fDirPath->InitCheck() != B_OK)
-		return;
-
-	if (fBurnerThread != NULL)
-		delete fBurnerThread;
-
-	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
-	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBurnerMessage), this));
-
-	AppSettings* settings = my_app->Settings();
-	if (settings->Lock()) {
-		settings->GetCacheFolder(*fImagePath);
-		settings->Unlock();
-	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
-
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetTitle(B_TRANSLATE("Building data image"));
-	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
-	fNotification.SetProgress(0);
-	 // It may take a while for the building to start...
-	fNotification.Send(60 * 1000000LL);
-
-	BString discLabel;
-	if (fDiscLabel->TextView()->TextLength() == 0)
-		discLabel = fDirPath->Leaf();
-	else
-		discLabel = fDiscLabel->Text();
-
-	status_t ret = fImagePath->Append(kCacheFileData);
-	if (ret == B_OK) {
-		step = BUILDING;	// flag we're building ISO
-
-		fBurnerThread->AddArgument("mkisofs")
-			->AddArgument("-iso-level 3")
-			->AddArgument("-J")
-			->AddArgument("-joliet-long")
-			->AddArgument("-rock")
-			->AddArgument("-V")
-			->AddArgument(discLabel)
-			->AddArgument("-o")
-			->AddArgument(fImagePath->Path())
-			->AddArgument(fDirPath->Path())
-			->Run();
-	}
-}
-
-
-void
-CompilationDataView::BurnDisc()
-{
-	if (fImagePath->Path() == NULL) {
-		(new BAlert("ChooseDirectoryFirstAlert", B_TRANSLATE(
-			"First build an image to burn."), B_TRANSLATE("OK")))->Go();
-		return;
-	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
-
-	if (fBurnerThread != NULL)
-		delete fBurnerThread;
-
-	step = BURNING;	// flag we're burning
-
-	fBurnerInfoTextView->SetText(NULL);
-	fBurnerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-		"Burning in progress" B_UTF8_ELLIPSIS,"Status notification"));
-	fChooseButton->SetEnabled(false);
-	fImageButton->SetEnabled(false);
-	fBurnButton->SetEnabled(false);
-
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetTitle(B_TRANSLATE("Burning data disc"));
-	fNotification.SetProgress(0);
-	fNotification.Send(60 * 1000000LL);
-
-	BString device("dev=");
-	device.Append(windowParent->GetSelectedDevice().number.String());
-	sessionConfig config = windowParent->GetSessionConfig();
-
-	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBurnerMessage), this));
-	fBurnerThread->AddArgument("cdrecord");
-
-	if (config.simulation)
-		fBurnerThread->AddArgument("-dummy");
-	if (config.eject)
-		fBurnerThread->AddArgument("-eject");
-	if (config.speed != "")
-		fBurnerThread->AddArgument(config.speed);
-
-	fBurnerThread->AddArgument(config.mode)
-		->AddArgument("fs=16m")
-		->AddArgument(device)
-		->AddArgument("-v")	// to get progress output
-		->AddArgument("-gracetime=2")
-		->AddArgument("-pad")
-		->AddArgument("padsize=63s")
-		->AddArgument(fImagePath->Path())
-		->Run();
-
-	fParser.Reset();
-}
-
-
-int32
-CompilationDataView::InProgress()
-{
-	return step;
 }

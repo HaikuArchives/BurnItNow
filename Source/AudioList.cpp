@@ -75,7 +75,7 @@ AudioListView::InitiateDrag(BPoint point, int32 dragIndex, bool)
 		return false;
 
 	// create drag message
-	BMessage message(kDraggedItemMessage);
+	BMessage message(kDraggedItem);
 	for (int32 i = 0;; i++) {
 		int32 index = CurrentSelection(i);
 		if (index < 0)
@@ -246,7 +246,7 @@ void
 AudioListView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kDraggedItemMessage:
+		case kDraggedItem:
 		{
 			BPoint dropPoint = message->DropPoint();
 			int32 dropIndex = IndexOf(ConvertFromScreen(dropPoint));
@@ -261,7 +261,7 @@ AudioListView::MessageReceived(BMessage* message)
 			RenumberTracks();
 			break;
 		}
-		case kDeleteItemMessage:
+		case kDeleteItem:
 		{
 			if (!IsEmpty()) {
 				RemoveSelected();
@@ -273,7 +273,7 @@ AudioListView::MessageReceived(BMessage* message)
 			Looper()->PostMessage(B_REFS_RECEIVED);
 			break;
 		}
-		case kPopupClosedMessage:
+		case kPopupClosed:
 		{
 			fShowingPopUpMenu = false;
 			break;
@@ -294,7 +294,7 @@ AudioListView::KeyDown(const char* bytes, int32 numBytes)
 		case B_DELETE:
 		{
 			if (!IsEmpty()) {
-				Looper()->PostMessage(kDeleteItemMessage, this);
+				Looper()->PostMessage(kDeleteItem, this);
 			}
 			break;
 		}
@@ -409,7 +409,7 @@ AudioListView::_ShowPopUpMenu(BPoint screen)
 	ContextPopUp* menu = new ContextPopUp("PopUpMenu", this);
 	BMessage* msg = NULL;
 
-	msg = new BMessage(kDeleteItemMessage);
+	msg = new BMessage(kDeleteItem);
 	BMenuItem* item = new BMenuItem(B_TRANSLATE("Remove"), msg);
 	menu->AddItem(item);
 
@@ -531,5 +531,5 @@ ContextPopUp::ContextPopUp(const char* name, BMessenger target)
 
 ContextPopUp::~ContextPopUp()
 {
-	fTarget.SendMessage(kPopupClosedMessage);
+	fTarget.SendMessage(kPopupClosed);
 }

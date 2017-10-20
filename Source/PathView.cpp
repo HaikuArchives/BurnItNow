@@ -38,7 +38,7 @@ PathView::MouseDown(BPoint position)
 	BString contents(Text());
 
 	if (contents.FindFirst("/") == B_ERROR) {
-		BMessage message(kChooseMessage);
+		BMessage message(kChoose);
 		BMessenger msgr(Parent());
 		msgr.SendMessage(&message);
 	} else {	

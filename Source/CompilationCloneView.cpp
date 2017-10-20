@@ -2,11 +2,6 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
-#include "BurnApplication.h"
-#include "CommandThread.h"
-#include "CompilationCloneView.h"
-#include "Constants.h"
-#include "OutputParser.h"
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -17,6 +12,12 @@
 #include <ScrollView.h>
 #include <String.h>
 #include <StringView.h>
+
+#include "BurnApplication.h"
+#include "CommandThread.h"
+#include "CompilationCloneView.h"
+#include "Constants.h"
+#include "OutputParser.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Clone view"
@@ -30,38 +31,38 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	:
 	BView(B_TRANSLATE("Clone disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fOpenPanel(NULL),
 	fClonerThread(NULL),
+	fOpenPanel(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime)
 {
-	windowParent = &parent;
-	step = NONE;
+	fWindowParent = &parent;
+	fAction = IDLE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	fClonerInfoBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
-	fClonerInfoBox->SetFont(be_bold_font);
-	fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+	fInfoView = new BSeparatorView("InfoView");
+	fInfoView->SetFont(be_bold_font);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Insert the disc and create an image",
 		"Status notification"));
 
-	fClonerInfoTextView = new BTextView("CloneInfoTextView");
-	fClonerInfoTextView->SetWordWrap(false);
-	fClonerInfoTextView->MakeEditable(false);
-	BScrollView* infoScrollView = new BScrollView("CloneInfoScrollView",
-		fClonerInfoTextView, B_WILL_DRAW, true, true);
-	infoScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
+	fOutputView = new BTextView("OutputView");
+	fOutputView->SetWordWrap(false);
+	fOutputView->MakeEditable(false);
+	BScrollView* fOutputScrollView = new BScrollView("OutputScroller",
+		fOutputView, B_WILL_DRAW, true, true);
+	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fImageButton = new BButton("CreateImageButton",
-		B_TRANSLATE("Create image"), new BMessage(kBuildImageMessage));
+		B_TRANSLATE("Create image"), new BMessage(kBuildImage));
 	fImageButton->SetTarget(this);
 	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn image"),
-		new BMessage(kBurnDiscMessage));
+		new BMessage(kBurnDisc));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fSizeView = new SizeView();
@@ -77,8 +78,8 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 				.End()
 			.End()
 		.AddGroup(B_VERTICAL)
-			.Add(fClonerInfoBox)
-			.Add(infoScrollView)
+			.Add(fInfoView)
+			.Add(fOutputScrollView)
 			.End()
 		.Add(fSizeView);
 
@@ -113,29 +114,29 @@ void
 CompilationCloneView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
-		case kBuildImageMessage:
+		case kBuildImage:
 			_CreateImage();
 			break;
-		case kBurnDiscMessage:
+		case kBurnDisc:
 			_BurnImage();
 			break;
-		case kClonerMessage:
-			_ClonerOutput(message);
+		case kCloner:
+			_CloneOutput(message);
 			break;
 		default:
-		if (kDeviceChangeMessage[0] == message->what) {
+		if (kDeviceChange[0] == message->what) {
 			selectedSrcDevice = 0;
 			break;
-		} else if (kDeviceChangeMessage[1] == message->what) {
+		} else if (kDeviceChange[1] == message->what) {
 			selectedSrcDevice = 1;
 			break;
-		} else if (kDeviceChangeMessage[2] == message->what) {
+		} else if (kDeviceChange[2] == message->what) {
 			selectedSrcDevice = 2;
 			break;
-		} else if (kDeviceChangeMessage[3] == message->what) {
+		} else if (kDeviceChange[3] == message->what) {
 			selectedSrcDevice = 3;
 			break;
-		} else if (kDeviceChangeMessage[4] == message->what) {
+		} else if (kDeviceChange[4] == message->what) {
 			selectedSrcDevice = 4;
 			break;
 		}
@@ -144,54 +145,17 @@ CompilationCloneView::MessageReceived(BMessage* message)
 }
 
 
-#pragma mark -- Private Methods --
+#pragma mark -- Public Methods --
 
 
-void
-CompilationCloneView::_CreateImage()
+int32
+CompilationCloneView::InProgress()
 {
-	fClonerInfoTextView->SetText(NULL);
-	fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
-		"Image creating in progress" B_UTF8_ELLIPSIS, "Status notification"));
-	fImageButton->SetEnabled(false);
-
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Clone");
-	fNotification.SetTitle(B_TRANSLATE("Building clone image"));
-	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
-	fNotification.SetProgress(0);
-	 // It may take a while for the building to start...
-	fNotification.Send(60 * 1000000LL);
-
-	BPath path;
-	AppSettings* settings = my_app->Settings();
-	if (settings->Lock()) {
-		settings->GetCacheFolder(path);
-		settings->Unlock();
-	}
-	if (path.InitCheck() != B_OK)
-		return;
-
-	status_t ret = path.Append(kCacheFileClone);
-	if (ret == B_OK) {
-		step = BUILDING;
-
-		BString file = "f=";
-		file.Append(path.Path());
-		BString device("dev=");
-		device.Append(windowParent->GetSelectedDevice().number.String());
-		sessionConfig config = windowParent->GetSessionConfig();
-
-		fClonerThread = new CommandThread(NULL,
-			new BInvoker(new BMessage(kClonerMessage), this));
-		fClonerThread->AddArgument("readcd")
-			->AddArgument(device)
-			->AddArgument("-s")
-			->AddArgument("speed=10")	// for max compatibility
-			->AddArgument(file)
-			->Run();
-	}
+	return fAction;
 }
+
+
+#pragma mark -- Private Methods --
 
 
 void
@@ -208,10 +172,10 @@ CompilationCloneView::_BurnImage()
 
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
-		step = BURNING;
+		fAction = BURNING;
 
-		fClonerInfoTextView->SetText(NULL);
-		fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+		fOutputView->SetText(NULL);
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
 
 		fNotification.SetGroup("BurnItNow");
@@ -221,11 +185,11 @@ CompilationCloneView::_BurnImage()
 		fNotification.Send(60 * 1000000LL);
 
 		BString device("dev=");
-		device.Append(windowParent->GetSelectedDevice().number.String());
-		sessionConfig config = windowParent->GetSessionConfig();
+		device.Append(fWindowParent->GetSelectedDevice().number.String());
+		sessionConfig config = fWindowParent->GetSessionConfig();
 
 		fClonerThread = new CommandThread(NULL,
-			new BInvoker(new BMessage(kClonerMessage), this));
+			new BInvoker(new BMessage(kCloner), this));
 		fClonerThread->AddArgument("cdrecord");
 
 		if (config.simulation)
@@ -251,41 +215,88 @@ CompilationCloneView::_BurnImage()
 
 
 void
-CompilationCloneView::_ClonerOutput(BMessage* message)
+CompilationCloneView::_CreateImage()
+{
+	fOutputView->SetText(NULL);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+		"Image creating in progress" B_UTF8_ELLIPSIS, "Status notification"));
+	fImageButton->SetEnabled(false);
+
+	fNotification.SetGroup("BurnItNow");
+	fNotification.SetMessageID("BurnItNow_Clone");
+	fNotification.SetTitle(B_TRANSLATE("Building clone image"));
+	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetProgress(0);
+	 // It may take a while for the building to start...
+	fNotification.Send(60 * 1000000LL);
+
+	BPath path;
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(path);
+		settings->Unlock();
+	}
+	if (path.InitCheck() != B_OK)
+		return;
+
+	status_t ret = path.Append(kCacheFileClone);
+	if (ret == B_OK) {
+		fAction = BUILDING;
+
+		BString file = "f=";
+		file.Append(path.Path());
+		BString device("dev=");
+		device.Append(fWindowParent->GetSelectedDevice().number.String());
+		sessionConfig config = fWindowParent->GetSessionConfig();
+
+		fClonerThread = new CommandThread(NULL,
+			new BInvoker(new BMessage(kCloner), this));
+		fClonerThread->AddArgument("readcd")
+			->AddArgument(device)
+			->AddArgument("-s")
+			->AddArgument("speed=10")	// for max compatibility
+			->AddArgument(file)
+			->Run();
+	}
+}
+
+
+void
+CompilationCloneView::_CloneOutput(BMessage* message)
 {
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		BString text = fClonerInfoTextView->Text();
+		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
-			fClonerInfoTextView->Insert(data.String());
-			fClonerInfoTextView->ScrollBy(0.0, 50.0);
+			fOutputView->Insert(data.String());
+			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
 				_UpdateProgress();
-			fClonerInfoTextView->SetText(text);
-			fClonerInfoTextView->ScrollTo(0.0, 1000000.0);
+			fOutputView->SetText(text);
+			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
 	if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == BUILDING)) {
-		BString result(fClonerInfoTextView->Text());
+			&& (fAction == BUILDING)) {
+		BString result(fOutputView->Text());
 
 		// Last output line always (except error) contains speed statistics
 		if (result.FindFirst(" kB/sec.") != B_ERROR) {
-			step = NONE;
+			fAction = IDLE;
 
-			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Insert a blank disc and burn the image",
 				"Status notification"));
 
 			_UpdateSizeBar();
 
 			BString device("dev=");
-			device.Append(windowParent->GetSelectedDevice().number.String());
+			device.Append(fWindowParent->GetSelectedDevice().number.String());
 
 			fClonerThread = new CommandThread(NULL,
 				new BInvoker(new BMessage(), this)); // no need for notification
@@ -294,8 +305,8 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 				->AddArgument(device)
 				->Run();
 		} else {
-			step = NONE;
-			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			fAction = IDLE;
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Failed to create image", "Status notification"));
 			return;
 		}
@@ -303,11 +314,11 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 		fImageButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
-		step = NONE;
+		fAction = IDLE;
 
 	} else if ((message->FindInt32("thread_exit", &code) == B_OK)
-			&& (step == BURNING)) {
-		fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
+			&& (fAction == BURNING)) {
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fImageButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
@@ -317,9 +328,22 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
 		fNotification.Send();
 
-		step = NONE;
+		fAction = IDLE;
 		fParser.Reset();
 	}
+}
+
+
+void
+CompilationCloneView::_UpdateProgress()
+{
+	if (fProgress == 0 || fProgress == 1.0)
+		fNotification.SetContent(" ");
+	else
+		fNotification.SetContent(fETAtime);
+	fNotification.SetMessageID("BurnItNow_Clone");
+	fNotification.SetProgress(fProgress);
+	fNotification.Send();
 }
 
 
@@ -344,24 +368,4 @@ CompilationCloneView::_UpdateSizeBar()
 	}
 	fSizeView->UpdateSizeDisplay(fileSize / 1024, DATA, CD_OR_DVD);
 	// size in KiB
-}
-
-
-void
-CompilationCloneView::_UpdateProgress()
-{
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Clone");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
-}
-
-
-int32
-CompilationCloneView::InProgress()
-{
-	return step;
 }

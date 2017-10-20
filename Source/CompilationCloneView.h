@@ -5,11 +5,6 @@
 #ifndef _COMPILATIONCLONEVIEW_H_
 #define _COMPILATIONCLONEVIEW_H_
 
-
-#include "BurnWindow.h"
-#include "OutputParser.h"
-#include "SizeView.h"
-
 #include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
@@ -17,6 +12,10 @@
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
+
+#include "BurnWindow.h"
+#include "OutputParser.h"
+#include "SizeView.h"
 
 
 class CommandThread;
@@ -27,32 +26,35 @@ public:
 					CompilationCloneView(BurnWindow& parent);
 	virtual 		~CompilationCloneView();
 
-	virtual void	MessageReceived(BMessage* message);
 	virtual void	AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
+
 	int32			InProgress();
 
 private:
-	void 			_CreateImage();
 	void 			_BurnImage();
-	void 			_ClonerOutput(BMessage* message);
+	void 			_CreateImage();
+	void 			_CloneOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
-	BFilePanel*		fOpenPanel;
 	CommandThread*	fClonerThread;
-	BTextView*		fClonerInfoTextView;
-	BurnWindow*		windowParent;
-	BSeparatorView*	fClonerInfoBox;
+	BurnWindow*		fWindowParent;
+
+	BFilePanel*		fOpenPanel;
+	BTextView*		fOutputView;
+	BSeparatorView*	fInfoView;
 	BButton*		fBurnButton;
 	BButton*		fImageButton;
 
-	int				step;
 	SizeView*		fSizeView;
 
 	BNotification	fNotification;
 	float			fProgress;
 	BString			fETAtime;
 	OutputParser	fParser;
+
+	int				fAction;
 };
 
 

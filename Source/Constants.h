@@ -27,9 +27,9 @@ enum {
 	DVD_ONLY
 };
 
-// flags which action is in progress
+// flags which fAction is in progress
 enum {
-	NONE = 0,
+	IDLE = 0,
 	BUILDING,
 	BURNING,
 	BLANKING
@@ -43,33 +43,33 @@ enum {
 };
 
 // Message constants
-const int32 kOpenHelpMessage = 'Help';
-const int32 kOpenWebsiteMessage = 'Site';
-const int32 kSetCacheFolderMessage = 'Scfo';
-const int32 kOpenCacheFolderMessage = 'Ocfo';
-const int32 kChooseCacheFolderMessage = 'Cusd';
-const int32 kCacheQuitMessage = 'Ccqt';
-const int32 kClearCacheMessage = 'Cche';
-const int32 kSpeedSliderMessage = 'Sped';
+const int32 kOpenHelp = 'Help';
+const int32 kOpenWebsite = 'Site';
+const int32 kSetCacheFolder = 'Scfo';
+const int32 kOpenCacheFolder = 'Ocfo';
+const int32 kChooseCacheFolder = 'Cusd';
+const int32 kCacheQuit = 'Ccqt';
+const int32 kClearCache = 'Cche';
+const int32 kSpeedSlider = 'Sped';
 
-const int32 kBurnDiscMessage = 'BURN';
-const int32 kChooseMessage = 'Chus';
-const int32 kBuildImageMessage = 'IMAG';
+const int32 kBurnDisc = 'BURN';
+const int32 kChoose = 'Chus';
+const int32 kBuildImage = 'IMAG';
 
-const int32 kBurnerMessage = 'Brnr';
-const int32 kBlankMessage = 'Blnk';
-const int32 kBlankerMessage = 'Blkr';
-const int32 kClonerMessage = 'Clnr';
-const int32 kParserMessage = 'Scan';
+const int32 kBurner = 'Brnr';
+const int32 kBlank = 'Blnk';
+const int32 kBlanker = 'Blkr';
+const int32 kCloner = 'Clnr';
+const int32 kParser = 'Scan';
 
-const int32 kDraggedItemMessage = 'drit';
-const int32 kDeleteItemMessage = 'deli';
-const int32 kPopupClosedMessage = 'popc';
+const int32 kDraggedItem = 'drit';
+const int32 kDeleteItem = 'deli';
+const int32 kPopupClosed = 'popc';
 
 const int32 kCalculateSize = 'clcs';
 const int32 kSetFolderSize = 'stsz';
 
-const uint32 kDeviceChangeMessage[MAX_DEVICES]
+const uint32 kDeviceChange[MAX_DEVICES]
 	= { 'DVC0', 'DVC1', 'DVC2', 'DVC3', 'DVC4' };
 
 // colours

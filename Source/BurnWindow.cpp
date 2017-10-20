@@ -76,7 +76,7 @@ BurnWindow::QuitRequested()
 
 	if (text != "") {
 		text << B_TRANSLATE("\nDo you want to quit BurnItNow anyway (this "
-			"won't stop the action currently in progress...");
+			"won't stop the fAction currently in progress" B_UTF8_ELLIPSIS);
 		BAlert* alert = new BAlert("stopquit", text.String(),
 			B_TRANSLATE("Quit anyway"), B_TRANSLATE("Cancel"));
 
@@ -125,16 +125,16 @@ BurnWindow::MessageReceived(BMessage* message)
 	}
 
 	switch (message->what) {
-		case kSetCacheFolderMessage:
+		case kSetCacheFolder:
 			_SetCacheFolder();
 			break;
-		case kOpenCacheFolderMessage:
+		case kOpenCacheFolder:
 			_OpenCacheFolder();
 			break;
-		case kChooseCacheFolderMessage:
+		case kChooseCacheFolder:
 			_ChangeCacheFolder(message);
 			break;
-		case kCacheQuitMessage:
+		case kCacheQuit:
 			{
 				AppSettings* settings = my_app->Settings();
 				bool mark = settings->GetCache();
@@ -146,16 +146,16 @@ BurnWindow::MessageReceived(BMessage* message)
 				fCacheQuitItem->SetMarked(!mark);
 				break;
 			}
-		case kClearCacheMessage:
+		case kClearCache:
 			_ClearCache();
 			break;
-		case kOpenWebsiteMessage:
+		case kOpenWebsite:
 			_OpenWebSite();
 			break;
-		case kOpenHelpMessage:
+		case kOpenHelp:
 			_OpenHelp();
 			break;
-		case kSpeedSliderMessage:
+		case kSpeedSlider:
 			_UpdateSpeedSlider(message);
 			break;
 		case B_REFS_RECEIVED:
@@ -170,19 +170,19 @@ BurnWindow::MessageReceived(BMessage* message)
 				fCompilationDVDView->MessageReceived(message);
 			break;
 		default:
-		if (kDeviceChangeMessage[0] == message->what) {
+		if (kDeviceChange[0] == message->what) {
 			selectedDevice = 0;
 			break;
-		} else if (kDeviceChangeMessage[1] == message->what) {
+		} else if (kDeviceChange[1] == message->what) {
 			selectedDevice = 1;
 			break;
-		} else if (kDeviceChangeMessage[2] == message->what) {
+		} else if (kDeviceChange[2] == message->what) {
 			selectedDevice = 2;
 			break;
-		} else if (kDeviceChangeMessage[3] == message->what) {
+		} else if (kDeviceChange[3] == message->what) {
 			selectedDevice = 3;
 			break;
-		} else if (kDeviceChangeMessage[4] == message->what) {
+		} else if (kDeviceChange[4] == message->what) {
 			selectedDevice = 4;
 			break;
 		}
@@ -214,26 +214,26 @@ BurnWindow::_CreateMenuBar()
 
 	cacheMenu->AddItem(new BMenuItem(B_TRANSLATE(
 		"Set cache folder" B_UTF8_ELLIPSIS),
-		new BMessage(kSetCacheFolderMessage)));
+		new BMessage(kSetCacheFolder)));
 
 	cacheMenu->AddItem(new BMenuItem(B_TRANSLATE(
-		"Open cache folder"), new BMessage(kOpenCacheFolderMessage)));
+		"Open cache folder"), new BMessage(kOpenCacheFolder)));
 
 	cacheMenu->AddItem(new BMenuItem(B_TRANSLATE("Clear cache now"),
-		new BMessage(kClearCacheMessage)));
+		new BMessage(kClearCache)));
 
 	fCacheQuitItem = new BMenuItem(B_TRANSLATE("Clear cache on quit"),
-		new BMessage(kCacheQuitMessage));
+		new BMessage(kCacheQuit));
 	cacheMenu->AddItem(fCacheQuitItem);
 
 	BMenu* helpMenu = new BMenu(B_TRANSLATE("Help"));
 	menuBar->AddItem(helpMenu);
 
 	helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Usage instructions"),
-		new BMessage(kOpenHelpMessage)));
+		new BMessage(kOpenHelp)));
 
 	helpMenu->AddItem(new BMenuItem(B_TRANSLATE("Project website"),
-		new BMessage(kOpenWebsiteMessage)));
+		new BMessage(kOpenWebsite)));
 
 	//Apply settings (and disable unimplemented options)
 	AppSettings* settings = my_app->Settings();
@@ -274,7 +274,7 @@ BurnWindow::_CreateToolBar()
 		deviceString << devices[ix].manufacturer << devices[ix].model
 			<< "(" << devices[ix].number << ")";
 		BMenuItem* deviceItem = new BMenuItem(deviceString,
-			new BMessage(kDeviceChangeMessage[ix]));
+			new BMessage(kDeviceChange[ix]));
 		deviceItem->SetEnabled(true);
 		if (ix == 0)
 			deviceItem->SetMarked(true);
@@ -299,8 +299,8 @@ BurnWindow::_CreateToolBar()
 		B_TRANSLATE("Eject after burning"), new BMessage());
 
 	fSpeedSlider = new BSlider("SpeedSlider", B_TRANSLATE("Burn speed:"),
-		new BMessage(kSpeedSliderMessage), 0, 5, B_HORIZONTAL);
-	fSpeedSlider->SetModificationMessage(new BMessage(kSpeedSliderMessage));
+		new BMessage(kSpeedSlider), 0, 5, B_HORIZONTAL);
+	fSpeedSlider->SetModificationMessage(new BMessage(kSpeedSlider));
 	fSpeedSlider->SetLimitLabels(B_TRANSLATE_COMMENT("Min",
 		"Abbreviation for minimal burn speed"), B_TRANSLATE_COMMENT("Max",
 		"Abbreviation for maximal burn speed"));
@@ -376,7 +376,7 @@ BurnWindow::_SetCacheFolder()
 {
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
-			B_DIRECTORY_NODE, false, new BMessage(kChooseCacheFolderMessage),
+			B_DIRECTORY_NODE, false, new BMessage(kChooseCacheFolder),
 			new DirRefFilter(), true);
 		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose cache folder"));
 	}
@@ -616,11 +616,11 @@ BurnWindow::_ActionInprogress()
 	int32 cdrwProgress	= fCompilationCDRWView->InProgress();
 	int32 cloneProgress = fCompilationCloneView->InProgress();
 
-	if ((dataProgress == NONE)
-		&& (audioProgress == NONE)
-		&& (imageProgress == NONE)
-		&& (dvdProgress == NONE)
-		&& (cloneProgress == NONE))
+	if ((dataProgress == IDLE)
+		&& (audioProgress == IDLE)
+		&& (imageProgress == IDLE)
+		&& (dvdProgress == IDLE)
+		&& (cloneProgress == IDLE))
 			return text;
 
 	text = B_TRANSLATE("BurnItNow is currently busy.\n\n");

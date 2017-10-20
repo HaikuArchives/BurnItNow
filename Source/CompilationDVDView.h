@@ -5,12 +5,6 @@
 #ifndef _COMPILATIONDVDVIEW_H_
 #define _COMPILATIONDVDVIEW_H_
 
-
-#include "BurnWindow.h"
-#include "OutputParser.h"
-#include "PathView.h"
-#include "SizeView.h"
-
 #include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
@@ -19,6 +13,11 @@
 #include <TextControl.h>
 #include <TextView.h>
 #include <View.h>
+
+#include "BurnWindow.h"
+#include "OutputParser.h"
+#include "PathView.h"
+#include "SizeView.h"
 
 
 class CommandThread;
@@ -29,27 +28,26 @@ public:
 					CompilationDVDView(BurnWindow& parent);
 	virtual 		~CompilationDVDView();
 
-	virtual void	MessageReceived(BMessage* message);
 	virtual void	AttachedToWindow();
+	virtual void	MessageReceived(BMessage* message);
 	
-	void			BuildISO();
-	void			BurnDisc();
 	int32			InProgress();
 
 private:
+	void			_BuildISO();
+	void			_BurnDisc();
+	void 			_BurnOutput(BMessage* message);
 	void 			_ChooseDirectory();
-	void 			_FromScratch();
-	void 			_OpenDirectory(BMessage* message);
 	void			_GetFolderSize();
-	void 			_BurnerOutput(BMessage* message);
+	void 			_OpenDirectory(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
-	BFilePanel* 	fOpenPanel;
 	CommandThread* 	fBurnerThread;
-	BTextView* 		fBurnerInfoTextView;
-	BurnWindow* 	windowParent;
-	BSeparatorView*	fBurnerInfoBox;
+	BurnWindow* 	fWindowParent;
+	BTextView* 		fOutputView;
+	BFilePanel* 	fOpenPanel;
+	BSeparatorView*	fInfoView;
 	PathView*		fPathView;
 	BTextControl* 	fDiscLabel;
 	BButton*		fDVDButton;
@@ -59,7 +57,6 @@ private:
 	BPath* 			fDirPath;
 	BPath* 			fImagePath;
 	const char*		fDVDMode;
-	int				step;
 
 	int64			fFolderSize;
 	SizeView*		fSizeView;
@@ -68,6 +65,8 @@ private:
 	float			fProgress;
 	BString			fETAtime;
 	OutputParser	fParser;
+
+	int				fAction;
 };
 
 
