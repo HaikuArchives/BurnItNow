@@ -115,7 +115,6 @@ CompilationCloneView::MessageReceived(BMessage* message)
 	switch (message->what) {
 		case kBuildImageMessage:
 			_CreateImage();
-			_UpdateSizeBar();
 			break;
 		case kBurnDiscMessage:
 			_BurnImage();
@@ -282,6 +281,9 @@ CompilationCloneView::_ClonerOutput(BMessage* message)
 			fClonerInfoBox->SetLabel(B_TRANSLATE_COMMENT(
 				"Insert a blank disc and burn the image",
 				"Status notification"));
+
+			_UpdateSizeBar();
+
 			BString device("dev=");
 			device.Append(windowParent->GetSelectedDevice().number.String());
 
