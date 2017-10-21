@@ -177,6 +177,9 @@ CommandThread::_Thread(void* data)
 	if (pipeThread < B_OK)
 		return B_ERROR;
 
+	if (*args->ItemAt(0) == "cdrecord")
+		set_thread_priority(pipeThread, B_DISPLAY_PRIORITY);
+
 	BPrivate::BCommandPipe::LineReader* reader
 		= new CommandReader(commandThread->Invoker());
 
