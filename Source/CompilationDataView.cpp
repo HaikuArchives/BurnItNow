@@ -414,6 +414,7 @@ CompilationDataView::_CheckCapacityOutput(BMessage* message)
 		fOutputView->ScrollBy(0.0, 50.0);
 
 		if (sectors != NOCHANGE) {
+			printf("BurnItNow: fFolderSize: %i\n", fFolderSize);
 			if (sectors * 2 < fFolderSize) { // 1 sector == 2048 byte
 				fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 					"The data doesn't fit on the inserted disc",

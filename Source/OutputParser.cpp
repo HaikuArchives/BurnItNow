@@ -165,9 +165,8 @@ printf("New line: %s\n", newline.String());
 		// get the percentage
 		BStringList wordList;
 		newline.Split(" ", true, wordList);
-		printf("remaining sektors: %s\n", wordList.StringAt(3).String());
 		result = atoi(wordList.StringAt(3));
-
+	printf("BurnItNow: remaining sectors: %i\n", result);
 		return result;
 	}
 	return NOCHANGE;
