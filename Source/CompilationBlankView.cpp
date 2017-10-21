@@ -52,15 +52,15 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	fBlankModeMenu = new BMenu("BlankModeMenu");
 	fBlankModeMenu->SetLabelFromMarked(true);
 
-	BMenuItem* blankModeMenuItem = new BMenuItem(B_TRANSLATE_COMMENT("All",
+	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("All",
 		"Blanking mode. From the man page: 'Blank the entire disk. This may "
-		"take a long time.'"), new BMessage());
-	blankModeMenuItem->SetMarked(true);
-	fBlankModeMenu->AddItem(blankModeMenuItem);
-	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Fast",
+		"take a long time.'"), new BMessage()));
+	BMenuItem* blankModeMenuItem = new BMenuItem(B_TRANSLATE_COMMENT("Fast",
 		"Blanking mode. From the man page: 'Minimally blank the disk. This "
 		"results in erasing the PMA, the TOC and the pregap.'"),
-		new BMessage()));
+		new BMessage());
+	blankModeMenuItem->SetMarked(true);
+	fBlankModeMenu->AddItem(blankModeMenuItem);
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Session",
 		"Blanking mode. From the man page: 'Blank the last session.'"),
 		new BMessage()));
