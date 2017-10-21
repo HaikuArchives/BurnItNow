@@ -145,6 +145,9 @@ CompilationDataView::MessageReceived(BMessage* message)
 		case kBurnButton:
 			_CheckCapacity();
 			break;
+		case kCheckOutput:
+			_CheckCapacityOutput(message);
+			break;
 		case kBurnOutput:
 			_BurnOutput(message);
 			break;
