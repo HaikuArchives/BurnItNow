@@ -54,6 +54,8 @@ const int32 kSpeedSlider = 'Sped';
 
 const int32 kChooseButton = 'ChoB';
 
+const int32 kCheckOutput = 'ChkO';
+
 const int32 kBurnButton = 'BurB';
 const int32 kBurnOutput = 'BrnO';
 

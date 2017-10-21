@@ -334,7 +334,7 @@ CompilationImageView::_OpenOutput(BMessage* message)
 
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
-		int32 modified = fParser.ParseIsoinfo(text, data);
+		int32 modified = fParser.ParseIsoinfoLine(text, data);
 		if (modified == NOCHANGE) {
 			data << "\n";
 			fOutputView->Insert(data.String());

@@ -38,6 +38,8 @@ private:
 	void 			_BuildOutput(BMessage* message);
 	void			_Burn();
 	void 			_BurnOutput(BMessage* message);
+	void			_CheckCapacity();
+	void 			_CheckCapacityOutput(BMessage* message);
 	void 			_ChooseDirectory();
 	void			_GetFolderSize();
 	void 			_OpenDirectory(BMessage* message);
@@ -53,7 +55,7 @@ private:
 	PathView*		fPathView;
 	BTextControl* 	fDiscLabel;
 	BButton*		fChooseButton;
-	BButton*		fImageButton;
+	BButton*		fBuildButton;
 	BButton*		fBurnButton;
 
 	BPath* 			fDirPath;

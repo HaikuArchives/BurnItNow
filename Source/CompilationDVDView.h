@@ -52,7 +52,7 @@ private:
 	PathView*		fPathView;
 	BTextControl* 	fDiscLabel;
 	BButton*		fDVDButton;
-	BButton*		fImageButton;
+	BButton*		fBuildButton;
 	BButton*		fBurnButton;
 
 	BPath* 			fDirPath;

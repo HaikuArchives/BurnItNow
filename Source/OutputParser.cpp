@@ -35,6 +35,9 @@ OutputParser::~OutputParser()
 }
 
 
+#pragma mark -- Public Methods --
+
+
 int32
 OutputParser::ParseBlankLine(BString& text, BString newline)
 {
@@ -99,7 +102,7 @@ printf("New line: %s\n", newline.String());
 
 
 int32
-OutputParser::ParseIsoinfo(BString& text, BString newline)
+OutputParser::ParseIsoinfoLine(BString& text, BString newline)
 {
 	return NOCHANGE;
 }
@@ -146,6 +149,26 @@ printf("New line: %s\n", newline.String());
 		}
 		text << "\n" << newline;
 		return PERCENT;
+	}
+	return NOCHANGE;
+}
+
+
+int32
+OutputParser::ParseMediainfoLine(BString newline)
+{
+	int32 result;
+printf("New line: %s\n", newline.String());
+	// get available sectors on the disc
+	result = newline.FindFirst("Remaining writable size:");
+	if (result != B_ERROR) {
+		// get the percentage
+		BStringList wordList;
+		newline.Split(" ", true, wordList);
+		printf("remaining sektors: %s\n", wordList.StringAt(3).String());
+		result = atoi(wordList.StringAt(3));
+
+		return result;
 	}
 	return NOCHANGE;
 }

@@ -46,7 +46,7 @@ private:
 	BTextView*		fOutputView;
 	BSeparatorView*	fInfoView;
 	BButton*		fBurnButton;
-	BButton*		fImageButton;
+	BButton*		fBuildButton;
 
 	SizeView*		fSizeView;
 

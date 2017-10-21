@@ -72,10 +72,10 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fDVDButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
 		B_SIZE_UNSET));
 		
-	fImageButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
+	fBuildButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
 	    new BMessage(kBuildButton));
-	fImageButton->SetTarget(this);
-	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fBuildButton->SetTarget(this);
+	fBuildButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
 		new BMessage(kBurnButton));
@@ -90,7 +90,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 			.Add(fDiscLabel, 0, 0)
 			.Add(fPathView, 0, 1)
 			.Add(fDVDButton, 1, 0)
-			.Add(fImageButton, 2, 0)
+			.Add(fBuildButton, 2, 0)
 			.Add(fBurnButton, 3, 0)
 			.SetColumnWeight(0, 10.f)
 			.End()
@@ -122,8 +122,8 @@ CompilationDVDView::AttachedToWindow()
 	fDVDButton->SetTarget(this);
 	fDVDButton->SetEnabled(true);
 	
-	fImageButton->SetTarget(this);
-	fImageButton->SetEnabled(false);
+	fBuildButton->SetTarget(this);
+	fBuildButton->SetEnabled(false);
 
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetEnabled(false);
@@ -279,7 +279,7 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
 				"Status notification"));
-			fImageButton->SetEnabled(false);
+			fBuildButton->SetEnabled(false);
 			fBurnButton->SetEnabled(true);
 		}
 		fAction = IDLE;
@@ -307,7 +307,7 @@ CompilationDVDView::_Burn()
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Burning in progress" B_UTF8_ELLIPSIS,"Status notification"));
 	fDVDButton->SetEnabled(false);
-	fImageButton->SetEnabled(false);
+	fBuildButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
@@ -369,7 +369,7 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
 		fDVDButton->SetEnabled(true);
-		fImageButton->SetEnabled(false);
+		fBuildButton->SetEnabled(false);
 		fBurnButton->SetEnabled(true);
 
 		fNotification.SetMessageID("BurnItNow_DVD");
@@ -477,7 +477,7 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 		fDiscLabel->MakeFocus(true);
 	}
 
-	fImageButton->SetEnabled(true);
+	fBuildButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Build the DVD image",
 		"Status notification"));

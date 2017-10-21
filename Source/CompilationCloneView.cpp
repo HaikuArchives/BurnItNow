@@ -56,10 +56,10 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		fOutputView, B_WILL_DRAW, true, true);
 	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fImageButton = new BButton("CreateImageButton",
+	fBuildButton = new BButton("CreateImageButton",
 		B_TRANSLATE("Create image"), new BMessage(kBuildButton));
-	fImageButton->SetTarget(this);
-	fImageButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+	fBuildButton->SetTarget(this);
+	fBuildButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn image"),
 		new BMessage(kBurnButton));
@@ -72,7 +72,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		.AddGroup(B_HORIZONTAL)
 			.AddGroup(B_HORIZONTAL)
 				.AddGlue()
-				.Add(fImageButton)
+				.Add(fBuildButton)
 				.Add(fBurnButton)
 				.AddGlue()
 				.End()
@@ -102,8 +102,8 @@ CompilationCloneView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	fImageButton->SetTarget(this);
-	fImageButton->SetEnabled(true);
+	fBuildButton->SetTarget(this);
+	fBuildButton->SetEnabled(true);
 
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetEnabled(false);
@@ -167,7 +167,7 @@ CompilationCloneView::_Build()
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Image creating in progress" B_UTF8_ELLIPSIS, "Status notification"));
-	fImageButton->SetEnabled(false);
+	fBuildButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Clone");
@@ -257,7 +257,7 @@ CompilationCloneView::_BuildOutput(BMessage* message)
 			return;
 		}
 
-		fImageButton->SetEnabled(true);
+		fBuildButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
 		fAction = IDLE;
@@ -344,7 +344,7 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 			"Burning complete. Burn another disc?", "Status notification"));
-		fImageButton->SetEnabled(true);
+		fBuildButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
 
 		fNotification.SetMessageID("BurnItNow_Clone");
