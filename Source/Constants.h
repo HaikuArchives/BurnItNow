@@ -63,8 +63,6 @@ const int32 kBuildOutput = 'BilO';
 const int32 kBlankButton = 'BlnB';
 const int32 kBlankOutput = 'BlnO';
 
-const int32 kParser = 'Scan';	// used?
-
 const int32 kDraggedItem = 'drit';
 const int32 kDeleteItem = 'deli';
 const int32 kPopupClosed = 'popc';

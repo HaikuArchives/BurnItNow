@@ -13,7 +13,7 @@
 #include <StringView.h>
 
 #include "CommandThread.h"
-#include "CompilationCDRWView.h"
+#include "CompilationBlankView.h"
 #include "Constants.h"
 
 
@@ -21,7 +21,7 @@
 #define B_TRANSLATION_CONTEXT "Blank view"
 
 
-CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
+CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	:
 	BView(B_TRANSLATE("Blank RW-disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
@@ -113,7 +113,7 @@ CompilationCDRWView::CompilationCDRWView(BurnWindow& parent)
 }
 
 
-CompilationCDRWView::~CompilationCDRWView()
+CompilationBlankView::~CompilationBlankView()
 {
 	delete fBlankerThread;
 	delete fOpenPanel;
@@ -124,7 +124,7 @@ CompilationCDRWView::~CompilationCDRWView()
 
 
 void
-CompilationCDRWView::AttachedToWindow()
+CompilationBlankView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
@@ -135,7 +135,7 @@ CompilationCDRWView::AttachedToWindow()
 
 
 void
-CompilationCDRWView::MessageReceived(BMessage* message)
+CompilationBlankView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kBlankButton:
@@ -154,7 +154,7 @@ CompilationCDRWView::MessageReceived(BMessage* message)
 
 
 int32
-CompilationCDRWView::InProgress()
+CompilationBlankView::InProgress()
 {
 	return fAction;
 }
@@ -164,7 +164,7 @@ CompilationCDRWView::InProgress()
 
 
 void
-CompilationCDRWView::_Blank()
+CompilationBlankView::_Blank()
 {
 	BString mode = fBlankModeMenu->FindMarked()->Label();
 	mode.ToLower();
@@ -208,7 +208,7 @@ CompilationCDRWView::_Blank()
 
 
 void
-CompilationCDRWView::_BlankOutput(BMessage* message)
+CompilationBlankView::_BlankOutput(BMessage* message)
 {
 	BString data;
 
@@ -243,7 +243,7 @@ CompilationCDRWView::_BlankOutput(BMessage* message)
 
 
 void
-CompilationCDRWView::_UpdateProgress()
+CompilationBlankView::_UpdateProgress()
 {
 	if (fProgress == 0 || fProgress == 1.0)
 		fNotification.SetContent(" ");

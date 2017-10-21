@@ -21,10 +21,10 @@
 class CommandThread;
 
 
-class CompilationCDRWView : public BView {
+class CompilationBlankView : public BView {
 public:
-					CompilationCDRWView(BurnWindow& parent);
-	virtual 		~CompilationCDRWView();
+					CompilationBlankView(BurnWindow& parent);
+	virtual 		~CompilationBlankView();
 
 	virtual void	AttachedToWindow();
 	virtual void	MessageReceived(BMessage* message);

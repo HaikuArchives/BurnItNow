@@ -62,7 +62,7 @@ private:
 	void 			_OpenHelp();
 	void 			_UpdateSpeedSlider(BMessage* message);
 
-	BString			_ActionInprogress();
+	BString			_ActionInProgress();
 
 	BTabView* 		fTabView;
 

@@ -7,7 +7,7 @@
 #include "CompilationDataView.h"
 #include "CompilationAudioView.h"
 #include "CompilationImageView.h"
-#include "CompilationCDRWView.h"
+#include "CompilationBlankView.h"
 #include "CompilationCloneView.h"
 #include "CompilationDVDView.h"
 #include "Constants.h"
@@ -43,7 +43,7 @@ CompilationDataView* fCompilationDataView;
 CompilationAudioView* fCompilationAudioView;
 CompilationImageView* fCompilationImageView;
 CompilationDVDView* fCompilationDVDView;
-CompilationCDRWView* fCompilationCDRWView;
+CompilationBlankView* fCompilationBlankView;
 CompilationCloneView* fCompilationCloneView;
 
 #pragma mark --Constructor/Destructor--
@@ -72,11 +72,11 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 bool
 BurnWindow::QuitRequested()
 {
-	BString text = _ActionInprogress();
+	BString text = _ActionInProgress();
 
 	if (text != "") {
 		text << B_TRANSLATE("\nDo you want to quit BurnItNow anyway (this "
-			"won't stop the fAction currently in progress" B_UTF8_ELLIPSIS);
+			"won't stop the task currently in progress" B_UTF8_ELLIPSIS);
 		BAlert* alert = new BAlert("stopquit", text.String(),
 			B_TRANSLATE("Quit anyway"), B_TRANSLATE("Cancel"));
 
@@ -354,14 +354,14 @@ BurnWindow::_CreateTabView()
 	fCompilationAudioView = new CompilationAudioView(*this);
 	fCompilationImageView = new CompilationImageView(*this);
 	fCompilationDVDView = new CompilationDVDView(*this);
-	fCompilationCDRWView = new CompilationCDRWView(*this);
+	fCompilationBlankView = new CompilationBlankView(*this);
 	fCompilationCloneView = new CompilationCloneView(*this);
 
 	tabView->AddTab(fCompilationDataView);
 	tabView->AddTab(fCompilationAudioView);
 	tabView->AddTab(fCompilationImageView);
 	tabView->AddTab(fCompilationDVDView);
-	tabView->AddTab(fCompilationCDRWView);
+	tabView->AddTab(fCompilationBlankView);
 	tabView->AddTab(fCompilationCloneView);
 
 	return tabView;
@@ -605,7 +605,7 @@ BurnWindow::_UpdateSpeedSlider(BMessage* message)
 #pragma mark -- Private Methods --
 
 BString
-BurnWindow::_ActionInprogress()
+BurnWindow::_ActionInProgress()
 {
 	BString text = "";
 
@@ -613,7 +613,7 @@ BurnWindow::_ActionInprogress()
 	int32 audioProgress = fCompilationAudioView->InProgress();
 	int32 imageProgress = fCompilationImageView->InProgress();
 	int32 dvdProgress = fCompilationDVDView->InProgress();
-	int32 cdrwProgress	= fCompilationCDRWView->InProgress();
+	int32 cdrwProgress	= fCompilationBlankView->InProgress();
 	int32 cloneProgress = fCompilationCloneView->InProgress();
 
 	if ((dataProgress == IDLE)
