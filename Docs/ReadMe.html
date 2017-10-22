@@ -128,8 +128,8 @@ for <a href="http://www.haiku-os.org">Haiku</a><br /></p>
 </div>
 <hr />
 <p><br /></p>
-<p>BurnItNow works with CDs and DVDs. It burns data and ISO images, and blanks rewritable RW media. You can create AudioCDs from drag&amp;dropped WAV files and burn pre-authored DVD-Audio and DVD-Video.<br />
-BurnItNow is a graphical frontend to the commandline tools suite <i>cdrtools</i> by Jörg Schilling et al.</p>
+<p>BurnItNow works with CDs and DVDs. It burns data and ISO images, and blanks rewritable RW media. You can create Audio CDs from drag &amp; dropped WAV files and burn pre-authored DVD-Audio and DVD-Video.<br />
+BurnItNow is a graphical frontend to the command line tools suite <i>cdrtools</i> by Jörg Schilling et al.</p>
 
 <p>BurnItNow's window consists of four parts: the menu bar, the session settings, several project modes in tabs, and a bar indicating the currently used space at the bottom:</p>
 
@@ -144,7 +144,7 @@ BurnItNow is a graphical frontend to the commandline tools suite <i>cdrtools</i>
 <p>The available menu items are few and easy to understand.<br />
 In the <span class="menu">App</span> menu you can open the <span class="menu">About...</span> panel and <span class="menu">Quit</span> the application.</p>
 
-<p><span class="menu">Settings</span> provides options related to cached images that are created when you build an image that is then burned to disc.</p>
+<p><span class="menu">Settings</span> provide options related to cached images that are created when you build an image that is then burned to disc.</p>
 <ul><li><p><span class="menu">Set cache folder…</span> opens a file dialog in which you can set the folder that is used for those cached images. By default, it points to <span class="path">/system/cache/</span>, but you may want to change it to some other partition with more free space.<br />
 Make sure you have the volume with your cache folder mounted before starting to work with BurnItNow, that it has enough free space and isn't read-only.</p></li>
 <li><p><span class="menu">Open cache folder</span> shows the cache folder in a Tracker window, in case you want to have a look or copy an image somewhere else for later use.</p></li>
@@ -165,7 +165,7 @@ Make sure you have the volume with your cache folder mounted before starting to 
 
 <h3>Checkboxes</h3>
 <p><span class="menu">Simulation</span> is a dummy mode that goes through all the motions without actually burning anything onto the disc.<br />
-<span class="menu">Eject after burning</span> does just that. A good way to remind you that your CD's finished while you're busy elsewhere.</p>
+<span class="menu">Eject after burning</span> does just that. It is a good way to remind you that your CD has finished while you're busy elsewhere.</p>
 
 <h3>Speed slider</h3>
 <p>With the <span class="menu">Burn speed</span> slider you set the speed used when writing to the disc. The 'Min' and 'Max' settings are determined from the used media and your CD burner model by the "cdrecord" backend.<br />
@@ -173,7 +173,7 @@ For best compatibility with stand-alone CD players, a speed of 4x is recommended
 <p>When cloning, the disc is read out with a speed of 10x. In our tests, increased speed resulted in ever more read errors.</p>
 
 <h3>Popup menus</h3>
-<p>Below checkmarks and speed slider are two popup menus:<br />
+<p>Below checkmarks and speed slider are two popup menus.<br />
 First is the recording mode. It's either <span class="menu">Disc At Once (DAO)</span> (actually "Session at once" (SAO)) where the burning is done in one go for the whole disc and it's fixated at the end. With <span class="menu">Track At Once (TAO)</span> the laser is turned off after every track and the disc isn't closed automatically.<br />
 With BurnItNow's current feature set, you're probably good with always using DAO.</p>
 
@@ -207,7 +207,7 @@ CD-650 (green), CD-700 (yellow), CD-800 (orange), CD-900 (blue), DVD5 (beige) an
 <img src="./images/mode_data.png" alt="The Data disc mode" />
 </div>
 <p>In Data mode, you first use <span class="button">Choose folder</span> to select the folder that's to be burnt to disc. That folder has to be set up beforehand by copying files and folders to it. The folder's name will be used as the label for the disc.<br />
-Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the number of files and their size and the speed of your harddisk that may take some seconds.<br />
+Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the number of files and their size and the speed of your hard disk that may take some seconds.<br />
 Lastly, you check your session settings one more time, insert a blank disc, and click <span class="button">Burn disc</span> to start the writing.</p>
 
 <h3>Audio CD</h3>
@@ -229,10 +229,10 @@ Finally, check your session settings once more, insert a blank disc and click <s
 <div align = "center">
 <img src="./images/mode_dvd.png" alt="The Audio/Video DVD mode" />
 </div>
-<p>BurnItNow can burn standards conforming Audio-DVDs and Video-DVDs, but it has to be pre-authored first, i.e. there needs to be a folder contaning a <span class="path">AUDIO_TS</span> and a <span class="path">VIDEO_TS</span> folder with the authored data.</p>
-<p>Then it works like described for Data discs:<br />
+<p>BurnItNow can burn standards conforming Audio-DVDs and Video-DVDs, but it has to be pre-authored first, i.e. there needs to be a folder containing an <span class="path">AUDIO_TS</span> and a <span class="path">VIDEO_TS</span> folder with the authored data.</p>
+<p>Then it works like described for Data discs.<br />
 You first use <span class="button">Choose folder</span> to select the folder containing VIDEO_TS and AUDIO_TS. The folder's name will be used as the label for the disc.<br />
-Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the size of your project and the speed of your harddisk that may take some seconds.<br />
+Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the size of your project and the speed of your hard disk that may take some seconds.<br />
 Lastly, you check your session settings one more time, insert a blank DVD, and click <span class="button">Burn disc</span> to start the writing.</p>
 
 <h3>Blank RW-disc</h3>
@@ -258,7 +258,7 @@ Lastly, you check your session settings one more time, insert a blank DVD, and c
 <img src="./images/mode_clone.png" alt="The Clone disc mode" />
 </div>
 <p>This mode is for making a 1:1 copy of a disc.<br />
-You start by inserting the disc to clone and click on <span class="button">Create image</span>. The disc will be ejected when its completely read out (at a fixed 10x speed). Now insert a blank disc, check your session settings  and click <span class="button">Burn image</span>.</p>
+You start by inserting the disc to clone and click on <span class="button">Create image</span>. The disc will be ejected when it's completely read out (at a fixed 10x speed). Now insert a blank disc, check your session settings and click <span class="button">Burn image</span>.</p>
 
 <h2>
 <a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
