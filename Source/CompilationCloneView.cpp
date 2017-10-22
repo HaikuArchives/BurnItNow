@@ -36,10 +36,11 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
-	fParser(fProgress, fETAtime)
+	fParser(fProgress, fETAtime),
+	fAbort(false),
+	fAction(IDLE)
 {
 	fWindowParent = &parent;
-	fAction = IDLE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -166,16 +167,15 @@ CompilationCloneView::_Build()
 {
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-		"Image creating in progress" B_UTF8_ELLIPSIS, "Status notification"));
+		"Reading in disc" B_UTF8_ELLIPSIS, "Status notification"));
 	fBuildButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Clone");
 	fNotification.SetTitle(B_TRANSLATE("Building clone image"));
-	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetContent(B_TRANSLATE("Reading in disc" B_UTF8_ELLIPSIS));
 	fNotification.SetProgress(0);
-	 // It may take a while for the building to start...
-	fNotification.Send(60 * 1000000LL);
+	fNotification.Send();
 
 	BPath path;
 	AppSettings* settings = my_app->Settings();
@@ -221,41 +221,29 @@ CompilationCloneView::_BuildOutput(BMessage* message)
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
-			if (modified == PERCENT)
+			if (modified == PERCENT) {
 				_UpdateProgress();
+				_UpdateSizeBar();
+			}
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		BString result(fOutputView->Text());
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+			"Insert a blank disc and burn the image",
+			"Status notification"));
 
-		// Last output line always (except error) contains speed statistics
-		if (result.FindFirst(" kB/sec.") != B_ERROR) {
-			fAction = IDLE;
+		BString device("dev=");
+		device.Append(fWindowParent->GetSelectedDevice().number.String());
 
-			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-				"Insert a blank disc and burn the image",
-				"Status notification"));
-
-			_UpdateSizeBar();
-
-			BString device("dev=");
-			device.Append(fWindowParent->GetSelectedDevice().number.String());
-
-			fClonerThread = new CommandThread(NULL,
-				new BInvoker(new BMessage(), this)); // no need for notification
-			fClonerThread->AddArgument("cdrecord")
-				->AddArgument("-eject")
-				->AddArgument(device)
-				->Run();
-		} else {
-			fAction = IDLE;
-			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-				"Failed to create image", "Status notification"));
-			return;
-		}
+		fClonerThread = new CommandThread(NULL,
+			new BInvoker(new BMessage(), this)); // no need for notification
+		fClonerThread->AddArgument("cdrecord")
+			->AddArgument("-eject")
+			->AddArgument(device)
+			->Run();
 
 		fBuildButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
@@ -329,7 +317,9 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseCdrecordLine(text, data);
-		if (modified == NOCHANGE) {
+		if (modified == SMALLDISC)
+			fAbort = true;
+		if (modified == NOCHANGE || modified == SMALLDISC) {
 			data << "\n";
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
@@ -342,15 +332,25 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-			"Burning complete. Burn another disc?", "Status notification"));
+		if (fAbort) {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Burning aborted: The data didn't fit on the disc.",
+				"Status notification"));
+			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
+			fNotification.SetContent(B_TRANSLATE(
+				"The data didn't fit on the disc."));
+		} else {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Burning complete. Burn another disc?",
+				"Status notification"));
+			fNotification.SetProgress(100);
+			fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		}
+		fNotification.SetMessageID("BurnItNow_Clone");
+		fNotification.Send();
+
 		fBuildButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
-
-		fNotification.SetMessageID("BurnItNow_Clone");
-		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
-		fNotification.Send();
 
 		fAction = IDLE;
 		fParser.Reset();

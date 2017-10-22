@@ -31,6 +31,7 @@ private:
 
 	bigtime_t	fLastTime;
 	float		fLastSize;
+	float		fCapacity;
 };
 
 #endif // OUTPUTPARSER_H

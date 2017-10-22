@@ -3,7 +3,6 @@
  * Distributed under the terms of the MIT License.
  */
 #include <Alert.h>
-#include <Button.h>
 #include <Catalog.h>
 #include <ControlLook.h>
 #include <LayoutBuilder.h>
@@ -26,14 +25,10 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	BView(B_TRANSLATE("Blank RW-disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBlankerThread(NULL),
-	fOpenPanel(NULL),
-	fNotification(B_PROGRESS_NOTIFICATION),
-	fProgress(0),
-	fETAtime("--"),
-	fParser(fProgress, fETAtime)
+	fNotification(B_INFORMATION_NOTIFICATION),
+	fAction(IDLE)
 {
 	fWindowParent = &parent;
-	fAction = IDLE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -92,9 +87,9 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 
 	blankModeMenuField->SetToolTip(toolTip.String());
 
-	BButton* blankButton = new BButton("BlankButton",
+	fBlankButton = new BButton("BlankButton",
 		B_TRANSLATE("Blank disc"), new BMessage(kBlankButton));
-	blankButton->SetTarget(this);
+	fBlankButton->SetTarget(this);
 
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
 
@@ -103,7 +98,7 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 		.AddGroup(B_HORIZONTAL)
 			.AddGlue()
 			.Add(blankModeMenuField)
-			.Add(blankButton)
+			.Add(fBlankButton)
 			.AddGlue()
 			.End()
 		.AddGroup(B_VERTICAL)
@@ -116,7 +111,6 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 CompilationBlankView::~CompilationBlankView()
 {
 	delete fBlankerThread;
-	delete fOpenPanel;
 }
 
 
@@ -128,9 +122,7 @@ CompilationBlankView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
-	BButton* blankButton = dynamic_cast<BButton*>(FindView("BlankButton"));
-	if (blankButton != NULL)
-		blankButton->SetTarget(this);
+	fBlankButton->SetTarget(this);
 }
 
 
@@ -177,11 +169,18 @@ CompilationBlankView::_Blank()
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
+	fBlankButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Blank");
 	fNotification.SetTitle(B_TRANSLATE("Blanking disc"));
-	fNotification.SetProgress(0);
+	if (mode == "All")
+		fNotification.SetContent(B_TRANSLATE(
+		"This may take over 30 minutes..."));
+	else
+		fNotification.SetContent(B_TRANSLATE(
+		"This may take a while..."));
+
 	fNotification.Send();
 
 	BString device("dev=");
@@ -202,7 +201,6 @@ CompilationBlankView::_Blank()
 	fBlankerThread->AddArgument(device);
 	fBlankerThread->Run();
 
-	fParser.Reset();
 	fAction = BLANKING;
 }
 
@@ -213,18 +211,9 @@ CompilationBlankView::_BlankOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-		BString text = fOutputView->Text();
-		int32 modified = fParser.ParseBlankLine(text, data);
-		if (modified == NOCHANGE) {
-			data << "\n";
-			fOutputView->Insert(data.String());
-			fOutputView->ScrollBy(0.0, 50.0);
-		} else {
-			if (modified == PERCENT)
-				_UpdateProgress();
-			fOutputView->SetText(text);
-			fOutputView->ScrollTo(0.0, 1000000.0);
-		}
+		data << "\n";
+		fOutputView->Insert(data.String());
+		fOutputView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
@@ -232,24 +221,11 @@ CompilationBlankView::_BlankOutput(BMessage* message)
 			"Status notification"));
 
 		fNotification.SetMessageID("BurnItNow_Blank");
-		fNotification.SetProgress(100);
 		fNotification.SetContent(B_TRANSLATE("Blanking finished!"));
 		fNotification.Send();
 
+		fBlankButton->SetEnabled(true);
+
 		fAction = IDLE;
-		fParser.Reset();
 	}
-}
-
-
-void
-CompilationBlankView::_UpdateProgress()
-{
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Clone");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
 }

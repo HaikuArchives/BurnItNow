@@ -38,8 +38,6 @@ private:
 	void 			_BuildOutput(BMessage* message);
 	void			_Burn();
 	void 			_BurnOutput(BMessage* message);
-	void			_CheckCapacity();
-	void 			_CheckCapacityOutput(BMessage* message);
 	void 			_ChooseDirectory();
 	void			_GetFolderSize();
 	void 			_OpenDirectory(BMessage* message);
@@ -69,6 +67,7 @@ private:
 	BString			fETAtime;
 	OutputParser	fParser;
 
+	bool			fAbort;
 	int				fAction;
 };
 

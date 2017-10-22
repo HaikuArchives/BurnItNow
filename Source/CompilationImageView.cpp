@@ -34,10 +34,11 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
-	fParser(fProgress, fETAtime)
+	fParser(fProgress, fETAtime),
+	fAbort(false),
+	fAction(IDLE)
 {
 	fWindowParent = &parent;
-	fAction = IDLE;
 
 	SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 
@@ -236,7 +237,9 @@ CompilationImageView::_BurnOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseCdrecordLine(text, data);
-		if (modified == NOCHANGE) {
+		if (modified == SMALLDISC)
+			fAbort = true;
+		if (modified == NOCHANGE || modified == SMALLDISC) {
 			data << "\n";
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
@@ -249,15 +252,25 @@ CompilationImageView::_BurnOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-			"Burning complete. Burn another disc?", "Status notification"));
+		if (fAbort) {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Burning aborted: The data didn't fit on the disc.",
+				"Status notification"));
+			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
+			fNotification.SetContent(B_TRANSLATE(
+				"The data didn't fit on the disc."));
+		} else {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Burning complete. Burn another disc?",
+				"Status notification"));
+			fNotification.SetProgress(100);
+			fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+		}
+		fNotification.SetMessageID("BurnItNow_Image");
+		fNotification.Send();
+
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
-
-		fNotification.SetMessageID("BurnItNow_Image");
-		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE("Burning finished!"));
-		fNotification.Send();
 
 		fAction = IDLE;
 		fParser.Reset();

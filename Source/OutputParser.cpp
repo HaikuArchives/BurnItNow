@@ -51,13 +51,20 @@ OutputParser::ParseCdrecordLine(BString& text, BString newline)
 	int32 resultNewline;
 	int32 resultText;
 printf("New line: %s\n", newline.String());
+
+	// does the data not fit on current disc?
+	resultNewline = newline.FindFirst(
+		"cdrecord: WARNING: Data may not fit on current disk.");
+	if (resultNewline != B_ERROR)
+		return SMALLDISC;
+
 	resultNewline = newline.FindFirst(" MB written (fifo");
 	if (resultNewline != B_ERROR) {
 		// calculate percentage
-		BStringList sizeList;
-		newline.Split(" ", true, sizeList);
-		float currentSize = atof(sizeList.StringAt(2));
-		float targetSize = atof(sizeList.StringAt(4));
+		BStringList wordList;
+		newline.Split(" ", true, wordList);
+		float currentSize = atof(wordList.StringAt(2));
+		float targetSize = atof(wordList.StringAt(4));
 		progress = currentSize / targetSize;
 	printf("cdrecord, current: %f, target: %f, percentage: %f\n",
 		currentSize, targetSize, progress);
@@ -88,15 +95,6 @@ printf("New line: %s\n", newline.String());
 		text << "\n" << newline;
 		return PERCENT;
 	}
-
-	// replace the newline string
-//	resultNewline = newline.FindFirst(
-//		"Last chance to quit, starting real write in");
-//	if (resultNewline != B_ERROR) {
-//		text << "\n" << "Waiting...";
-//		return CHANGE;
-//	}
-
 	return NOCHANGE;
 }
 
@@ -157,18 +155,6 @@ printf("New line: %s\n", newline.String());
 int32
 OutputParser::ParseMediainfoLine(BString newline)
 {
-	int32 result;
-printf("New line: %s\n", newline.String());
-	// get available sectors on the disc
-	result = newline.FindFirst("Remaining writable size:");
-	if (result != B_ERROR) {
-		// get the percentage
-		BStringList wordList;
-		newline.Split(" ", true, wordList);
-		result = atoi(wordList.StringAt(3));
-	printf("BurnItNow: remaining sectors: %i\n", result);
-		return result;
-	}
 	return NOCHANGE;
 }
 
@@ -176,6 +162,53 @@ printf("New line: %s\n", newline.String());
 int32
 OutputParser::ParseReadcdLine(BString& text, BString newline)
 {
+	int32 resultNewline;
+	int32 resultText;
+printf("New line: %s\n", newline.String());
+
+	resultNewline = newline.FindFirst("Capacity: ");
+	if (resultNewline != B_ERROR) {
+		BStringList wordList;
+		newline.Split(" ", true, wordList);
+		fCapacity = atof(wordList.StringAt(1));
+		return NOCHANGE;
+	}
+	resultNewline = newline.FindFirst("addr:");
+	if (resultNewline != B_ERROR) {
+		// calculate percentage
+		BStringList wordList;
+		newline.Split(" ", true, wordList);
+		float currentSize = atof(wordList.StringAt(1));
+		progress = currentSize / fCapacity;
+	printf("cdrecord, current: %f, target: %f, percentage: %f\n",
+		currentSize, fCapacity, progress);
+
+		// calculate ETA
+		bigtime_t now = (bigtime_t)real_time_clock_usecs();
+		float speed = ((currentSize - fLastSize) * 1000000.0
+			/ (now - fLastTime)); // MB/s
+		float secondsLeft = (fCapacity - currentSize) / speed;
+		fLastTime = now;
+		fLastSize = currentSize;
+	printf("cdrecord, speed: %f, seconds left: %f\n", speed, secondsLeft);
+
+		BString duration;
+		BDurationFormat formatter;
+		formatter.Format(duration, now, now + ((bigtime_t)secondsLeft * 1000000LL));
+		eta = B_TRANSLATE("Finished in %duration%");
+		eta.ReplaceFirst("%duration%", duration);
+	printf("ETA: %s\n\n", eta.String());
+
+		// print on top of the last line (not if this is the first progress line)
+		resultText = text.FindFirst("addr:");
+		if (resultText != B_ERROR) {
+			int32 offset = text.FindLast("\n");
+			if (offset != B_ERROR)
+				text.Remove(offset, text.CountChars() - offset);
+		}
+		text << "\n" << newline;
+		return PERCENT;
+	}
 	return NOCHANGE;
 }
 

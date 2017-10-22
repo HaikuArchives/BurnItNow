@@ -37,9 +37,9 @@ enum {
 
 // flags from the OutputParser
 enum {
-	PERCENT = -1,
+	SMALLDISC = -1,
 	NOCHANGE = 0,
-	CHANGE
+	PERCENT
 };
 
 // Message constants
