@@ -254,11 +254,11 @@ CompilationImageView::_BurnOutput(BMessage* message)
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		if (fAbort) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-				"Burning aborted: The data didn't fit on the disc.",
+				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
 			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
 			fNotification.SetContent(B_TRANSLATE(
-				"The data didn't fit on the disc."));
+				"The data doesn't fit on the disc."));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",

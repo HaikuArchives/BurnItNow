@@ -48,7 +48,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fInfoView = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
 	fInfoView->SetFont(be_bold_font);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-		"Choose DVD folder to burn", "Status notification"));
+		"Choose the DVD folder to burn", "Status notification"));
 
 	fPathView = new PathView("FolderStringView",
 		B_TRANSLATE("Folder: <none>"));
@@ -186,7 +186,7 @@ CompilationDVDView::_Build()
 {
 	if (fDirPath->Path() == NULL) {
 		(new BAlert("ChooseDirectoryFirstAlert",
-			B_TRANSLATE("First choose DVD folder to burn."),
+			B_TRANSLATE("First choose the DVD folder to burn."),
 			B_TRANSLATE("OK")))->Go();
 		return;
 	}
@@ -370,11 +370,11 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
 		if (fAbort) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-				"Burning aborted: The data didn't fit on the disc.",
+				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
 			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
 			fNotification.SetContent(B_TRANSLATE(
-				"The data didn't fit on the disc."));
+				"The data doesn't fit on the disc."));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
@@ -429,7 +429,7 @@ void
 CompilationDVDView::_OpenDirectory(BMessage* message)
 {
 	BString status(B_TRANSLATE_COMMENT(
-			"Didn't find valid files needed for a Audio or Video DVD",
+			"Didn't find valid files needed for an Audio or Video DVD",
 			"Status notification"));
 
 	entry_ref ref;
