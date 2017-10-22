@@ -13,6 +13,7 @@
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
+#include <StringList.h>
 #include <StringView.h>
 
 #include "CommandThread.h"
@@ -157,16 +158,16 @@ ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 	if (S_ISDIR(stat->st_mode) || (S_ISLNK(stat->st_mode)))
 		return true;
 
-	BPath* path = new BPath(ref);
-	BString filename(path->Leaf());
+	BStringList imageMimes;
+	imageMimes.Add("application/x-cd-image");
+	imageMimes.Add("application/x-bfs-image");
 
-	if ((strcmp("application/x-cd-image", filetype) == 0)
-		|| filename.IFindLast(".iso", filename.CountChars())
-			== (filename.CountChars() - 4)
-		|| filename.IFindLast(".img", filename.CountChars())
-			== (filename.CountChars() - 4)) {
+	BMimeType refType;
+	BMimeType::GuessMimeType(ref, &refType);
+
+	if (imageMimes.HasString(refType.Type()))
 		return true;
-	}
+
 	return false;
 }
 
@@ -281,7 +282,6 @@ CompilationImageView::_BurnOutput(BMessage* message)
 void
 CompilationImageView::_ChooseImage()
 {
-	// TODO Create a RefFilter for the panel?
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
 			NULL, B_FILE_NODE, false, NULL, new ImageRefFilter(), true);
