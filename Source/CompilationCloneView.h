@@ -39,7 +39,7 @@ private:
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
-	CommandThread*	fClonerThread;
+	CommandThread*	fBurnerThread;
 	BurnWindow*		fWindowParent;
 
 	BFilePanel*		fOpenPanel;

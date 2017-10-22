@@ -153,13 +153,6 @@ printf("New line: %s\n", newline.String());
 
 
 int32
-OutputParser::ParseMediainfoLine(BString newline)
-{
-	return NOCHANGE;
-}
-
-
-int32
 OutputParser::ParseReadcdLine(BString& text, BString newline)
 {
 	int32 resultNewline;

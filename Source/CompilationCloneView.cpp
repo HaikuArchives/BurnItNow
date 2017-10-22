@@ -31,7 +31,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	:
 	BView(B_TRANSLATE("Clone disc"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fClonerThread(NULL),
+	fBurnerThread(NULL),
 	fOpenPanel(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
@@ -90,7 +90,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 
 CompilationCloneView::~CompilationCloneView()
 {
-	delete fClonerThread;
+	delete fBurnerThread;
 	delete fOpenPanel;
 }
 
@@ -196,9 +196,9 @@ CompilationCloneView::_Build()
 		device.Append(fWindowParent->GetSelectedDevice().number.String());
 		sessionConfig config = fWindowParent->GetSessionConfig();
 
-		fClonerThread = new CommandThread(NULL,
+		fBurnerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kBuildOutput), this));
-		fClonerThread->AddArgument("readcd")
+		fBurnerThread->AddArgument("readcd")
 			->AddArgument(device)
 			->AddArgument("-s")
 			->AddArgument("speed=10")	// for max compatibility
@@ -238,9 +238,9 @@ CompilationCloneView::_BuildOutput(BMessage* message)
 		BString device("dev=");
 		device.Append(fWindowParent->GetSelectedDevice().number.String());
 
-		fClonerThread = new CommandThread(NULL,
+		fBurnerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(), this)); // no need for notification
-		fClonerThread->AddArgument("cdrecord")
+		fBurnerThread->AddArgument("cdrecord")
 			->AddArgument("-eject")
 			->AddArgument(device)
 			->Run();
@@ -283,18 +283,18 @@ CompilationCloneView::_Burn()
 		device.Append(fWindowParent->GetSelectedDevice().number.String());
 		sessionConfig config = fWindowParent->GetSessionConfig();
 
-		fClonerThread = new CommandThread(NULL,
+		fBurnerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kBurnOutput), this));
-		fClonerThread->AddArgument("cdrecord");
+		fBurnerThread->AddArgument("cdrecord");
 
 		if (config.simulation)
-			fClonerThread->AddArgument("-dummy");
+			fBurnerThread->AddArgument("-dummy");
 		if (config.eject)
-			fClonerThread->AddArgument("-eject");
+			fBurnerThread->AddArgument("-eject");
 		if (config.speed != "")
-			fClonerThread->AddArgument(config.speed);
+			fBurnerThread->AddArgument(config.speed);
 
-		fClonerThread->AddArgument(config.mode)
+		fBurnerThread->AddArgument(config.mode)
 			->AddArgument("fs=16m")
 			->AddArgument(device)
 			->AddArgument("-v")	// to get progress output

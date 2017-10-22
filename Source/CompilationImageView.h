@@ -50,7 +50,7 @@ private:
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
-	CommandThread* 	fImageParserThread;
+	CommandThread* 	fBurnerThread;
 	BurnWindow*		fWindowParent;
 
 	BFilePanel* 	fOpenPanel;

@@ -28,7 +28,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	:
 	BView(B_TRANSLATE("Image file"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
-	fImageParserThread(NULL),
+	fBurnerThread(NULL),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
 	fNotification(B_PROGRESS_NOTIFICATION),
@@ -91,7 +91,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 CompilationImageView::~CompilationImageView()
 {
 	delete fImagePath;
-	delete fImageParserThread;
+	delete fBurnerThread;
 	delete fOpenPanel;
 }
 
@@ -182,8 +182,8 @@ CompilationImageView::_Burn()
 	if (fImagePath->InitCheck() != B_OK)
 		return;
 
-	if (fImageParserThread != NULL)
-		delete fImageParserThread;
+	if (fBurnerThread != NULL)
+		delete fBurnerThread;
 
 	fAction = BURNING;	// flag we're burning
 
@@ -203,19 +203,19 @@ CompilationImageView::_Burn()
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
 	sessionConfig config = fWindowParent->GetSessionConfig();
 
-	fImageParserThread = new CommandThread(NULL,
+	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnOutput), this));
 
-	fImageParserThread->AddArgument("cdrecord");
+	fBurnerThread->AddArgument("cdrecord");
 
 	if (config.simulation)
-		fImageParserThread->AddArgument("-dummy");
+		fBurnerThread->AddArgument("-dummy");
 	if (config.eject)
-		fImageParserThread->AddArgument("-eject");
+		fBurnerThread->AddArgument("-eject");
 	if (config.speed != "")
-		fImageParserThread->AddArgument(config.speed);
+		fBurnerThread->AddArgument(config.speed);
 
-	fImageParserThread->AddArgument(config.mode)
+	fBurnerThread->AddArgument(config.mode)
 		->AddArgument("fs=16m")
 		->AddArgument(device)
 		->AddArgument("-v")	// to get progress output
@@ -324,14 +324,14 @@ CompilationImageView::_OpenImage(BMessage* message)
 		fOutputView->SetText(NULL);
 		fBurnButton->SetEnabled(true);
 
-		if (fImageParserThread != NULL)
-			delete fImageParserThread;
+		if (fBurnerThread != NULL)
+			delete fBurnerThread;
 
 		fAction = BUILDING;	// flag we're opening ISO
 
-		fImageParserThread = new CommandThread(NULL,
+		fBurnerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kBuildOutput), this));
-		fImageParserThread->AddArgument("isoinfo")
+		fBurnerThread->AddArgument("isoinfo")
 			->AddArgument("-d")
 			->AddArgument("-i")
 			->AddArgument(fImagePath->Path())
