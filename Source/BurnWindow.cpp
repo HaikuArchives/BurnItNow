@@ -10,8 +10,9 @@
 #include "CompilationBlankView.h"
 #include "CompilationCloneView.h"
 #include "CompilationDVDView.h"
+#include "CompilationShared.h"
 #include "Constants.h"
-#include "DirRefFilter.h"
+//#include "DirRefFilter.h"
 
 #include <stdio.h>
 #include <stdlib.h>

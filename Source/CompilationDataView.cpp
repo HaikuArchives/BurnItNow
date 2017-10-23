@@ -17,9 +17,8 @@
 #include "BurnApplication.h"
 #include "CompilationDataView.h"
 #include "CommandThread.h"
+#include "CompilationShared.h"
 #include "Constants.h"
-#include "DirRefFilter.h"
-#include "FolderSizeCount.h"
 
 
 #undef B_TRANSLATION_CONTEXT
@@ -192,6 +191,17 @@ CompilationDataView::_Build()
 	if (fDirPath->InitCheck() != B_OK)
 		return;
 
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(*fImagePath);
+		settings->Unlock();
+	}
+	if (fImagePath->InitCheck() != B_OK)
+		return;
+
+	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
+		return;
+
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
 
@@ -200,14 +210,6 @@ CompilationDataView::_Build()
 		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBuildOutput), this));
-
-	AppSettings* settings = my_app->Settings();
-	if (settings->Lock()) {
-		settings->GetCacheFolder(*fImagePath);
-		settings->Unlock();
-	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Data");

@@ -15,8 +15,8 @@
 #include <View.h>
 
 #include "BurnWindow.h"
+#include "CompilationShared.h"
 #include "OutputParser.h"
-#include "PathView.h"
 #include "SizeView.h"
 
 

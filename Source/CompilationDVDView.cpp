@@ -17,9 +17,8 @@
 #include "BurnApplication.h"
 #include "CompilationDVDView.h"
 #include "CommandThread.h"
+#include "CompilationShared.h"
 #include "Constants.h"
-#include "DirRefFilter.h"
-#include "FolderSizeCount.h"
 
 
 #undef B_TRANSLATION_CONTEXT
@@ -193,6 +192,17 @@ CompilationDVDView::_Build()
 	if (fDirPath->InitCheck() != B_OK)
 		return;
 
+	AppSettings* settings = my_app->Settings();
+	if (settings->Lock()) {
+		settings->GetCacheFolder(*fImagePath);
+		settings->Unlock();
+	}
+	if (fImagePath->InitCheck() != B_OK)
+		return;
+
+	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
+		return;
+
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
 
@@ -209,14 +219,6 @@ CompilationDVDView::_Build()
 	fNotification.SetProgress(0);
 	 // It may take a while for the building to start...
 	fNotification.Send(60 * 1000000LL);
-
-	AppSettings* settings = my_app->Settings();
-	if (settings->Lock()) {
-		settings->GetCacheFolder(*fImagePath);
-		settings->Unlock();
-	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
 
 	BString discLabel;
 	if (fDiscLabel->TextView()->TextLength() == 0)
