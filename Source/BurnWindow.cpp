@@ -53,7 +53,8 @@ CompilationCloneView* fCompilationCloneView;
 BurnWindow::BurnWindow(BRect frame, const char* title)
 	:
 	BWindow(frame, title, B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS
-		| B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS)
+		| B_QUIT_ON_WINDOW_CLOSE | B_AUTO_UPDATE_SIZE_LIMITS),
+		fOpenPanel(NULL)
 {
 	fTabView = _CreateTabView();
 	fTabView->SetBorder(B_NO_BORDER);
@@ -66,6 +67,11 @@ BurnWindow::BurnWindow(BRect frame, const char* title)
 		.Add(fTabView);
 }
 
+
+BurnWindow::~BurnWindow()
+{
+	delete fOpenPanel;
+}
 
 #pragma mark --BWindow Overrides--
 

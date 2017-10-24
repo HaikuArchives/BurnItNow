@@ -38,6 +38,7 @@ typedef struct sessionConfig {
 class BurnWindow : public BWindow {
 public:
 					BurnWindow(BRect frame, const char* title);
+					~BurnWindow();
 
 	bool			QuitRequested();
 	virtual void	MessageReceived(BMessage* message);

@@ -33,6 +33,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fOpenPanel(NULL),
 	fDirPath(new BPath()),
 	fImagePath(new BPath()),
+	fFolderSize(0),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
