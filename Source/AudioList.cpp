@@ -440,8 +440,6 @@ AudioListItem::~AudioListItem()
 void
 AudioListItem::DrawItem(BView* view, BRect rect, bool complete)
 {
-	static const float spacing = be_control_look->DefaultLabelSpacing();
-
 	// set background color
 	rgb_color bgColor;
 
@@ -472,7 +470,7 @@ AudioListItem::DrawItem(BView* view, BRect rect, bool complete)
 
 	if (!IsSelected()) {
 		BRect trackRect(rect.LeftTop(),
-			BPoint(spacing * 2 + trackWidth, rect.bottom));
+			BPoint(kControlPadding * 2 + trackWidth, rect.bottom));
 		view->SetHighColor(tint_color(ui_color(B_LIST_BACKGROUND_COLOR), 1.08));
 		view->FillRect(trackRect);
 	}
@@ -481,24 +479,24 @@ AudioListItem::DrawItem(BView* view, BRect rect, bool complete)
 	else
 		view->SetHighColor(ui_color(B_LIST_ITEM_TEXT_COLOR));
 
-	view->DrawString(track.String(), BPoint(spacing,
+	view->DrawString(track.String(), BPoint(kControlPadding,
 	rect.top + fheight.ascent + fheight.descent + fheight.leading));
 
 	BString string(GetFilename());
-	view->TruncateString(&string, B_TRUNCATE_END, Width() - spacing * 4);
+	view->TruncateString(&string, B_TRUNCATE_END, Width() - kControlPadding * 4);
 
 	font.SetFace(B_REGULAR_FACE);
 	view->SetFont(&font);
 
-	view->DrawString(string.String(), BPoint(spacing * 3 + trackWidth,
+	view->DrawString(string.String(), BPoint(kControlPadding * 3 + trackWidth,
 		rect.top + fheight.ascent + fheight.descent + fheight.leading));
 
 	// draw lines
 	view->SetHighColor(tint_color(ui_color(B_CONTROL_BACKGROUND_COLOR),
 		B_DARKEN_2_TINT));
 	view->StrokeLine(rect.LeftBottom(), rect.RightBottom());
-	view->StrokeLine(BPoint(spacing * 2 + trackWidth, rect.top),
-		BPoint(spacing * 2 + trackWidth, rect.bottom));
+	view->StrokeLine(BPoint(kControlPadding * 2 + trackWidth, rect.top),
+		BPoint(kControlPadding * 2 + trackWidth, rect.bottom));
 }
 
 
