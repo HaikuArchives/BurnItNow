@@ -300,6 +300,8 @@ AppSettings::_EnsureCacheIsValid()
 		return;
 	}
 	BEntry testEntry(&testRef);
-	testEntry.Remove();
-	testFile.Unset();
+	if (testEntry.InitCheck() == B_OK) {
+		testEntry.Remove();
+		testFile.Unset();
+	}
 }
