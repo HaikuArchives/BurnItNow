@@ -54,9 +54,9 @@ FolderSizeCount(void* arg)
 	BPath folder(path);
 	if (folder.InitCheck() == B_OK) {
 	    // command to be executed
-	    std::string cmd("du -sb ");
+	    std::string cmd("du -sb \"");
 	    cmd.append(path);
-	    cmd.append(" | cut -f1 2>&1");
+	    cmd.append("\" | cut -f1 2>&1");
 	
 	    // execute above command and get the output
 	    FILE *stream = popen(cmd.c_str(), "r");
