@@ -37,6 +37,7 @@ enum {
 
 // flags from the OutputParser
 enum {
+	INVALIDWAV = -2,
 	SMALLDISC = -1,
 	NOCHANGE = 0,
 	PERCENT

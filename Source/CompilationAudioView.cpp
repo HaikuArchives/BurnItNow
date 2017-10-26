@@ -325,9 +325,9 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseCdrecordLine(text, data);
-		if (modified == SMALLDISC)
-			fAbort = true;
-		if (modified == NOCHANGE || modified == SMALLDISC) {
+		if (modified < 0)
+			fAbort = modified;
+		if (modified <= 0) {
 			data << "\n";
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
@@ -340,13 +340,20 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		if (fAbort) {
+		if (fAbort == SMALLDISC) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
 			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
 			fNotification.SetContent(B_TRANSLATE(
 				"The data doesn't fit on the disc."));
+		} else if (fAbort == INVALIDWAV) {
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Burning aborted: Some WAV file has the wrong encoding",
+				"Status notification"));
+			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
+			fNotification.SetContent(B_TRANSLATE(
+				"Some WAV file has the wrong encoding."));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",

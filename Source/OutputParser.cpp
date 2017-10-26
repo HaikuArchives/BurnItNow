@@ -58,6 +58,12 @@ printf("New line: %s\n", newline.String());
 	if (resultNewline != B_ERROR)
 		return SMALLDISC;
 
+	// invalid wavs stopped the burning?
+	resultNewline = newline.FindFirst(
+		"cdrecord: Inappropriate audio coding in");
+	if (resultNewline != B_ERROR)
+		return INVALIDWAV;
+
 	resultNewline = newline.FindFirst(" MB written (fifo");
 	if (resultNewline != B_ERROR) {
 		// calculate percentage
