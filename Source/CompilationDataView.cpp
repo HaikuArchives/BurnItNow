@@ -461,10 +461,7 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 void
 CompilationDataView::_UpdateProgress()
 {
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
+	fNotification.SetContent(fETAtime);
 	fNotification.SetMessageID("BurnItNow_Data");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();

@@ -81,8 +81,12 @@ printf("New line: %s\n", newline.String());
 		BString duration;
 		BDurationFormat formatter;
 		formatter.Format(duration, now, now + ((bigtime_t)secondsLeft * 1000000LL));
-		eta = B_TRANSLATE("Finished in %duration%");
-		eta.ReplaceFirst("%duration%", duration);
+		if (duration == "")
+			eta = B_TRANSLATE("Finished very soon now");
+		else {
+			eta = B_TRANSLATE("Finished in %duration%");
+			eta.ReplaceFirst("%duration%", duration);
+		}
 	printf("ETA: %s\n\n", eta.String());
 
 		// print on top of the last line (not if this is the first progress line)
@@ -136,9 +140,13 @@ printf("New line: %s\n", newline.String());
 		// add 1 sec, otherwise the last second of the progress isn't shown...
 		formatter.Format(duration, now - 1000000LL, finishTime * 1000000LL);
 //		printf("mkisofs duration: %s - now: %i - finish: %i\n\n", duration.String(), now - 1000000LL, finishTime * 1000000LL);
-		eta = B_TRANSLATE("Finished in %duration%");
-		eta.ReplaceFirst("%duration%", duration);
 
+		if (duration == "")
+			eta = B_TRANSLATE("Finished very soon now");
+		else {
+			eta = B_TRANSLATE("Finished in %duration%");
+			eta.ReplaceFirst("%duration%", duration);
+		}
 		// print on top of the last line (not if this is the first progress line)
 		resultText = text.FindFirst("done, estimate finish");
 		if (resultText != B_ERROR) {
@@ -189,8 +197,12 @@ printf("New line: %s\n", newline.String());
 		BString duration;
 		BDurationFormat formatter;
 		formatter.Format(duration, now, now + ((bigtime_t)secondsLeft * 1000000LL));
-		eta = B_TRANSLATE("Finished in %duration%");
-		eta.ReplaceFirst("%duration%", duration);
+		if (duration == "")
+			eta = B_TRANSLATE("Finished very soon now");
+		else {
+			eta = B_TRANSLATE("Finished in %duration%");
+			eta.ReplaceFirst("%duration%", duration);
+		}
 	printf("ETA: %s\n\n", eta.String());
 
 		// print on top of the last line (not if this is the first progress line)
