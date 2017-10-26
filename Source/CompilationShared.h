@@ -31,7 +31,7 @@ public:
 };
 
 
-int32 FolderSizeCount(void* arg);
 bool CheckFreeSpace(int64 size, const char* cache);
+int32 FolderSizeCount(void* arg);
 
 #endif // COMPILATIONSHARED_H

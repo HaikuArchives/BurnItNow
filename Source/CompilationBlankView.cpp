@@ -158,6 +158,8 @@ CompilationBlankView::InProgress()
 void
 CompilationBlankView::_Blank()
 {
+	fAction = BLANKING;
+
 	BString mode = fBlankModeMenu->FindMarked()->Label();
 	mode.ToLower();
 
@@ -200,8 +202,6 @@ CompilationBlankView::_Blank()
 
 	fBlankerThread->AddArgument(device);
 	fBlankerThread->Run();
-
-	fAction = BLANKING;
 }
 
 

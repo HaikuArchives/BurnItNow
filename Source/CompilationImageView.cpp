@@ -36,7 +36,7 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
-	fAbort(false),
+	fAbort(0),
 	fAction(IDLE)
 {
 	fWindowParent = &parent;
@@ -130,6 +130,7 @@ CompilationImageView::MessageReceived(BMessage* message)
 			_BurnOutput(message);
 			break;
 		case B_REFS_RECEIVED:
+			fOutputView->SetText(NULL);
 			_OpenImage(message);
 			break;
 		default:
@@ -238,9 +239,9 @@ CompilationImageView::_BurnOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseCdrecordLine(text, data);
-		if (modified == SMALLDISC)
-			fAbort = true;
-		if (modified == NOCHANGE || modified == SMALLDISC) {
+		if (modified < 0)
+			fAbort = modified;
+		if (modified <= 0) {
 			data << "\n";
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
@@ -253,7 +254,7 @@ CompilationImageView::_BurnOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		if (fAbort) {
+		if (fAbort == SMALLDISC) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
@@ -274,6 +275,7 @@ CompilationImageView::_BurnOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		fAction = IDLE;
+		fAbort = 0;
 		fParser.Reset();
 	}
 }
@@ -376,10 +378,7 @@ CompilationImageView::_OpenOutput(BMessage* message)
 void
 CompilationImageView::_UpdateProgress()
 {
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
+	fNotification.SetContent(fETAtime);
 	fNotification.SetMessageID("BurnItNow_Image");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();

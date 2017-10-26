@@ -40,6 +40,32 @@ DirRefFilter::Filter(const entry_ref* ref, BNode* node,
 }
 
 
+bool
+CheckFreeSpace(int64 size, const char* cache)
+{
+	dev_t device = dev_for_path(cache);
+	BVolume volume(device);
+	if (volume.InitCheck() != B_OK)
+		return false;
+
+	off_t spaceLeft = volume.FreeBytes();
+	if (spaceLeft < size) {
+		char amount[B_PATH_NAME_LENGTH];
+		string_for_size(size - spaceLeft, amount, sizeof(amount));
+		BString text(B_TRANSLATE(
+			"There's not enough free space available at '%cache%'. "
+			"We're %amount% short.\n\n"
+			"Make room, or change the cache folder."));
+		text.ReplaceFirst("%cache%", cache);
+		text.ReplaceFirst("%amount%", amount);
+		(new BAlert("FreeSpaceAlert", text, B_TRANSLATE("OK")))->Go();
+
+		return false;
+	}
+	return true;
+}
+
+
 int32
 FolderSizeCount(void* arg)
 {
@@ -71,34 +97,8 @@ FolderSizeCount(void* arg)
 	msg = new BMessage(kSetFolderSize);
 	msg->AddInt64("foldersize", folderSize / 1024); // size in KiB
 	from.SendMessage(msg);
-	
+
 	return 0;
-}
-
-
-bool
-CheckFreeSpace(int64 size, const char* cache)
-{
-	dev_t device = dev_for_path(cache);
-	BVolume volume(device);
-	if (volume.InitCheck() != B_OK)
-		return false;
-
-	off_t spaceLeft = volume.FreeBytes();	
-	if (spaceLeft < size) {
-		char amount[B_PATH_NAME_LENGTH];
-		string_for_size(size - spaceLeft, amount, sizeof(amount));
-		BString text(B_TRANSLATE(
-			"There's not enough free space available at '%cache%'. "
-			"We're %amount% short.\n\n"
-			"Make room, or change the cache folder."));
-		text.ReplaceFirst("%cache%", cache);
-		text.ReplaceFirst("%amount%", amount);
-		(new BAlert("FreeSpaceAlert", text, B_TRANSLATE("OK")))->Go();
-
-		return false;
-	}
-	return true;
 }
 
 

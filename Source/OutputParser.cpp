@@ -135,6 +135,7 @@ printf("New line: %s\n", newline.String());
 		BDurationFormat formatter;
 		// add 1 sec, otherwise the last second of the progress isn't shown...
 		formatter.Format(duration, now - 1000000LL, finishTime * 1000000LL);
+//		printf("mkisofs duration: %s - now: %i - finish: %i\n\n", duration.String(), now - 1000000LL, finishTime * 1000000LL);
 		eta = B_TRANSLATE("Finished in %duration%");
 		eta.ReplaceFirst("%duration%", duration);
 

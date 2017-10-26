@@ -8,6 +8,7 @@
 #include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
+#include <MessageRunner.h>
 #include <Notification.h>
 #include <SeparatorView.h>
 #include <TextControl.h>
@@ -67,8 +68,9 @@ private:
 	BString			fETAtime;
 	OutputParser	fParser;
 
-	bool			fAbort;
-	int				fAction;
+	int32			fAbort;
+	int32			fAction;
+	BMessageRunner*	fRunner;
 };
 
 

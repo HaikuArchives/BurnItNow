@@ -37,7 +37,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
-	fAbort(false),
+	fAbort(0),
 	fAction(IDLE)
 {
 	fWindowParent = &parent;
@@ -272,6 +272,8 @@ CompilationCloneView::_Burn()
 		fOutputView->SetText(NULL);
 		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
+		fBuildButton->SetEnabled(false);
+		fBurnButton->SetEnabled(false);
 
 		fNotification.SetGroup("BurnItNow");
 		fNotification.SetMessageID("BurnItNow_Clone");
@@ -317,9 +319,9 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseCdrecordLine(text, data);
-		if (modified == SMALLDISC)
-			fAbort = true;
-		if (modified == NOCHANGE || modified == SMALLDISC) {
+		if (modified < 0)
+			fAbort = modified;
+		if (modified <= 0) {
 			data << "\n";
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
@@ -332,7 +334,7 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		if (fAbort) {
+		if (fAbort == SMALLDISC) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
@@ -353,6 +355,7 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		fAction = IDLE;
+		fAbort = 0;
 		fParser.Reset();
 	}
 }
@@ -361,10 +364,7 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 void
 CompilationCloneView::_UpdateProgress()
 {
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
+	fNotification.SetContent(fETAtime);
 	fNotification.SetMessageID("BurnItNow_Clone");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();

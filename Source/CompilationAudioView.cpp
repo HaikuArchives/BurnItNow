@@ -33,7 +33,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
-	fAbort(false),
+	fAbort(0),
 	fAction(IDLE)
 {
 	fWindowParent = &parent;
@@ -248,6 +248,8 @@ CompilationAudioView::_Burn()
 	if (fTrackList->IsEmpty())
 		return;
 
+	fAction = BURNING;	// flag we're burning
+
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burning in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
@@ -312,7 +314,6 @@ CompilationAudioView::_Burn()
 	}
 	fBurnerThread->Run();
 	fParser.Reset();
-	fAction = BURNING;
 }
 
 
@@ -359,6 +360,7 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		fAction = IDLE;
+		fAbort = 0;
 		fParser.Reset();
 	}
 }
@@ -367,10 +369,7 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 void
 CompilationAudioView::_UpdateProgress()
 {
-	if (fProgress == 0 || fProgress == 1.0)
-		fNotification.SetContent(" ");
-	else
-		fNotification.SetContent(fETAtime);
+	fNotification.SetContent(fETAtime);
 	fNotification.SetMessageID("BurnItNow_Audio");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();

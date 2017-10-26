@@ -38,8 +38,9 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
-	fAbort(false),
-	fAction(IDLE)
+	fAbort(0),
+	fAction(IDLE),
+	fRunner(NULL)
 {
 	fWindowParent = &parent;
 
@@ -150,6 +151,8 @@ CompilationDataView::MessageReceived(BMessage* message)
 			break;
 		case B_REFS_RECEIVED:
 		{
+			fFolderSize = 0;
+			fOutputView->SetText(NULL);
 			_OpenDirectory(message);
 			_GetFolderSize();
 			break;
@@ -182,12 +185,6 @@ CompilationDataView::InProgress()
 void
 CompilationDataView::_Build()
 {
-	if (fDirPath->Path() == NULL) {
-		(new BAlert("ChooseDirectoryFirstAlert",
-			B_TRANSLATE("First choose the folder to burn."),
-			B_TRANSLATE("OK")))->Go();
-		return;
-	}
 	if (fDirPath->InitCheck() != B_OK)
 		return;
 
@@ -199,25 +196,34 @@ CompilationDataView::_Build()
 	if (fImagePath->InitCheck() != B_OK)
 		return;
 
-	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
-		return;
-
-	if (fBurnerThread != NULL)
-		delete fBurnerThread;
-
-	fOutputView->SetText(NULL);
-	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
-	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kBuildOutput), this));
-
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Data");
 	fNotification.SetTitle(B_TRANSLATE("Building data image"));
 	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
 	fNotification.SetProgress(0);
+	fNotification.Send();
+
+	// still getting folder size?
+	if (fFolderSize == 0) {
+		BMessage message(kBuildButton);
+		fRunner	= new BMessageRunner(this, &message, 1000000, 1); // 1 Hz
+		return;
+	}
+
 	 // It may take a while for the building to start...
-	fNotification.Send(60 * 1000000LL);
+	fNotification.Send(10 * 1000000LL);
+
+	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
+		return;
+
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
+
+	if (fBurnerThread != NULL)
+		delete fBurnerThread;
+
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kBuildOutput), this));
 
 	BString discLabel;
 	if (fDiscLabel->TextView()->TextLength() == 0)
@@ -275,6 +281,13 @@ CompilationDataView::_BuildOutput(BMessage* message)
 		fNotification.SetContent(B_TRANSLATE("Building finished!"));
 		fNotification.Send();
 
+		BEntry entry(fImagePath->Path());
+		if (entry.InitCheck() == B_OK) {
+			off_t fileSize = 0;
+			entry.GetSize(&fileSize);
+			fFolderSize = fileSize / 1024;
+			_UpdateSizeBar();
+		}
 		fAction = IDLE;
 	}
 }
@@ -346,9 +359,9 @@ CompilationDataView::_BurnOutput(BMessage* message)
 	if (message->FindString("line", &data) == B_OK) {
 		BString text = fOutputView->Text();
 		int32 modified = fParser.ParseCdrecordLine(text, data);
-		if (modified == SMALLDISC)
-			fAbort = true;
-		if (modified == NOCHANGE || modified == SMALLDISC) {
+		if (modified < 0)
+			fAbort = modified;
+		if (modified <= 0) {
 			data << "\n";
 			fOutputView->Insert(data.String());
 			fOutputView->ScrollBy(0.0, 50.0);
@@ -361,7 +374,7 @@ CompilationDataView::_BurnOutput(BMessage* message)
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK){
-		if (fAbort) {
+		if (fAbort == SMALLDISC) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
@@ -383,7 +396,7 @@ CompilationDataView::_BurnOutput(BMessage* message)
 		fBurnButton->SetEnabled(true);
 
 		fAction = IDLE;
-		fAbort = false;
+		fAbort = 0;
 		fParser.Reset();
 	}
 }
@@ -446,13 +459,6 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 
 
 void
-CompilationDataView::_UpdateSizeBar()
-{
-	fSizeView->UpdateSizeDisplay(fFolderSize, DATA, CD_OR_DVD); // size in KiB
-}
-
-
-void
 CompilationDataView::_UpdateProgress()
 {
 	if (fProgress == 0 || fProgress == 1.0)
@@ -462,4 +468,11 @@ CompilationDataView::_UpdateProgress()
 	fNotification.SetMessageID("BurnItNow_Data");
 	fNotification.SetProgress(fProgress);
 	fNotification.Send();
+}
+
+
+void
+CompilationDataView::_UpdateSizeBar()
+{
+	fSizeView->UpdateSizeDisplay(fFolderSize, DATA, CD_OR_DVD); // size in KiB
 }

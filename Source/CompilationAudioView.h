@@ -59,8 +59,8 @@ private:
 	BString			fETAtime;
 	OutputParser	fParser;
 
-	bool			fAbort;
-	int				fAction;
+	int32			fAbort;
+	int32			fAction;
 };
 
 
