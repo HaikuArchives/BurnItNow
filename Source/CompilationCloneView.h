@@ -36,6 +36,8 @@ private:
 	void 			_BuildOutput(BMessage* message);
 	void 			_Burn();
 	void 			_BurnOutput(BMessage* message);
+	void 			_GetImageSize();
+	void 			_GetImageSizeOutput(BMessage* message);
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 
@@ -48,6 +50,7 @@ private:
 	BButton*		fBurnButton;
 	BButton*		fBuildButton;
 
+	int64			fImageSize;
 	SizeView*		fSizeView;
 
 	BNotification	fNotification;

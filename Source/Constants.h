@@ -62,6 +62,7 @@ const int32 kBurnOutput = 'BrnO';
 
 const int32 kBuildButton = 'BilB';
 const int32 kBuildOutput = 'BilO';
+const int32 kGetImageSizeOutput = 'ImgO';
 
 const int32 kBlankButton = 'BlnB';
 const int32 kBlankOutput = 'BlnO';

@@ -2,6 +2,7 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+#include <string>
 
 #include <Alert.h>
 #include <Catalog.h>
@@ -16,6 +17,7 @@
 #include "BurnApplication.h"
 #include "CommandThread.h"
 #include "CompilationCloneView.h"
+#include "CompilationShared.h"
 #include "Constants.h"
 #include "OutputParser.h"
 
@@ -33,6 +35,7 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
+	fImageSize(0),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
@@ -116,7 +119,7 @@ CompilationCloneView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kBuildButton:
-			_Build();
+			_GetImageSize();
 			break;
 		case kBuildOutput:
 			_BuildOutput(message);
@@ -126,6 +129,9 @@ CompilationCloneView::MessageReceived(BMessage* message)
 			break;
 		case kBurnOutput:
 			_BurnOutput(message);
+			break;
+		case kGetImageSizeOutput:
+			_GetImageSizeOutput(message);
 			break;
 		default:
 		if (kDeviceChange[0] == message->what) {
@@ -165,18 +171,6 @@ CompilationCloneView::InProgress()
 void
 CompilationCloneView::_Build()
 {
-	fOutputView->SetText(NULL);
-	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-		"Reading in disc" B_UTF8_ELLIPSIS, "Status notification"));
-	fBuildButton->SetEnabled(false);
-
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Clone");
-	fNotification.SetTitle(B_TRANSLATE("Building clone image"));
-	fNotification.SetContent(B_TRANSLATE("Reading in disc" B_UTF8_ELLIPSIS));
-	fNotification.SetProgress(0);
-	fNotification.Send();
-
 	BPath path;
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
@@ -186,8 +180,23 @@ CompilationCloneView::_Build()
 	if (path.InitCheck() != B_OK)
 		return;
 
+	if (!CheckFreeSpace(fImageSize * 1024, path.Path()))
+		return;
+
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
+		fOutputView->SetText(NULL);
+		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+			"Reading in disc" B_UTF8_ELLIPSIS, "Status notification"));
+		fBuildButton->SetEnabled(false);
+	
+		fNotification.SetGroup("BurnItNow");
+		fNotification.SetMessageID("BurnItNow_Clone");
+		fNotification.SetTitle(B_TRANSLATE("Building clone image"));
+		fNotification.SetContent(B_TRANSLATE("Reading in disc" B_UTF8_ELLIPSIS));
+		fNotification.SetProgress(0);
+		fNotification.Send();
+
 		fAction = BUILDING;
 
 		BString file = "f=";
@@ -357,6 +366,51 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 		fAction = IDLE;
 		fAbort = 0;
 		fParser.Reset();
+	}
+}
+
+
+void
+CompilationCloneView::_GetImageSize()
+{
+	fOutputView->SetText(NULL);
+	fBuildButton->SetEnabled(false);
+
+		BString device("dev=");
+		device.Append(fWindowParent->GetSelectedDevice().number.String());
+		sessionConfig config = fWindowParent->GetSessionConfig();
+
+		fBurnerThread = new CommandThread(NULL,
+			new BInvoker(new BMessage(kGetImageSizeOutput), this));
+		fBurnerThread->AddArgument("cdrecord")
+			->AddArgument("-media-info")
+			->AddArgument(device)
+			->Run();
+}
+
+
+void
+CompilationCloneView::_GetImageSizeOutput(BMessage* message)
+{
+	BString data;
+
+	if (message->FindString("line", &data) == B_OK) {
+			data << "\n";
+			fOutputView->Insert(data.String());
+			fOutputView->ScrollBy(0.0, 50.0);
+	}
+	int32 code = -1;
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
+		BString text = fOutputView->Text();
+		int32 lastWord = text.FindLast(" ") + 1;
+		text.Remove(0, lastWord);
+		printf("Image size forecast: %s\n", text.String());
+		// 2048 bytes block
+		fImageSize = atoll(text.String(); // in KiB
+		fSizeView->UpdateSizeDisplay(fImageSize, DATA, CD_OR_DVD);
+		printf("Image size forecast: %" PRId64 "\n", fImageSize);
+
+		_Build();
 	}
 }
 
