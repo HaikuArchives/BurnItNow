@@ -395,9 +395,9 @@ CompilationCloneView::_GetImageSizeOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
-			data << "\n";
-			fOutputView->Insert(data.String());
-			fOutputView->ScrollBy(0.0, 50.0);
+		data << "\n";
+		fOutputView->Insert(data.String());
+		fOutputView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
 	if (message->FindInt32("thread_exit", &code) == B_OK) {
@@ -406,7 +406,7 @@ CompilationCloneView::_GetImageSizeOutput(BMessage* message)
 		text.Remove(0, lastWord);
 		printf("Image size forecast: %s\n", text.String());
 		// 2048 bytes block
-		fImageSize = atoll(text.String(); // in KiB
+		fImageSize = atoll(text.String()); // in KiB
 		fSizeView->UpdateSizeDisplay(fImageSize, DATA, CD_OR_DVD);
 		printf("Image size forecast: %" PRId64 "\n", fImageSize);
 
