@@ -117,6 +117,30 @@ OutputParser::ParseIsoinfoLine(BString& text, BString newline)
 
 
 int32
+OutputParser::ParseMediainfoLine(int64& size, BString newline)
+{
+	int32 resultNewline;
+printf("New line: %s\n", newline.String());
+	resultNewline = newline.FindFirst("Remaining writable size:");
+	if (resultNewline != B_ERROR) {
+		// blank R/RW: get capacity (reported in KiB!)
+		BStringList wordList;
+		newline.Split(" ", true, wordList);
+		size = atoll(wordList.StringAt(3)); // size in KiB
+		return NOCHANGE;
+	}
+	resultNewline = newline.FindFirst("Last session leadout start address:");
+	if (resultNewline != B_ERROR) {
+		// CD/DVD: get data size (reported in 2K blocks!)
+		BStringList wordList;
+		newline.Split(" ", true, wordList);
+		size = atoll(wordList.StringAt(5)) * 2;
+		return NOCHANGE;
+	}
+}
+
+
+int32
 OutputParser::ParseMkisofsLine(BString& text, BString newline)
 {
 	int32 resultNewline;

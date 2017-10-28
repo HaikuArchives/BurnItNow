@@ -20,7 +20,7 @@ public:
 	int32		ParseBlankLine(BString& text, BString newline);
 	int32		ParseCdrecordLine(BString& text, BString newline);
 	int32		ParseIsoinfoLine(BString& text, BString newline);
-	int32		ParseMediainfoLine(BString newline);
+	int32		ParseMediainfoLine(int64& size, BString newline);
 	int32		ParseMkisofsLine(BString& text, BString newline);
 	int32		ParseReadcdLine(BString& text, BString newline);
 	void		Reset();

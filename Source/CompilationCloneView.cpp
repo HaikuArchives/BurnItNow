@@ -373,19 +373,20 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 void
 CompilationCloneView::_GetImageSize()
 {
+	fImageSize = 0;
 	fOutputView->SetText(NULL);
 	fBuildButton->SetEnabled(false);
 
-		BString device("dev=");
-		device.Append(fWindowParent->GetSelectedDevice().number.String());
-		sessionConfig config = fWindowParent->GetSessionConfig();
+	BString device("dev=");
+	device.Append(fWindowParent->GetSelectedDevice().number.String());
+	sessionConfig config = fWindowParent->GetSessionConfig();
 
-		fBurnerThread = new CommandThread(NULL,
-			new BInvoker(new BMessage(kGetImageSizeOutput), this));
-		fBurnerThread->AddArgument("cdrecord")
-			->AddArgument("-media-info")
-			->AddArgument(device)
-			->Run();
+	fBurnerThread = new CommandThread(NULL,
+		new BInvoker(new BMessage(kGetImageSizeOutput), this));
+	fBurnerThread->AddArgument("cdrecord")
+		->AddArgument("-media-info")
+		->AddArgument(device)
+		->Run();
 }
 
 
@@ -395,23 +396,20 @@ CompilationCloneView::_GetImageSizeOutput(BMessage* message)
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
+		fParser.ParseMediainfoLine(fImageSize, data);
+		printf("Image size forecast: %" PRId64 " KiB, %" PRId64 " MiB\n",
+			fImageSize, fImageSize / 1024);
+
+		if (fImageSize != 0)
+			fSizeView->UpdateSizeDisplay(fImageSize, DATA, CD_OR_DVD);
+
 		data << "\n";
 		fOutputView->Insert(data.String());
 		fOutputView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if (message->FindInt32("thread_exit", &code) == B_OK) {
-		BString text = fOutputView->Text();
-		int32 lastWord = text.FindLast(" ") + 1;
-		text.Remove(0, lastWord);
-		printf("Image size forecast: %s\n", text.String());
-		// 2048 bytes block
-		fImageSize = atoll(text.String()); // in KiB
-		fSizeView->UpdateSizeDisplay(fImageSize, DATA, CD_OR_DVD);
-		printf("Image size forecast: %" PRId64 "\n", fImageSize);
-
+	if (message->FindInt32("thread_exit", &code) == B_OK)
 		_Build();
-	}
 }
 
 
