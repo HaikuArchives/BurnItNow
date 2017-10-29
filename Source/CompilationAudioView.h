@@ -40,6 +40,7 @@ private:
 	void 			_AddTrack(BMessage* message);
 	void 			_Burn();
 	void 			_BurnOutput(BMessage* message);
+	void			_UpdateButtons();
 	void			_UpdateProgress();
 	void			_UpdateSizeBar();
 	
@@ -50,6 +51,11 @@ private:
 	BSeparatorView*	fInfoView;
 	BSeparatorView*	fAudioBox;
 	BButton*		fBurnButton;
+
+	BButton*		fUpButton;
+	BButton*		fDownButton;
+	BButton*		fAddButton;
+	BButton*		fRemoveButton;
 
 	AudioListView* 	fTrackList;
 	SizeView*		fSizeView;

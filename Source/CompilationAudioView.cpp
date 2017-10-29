@@ -61,9 +61,25 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fAudioBox->SetLabel(B_TRANSLATE("Drop tracks here (only WAV files)"));
 
 	fTrackList = new AudioListView("AudioListView");
+	fTrackList->SetSelectionMessage(new BMessage(kTrackSelection));
+
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
 		fTrackList, B_WILL_DRAW, false, true);
 	audioScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
+
+	fUpButton = new BButton("UpButton", "⬆", new BMessage(kUpButton));
+	fUpButton->SetExplicitSize(BSize(StringWidth("⬆") * 3, B_SIZE_UNSET));
+
+	fDownButton = new BButton("DownButton", "⬇", new BMessage(kDownButton));
+	fDownButton->SetExplicitSize(BSize(StringWidth("⬆") * 3, B_SIZE_UNSET));
+
+	fAddButton = new BButton("AddButton", B_TRANSLATE(
+		"Add" B_UTF8_ELLIPSIS), new BMessage(kAddButton));
+	fAddButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
+
+	fRemoveButton = new BButton("RemoveButton", B_TRANSLATE("Remove"),
+		new BMessage(kDeleteItem));
+	fRemoveButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fSizeView = new SizeView();
 
@@ -83,6 +99,13 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 			.AddGroup(B_VERTICAL)
 				.Add(fAudioBox)
 				.Add(audioScrollView)
+				.AddGroup(B_HORIZONTAL)
+					.Add(fUpButton)
+					.Add(fDownButton)
+					.AddGlue()
+					.Add(fAddButton)
+					.Add(fRemoveButton)
+					.End()
 				.End()
 			.End()
 		.Add(fSizeView);
@@ -122,8 +145,19 @@ CompilationAudioView::AttachedToWindow()
 {
 	BView::AttachedToWindow();
 
+	fTrackList->SetTarget(this);
+
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetEnabled(false);
+	fUpButton->SetTarget(this);
+	fUpButton->SetEnabled(false);
+	fDownButton->SetTarget(this);
+	fDownButton->SetEnabled(false);
+	fAddButton->SetTarget(this);
+	fAddButton->SetEnabled(true);
+
+	fRemoveButton->SetTarget(fTrackList);
+	fRemoveButton->SetEnabled(false);
 }
 
 
@@ -131,6 +165,55 @@ void
 CompilationAudioView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
+		case kTrackSelection:
+			_UpdateButtons();
+			break;
+		case kUpButton:
+		{
+			int32 index = fTrackList->CurrentSelection();
+			if (index < 1)
+				break;
+
+			BList indices;
+			fTrackList->GetSelectedItems(indices);
+
+			int32 count = indices.CountItems();
+			for (int32 i = 0; i < count; i++) {
+				int32 swapIndex = (int32)(addr_t)indices.ItemAtFast(i);
+				if (swapIndex > 0)
+					fTrackList->SwapItems(swapIndex, swapIndex - 1);
+			}
+			fTrackList->RenumberTracks();
+			_UpdateButtons();
+			break;
+		}
+		case kDownButton:
+		{
+			int32 index = fTrackList->CurrentSelection();
+			if ((index < 0) || index == fTrackList->CountItems() - 1)
+				break;
+
+			BList indices;
+			fTrackList->GetSelectedItems(indices);
+			fTrackList->DeselectAll();
+
+			int32 count = indices.CountItems();
+			for (int32 i = count - 1; i >= 0; i--) {
+				int32 swapIndex = (int32)(addr_t)indices.ItemAtFast(i);
+				if (swapIndex < fTrackList->CountItems() - 1) {
+					fTrackList->SwapItems(swapIndex + 1, swapIndex);
+					fTrackList->Select(swapIndex + 1, true);
+				} else
+					continue;
+			}
+			fTrackList->RenumberTracks();
+			_UpdateButtons();
+			break;
+		}
+		case kAddButton:
+		{
+			break;
+		}
 		case kBurnOutput:
 			_BurnOutput(message);
 			break;
@@ -370,6 +453,30 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 		fAbort = 0;
 		fParser.Reset();
 	}
+}
+
+
+void
+CompilationAudioView::_UpdateButtons()
+{
+	int32 selection = fTrackList->CurrentSelection();
+	int32 count = fTrackList->CountItems();
+
+	if (selection < 0)
+		count = -1;
+
+	fRemoveButton->SetEnabled((selection < 0) ? false : true);
+	fUpButton->SetEnabled((count > 1 && selection > 0) ? true : false);
+
+	// get last selected item in case of multiple selections
+	int32 i = 0;
+	while ((fTrackList->CurrentSelection(i)) >= 0 ) {
+		selection = fTrackList->CurrentSelection(i);
+		i++;
+	}
+
+	fDownButton->SetEnabled((count > 1 && selection < count - 1)
+		? true : false);
 }
 
 
