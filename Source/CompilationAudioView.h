@@ -6,6 +6,7 @@
 #define _COMPILATIONAUDIOVIEW_H_
 
 #include <Button.h>
+#include <FilePanel.h>
 #include <ListView.h>
 #include <Notification.h>
 #include <Path.h>
@@ -23,6 +24,16 @@
 
 
 class CommandThread;
+
+
+class AudioRefFilter : public BRefFilter {
+public:
+					AudioRefFilter() {};
+	virtual			~AudioRefFilter() {};
+
+	bool			Filter(const entry_ref* ref, BNode* node,
+						struct stat_beos* st, const char* filetype);
+};
 
 
 class CompilationAudioView : public BView {
@@ -47,6 +58,7 @@ private:
 	CommandThread*	fBurnerThread;
 	BurnWindow* 	fWindowParent;
 
+	BFilePanel* 	fOpenPanel;
 	BTextView* 		fOutputView;
 	BSeparatorView*	fInfoView;
 	BSeparatorView*	fAudioBox;
@@ -54,6 +66,7 @@ private:
 
 	BButton*		fUpButton;
 	BButton*		fDownButton;
+	BButton*		fPlayButton;
 	BButton*		fAddButton;
 	BButton*		fRemoveButton;
 

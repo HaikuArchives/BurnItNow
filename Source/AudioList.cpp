@@ -409,11 +409,16 @@ AudioListView::_ShowPopUpMenu(BPoint screen)
 	ContextPopUp* menu = new ContextPopUp("PopUpMenu", this);
 	BMessage* msg = NULL;
 
-	msg = new BMessage(kDeleteItem);
-	BMenuItem* item = new BMenuItem(B_TRANSLATE("Remove"), msg);
+	msg = new BMessage(kTrackPlayback);
+	BMenuItem* item = new BMenuItem(B_TRANSLATE("Play back"), msg);
+	item->SetTarget(Parent());
 	menu->AddItem(item);
 
-	menu->SetTargetForItems(this);
+	msg = new BMessage(kDeleteItem);
+	item = new BMenuItem(B_TRANSLATE("Remove"), msg);
+	item->SetTarget(this);
+	menu->AddItem(item);
+
 	menu->Go(screen, true, true, true);
 	fShowingPopUpMenu = true;
 }

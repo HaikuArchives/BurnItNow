@@ -53,13 +53,15 @@ const int32 kCacheQuit = 'Ccqt';
 const int32 kClearCache = 'Cche';
 const int32 kSpeedSlider = 'Sped';
 
-const int32 kChooseButton = 'ChoB';
-
 const int32 kTrackSelection = 'Tsel';
+const int32 kTrackPlayback = 'Tply';
+
 const int32 kUpButton = 'UppB';
 const int32 kDownButton = 'DwnB';
 const int32 kAddButton = 'AddB';
 const int32 kRemoveButton = 'RemB';
+
+const int32 kChooseButton = 'ChoB';
 
 const int32 kCheckOutput = 'ChkO';
 

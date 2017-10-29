@@ -287,7 +287,7 @@ CompilationImageView::_ChooseImage()
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
 			NULL, B_FILE_NODE, false, NULL, new ImageRefFilter(), true);
-		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose image"));
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE("BurnItNow: Choose image"));
 	}
 	fOpenPanel->Show();
 }

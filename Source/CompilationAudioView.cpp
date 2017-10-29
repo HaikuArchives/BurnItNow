@@ -2,6 +2,8 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+#include <compat/sys/stat.h>
+
 #include <Alert.h>
 #include <Catalog.h>
 #include <ControlLook.h>
@@ -12,6 +14,7 @@
 #include <NodeInfo.h>
 #include <ScrollView.h>
 #include <String.h>
+#include <StringList.h>
 #include <StringView.h>
 
 #include "BurnApplication.h"
@@ -29,6 +32,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	BView(B_TRANSLATE("Audio CD"), B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
 		kControlPadding)),
 	fBurnerThread(NULL),
+	fOpenPanel(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
 	fProgress(0),
 	fETAtime("--"),
@@ -62,16 +66,26 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	fTrackList = new AudioListView("AudioListView");
 	fTrackList->SetSelectionMessage(new BMessage(kTrackSelection));
+	fTrackList->SetInvocationMessage(new BMessage(kTrackPlayback));
 
 	BScrollView* audioScrollView = new BScrollView("AudioScrollView",
 		fTrackList, B_WILL_DRAW, false, true);
 	audioScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fUpButton = new BButton("UpButton", "⬆", new BMessage(kUpButton));
-	fUpButton->SetExplicitSize(BSize(StringWidth("⬆") * 3, B_SIZE_UNSET));
+	fUpButton = new BButton("UpButton", "\xe2\xac\x86",
+		new BMessage(kUpButton));
+	fUpButton->SetExplicitSize(BSize(StringWidth("\xe2\xac\x86") * 3,
+		B_SIZE_UNSET));
 
-	fDownButton = new BButton("DownButton", "⬇", new BMessage(kDownButton));
-	fDownButton->SetExplicitSize(BSize(StringWidth("⬆") * 3, B_SIZE_UNSET));
+	fDownButton = new BButton("DownButton", "\xe2\xac\x87",
+		new BMessage(kDownButton));
+	fDownButton->SetExplicitSize(BSize(StringWidth("\xe2\xac\x87") * 3,
+		B_SIZE_UNSET));
+
+	fPlayButton = new BButton("PlayButton", "\xE2\x96\xB6",
+		new BMessage(kTrackPlayback));
+	fPlayButton->SetExplicitSize(BSize(StringWidth("\xE2\x96\xB6") * 3,
+		B_SIZE_UNSET));
 
 	fAddButton = new BButton("AddButton", B_TRANSLATE(
 		"Add" B_UTF8_ELLIPSIS), new BMessage(kAddButton));
@@ -102,6 +116,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 				.AddGroup(B_HORIZONTAL)
 					.Add(fUpButton)
 					.Add(fDownButton)
+					.AddGlue()
+					.Add(fPlayButton)
 					.AddGlue()
 					.Add(fAddButton)
 					.Add(fRemoveButton)
@@ -134,6 +150,7 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 CompilationAudioView::~CompilationAudioView()
 {
 	delete fBurnerThread;
+	delete fOpenPanel;
 }
 
 
@@ -149,13 +166,15 @@ CompilationAudioView::AttachedToWindow()
 
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetEnabled(false);
+
 	fUpButton->SetTarget(this);
 	fUpButton->SetEnabled(false);
 	fDownButton->SetTarget(this);
 	fDownButton->SetEnabled(false);
+	fPlayButton->SetTarget(this);
+	fPlayButton->SetEnabled(false);
 	fAddButton->SetTarget(this);
 	fAddButton->SetEnabled(true);
-
 	fRemoveButton->SetTarget(fTrackList);
 	fRemoveButton->SetEnabled(false);
 }
@@ -168,6 +187,33 @@ CompilationAudioView::MessageReceived(BMessage* message)
 		case kTrackSelection:
 			_UpdateButtons();
 			break;
+		case kTrackPlayback:
+		{
+			BMessenger msgr("application/x-vnd.Be-TRAK");
+			BMessage refMsg(B_REFS_RECEIVED);
+
+			BList indices;
+			fTrackList->GetSelectedItems(indices);
+
+			int32 count = indices.CountItems();
+			for (int32 i = 0; i < count; i++) {
+				int32 index = (int32)(addr_t)indices.ItemAtFast(i);
+				AudioListItem* sItem = dynamic_cast<AudioListItem *>
+					(fTrackList->ItemAt(index));
+
+				if (sItem == NULL)
+					break;
+
+				entry_ref ref;
+				BEntry track(sItem->GetPath());
+				track.GetRef(&ref);
+
+				if (track.InitCheck() == B_OK)
+					refMsg.AddRef("refs", &ref);
+			}
+			msgr.SendMessage(&refMsg);
+			break;
+		}
 		case kUpButton:
 		{
 			int32 index = fTrackList->CurrentSelection();
@@ -212,6 +258,13 @@ CompilationAudioView::MessageReceived(BMessage* message)
 		}
 		case kAddButton:
 		{
+			if (fOpenPanel == NULL) {
+				fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
+				NULL, B_FILE_NODE | B_DIRECTORY_NODE, true, NULL,
+				new AudioRefFilter(), true);
+				fOpenPanel->Window()->SetTitle(B_TRANSLATE("Add WAV files"));
+			}
+			fOpenPanel->Show();
 			break;
 		}
 		case kBurnOutput:
@@ -242,16 +295,39 @@ CompilationAudioView::InProgress()
 #pragma mark -- Private Methods --
 
 
+bool
+AudioRefFilter::Filter(const entry_ref* ref, BNode* node,
+	struct stat_beos* stat, const char* filetype)
+{
+	if (S_ISDIR(stat->st_mode) || (S_ISLNK(stat->st_mode)))
+		return true;
+
+	BStringList audioMimes;
+	audioMimes.Add("audio/wav");
+	audioMimes.Add("audio/x-wav");
+
+	BMimeType refType;
+	BMimeType::GuessMimeType(ref, &refType);
+
+	if (audioMimes.HasString(refType.Type()))
+		return true;
+
+	return false;
+}
+
+
 void
 CompilationAudioView::_AddTrack(BMessage* message)
 {
-	int32 index;
+	int32 index = -1;
 	if (message->WasDropped()) {
 		BPoint dropPoint = message->DropPoint();
 		index = fTrackList->IndexOf(fTrackList->ConvertFromScreen(dropPoint));
-		if (index < 0)
-			index = fTrackList->CountItems();
-	}
+	} else
+		index = fTrackList->CurrentSelection();
+
+	if (index < 0)
+		index = fTrackList->CountItems();
 
 	entry_ref trackRef;
 	int32 i = 0;
@@ -273,12 +349,10 @@ CompilationAudioView::_AddTrack(BMessage* message)
 
 		// Check for wav MIME type or file extension
 		if ((strcmp("audio/x-wav", mimeTypeString) == 0)
-			|| filename.IFindLast(".wav", filename.CountChars())
-				== filename.CountChars() - 4) {
-			if (!message->WasDropped())
-				index = fTrackList->CountItems();
+				|| (filename.IFindLast(".wav", filename.CountChars()))
+				== filename.CountChars() - 4)
 			fTrackList->AddItem(new AudioListItem(filename, path, i), index++);
-		}
+
 		if (node.IsDirectory()) {
 			BDirectory dir(&entry);
 			entry_ref ref;
@@ -300,14 +374,10 @@ CompilationAudioView::_AddTrack(BMessage* message)
 
 				// Check for wav MIME type or file extension
 				if ((strcmp("audio/x-wav", mimeTypeString) == 0)
-					|| dFilename.IFindLast(".wav", dFilename.CountChars())
-						== dFilename.CountChars() - 4) {
-					if (!message->WasDropped())
-						index = fTrackList->CountItems();
-
+						|| (dFilename.IFindLast(".wav", dFilename.CountChars()))
+						== dFilename.CountChars() - 4)
 					fTrackList->AddItem(new AudioListItem(dFilename, dPath, i),
 						index++);
-				}
 			}
 		}
 		i++;
@@ -465,6 +535,7 @@ CompilationAudioView::_UpdateButtons()
 	if (selection < 0)
 		count = -1;
 
+	fPlayButton->SetEnabled((selection < 0) ? false : true);
 	fRemoveButton->SetEnabled((selection < 0) ? false : true);
 	fUpButton->SetEnabled((count > 1 && selection > 0) ? true : false);
 
