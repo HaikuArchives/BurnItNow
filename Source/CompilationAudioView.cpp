@@ -348,7 +348,14 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		BString path(trackPath->Path());
 
 		// Check for wav MIME type or file extension
-		if ((strcmp("audio/x-wav", mimeTypeString) == 0)
+		BStringList audioMimes;
+		audioMimes.Add("audio/wav");
+		audioMimes.Add("audio/x-wav");
+
+		BMimeType refType;
+		BMimeType::GuessMimeType(&trackRef, &refType);
+
+		if ((audioMimes.HasString(refType.Type()))
 				|| (filename.IFindLast(".wav", filename.CountChars()))
 				== filename.CountChars() - 4)
 			fTrackList->AddItem(new AudioListItem(filename, path, i), index++);
@@ -373,7 +380,9 @@ CompilationAudioView::_AddTrack(BMessage* message)
 				BString dPath(dTrackPath->Path());
 
 				// Check for wav MIME type or file extension
-				if ((strcmp("audio/x-wav", mimeTypeString) == 0)
+				BMimeType::GuessMimeType(&ref, &refType);
+
+				if ((audioMimes.HasString(refType.Type()))
 						|| (dFilename.IFindLast(".wav", dFilename.CountChars()))
 						== dFilename.CountChars() - 4)
 					fTrackList->AddItem(new AudioListItem(dFilename, dPath, i),
