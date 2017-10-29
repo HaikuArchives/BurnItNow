@@ -127,7 +127,6 @@ printf("New line: %s\n", newline.String());
 		BStringList wordList;
 		newline.Split(" ", true, wordList);
 		size = atoll(wordList.StringAt(3)); // size in KiB
-		return NOCHANGE;
 	}
 	resultNewline = newline.FindFirst("Last session leadout start address:");
 	if (resultNewline != B_ERROR) {
@@ -135,8 +134,8 @@ printf("New line: %s\n", newline.String());
 		BStringList wordList;
 		newline.Split(" ", true, wordList);
 		size = atoll(wordList.StringAt(5)) * 2;
-		return NOCHANGE;
 	}
+	return NOCHANGE;
 }
 
 

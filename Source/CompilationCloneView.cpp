@@ -180,8 +180,10 @@ CompilationCloneView::_Build()
 	if (path.InitCheck() != B_OK)
 		return;
 
-	if (!CheckFreeSpace(fImageSize * 1024, path.Path()))
+	if (!CheckFreeSpace(fImageSize * 1024, path.Path())) {
+		fBuildButton->SetEnabled(true);
 		return;
+	}
 
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
