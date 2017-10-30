@@ -22,7 +22,7 @@
 
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "Data view"
+#define B_TRANSLATION_CONTEXT "Compilation views"
 
 
 CompilationDataView::CompilationDataView(BurnWindow& parent)
@@ -203,6 +203,8 @@ CompilationDataView::_Build()
 	fNotification.SetProgress(0);
 	fNotification.Send();
 
+	fAction = BUILDING;	// flag we're building ISO
+
 	// still getting folder size?
 	if (fFolderSize == 0) {
 		BMessage message(kBuildButton);
@@ -213,8 +215,10 @@ CompilationDataView::_Build()
 	 // It may take a while for the building to start...
 	fNotification.Send(10 * 1000000LL);
 
-	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
+	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path())) {
+		fAction = IDLE;
 		return;
+	}
 
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
@@ -233,8 +237,6 @@ CompilationDataView::_Build()
 
 	status_t ret = fImagePath->Append(kCacheFileData);
 	if (ret == B_OK) {
-		fAction = BUILDING;	// flag we're building ISO
-
 		fBurnerThread->AddArgument("mkisofs")
 			->AddArgument("-iso-level 3")
 			->AddArgument("-J")
@@ -427,7 +429,7 @@ CompilationDataView::_GetFolderSize()
 	if (sizecount >= B_OK)
 		resume_thread(sizecount);
 
-	fSizeView->ShowInfoText("calculating" B_UTF8_ELLIPSIS);
+	fSizeView->ShowInfoText(B_TRANSLATE("calculating" B_UTF8_ELLIPSIS));
 }
 
 

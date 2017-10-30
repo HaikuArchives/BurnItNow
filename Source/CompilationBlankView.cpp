@@ -17,7 +17,7 @@
 
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "Blank view"
+#define B_TRANSLATION_CONTEXT "Compilation views"
 
 
 CompilationBlankView::CompilationBlankView(BurnWindow& parent)
@@ -48,10 +48,10 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	fBlankModeMenu->SetLabelFromMarked(true);
 
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("All",
-		"Blanking mode. From the man page: 'Blank the entire disk. This may "
+		"Blanking mode. From the man page: 'Blank the entire disc. This may "
 		"take a long time.'"), new BMessage()));
 	BMenuItem* blankModeMenuItem = new BMenuItem(B_TRANSLATE_COMMENT("Fast",
-		"Blanking mode. From the man page: 'Minimally blank the disk. This "
+		"Blanking mode. From the man page: 'Minimally blank the disc. This "
 		"results in erasing the PMA, the TOC and the pregap.'"),
 		new BMessage());
 	blankModeMenuItem->SetMarked(true);
@@ -73,11 +73,12 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 		new BMessage()));
 
 	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
-		"Type:", fBlankModeMenu);
+		B_TRANSLATE_COMMENT("Type:", "Label for the blanking types menu"),
+		fBlankModeMenu);
 
 	BString toolTip(B_TRANSLATE("Blanking types:\n\n"
-		"All\t\t\tBlank the entire disk. This may take a long time.\n"
-		"Fast\t\t\tMinimally blank the disk.\n"
+		"All\t\t\tBlank the entire disc. This may take a long time.\n"
+		"Fast\t\t\tMinimally blank the disc.\n"
 		"\t\t\tThis erases the PMA, the TOC and the pregap.\n"
 		"Session\t\tBlank the last session.\n"
 		"Track\t\tBlank a track.\n"

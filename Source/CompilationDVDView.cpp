@@ -22,7 +22,7 @@
 
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "DVD view"
+#define B_TRANSLATION_CONTEXT "Compilation views"
 
 
 CompilationDVDView::CompilationDVDView(BurnWindow& parent)
@@ -203,6 +203,8 @@ CompilationDVDView::_Build()
 	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
 	fNotification.SetProgress(0);
 
+	fAction = BUILDING;	// flag we're building ISO
+
 	// still getting folder size?
 	if (fFolderSize == 0) {
 		BMessage message(kBuildButton);
@@ -214,6 +216,7 @@ CompilationDVDView::_Build()
 	fNotification.Send(60 * 1000000LL);
 
 	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
+		fAction = IDLE;
 		return;
 
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
@@ -233,8 +236,6 @@ CompilationDVDView::_Build()
 
 	status_t ret = fImagePath->Append(kCacheFileDVD);
 	if (ret == B_OK) {
-		fAction = BUILDING;	// flag we're building ISO
-
 		fBurnerThread->AddArgument("mkisofs")
 			->AddArgument("-V")
 			->AddArgument(discLabel)
@@ -441,7 +442,7 @@ CompilationDVDView::_GetFolderSize()
 	if (sizecount >= B_OK)
 		resume_thread(sizecount);
 
-	fSizeView->ShowInfoText("calculating" B_UTF8_ELLIPSIS);
+	fSizeView->ShowInfoText(B_TRANSLATE("calculating" B_UTF8_ELLIPSIS));
 }
 
 

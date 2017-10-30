@@ -22,7 +22,7 @@
 #include "OutputParser.h"
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "Clone view"
+#define B_TRANSLATION_CONTEXT "Compilation views"
 
 
 // Misc variables

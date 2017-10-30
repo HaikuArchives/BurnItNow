@@ -24,7 +24,7 @@
 #include "OutputParser.h"
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "Audio view"
+#define B_TRANSLATION_CONTEXT "Compilation views"
 
 
 CompilationAudioView::CompilationAudioView(BurnWindow& parent)

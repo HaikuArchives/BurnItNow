@@ -83,7 +83,7 @@ BurnWindow::QuitRequested()
 
 	if (text != "") {
 		text << B_TRANSLATE("\nDo you want to quit BurnItNow anyway (this "
-			"won't stop the task currently in progress" B_UTF8_ELLIPSIS);
+			"won't stop the task currently in progress" B_UTF8_ELLIPSIS ")?");
 		BAlert* alert = new BAlert("stopquit", text.String(),
 			B_TRANSLATE("Quit anyway"), B_TRANSLATE("Cancel"));
 

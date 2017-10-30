@@ -1,70 +1,113 @@
-1	English	application/x-vnd.haikuarchives-BurnItNow	544233544
+1	English	application/x-vnd.haikuarchives-BurnItNow	2136692612
+OK	App settings		OK
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
 Thank you	Application		Thank you
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.
-Audio	Audio view		Audio
-Burn disc	Audio view		Burn disc
-Drop tracks here (only WAV files)	Audio view		Drop tracks here (only WAV files)
-Burn the disc	Audio view	Status notification	Burn the disc
-Burning complete. Burn another disc?	Audio view	Status notification	Burning complete. Burn another disc?
-Burning in progress…	Audio view	Status notification	Burning in progress…
-Ready	Audio view	Status notification	Ready
-Blank CD-RW	Blank view		Blank CD-RW
-Blank disc	Blank view		Blank disc
-Blanking types:\n\nAll\t\t\tBlank the entire disk. This may take a long time.\nFast\t\t\tMinimally blank the disk.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Blank view		Blanking types:\n\nAll\t\t\tBlank the entire disk. This may take a long time.\nFast\t\t\tMinimally blank the disk.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
-Track	Blank view	Blanking mode. From the man page: 'Blank a track.'	Track
-All	Blank view	Blanking mode. From the man page: 'Blank the entire disk. This may take a long time.'	All
-Session	Blank view	Blanking mode. From the man page: 'Blank the last session.'	Session
-Track tail	Blank view	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
-Fast	Blank view	Blanking mode. From the man page: 'Minimally blank the disk. This results in erasing the PMA, the TOC and the pregap.'	Fast
-Unclose	Blank view	Blanking mode. From the man page: 'Unclose last session.'	Unclose
-Unreserve	Blank view	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
-Blanking complete	Blank view	Status notification	Blanking complete
-Blanking in progress…	Blank view	Status notification	Blanking in progress…
-Insert the disc and blank it	Blank view	Status notification	Insert the disc and blank it
-Burn image	Clone view		Burn image
-Clone	Clone view		Clone
-Create image	Clone view		Create image
-Burning complete. Burn another disc?	Clone view	Status notification	Burning complete. Burn another disc?
-Burning in progress…	Clone view	Status notification	Burning in progress…
-Failed to create image	Clone view	Status notification	Failed to create image
-Image creating in progress…	Clone view	Status notification	Image creating in progress…
-Insert a blank disc and burn the image	Clone view	Status notification	Insert a blank disc and burn the image
-Insert the disc and create an image	Clone view	Status notification	Insert the disc and create an image
+Add WAV files	Compilation views		Add WAV files
+Add…	Compilation views		Add…
+Audio CD	Compilation views		Audio CD
+Audio/Video DVD	Compilation views		Audio/Video DVD
+Blank disc	Compilation views		Blank disc
+Blank RW-disc	Compilation views		Blank RW-disc
+Blanking disc	Compilation views		Blanking disc
+Blanking finished!	Compilation views		Blanking finished!
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
+Build image	Compilation views		Build image
+Building clone image	Compilation views		Building clone image
+Building data image	Compilation views		Building data image
+Building DVD image	Compilation views		Building DVD image
+Building finished!	Compilation views		Building finished!
+Burn disc	Compilation views		Burn disc
+Burning aborted	Compilation views		Burning aborted
+Burning Audio CD	Compilation views		Burning Audio CD
+Burning Audio CD…	Compilation views		Burning Audio CD…
+Burning cloned disc	Compilation views		Burning cloned disc
+Burning data disc	Compilation views		Burning data disc
+Burning DVD	Compilation views		Burning DVD
+Burning finished!	Compilation views		Burning finished!
+Burning image	Compilation views		Burning image
+BurnItNow: Choose image	Compilation views		BurnItNow: Choose image
+calculating…	Compilation views		calculating…
+Choose data folder	Compilation views		Choose data folder
+Choose DVD folder	Compilation views		Choose DVD folder
+Choose folder	Compilation views		Choose folder
+Choose image	Compilation views		Choose image
+Clone disc	Compilation views		Clone disc
+Create image	Compilation views		Create image
+Data disc	Compilation views		Data disc
+Disc label:	Compilation views		Disc label:
+Drop tracks here (only WAV files)	Compilation views		Drop tracks here (only WAV files)
+First build an image to burn.	Compilation views		First build an image to burn.
+First choose an image to burn.	Compilation views		First choose an image to burn.
+Folder: <none>	Compilation views		Folder: <none>
+Image file	Compilation views		Image file
+Image: <none>	Compilation views		Image: <none>
+OK	Compilation views		OK
+Preparing the build…	Compilation views		Preparing the build…
+Reading in disc…	Compilation views		Reading in disc…
+Remove	Compilation views		Remove
+Some WAV file has the wrong encoding.	Compilation views		Some WAV file has the wrong encoding.
+The data doesn't fit on the disc.	Compilation views		The data doesn't fit on the disc.
+This may take a while...	Compilation views		This may take a while...
+This may take over 30 minutes...	Compilation views		This may take over 30 minutes...
+Unable to create DVD image	Compilation views		Unable to create DVD image
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
+Type:	Compilation views	Label for the blanking types menu	Type:
+Blanking finished	Compilation views	Status notification	Blanking finished
+Blanking in progress…	Compilation views	Status notification	Blanking in progress…
+Build the DVD image	Compilation views	Status notification	Build the DVD image
+Build the image	Compilation views	Status notification	Build the image
+Building in progress…	Compilation views	Status notification	Building in progress…
+Burn the disc	Compilation views	Status notification	Burn the disc
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Burning aborted: Some WAV file has the wrong encoding
+Burning aborted: The data doesn't fit on the disc.	Compilation views	Status notification	Burning aborted: The data doesn't fit on the disc.
+Burning complete. Burn another disc?	Compilation views	Status notification	Burning complete. Burn another disc?
+Burning in progress…	Compilation views	Status notification	Burning in progress…
+Choose the DVD folder to burn	Compilation views	Status notification	Choose the DVD folder to burn
+Choose the folder to burn	Compilation views	Status notification	Choose the folder to burn
+Choose the image to burn	Compilation views	Status notification	Choose the image to burn
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Didn't find valid files needed for an Audio or Video DVD
+Insert a blank disc and burn it	Compilation views	Status notification	Insert a blank disc and burn it
+Insert the disc and blank it	Compilation views	Status notification	Insert the disc and blank it
+Insert the disc and create an image	Compilation views	Status notification	Insert the disc and create an image
+Reading in disc…	Compilation views	Status notification	Reading in disc…
+Ready	Compilation views	Status notification	Ready
+Unable to create a DVD image	Compilation views	Status notification	Unable to create a DVD image
+Play back	Context menu		Play back
 Remove	Context menu		Remove
-Build image	Data view		Build image
-Burn disc	Data view		Burn disc
-Choose folder	Data view		Choose folder
-Data	Data view		Data
-First build an image to burn.	Data view		First build an image to burn.
-First choose the folder to burn.	Data view		First choose the folder to burn.
-Folder: <none>	Data view		Folder: <none>
-OK	Data view		OK
-Build the image	Data view	Status notification	Build the image
-Building in progress…	Data view	Status notification	Building in progress…
-Burn the disc	Data view	Status notification	Burn the disc
-Burning complete. Burn another disc?	Data view	Status notification	Burning complete. Burn another disc?
-Burning in progress…	Data view	Status notification	Burning in progress…
-Choose the folder to burn	Data view	Status notification	Choose the folder to burn
-Burn disc	Image view		Burn disc
-Choose image	Image view		Choose image
-First choose an image to burn.	Image view		First choose an image to burn.
-Image file	Image view		Image file
-Image: <none>	Image view		Image: <none>
-OK	Image view		OK
-Burn the disc	Image view	Status notification	Burn the disc
-Burning complete. Burn another disc?	Image view	Status notification	Burning complete. Burn another disc?
-Burning in progress…	Image view	Status notification	Burning in progress…
-Choose the image to burn	Image view	Status notification	Choose the image to burn
+OK	Helpers		OK
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?
 About…	Main window		About…
 App	Main window		App
 Burn speed:	Main window		Burn speed:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow is currently busy.\n\n
+Cache	Main window		Cache
+Cancel	Main window		Cancel
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?
+Choose cache folder	Main window		Choose cache folder
 Clear cache now	Main window		Clear cache now
 Clear cache on quit	Main window		Clear cache on quit
+Delete	Main window		Delete
 Eject after burning	Main window		Eject after burning
 Help	Main window		Help
+Keep	Main window		Keep
+OK	Main window		OK
+Open cache folder	Main window		Open cache folder
 Project website	Main window		Project website
+Quit anyway	Main window		Quit anyway
+Set cache folder…	Main window		Set cache folder…
 Simulation	Main window		Simulation
-Tools & settings	Main window		Tools & settings
+The blanking of a disc is currently in progress.\n	Main window		The blanking of a disc is currently in progress.\n
+The building of an image is currently in progress.\n	Main window		The building of an image is currently in progress.\n
+The burning of a disc is currently in progress.\n	Main window		The burning of a disc is currently in progress.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?
 Usage instructions	Main window		Usage instructions
 Max	Main window	Abbreviation for maximal burn speed	Max
 Min	Main window	Abbreviation for minimal burn speed	Min
@@ -74,4 +117,19 @@ Min	Main window	Abbreviation for minimal burn speed	Min
 8x	Main window	Multiplier for burn speed	8x
 Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
 Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+Finished in %duration%	Parser		Finished in %duration%
+Finished very soon now	Parser		Finished very soon now
+~ Empty project ~	Size view		~ Empty project ~
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% over CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% over DVD9
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% left (%medium%)
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB left (CD-900)
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Project size: %size%
 BurnItNow	System name		BurnItNow

@@ -22,7 +22,7 @@
 
 
 #undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "Image view"
+#define B_TRANSLATION_CONTEXT "Compilation views"
 
 
 CompilationImageView::CompilationImageView(BurnWindow& parent)
