@@ -124,12 +124,11 @@ h3 {
 for <a href="http://www.haiku-os.org">Haiku</a><br /></p>
 <hr />
 <p id="index"><a href="#menus">Menus</a> - <a href="#session">Session Settings</a> - <a href="#sizebar">Size Bar</a> - <a href="#projectmodes">Project Modes</a><br />
-<a href="#tips">Tips &amp; Tricks</a> - <a href="#download">Download</a> - <a href="#bugs_feedback">Bug Reports &amp; Feedback</a></p>
+<a href="#tips">Tips &amp; Tricks</a> - <a href="#download">Download</a> - <a href="#bugs_feedback">Bug Reports &amp; Feedback</a> - <a href="#history">History</a></p>
 </div>
 <hr />
 <p><br /></p>
-<p>BurnItNow works with CDs and DVDs. It burns data and ISO images, and blanks rewritable RW media. You can create Audio CDs from drag &amp; dropped WAV files and burn pre-authored DVD-Audio and DVD-Video.<br />
-BurnItNow is a graphical frontend to the command line tools suite <i>cdrtools</i> by Jörg Schilling et al.</p>
+<p>BurnItNow works with CDs and DVDs. It burns data and ISO images, and blanks rewritable RW media. You can create Audio CDs from WAV files and burn pre-authored DVD-Audio and DVD-Video. BurnItNow is a graphical frontend to the command line tools suite <i>cdrtools</i> by Jörg Schilling et al.</p>
 
 <p>BurnItNow's window consists of four parts: the menu bar, the session settings, several project modes in tabs, and a bar indicating the currently used space at the bottom:</p>
 
@@ -141,14 +140,20 @@ BurnItNow is a graphical frontend to the command line tools suite <i>cdrtools</i
 <a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
 <a id="menus" name="menus">The Menus</a></h2>
 
-<p>The available menu items are few and easy to understand.<br />
-In the <span class="menu">App</span> menu you can open the <span class="menu">About...</span> panel and <span class="menu">Quit</span> the application.</p>
+<p>The available menu items are few and easy to understand.</p>
 
-<p><span class="menu">Settings</span> provide options related to cached images that are created when you build an image that is then burned to disc.</p>
-<ul><li><p><span class="menu">Set cache folder…</span> opens a file dialog in which you can set the folder that is used for those cached images. By default, it points to <span class="path">/system/cache/</span>, but you may want to change it to some other partition with more free space.<br />
-Make sure you have the volume with your cache folder mounted before starting to work with BurnItNow, that it has enough free space and isn't read-only.</p></li>
+<div align = "center">
+<img src="./images/menu.png" alt="The menu bar" />
+</div>
+
+<p>In the <span class="menu">App</span> menu you can open the <span class="menu">About...</span> panel and <span class="menu">Quit</span> the application.</p>
+
+<p><span class="menu">Cache</span> provides options related to cached image files that are created when you build an image that is then burned to disc.</p>
+<ul><li><p><span class="menu">Set cache folder…</span> opens a file dialog in which you can set the folder that is used for those cached images. By default, it points to <span class="path">/system/cache/</span>, but you may want to change it to some other partition with more free space.</p>
+<p>Make sure the volume with the cache folder mounted before starting to work with BurnItNow, that it has enough free space and isn't read-only.<br />
+When your project is to burn a data disk or DVD or to clone a disc, you need at least the amount of the data/disc size as free space on the cache folder's volume. Burning an Audio CD or an existing ISO image, or blanking a disc, doesn't use cache at all.</p></li>
 <li><p><span class="menu">Open cache folder</span> shows the cache folder in a Tracker window, in case you want to have a look or copy an image somewhere else for later use.</p></li>
-<li><p><span class="menu">Clear cache now</span> removes the image files from the cache folder.</p></li>
+<li><p><span class="menu">Clear cache now</span> removes all image files from the cache folder.</p></li>
 <li><p><span class="menu">Clear cache on quit</span> is a setting that can be toggled with a checkmark. Activated, it automatically clears the cache every time you quit BurnItNow.</p></li>
 </ul>
 <p>Under <span class="menu">Help</span> you find the <span class="menu">Usage instructions</span> you're currently reading and can visit the <span class="menu">Project website</span>, for example to report an issue.</p>
@@ -181,20 +186,23 @@ With BurnItNow's current feature set, you're probably good with always using DAO
 <a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
 <a id="sizebar" name="sizebar">The Size Bar</a></h2>
 
-<p>Before coming to the various <i>Project modes</i>, a quick word on the size bar that's at the bottom of the window (except in <i>Blank RW-disc mode</i>).</p>
+<p>Before coming to the various <i>Project modes</i>, a quick word on the size bar that's at the bottom of the window (except in <i>Blank RW-disc</i> mode).</p>
 
 <div align = "center">
 <img src="./images/sizebar.gif" alt="The Sizebar - Animated" />
 </div>
 
 <p>The size bar is color-coded for the most common mediums:<br />
-CD-650 (green), CD-700 (yellow), CD-800 (orange), CD-900 (blue), DVD5 (beige) and DVD9 (purple).</p>
-<p>It only shows the mediums relevant to the current mode: when you're on <i>AudioCD</i> tab you won't see the DVD sections, when on the <i>Audio/Video-DVD</i> tab you won't see all the CD sections.</p>
+CD-650 (<span style="color:#2AD72A">green</span>), CD-700 (<span style="color:#BDE100">yellow</span>), CD-800 (<span style="color:#FFB423">orange</span>), CD-900 (<span style="color:#239DDC">blue</span>), DVD5 (<span style="color:#CBB383">beige</span>) and DVD9 (<span style="color:#FF74E5">purple</span>).<br />
+It turns <span style="color:#FF6666">red</span> when the project size exceeds the maximum capacity of the largest medium (CD-900 for CD mediums, DVD9 for DVD mediums).</p>
+<p>It only shows the medium capacities that are relevant to the current mode: when you're on the <i>Audio CD</i> tab you won't see the DVD sections, when on the <i>Audio/Video-DVD</i> tab you won't see all the CD sections.</p>
 <p>Whenever you change your project, i.e. choose a folder to burn or drop another WAV file for an AudioCD, the size bar is updated.</p>
 
 <p>The color of the size indicating bar corresponds to the medium your project still fits on.</p>
-<p>The info box on the left always shows how much space is still left on the medium. If you're over the maximum capacity of the largest medium (CD-900 for CD mediums, DVD9 for DVD mediums), the bar turns red and shows how much you're over the limit.</p>
-<p>Hovering the mouse pointer over the info box shows the absolute size of the project.</p>
+<p><b>Note:</b> The size bar only shows a best estimate. It doesn't take into account the data in extended BFS attributes and there can be a slight size difference when copying data from another file system to ISO 9660.<br />
+After you've built an image, the bar is updated with the size of the resulting ISO image, which should then be pretty accurate.<br />
+Rest assured, though, at the latest when trying to burn the disc, the space is checked and if the data won't fit on the inserted disc, the writing is aborted before it's started.</p>
+<p>The info box on the left shows how much space is still left on the medium and the absolute size of your project (again, a best estimate until an actual image was built). If you're over the maximum capacity of the largest medium (CD-900 for CD mediums, DVD9 for DVD mediums), it shows by how much you're over the limit.</p>
 
 <h2>
 <a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
@@ -206,7 +214,7 @@ CD-650 (green), CD-700 (yellow), CD-800 (orange), CD-900 (blue), DVD5 (beige) an
 <div align = "center">
 <img src="./images/mode_data.png" alt="The Data disc mode" />
 </div>
-<p>In Data mode, you first use <span class="button">Choose folder</span> to select the folder that's to be burnt to disc. That folder has to be set up beforehand by copying files and folders to it. The folder's name will be used as the label for the disc.<br />
+<p>In Data disc mode, you first use <span class="button">Choose folder</span> to select the folder that's to be burnt to disc. That folder has to be set up beforehand by copying files and folders to it. The folder's name will be used as the default disc label.<br />
 Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the number of files and their size and the speed of your hard disk that may take some seconds.<br />
 Lastly, you check your session settings one more time, insert a blank disc, and click <span class="button">Burn disc</span> to start the writing.</p>
 
@@ -214,8 +222,9 @@ Lastly, you check your session settings one more time, insert a blank disc, and 
 <div align = "center">
 <img src="./images/mode_audio.png" alt="The Audio CD mode" />
 </div>
-<p>To burn an audio CD, you first drag &amp; drop all tracks into the view to the right. These have to be WAV files! Then you can re-order them by dragging them around until you're satisfied. Remove tracks by selecting them and either press <span class="key">DEL</span> or right-click and choose <span class="menu">Remove</span>.<br />
-You can change the ratio between the info view to the left and the tracks view to the right by dragging the splitter handle between them around. You can even collapse one of the views completely.</p>
+<p>To burn an audio CD, you first add all tracks by either drag &amp; dropping them on the window or from a file dialog after clicking <span class="button">Add...</span>. These have to be WAV files (16 bit, 1411 kbps)! You can re-order them by dragging them around or use the <span class="key">↑</span> / <span class="key">↓</span> buttons until you're satisfied. Remove tracks by selecting them and either press <span class="key">DEL</span> or right-click and choose <span class="menu">Remove</span>.</p>
+<p>A track is played back by double-clicking or pressing the <span class="key">►</span> play button. The selected track(s) will be sent to your preferred media player.</p>
+<p>You can change the ratio between the info view to the left and the tracks view to the right by dragging the splitter handle between them around. You can even collapse one of the views completely.</p>
 <p>For best compatibility to stand-alone players, select a speed of 4x.<br />
 Finally, check your session settings once more, insert a blank disc and click <span class="button">Burn disc</span>.</p>
 
@@ -229,9 +238,9 @@ Finally, check your session settings once more, insert a blank disc and click <s
 <div align = "center">
 <img src="./images/mode_dvd.png" alt="The Audio/Video DVD mode" />
 </div>
-<p>BurnItNow can burn standards conforming Audio-DVDs and Video-DVDs, but it has to be pre-authored first, i.e. there needs to be a folder containing an <span class="path">AUDIO_TS</span> and a <span class="path">VIDEO_TS</span> folder with the authored data.</p>
+<p>BurnItNow can burn standards conforming Audio-DVDs and Video-DVDs, but they have to be pre-authored first, i.e. there needs to be a folder containing an <span class="path">AUDIO_TS</span> and a <span class="path">VIDEO_TS</span> folder with the authored data.</p>
 <p>Then it works like described for Data discs.<br />
-You first use <span class="button">Choose folder</span> to select the folder containing VIDEO_TS and AUDIO_TS. The folder's name will be used as the label for the disc.<br />
+You first use <span class="button">Choose folder</span> to select the folder containing VIDEO_TS and AUDIO_TS. The folder's name will be used as the default label for the disc.<br />
 Next you click <span class="button">Build image</span> to create an ISO image of that folder. Depending on the size of your project and the speed of your hard disk that may take some seconds.<br />
 Lastly, you check your session settings one more time, insert a blank DVD, and click <span class="button">Burn disc</span> to start the writing.</p>
 
@@ -265,8 +274,8 @@ You start by inserting the disc to clone and click on <span class="button">Creat
 <a id="tips" name="tips">Tips &amp; Tricks</a></h2>
 <ul>
 <li><p>Data, Image and Audio/Video DVD mode: You can drag &amp; drop the folder/image to burn instead of using the <span class="button">Choose folder/image</span> button that opens the file dialog.</p></li>
-<li><p>Data, Image and Audio/Video DVD mode: Once a folder/image is selected, clicking on its path to the left of the buttons opens its location in Tracker.</p></li>
-<li><p>Audio CD mode: You can drag &amp; drop folders with WAVs too.</p></li>
+<li><p>Data, Image and Audio/Video DVD mode: Once a folder/image is selected, clicking on its path to the left of the buttons (or under the disc label) opens its location in Tracker.</p></li>
+<li><p>Audio CD mode: You can drag &amp; drop folders containing WAVs to add them all in one go.</p></li>
 <li><p>Audio CD mode: Use a speed of 4x for best compatibility with stand-alone players.</p></li>
 </ul>
 
@@ -279,6 +288,52 @@ You start by inserting the disc to clone and click on <span class="button">Creat
 <a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
 <a id="bugs_feedback" name="bugs_feedback">Bug Reports &amp; Feedback</a></h2>
 <p>Please use GitHub's <a class="printurl:after" href="https://github.com/HaikuArchives/BurnItNow/issues">issue tracker</a> if you experience unusual difficulties or would like to provide translations.</p>
+
+
+<h2>
+<a href="#"><img src="images/up.png" style="border:none;float:right" alt="index" /></a>
+<a id="history" name="history">History</a></h2>
+<p><b>1.2</b> - <i>2017-11-xx:</i></p>
+<ul>
+<li>Added mode for Audio/Video DVD.</li>
+<li>Added colorful bar to show project size and remaining free space.</li>
+<li>Cache folder location now settable by the user.</li>
+<li>Show progress with notifications.</li>
+<li>Add text box to edit the disc label.</li>
+<li>Add buttons to add /remove and sort audio tracks.</li>
+<li>Launch tracks in preffered media player.</li>
+<li>Added checks and alerts to warn of insufficient space on the cache volume or when the data won't fit on the inserted disc.</li>
+<li>Set a higher priority for the burning thread.</li>
+<li>Add localization for Spanish, Ukrainian.</li>
+<li>Bug fixes.</li>
+</ul>
+
+<p><b>1.1</b> - <i>2017-01-02:</i></p>
+<ul>
+<li>Improved GUI.</li>
+<li>Fix burning audio CDs.</li>
+<li>Use folder name as disc label.</li>
+<li>Accept more multiple WAV files per drag &amp; drop.</li>
+<li>Allow sorting tracks via drag &amp; drop.</li>
+<li>Only accept WAV files for Audio CDs.</li>
+<li>Allow drag &amp; drop for Data and Image modes.</li>
+<li>Open folders by clicking on the path area.</li>
+<li>Auto-scroll the output view.</li>
+<li>Add tool tips to blanking modes.</li>
+<li>Save settings.</li>
+<li>Rename cache image file names.</li>
+<li>Add documentation.</li>
+<li>Add German localization.</li>
+<li>Bug fixes.</li>
+</ul>
+
+<p><b>0.1.0</b> - <i>2014-12-11:</i></p>
+<ul>
+<li>First release after migration to HaikuArchives' github.</li>
+<li>Improved GUI.</li>
+<li>Added features: detecting devices, support for image creating and writing, blanking, cloning, audio CD support, drag &amp; drop of WAV files.</li>
+<li>Bug fixes.</li>
+</ul>
 
 </body>
 </html>
