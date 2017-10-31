@@ -58,7 +58,6 @@ private:
 	void			_ChangeCacheFolder(BMessage* message);
 	bool			_CheckOldCacheFolder();
 	void 			_ClearCache();
-	void 			_OpenSettings();
 	void 			_OpenWebSite();
 	void 			_OpenHelp();
 	void 			_UpdateSpeedSlider(BMessage* message);

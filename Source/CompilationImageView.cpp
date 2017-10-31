@@ -27,7 +27,7 @@
 
 CompilationImageView::CompilationImageView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Image file"), B_WILL_DRAW,
+	BView(B_TRANSLATE_COMMENT("Image file", "Tab label"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
@@ -59,11 +59,12 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseImageButton",
-		B_TRANSLATE("Choose image"), new BMessage(kChooseButton));
+		B_TRANSLATE_COMMENT("Choose image", "Button label"),
+		new BMessage(kChooseButton));
 	fChooseButton->SetTarget(this);
 
-	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnButton));
+	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE_COMMENT(
+		"Burn disc", "Button label"), new BMessage(kBurnButton));
 	fBurnButton->SetTarget(this);
 
 	fSizeView = new SizeView();
@@ -176,13 +177,22 @@ ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 void
 CompilationImageView::_Burn()
 {
-	if (fImagePath->Path() == NULL) {
-		(new BAlert("ChooseImageFirstAlert", B_TRANSLATE(
-			"First choose an image to burn."), B_TRANSLATE("OK")))->Go();
+	BFile testFile;
+	entry_ref testRef;
+	get_ref_for_path(fImagePath->Path(), &testRef);
+
+	testFile.SetTo(&testRef, B_READ_ONLY);
+	status_t result = testFile.InitCheck();
+	
+	if (result != B_OK) {
+		BString text(B_TRANSLATE_COMMENT(
+			"The image file '%filename%' wasn't found. "
+			"Was it perhaps moved or renamed?", "Alert text"));
+		text.ReplaceFirst("%filename%", fImagePath->Leaf());
+		(new BAlert("ImageNotFound", text,
+			B_TRANSLATE("OK")))->Go();
 		return;
 	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
@@ -197,7 +207,8 @@ CompilationImageView::_Burn()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Image");
-	fNotification.SetTitle(B_TRANSLATE("Burning image"));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning image",
+		"Notification title"));
 	fNotification.SetProgress(0);
 	fNotification.Send(60 * 1000000LL);
 
@@ -258,15 +269,17 @@ CompilationImageView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
-			fNotification.SetContent(B_TRANSLATE(
-				"The data doesn't fit on the disc."));
+			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+				"Notification title"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT(
+				"The data doesn't fit on the disc.", "Notification content"));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
 				"Status notification"));
 			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+				"Notification content"));
 		}
 		fNotification.SetMessageID("BurnItNow_Image");
 		fNotification.Send();
@@ -287,8 +300,8 @@ CompilationImageView::_ChooseImage()
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
 			NULL, B_FILE_NODE, false, NULL, new ImageRefFilter(), true);
-		fOpenPanel->Window()->SetTitle(B_TRANSLATE("BurnItNow: Choose image"));
-	}
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT("Choose data folder",
+			"File panel title"));	}
 	fOpenPanel->Show();
 }
 
@@ -301,21 +314,20 @@ CompilationImageView::_OpenImage(BMessage* message)
 		return;
 
 	BEntry entry(&ref, true);	// also accept symlinks
-	BNode node(&entry);
-	if (node.InitCheck() != B_OK)
-		return;
+	entry.GetRef(&ref);
 
-	BNodeInfo nodeInfo(&node);
-	if (nodeInfo.InitCheck() != B_OK)
-		return;
-
-	char mimeTypeString[B_MIME_TYPE_LENGTH];
-	nodeInfo.GetType(mimeTypeString);
 	BPath* path = new BPath(&entry);
 	BString filename(path->Leaf());
 
-	// Check for wav MIME type or file extension
-	if ((strcmp("application/x-cd-image", mimeTypeString) == 0)
+	// Check for image MIME type or file extension
+	BStringList imageMimes;
+	imageMimes.Add("application/x-cd-image");
+
+	BMimeType refType;
+	BMimeType::GuessMimeType(&ref, &refType);
+
+	// Check for image MIME type or file extension
+	if (imageMimes.HasString(refType.Type())
 		|| filename.IFindLast(".iso", filename.CountChars())
 			== (filename.CountChars() - 4)
 		|| filename.IFindLast(".img", filename.CountChars())

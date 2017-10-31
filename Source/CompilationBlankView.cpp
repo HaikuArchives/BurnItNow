@@ -22,7 +22,7 @@
 
 CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Blank RW-disc"), B_WILL_DRAW,
+	BView(B_TRANSLATE_COMMENT("Blank RW-disc", "Tab label"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBlankerThread(NULL),
 	fNotification(B_INFORMATION_NOTIFICATION),
@@ -89,7 +89,8 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	blankModeMenuField->SetToolTip(toolTip.String());
 
 	fBlankButton = new BButton("BlankButton",
-		B_TRANSLATE("Blank disc"), new BMessage(kBlankButton));
+		B_TRANSLATE_COMMENT("Blank disc", "Button label"),
+		new BMessage(kBlankButton));
 	fBlankButton->SetTarget(this);
 
 	fBlankModeMenu->SetExplicitMinSize(BSize(200, B_SIZE_UNLIMITED));
@@ -176,13 +177,14 @@ CompilationBlankView::_Blank()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Blank");
-	fNotification.SetTitle(B_TRANSLATE("Blanking disc"));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Blanking disc",
+		"Notification title"));
 	if (mode == "All")
-		fNotification.SetContent(B_TRANSLATE(
-		"This may take over 30 minutes..."));
+		fNotification.SetContent(B_TRANSLATE_COMMENT(
+		"This may take over 30 minutes...", "Notification content"));
 	else
-		fNotification.SetContent(B_TRANSLATE(
-		"This may take a while..."));
+		fNotification.SetContent(B_TRANSLATE_COMMENT(
+		"This may take a while...", "Notification content"));
 
 	fNotification.Send();
 
@@ -222,7 +224,8 @@ CompilationBlankView::_BlankOutput(BMessage* message)
 			"Status notification"));
 
 		fNotification.SetMessageID("BurnItNow_Blank");
-		fNotification.SetContent(B_TRANSLATE("Blanking finished!"));
+		fNotification.SetContent(B_TRANSLATE_COMMENT("Blanking finished!",
+			"Notification content"));
 		fNotification.Send();
 
 		fBlankButton->SetEnabled(true);

@@ -385,8 +385,8 @@ BurnWindow::_SetCacheFolder()
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
 			B_DIRECTORY_NODE, false, new BMessage(kChooseCacheFolder),
 			new DirRefFilter(), true);
-		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose cache folder"));
-	}
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT("Choose cache folder",
+			"File panel title"));	}
 	fOpenPanel->Show();
 }
 
@@ -532,13 +532,6 @@ BurnWindow::_ClearCache()
 		entry = new BEntry(path.Path());
 		entry->Remove();
 	}
-}
-
-
-void
-BurnWindow::_OpenSettings()
-{
-	(new BAlert("OpenSettingsAlert", "Not implemented yet", "OK"))->Go();
 }
 
 

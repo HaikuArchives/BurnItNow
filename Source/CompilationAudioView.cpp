@@ -29,8 +29,8 @@
 
 CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Audio CD"), B_WILL_DRAW, new BGroupLayout(B_VERTICAL,
-		kControlPadding)),
+	BView(B_TRANSLATE_COMMENT("Audio CD", "Tab label"), B_WILL_DRAW,
+		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
 	fNotification(B_PROGRESS_NOTIFICATION),
@@ -56,8 +56,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		fOutputView, B_WILL_DRAW, false, true);
 	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fBurnButton = new BButton("BurnDiscButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnButton));
+	fBurnButton = new BButton("BurnDiscButton", B_TRANSLATE_COMMENT("Burn disc",
+		"Button label"), new BMessage(kBurnButton));
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fAudioBox = new BSeparatorView(B_HORIZONTAL, B_FANCY_BORDER);
@@ -87,12 +87,12 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 	fPlayButton->SetExplicitSize(BSize(StringWidth("\xE2\x96\xB6") * 3,
 		B_SIZE_UNSET));
 
-	fAddButton = new BButton("AddButton", B_TRANSLATE(
-		"Add" B_UTF8_ELLIPSIS), new BMessage(kAddButton));
+	fAddButton = new BButton("AddButton", B_TRANSLATE_COMMENT(
+		"Add" B_UTF8_ELLIPSIS, "Button label"), new BMessage(kAddButton));
 	fAddButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	fRemoveButton = new BButton("RemoveButton", B_TRANSLATE("Remove"),
-		new BMessage(kDeleteItem));
+	fRemoveButton = new BButton("RemoveButton", B_TRANSLATE_COMMENT("Remove",
+		"Button label"), new BMessage(kDeleteItem));
 	fRemoveButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fSizeView = new SizeView();
@@ -262,7 +262,8 @@ CompilationAudioView::MessageReceived(BMessage* message)
 				fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
 				NULL, B_FILE_NODE | B_DIRECTORY_NODE, true, NULL,
 				new AudioRefFilter(), true);
-				fOpenPanel->Window()->SetTitle(B_TRANSLATE("Add WAV files"));
+				fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT(
+					"Add WAV files", "File panel title"));
 			}
 			fOpenPanel->Show();
 			break;
@@ -418,7 +419,8 @@ CompilationAudioView::_Burn()
 	fBurnButton->SetEnabled(false);
 
 	fNotification.SetGroup("BurnItNow");
-	fNotification.SetTitle(B_TRANSLATE("Burning Audio CD"));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning Audio CD",
+		"Notification title"));
 
 	BString device("dev=");
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
@@ -426,8 +428,10 @@ CompilationAudioView::_Burn()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Audio");
-	fNotification.SetTitle(B_TRANSLATE("Building data image"));
-	fNotification.SetContent(B_TRANSLATE("Burning Audio CD" B_UTF8_ELLIPSIS));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Building data image",
+		"Notification title"));
+	fNotification.SetContent(B_TRANSLATE_COMMENT(
+		"Burning Audio CD" B_UTF8_ELLIPSIS, "Notification content"));
 	fNotification.SetProgress(0);
 	 // It may take a while for the burning to start...
 	fNotification.Send(60 * 1000000LL);
@@ -506,22 +510,25 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
-			fNotification.SetContent(B_TRANSLATE(
-				"The data doesn't fit on the disc."));
+			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+				"Notification title"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT(
+				"The data doesn't fit on the disc.", "Notification content"));
 		} else if (fAbort == INVALIDWAV) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: Some WAV file has the wrong encoding",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
-			fNotification.SetContent(B_TRANSLATE(
-				"Some WAV file has the wrong encoding."));
+			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+				"Notification title"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT(
+				"Some WAV file has the wrong encoding", "Notification content"));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-				"Burning complete. Burn another disc?",
+				"Burning finished. Burn another disc?",
 				"Status notification"));
 			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+				"Notification content"));
 		}
 		fNotification.SetMessageID("BurnItNow_Audio");
 		fNotification.Send();

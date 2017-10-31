@@ -7,6 +7,7 @@
 #include <Alert.h>
 #include <Catalog.h>
 #include <ControlLook.h>
+#include <File.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
@@ -27,7 +28,7 @@
 
 CompilationDataView::CompilationDataView(BurnWindow& parent)
 	:
-	BView(B_TRANSLATE("Data disc"), B_WILL_DRAW,
+	BView(B_TRANSLATE_COMMENT("Data disc", "Tab lable"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
@@ -70,16 +71,16 @@ CompilationDataView::CompilationDataView(BurnWindow& parent)
 	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
 	fChooseButton = new BButton("ChooseDirectoryButton",
-		B_TRANSLATE("Choose folder"),
+		B_TRANSLATE_COMMENT("Choose folder", "Button label"),
 		new BMessage(kChooseButton));
 	fChooseButton->SetTarget(this);
 
-	fBuildButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
-		new BMessage(kBuildButton));
+	fBuildButton = new BButton("BuildImageButton", B_TRANSLATE_COMMENT(
+		"Build image", "Button label"), new BMessage(kBuildButton));
 	fBuildButton->SetTarget(this);
 
-	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnButton));
+	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE_COMMENT(
+		"Burn disc", "Button label"), new BMessage(kBurnButton));
 	fBurnButton->SetTarget(this);
 
 	fSizeView = new SizeView();
@@ -198,8 +199,10 @@ CompilationDataView::_Build()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetTitle(B_TRANSLATE("Building data image"));
-	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Building data image",
+		"Notification title"));
+	fNotification.SetContent(B_TRANSLATE_COMMENT(
+		"Preparing the build" B_UTF8_ELLIPSIS, "Notification content"));
 	fNotification.SetProgress(0);
 	fNotification.Send();
 
@@ -280,7 +283,8 @@ CompilationDataView::_BuildOutput(BMessage* message)
 
 		fNotification.SetMessageID("BurnItNow_Data");
 		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE("Building finished!"));
+		fNotification.SetContent(B_TRANSLATE_COMMENT("Building finished!",
+			"Notification content"));
 		fNotification.Send();
 
 		BEntry entry(fImagePath->Path());
@@ -298,13 +302,22 @@ CompilationDataView::_BuildOutput(BMessage* message)
 void
 CompilationDataView::_Burn()
 {
-	if (fImagePath->Path() == NULL) {
-		(new BAlert("ChooseDirectoryFirstAlert", B_TRANSLATE(
-			"First build an image to burn."), B_TRANSLATE("OK")))->Go();
+	BFile testFile;
+	entry_ref testRef;
+	get_ref_for_path(fImagePath->Path(), &testRef);
+
+	testFile.SetTo(&testRef, B_READ_ONLY);
+	status_t result = testFile.InitCheck();
+	
+	if (result != B_OK) {
+		BString text(B_TRANSLATE_COMMENT(
+			"There isn't an image '%filename%' in the cache folder. "
+			"Was it perhaps moved or renamed?", "Alert text"));
+		text.ReplaceFirst("%filename%", kCacheFileData);
+		(new BAlert("ImageNotFound", text,
+			B_TRANSLATE("OK")))->Go();
 		return;
 	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
@@ -320,7 +333,8 @@ CompilationDataView::_Burn()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetTitle(B_TRANSLATE("Burning data disc"));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning data disc",
+		"Notification title"));
 	fNotification.SetProgress(0);
 	fNotification.Send(60 * 1000000LL);
 
@@ -380,15 +394,17 @@ CompilationDataView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
-			fNotification.SetContent(B_TRANSLATE(
-				"The data doesn't fit on the disc."));
+			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+				"Notification title"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT(
+				"The data doesn't fit on the disc.", "Notification content"));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
 				"Status notification"));
 			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+				"Notification content"));
 		}
 		fNotification.SetMessageID("BurnItNow_Data");
 		fNotification.Send();
@@ -410,7 +426,8 @@ CompilationDataView::_ChooseDirectory()
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
 			B_DIRECTORY_NODE, false, NULL, new DirRefFilter(), true);
-		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose data folder"));
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT("Choose data folder",
+			"File panel title"));
 	}
 	fOpenPanel->Show();
 }
@@ -429,7 +446,8 @@ CompilationDataView::_GetFolderSize()
 	if (sizecount >= B_OK)
 		resume_thread(sizecount);
 
-	fSizeView->ShowInfoText(B_TRANSLATE("calculating" B_UTF8_ELLIPSIS));
+	fSizeView->ShowInfoText(B_TRANSLATE_COMMENT("calculating" B_UTF8_ELLIPSIS,
+		"In size view, as short as possible!"));
 }
 
 

@@ -7,6 +7,7 @@
 #include <Alert.h>
 #include <Catalog.h>
 #include <ControlLook.h>
+#include <File.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <Path.h>
@@ -65,20 +66,19 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 		fOutputView, B_WILL_DRAW, true, true);
 	fOutputScrollView->SetExplicitMinSize(BSize(B_SIZE_UNSET, 64));
 
-	fDVDButton = new BButton("ChooseDVDButton",
-		B_TRANSLATE("Choose DVD folder"),
-		new BMessage(kChooseButton));
+	fDVDButton = new BButton("ChooseDVDButton", B_TRANSLATE_COMMENT(
+		"Choose DVD folder", "Button label"), new BMessage(kChooseButton));
 	fDVDButton->SetTarget(this);
 	fDVDButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED,
 		B_SIZE_UNSET));
 		
-	fBuildButton = new BButton("BuildImageButton", B_TRANSLATE("Build image"),
-	    new BMessage(kBuildButton));
+	fBuildButton = new BButton("BuildImageButton", B_TRANSLATE_COMMENT(
+		"Build image", "Button label"), new BMessage(kBuildButton));
 	fBuildButton->SetTarget(this);
 	fBuildButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
-	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE("Burn disc"),
-		new BMessage(kBurnButton));
+	fBurnButton = new BButton("BurnImageButton", B_TRANSLATE_COMMENT(
+		"Burn disc", "Button label"), new BMessage(kBurnButton));
 	fBurnButton->SetTarget(this);
 	fBurnButton->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
@@ -199,8 +199,10 @@ CompilationDVDView::_Build()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_DVD");
-	fNotification.SetTitle(B_TRANSLATE("Building DVD image"));
-	fNotification.SetContent(B_TRANSLATE("Preparing the build" B_UTF8_ELLIPSIS));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Building DVD image",
+		"Notification title"));
+	fNotification.SetContent(B_TRANSLATE_COMMENT(
+		"Preparing the build" B_UTF8_ELLIPSIS, "Notification content"));
 	fNotification.SetProgress(0);
 
 	fAction = BUILDING;	// flag we're building ISO
@@ -281,7 +283,8 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 
 			fNotification.SetMessageID("BurnItNow_DVD");
 			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Unable to create DVD image"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT(
+				"Unable to create DVD image", "Notification content"));
 			fNotification.Send();
 
 		} else {
@@ -292,7 +295,8 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 
 			fNotification.SetMessageID("BurnItNow_DVD");
 			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Building finished!"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT("Building finished!",
+				"Notification content"));
 			fNotification.Send();
 
 			BEntry entry(fImagePath->Path());
@@ -311,13 +315,22 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 void
 CompilationDVDView::_Burn()
 {
-	if (fImagePath->Path() == NULL) {
-		(new BAlert("ChooseDirectoryFirstAlert", B_TRANSLATE(
-			"First build an image to burn."), B_TRANSLATE("OK")))->Go();
+	BFile testFile;
+	entry_ref testRef;
+	get_ref_for_path(fImagePath->Path(), &testRef);
+
+	testFile.SetTo(&testRef, B_READ_ONLY);
+	status_t result = testFile.InitCheck();
+	
+	if (result != B_OK) {
+		BString text(B_TRANSLATE_COMMENT(
+			"There isn't an image '%filename%' in the cache folder. "
+			"Was it perhaps moved or renamed?", "Alert text"));
+		text.ReplaceFirst("%filename%", kCacheFileDVD);
+		(new BAlert("ImageNotFound", text,
+			B_TRANSLATE("OK")))->Go();
 		return;
 	}
-	if (fImagePath->InitCheck() != B_OK)
-		return;
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
@@ -333,7 +346,8 @@ CompilationDVDView::_Burn()
 
 	fNotification.SetGroup("BurnItNow");
 	fNotification.SetMessageID("BurnItNow_DVD");
-	fNotification.SetTitle(B_TRANSLATE("Burning DVD"));
+	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning DVD",
+		"Notificaation title"));
 	fNotification.SetProgress(0);
 	fNotification.Send(60 * 1000000LL);
 
@@ -393,15 +407,17 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc.",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE("Burning aborted"));
-			fNotification.SetContent(B_TRANSLATE(
-				"The data doesn't fit on the disc."));
+			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+				"Notification title"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT(
+				"The data doesn't fit on the disc.", "Notification content"));
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
 				"Status notification"));
 			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE("Burning finished!"));
+			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+				"Notification content"));
 		}
 		fNotification.SetMessageID("BurnItNow_DVD");
 		fNotification.Send();
@@ -423,7 +439,8 @@ CompilationDVDView::_ChooseDirectory()
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this), NULL,
 			B_DIRECTORY_NODE, false, NULL, new DirRefFilter(), true);
-		fOpenPanel->Window()->SetTitle(B_TRANSLATE("Choose DVD folder"));
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT("Choose DVD folder",
+			"File panel title"));
 	}
 	fOpenPanel->Show();
 }
@@ -442,8 +459,8 @@ CompilationDVDView::_GetFolderSize()
 	if (sizecount >= B_OK)
 		resume_thread(sizecount);
 
-	fSizeView->ShowInfoText(B_TRANSLATE("calculating" B_UTF8_ELLIPSIS));
-}
+	fSizeView->ShowInfoText(B_TRANSLATE_COMMENT("calculating" B_UTF8_ELLIPSIS,
+		"In size view, as short as possible!"));}
 
 
 void
