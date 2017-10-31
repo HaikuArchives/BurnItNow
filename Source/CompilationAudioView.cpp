@@ -74,16 +74,19 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 
 	fUpButton = new BButton("UpButton", "\xe2\xac\x86",
 		new BMessage(kUpButton));
+	fUpButton->SetToolTip(B_TRANSLATE_COMMENT("Move up", "Tool tip"));
 	fUpButton->SetExplicitSize(BSize(StringWidth("\xe2\xac\x86") * 3,
 		B_SIZE_UNSET));
 
 	fDownButton = new BButton("DownButton", "\xe2\xac\x87",
 		new BMessage(kDownButton));
+	fDownButton->SetToolTip(B_TRANSLATE_COMMENT("Move down", "Tool tip"));
 	fDownButton->SetExplicitSize(BSize(StringWidth("\xe2\xac\x87") * 3,
 		B_SIZE_UNSET));
 
 	fPlayButton = new BButton("PlayButton", "\xE2\x96\xB6",
 		new BMessage(kTrackPlayback));
+	fPlayButton->SetToolTip(B_TRANSLATE_COMMENT("Play back", "Tool tip"));
 	fPlayButton->SetExplicitSize(BSize(StringWidth("\xE2\x96\xB6") * 3,
 		B_SIZE_UNSET));
 

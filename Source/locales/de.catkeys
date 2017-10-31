@@ -1,4 +1,4 @@
-1	German	application/x-vnd.haikuarchives-BurnItNow	3727454632
+1	German	application/x-vnd.haikuarchives-BurnItNow	2895943743
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Der Cache-Ordner '%folder%' ist ungültig.\nEs wird wieder der auf den Standard '/system/cache' zurückgesetzt.\n\nVielleicht war der Ordner auf einer nicht oder schreibgeschützt eingehängten Partition?
 Thank you	Application		Danke
@@ -80,6 +80,9 @@ Blank RW-disc	Compilation views	Tab label	RW-Disc löschen
 Clone disc	Compilation views	Tab label	Disc klonen
 Image file	Compilation views	Tab label	Image-Datei
 Data disc	Compilation views	Tab lable	Daten-Disc
+Move down	Compilation views	Tool tip	Runter
+Move up	Compilation views	Tool tip	Rauf
+Play back	Compilation views	Tool tip	Wiedergabe
 Play back	Context menu		Wiedergabe
 Remove	Context menu		Entfernen
 OK	Helpers		OK
