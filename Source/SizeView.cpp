@@ -84,53 +84,53 @@ SizeView::UpdateSizeDisplay(off_t fileSize, int32 mode,
 	BString capacity;	
 	if (medium == DVD_ONLY) {
 		if (fileSize <= sizeDVD5[mode]) {
-			spaceLeft = sizeDVD5[mode] - fileSize;
+			spaceLeft = (off_t)sizeDVD5[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("DVD5", "DVD medium size");
 		} else if (fileSize <= sizeDVD9[mode]) {
-			spaceLeft = sizeDVD9[mode] - fileSize;
+			spaceLeft = (off_t)sizeDVD9[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("DVD9", "DVD medium size");
 		} else {
-			spaceLeft = fileSize - sizeDVD9[mode];
+			spaceLeft = fileSize - (off_t)sizeDVD9[mode];
 			capacity = B_TRANSLATE_COMMENT("DVD9", "DVD medium size");
 		}
 	} else if (medium == CD_ONLY) {
 		if (fileSize <= sizeCD650[mode]) {
-			spaceLeft = sizeCD650[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD650[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-650", "CD medium size");
 		} else if (fileSize <= sizeCD700[mode]) {
-			spaceLeft = sizeCD700[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD700[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-700", "CD medium size");
 		} else if (fileSize <= sizeCD800[mode]) {
-			spaceLeft = sizeCD800[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD800[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-800", "CD medium size");
 		} else if (fileSize <= sizeCD900[mode]) {
-			spaceLeft = sizeCD900[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD900[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-900", "CD medium size");
 		} else {
-			spaceLeft = fileSize - sizeCD900[mode];
+			spaceLeft = fileSize - (off_t)sizeCD900[mode];
 			capacity = B_TRANSLATE_COMMENT("CD-900", "CD medium size");
 		}
 	} else {
 		if (fileSize <= sizeCD650[mode]) {
-			spaceLeft = sizeCD650[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD650[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-650", "CD medium size");
 		} else if (fileSize <= sizeCD700[mode]) {
-			spaceLeft = sizeCD700[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD700[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-700", "CD medium size");
 		} else if (fileSize <= sizeCD800[mode]) {
-			spaceLeft = sizeCD800[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD800[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-800", "CD medium size");
 		} else if (fileSize <= sizeCD900[mode]) {
-			spaceLeft = sizeCD900[mode] - fileSize;
+			spaceLeft = (off_t)sizeCD900[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("CD-900", "CD medium size");
 		} else if (fileSize <= sizeDVD5[mode]) {
-			spaceLeft = sizeDVD5[mode] - fileSize;
+			spaceLeft = (off_t)sizeDVD5[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("DVD5", "DVD medium size");
 		} else if (fileSize <= sizeDVD9[mode]) {
-			spaceLeft = sizeDVD9[mode] - fileSize;
+			spaceLeft = (off_t)sizeDVD9[mode] - fileSize;
 			capacity = B_TRANSLATE_COMMENT("DVD9", "DVD medium size");
 		} else {
-			spaceLeft = fileSize - sizeDVD9[mode];
+			spaceLeft = fileSize - (off_t)sizeDVD9[mode];
 			capacity = B_TRANSLATE_COMMENT("DVD9", "DVD medium size");
 		}
 	}
