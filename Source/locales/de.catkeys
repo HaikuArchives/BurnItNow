@@ -1,56 +1,17 @@
-1	German	application/x-vnd.haikuarchives-BurnItNow	2136692612
+1	German	application/x-vnd.haikuarchives-BurnItNow	3727454632
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Der Cache-Ordner '%folder%' ist ungültig.\nEs wird wieder der auf den Standard '/system/cache' zurückgesetzt.\n\nVielleicht war der Ordner auf einer nicht oder schreibgeschützt eingehängten Partition?
 Thank you	Application		Danke
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tvomBurnItNow Team\n\tund\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow ist eine grafische Oberfläche für cdrecord, readcd und mkisofs.\n\nBerichte zu Bugs oder gewünschten Features sind sehr willkommen. Kontaktinfos befinden sich in der Bedienungsanleitung aus dem 'Hilfe' Menü.
-Add WAV files	Compilation views		WAV Dateien auswählen
-Add…	Compilation views		Hinzu…
-Audio CD	Compilation views		Audio-CD
 Audio/Video DVD	Compilation views		Audio/Video-DVD
-Blank disc	Compilation views		Disc löschen
-Blank RW-disc	Compilation views		RW-Disc löschen
-Blanking disc	Compilation views		Disc wird gelöscht
-Blanking finished!	Compilation views		Löschen fertig!
 Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Löscharten:\n\nAll\t\t\tDie gesamte Disc löschen. Das kann geraume Zeit dauern.\nFast\t\t\tDie Disc nur minimal löschen.\n\t\t\tDas löscht den PMA, den TOC und den Pregap.\nSession\t\tNur die letzte Sitzung löschen.\nTrack\t\tEinen Track löschen.\nTrack tail\t\tDas Ende eines Tracks löschen.\nUnreserve\tEinen reservierten Track 'ent-reserverieren'.\nUnclose\t\tDie letzte Sitzung entsperren.
-Build image	Compilation views		Image erstellen
-Building clone image	Compilation views		Klon-Image erstellen
-Building data image	Compilation views		Daten-Image erstellen
-Building DVD image	Compilation views		DVD-Image erstellen
-Building finished!	Compilation views		Image fertig erstellt!
-Burn disc	Compilation views		Disc brennen
-Burning aborted	Compilation views		Brennvorgang abgebrochen
-Burning Audio CD	Compilation views		Audio-CD wird gebrannt
-Burning Audio CD…	Compilation views		Audio-CD wird gebrannt…
-Burning cloned disc	Compilation views		Klon-Disc wird gebrannt
-Burning data disc	Compilation views		Daten-Disc wird gebrannt
-Burning DVD	Compilation views		DVD wird gebrannt
-Burning finished!	Compilation views		Brennvorgang fertig!
-Burning image	Compilation views		Image wird gebrannt
-BurnItNow: Choose image	Compilation views		BurnItNow: Image wählen
-calculating…	Compilation views		Berechnung…
-Choose data folder	Compilation views		Datenordner wählen
-Choose DVD folder	Compilation views		DVD-Ordner wählen
-Choose folder	Compilation views		Ordner wählen
-Choose image	Compilation views		Image wählen
-Clone disc	Compilation views		Disc klonen
-Create image	Compilation views		Image erstellen
-Data disc	Compilation views		Daten-Disc
 Disc label:	Compilation views		Disc Name:
 Drop tracks here (only WAV files)	Compilation views		Tracks hier fallen lassen (nur WAV Dateien)
-First build an image to burn.	Compilation views		Zu brennendes Image erstellen.
-First choose an image to burn.	Compilation views		Zu brennendes Image wählen.
 Folder: <none>	Compilation views		Ordner: <keiner>
-Image file	Compilation views		Image-Datei
 Image: <none>	Compilation views		Image: <keines>
 OK	Compilation views		OK
-Preparing the build…	Compilation views		Image-Erstellung wird vorbereitet…
-Reading in disc…	Compilation views		Einlesen der Disc…
-Remove	Compilation views		Entfernen
-Some WAV file has the wrong encoding.	Compilation views		Mindestens eine WAV Datei hat eine ungültige Kodierung.
-The data doesn't fit on the disc.	Compilation views		Die Daten passen nicht auf die Disc.
-This may take a while...	Compilation views		Das kann eine Weile dauern...
-This may take over 30 minutes...	Compilation views		Das kann über 30 Minuten dauern...
-Unable to create DVD image	Compilation views		DVD-Image konnte nicht erstellt werden
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Die Image-Datei '%filename%' wurde nicht gefunden. Wurde sie vielleicht verschoben oder umbenannt?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Im Cache-Ordner befindet sich keine Image-Datei '%filename%'. Wurde sie vielleicht verschoben oder umbenannt?
 Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
 All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
 Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
@@ -58,7 +19,41 @@ Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail o
 Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
 Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
 Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
+Add…	Compilation views	Button label	Hinzu…
+Blank disc	Compilation views	Button label	Disc löschen
+Build image	Compilation views	Button label	Image erstellen
+Burn disc	Compilation views	Button label	Disc brennen
+Choose DVD folder	Compilation views	Button label	DVD-Ordner wählen
+Choose folder	Compilation views	Button label	Ordner wählen
+Choose image	Compilation views	Button label	Image wählen
+Create image	Compilation views	Button label	Image erstellen
+Remove	Compilation views	Button label	Entfernen
+Add WAV files	Compilation views	File panel title	WAV Dateien auswählen
+Choose data folder	Compilation views	File panel title	Datenordner wählen
+Choose DVD folder	Compilation views	File panel title	DVD-Ordner wählen
+calculating…	Compilation views	In size view, as short as possible!	Berechnung…
 Type:	Compilation views	Label for the blanking types menu	Art:
+Burning DVD	Compilation views	Notificaation title	DVD wird gebrannt
+Blanking finished!	Compilation views	Notification content	Löschen fertig!
+Building finished!	Compilation views	Notification content	Image fertig erstellt!
+Burning Audio CD…	Compilation views	Notification content	Audio-CD wird gebrannt…
+Burning finished!	Compilation views	Notification content	Brennen fertig!
+Preparing the build…	Compilation views	Notification content	Image-Erstellung wird vorbereitet…
+Reading in disc…	Compilation views	Notification content	Einlesen der Disc…
+Some WAV file has the wrong encoding	Compilation views	Notification content	Mindestens eine WAV Datei hat eine ungültige Kodierung
+The data doesn't fit on the disc.	Compilation views	Notification content	Die Daten passen nicht auf die Disc.
+This may take a while...	Compilation views	Notification content	Das kann eine Weile dauern...
+This may take over 30 minutes...	Compilation views	Notification content	Das kann über 30 Minuten dauern...
+Unable to create DVD image	Compilation views	Notification content	DVD-Image konnte nicht erstellt werden
+Blanking disc	Compilation views	Notification title	Disc wird gelöscht
+Building clone image	Compilation views	Notification title	Klon-Image erstellen
+Building data image	Compilation views	Notification title	Daten-Image erstellen
+Building DVD image	Compilation views	Notification title	DVD-Image erstellen
+Burning aborted	Compilation views	Notification title	Brennvorgang abgebrochen
+Burning Audio CD	Compilation views	Notification title	Audio-CD wird gebrannt
+Burning cloned disc	Compilation views	Notification title	Klon-Disc wird gebrannt
+Burning data disc	Compilation views	Notification title	Daten-Disc wird gebrannt
+Burning image	Compilation views	Notification title	Image wird gebrannt
 Blanking finished	Compilation views	Status notification	Löschen fertig
 Blanking in progress…	Compilation views	Status notification	Löschvorgang läuft…
 Build the DVD image	Compilation views	Status notification	DVD-Image erstellen
@@ -66,8 +61,9 @@ Build the image	Compilation views	Status notification	Image erstellen
 Building in progress…	Compilation views	Status notification	Erstellungsvorgang läuft…
 Burn the disc	Compilation views	Status notification	Disc brennen
 Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Brennen abgebrochen: Mindestens ein WAV hat eine ungültige Kodierung
-Burning aborted: The data doesn't fit on the disc.	Compilation views	Status notification	Brennen abgebrochen: Die Disc ist zu klein.
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Brennen abgebrochen: Die Disc ist zu klein.
 Burning complete. Burn another disc?	Compilation views	Status notification	Brennen fertig. Eine weitere Disc brennen?
+Burning finished. Burn another disc?	Compilation views	Status notification	Brennen fertig. Eine weitere Disc brennen?
 Burning in progress…	Compilation views	Status notification	Brennvorgang läuft…
 Choose the DVD folder to burn	Compilation views	Status notification	Zu brennenden DVD-Ordner wählen
 Choose the folder to burn	Compilation views	Status notification	Zu brennenden Ordner wählen
@@ -79,6 +75,11 @@ Insert the disc and create an image	Compilation views	Status notification	Disc e
 Reading in disc…	Compilation views	Status notification	Einlesen der Disc…
 Ready	Compilation views	Status notification	Bereit
 Unable to create a DVD image	Compilation views	Status notification	Es konnte kein DVD-Image erstellt werden
+Audio CD	Compilation views	Tab label	Audio-CD
+Blank RW-disc	Compilation views	Tab label	RW-Disc löschen
+Clone disc	Compilation views	Tab label	Disc klonen
+Image file	Compilation views	Tab label	Image-Datei
+Data disc	Compilation views	Tab lable	Daten-Disc
 Play back	Context menu		Wiedergabe
 Remove	Context menu		Entfernen
 OK	Helpers		OK
@@ -91,7 +92,6 @@ BurnItNow is currently busy.\n\n	Main window		BurnItNow ist gerade beschäftigt.
 Cache	Main window		Cache
 Cancel	Main window		Abbrechen
 Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Der Cache-Ordner konnte nicht zu '%folder%' geändert werden.\n\nVielleicht ist der Speicherort schreibgeschützt?
-Choose cache folder	Main window		Cache-Ordner wählen
 Clear cache now	Main window		Cache jetzt leeren
 Clear cache on quit	Main window		Cache beim Beenden leeren
 Delete	Main window		Löschen
@@ -111,6 +111,7 @@ There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nD
 Usage instructions	Main window		Bedienungsanleitung
 Max	Main window	Abbreviation for maximal burn speed	Max
 Min	Main window	Abbreviation for minimal burn speed	Min
+Choose cache folder	Main window	File panel title	Cache-Ordner wählen
 16x	Main window	Multiplier for burn speed	16x
 32x	Main window	Multiplier for burn speed	32x
 4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (empfohlen bei Audio-CDs)

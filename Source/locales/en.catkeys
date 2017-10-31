@@ -1,56 +1,17 @@
-1	English	application/x-vnd.haikuarchives-BurnItNow	2136692612
+1	English	application/x-vnd.haikuarchives-BurnItNow	3727454632
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
 Thank you	Application		Thank you
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.
-Add WAV files	Compilation views		Add WAV files
-Add…	Compilation views		Add…
-Audio CD	Compilation views		Audio CD
 Audio/Video DVD	Compilation views		Audio/Video DVD
-Blank disc	Compilation views		Blank disc
-Blank RW-disc	Compilation views		Blank RW-disc
-Blanking disc	Compilation views		Blanking disc
-Blanking finished!	Compilation views		Blanking finished!
 Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
-Build image	Compilation views		Build image
-Building clone image	Compilation views		Building clone image
-Building data image	Compilation views		Building data image
-Building DVD image	Compilation views		Building DVD image
-Building finished!	Compilation views		Building finished!
-Burn disc	Compilation views		Burn disc
-Burning aborted	Compilation views		Burning aborted
-Burning Audio CD	Compilation views		Burning Audio CD
-Burning Audio CD…	Compilation views		Burning Audio CD…
-Burning cloned disc	Compilation views		Burning cloned disc
-Burning data disc	Compilation views		Burning data disc
-Burning DVD	Compilation views		Burning DVD
-Burning finished!	Compilation views		Burning finished!
-Burning image	Compilation views		Burning image
-BurnItNow: Choose image	Compilation views		BurnItNow: Choose image
-calculating…	Compilation views		calculating…
-Choose data folder	Compilation views		Choose data folder
-Choose DVD folder	Compilation views		Choose DVD folder
-Choose folder	Compilation views		Choose folder
-Choose image	Compilation views		Choose image
-Clone disc	Compilation views		Clone disc
-Create image	Compilation views		Create image
-Data disc	Compilation views		Data disc
 Disc label:	Compilation views		Disc label:
 Drop tracks here (only WAV files)	Compilation views		Drop tracks here (only WAV files)
-First build an image to burn.	Compilation views		First build an image to burn.
-First choose an image to burn.	Compilation views		First choose an image to burn.
 Folder: <none>	Compilation views		Folder: <none>
-Image file	Compilation views		Image file
 Image: <none>	Compilation views		Image: <none>
 OK	Compilation views		OK
-Preparing the build…	Compilation views		Preparing the build…
-Reading in disc…	Compilation views		Reading in disc…
-Remove	Compilation views		Remove
-Some WAV file has the wrong encoding.	Compilation views		Some WAV file has the wrong encoding.
-The data doesn't fit on the disc.	Compilation views		The data doesn't fit on the disc.
-This may take a while...	Compilation views		This may take a while...
-This may take over 30 minutes...	Compilation views		This may take over 30 minutes...
-Unable to create DVD image	Compilation views		Unable to create DVD image
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	The image file '%filename%' wasn't found. Was it perhaps moved or renamed?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?
 Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
 All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
 Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
@@ -58,7 +19,41 @@ Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail o
 Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
 Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
 Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
+Add…	Compilation views	Button label	Add…
+Blank disc	Compilation views	Button label	Blank disc
+Build image	Compilation views	Button label	Build image
+Burn disc	Compilation views	Button label	Burn disc
+Choose DVD folder	Compilation views	Button label	Choose DVD folder
+Choose folder	Compilation views	Button label	Choose folder
+Choose image	Compilation views	Button label	Choose image
+Create image	Compilation views	Button label	Create image
+Remove	Compilation views	Button label	Remove
+Add WAV files	Compilation views	File panel title	Add WAV files
+Choose data folder	Compilation views	File panel title	Choose data folder
+Choose DVD folder	Compilation views	File panel title	Choose DVD folder
+calculating…	Compilation views	In size view, as short as possible!	calculating…
 Type:	Compilation views	Label for the blanking types menu	Type:
+Burning DVD	Compilation views	Notificaation title	Burning DVD
+Blanking finished!	Compilation views	Notification content	Blanking finished!
+Building finished!	Compilation views	Notification content	Building finished!
+Burning Audio CD…	Compilation views	Notification content	Burning Audio CD…
+Burning finished!	Compilation views	Notification content	Burning finished!
+Preparing the build…	Compilation views	Notification content	Preparing the build…
+Reading in disc…	Compilation views	Notification content	Reading in disc…
+Some WAV file has the wrong encoding	Compilation views	Notification content	Some WAV file has the wrong encoding
+The data doesn't fit on the disc.	Compilation views	Notification content	The data doesn't fit on the disc.
+This may take a while...	Compilation views	Notification content	This may take a while...
+This may take over 30 minutes...	Compilation views	Notification content	This may take over 30 minutes...
+Unable to create DVD image	Compilation views	Notification content	Unable to create DVD image
+Blanking disc	Compilation views	Notification title	Blanking disc
+Building clone image	Compilation views	Notification title	Building clone image
+Building data image	Compilation views	Notification title	Building data image
+Building DVD image	Compilation views	Notification title	Building DVD image
+Burning aborted	Compilation views	Notification title	Burning aborted
+Burning Audio CD	Compilation views	Notification title	Burning Audio CD
+Burning cloned disc	Compilation views	Notification title	Burning cloned disc
+Burning data disc	Compilation views	Notification title	Burning data disc
+Burning image	Compilation views	Notification title	Burning image
 Blanking finished	Compilation views	Status notification	Blanking finished
 Blanking in progress…	Compilation views	Status notification	Blanking in progress…
 Build the DVD image	Compilation views	Status notification	Build the DVD image
@@ -66,8 +61,9 @@ Build the image	Compilation views	Status notification	Build the image
 Building in progress…	Compilation views	Status notification	Building in progress…
 Burn the disc	Compilation views	Status notification	Burn the disc
 Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Burning aborted: Some WAV file has the wrong encoding
-Burning aborted: The data doesn't fit on the disc.	Compilation views	Status notification	Burning aborted: The data doesn't fit on the disc.
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Burning aborted: The data doesn't fit on the disc
 Burning complete. Burn another disc?	Compilation views	Status notification	Burning complete. Burn another disc?
+Burning finished. Burn another disc?	Compilation views	Status notification	Burning finished. Burn another disc?
 Burning in progress…	Compilation views	Status notification	Burning in progress…
 Choose the DVD folder to burn	Compilation views	Status notification	Choose the DVD folder to burn
 Choose the folder to burn	Compilation views	Status notification	Choose the folder to burn
@@ -79,6 +75,11 @@ Insert the disc and create an image	Compilation views	Status notification	Insert
 Reading in disc…	Compilation views	Status notification	Reading in disc…
 Ready	Compilation views	Status notification	Ready
 Unable to create a DVD image	Compilation views	Status notification	Unable to create a DVD image
+Audio CD	Compilation views	Tab label	Audio CD
+Blank RW-disc	Compilation views	Tab label	Blank RW-disc
+Clone disc	Compilation views	Tab label	Clone disc
+Image file	Compilation views	Tab label	Image file
+Data disc	Compilation views	Tab lable	Data disc
 Play back	Context menu		Play back
 Remove	Context menu		Remove
 OK	Helpers		OK
@@ -91,7 +92,6 @@ BurnItNow is currently busy.\n\n	Main window		BurnItNow is currently busy.\n\n
 Cache	Main window		Cache
 Cancel	Main window		Cancel
 Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?
-Choose cache folder	Main window		Choose cache folder
 Clear cache now	Main window		Clear cache now
 Clear cache on quit	Main window		Clear cache on quit
 Delete	Main window		Delete
@@ -111,6 +111,7 @@ There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nD
 Usage instructions	Main window		Usage instructions
 Max	Main window	Abbreviation for maximal burn speed	Max
 Min	Main window	Abbreviation for minimal burn speed	Min
+Choose cache folder	Main window	File panel title	Choose cache folder
 16x	Main window	Multiplier for burn speed	16x
 32x	Main window	Multiplier for burn speed	32x
 4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (best for audio CDs)
