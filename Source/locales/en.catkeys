@@ -1,4 +1,4 @@
-1	English	application/x-vnd.haikuarchives-BurnItNow	2895943743
+1	English	application/x-vnd.haikuarchives-BurnItNow	3966062356
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
 Thank you	Application		Thank you
@@ -10,6 +10,7 @@ Drop tracks here (only WAV files)	Compilation views		Drop tracks here (only WAV 
 Folder: <none>	Compilation views		Folder: <none>
 Image: <none>	Compilation views		Image: <none>
 OK	Compilation views		OK
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?
 The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	The image file '%filename%' wasn't found. Was it perhaps moved or renamed?
 There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?
 Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track

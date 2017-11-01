@@ -1,4 +1,4 @@
-1	German	application/x-vnd.haikuarchives-BurnItNow	2895943743
+1	German	application/x-vnd.haikuarchives-BurnItNow	3966062356
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Der Cache-Ordner '%folder%' ist ungültig.\nEs wird wieder der auf den Standard '/system/cache' zurückgesetzt.\n\nVielleicht war der Ordner auf einer nicht oder schreibgeschützt eingehängten Partition?
 Thank you	Application		Danke
@@ -10,6 +10,7 @@ Drop tracks here (only WAV files)	Compilation views		Tracks hier fallen lassen (
 Folder: <none>	Compilation views		Ordner: <keiner>
 Image: <none>	Compilation views		Image: <keines>
 OK	Compilation views		OK
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Der ausgewählte Ordner '%foldername%' ist verschwunden. Wurde er vielleicht verschoben oder umbenannt?
 The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Die Image-Datei '%filename%' wurde nicht gefunden. Wurde sie vielleicht verschoben oder umbenannt?
 There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Im Cache-Ordner befindet sich keine Image-Datei '%filename%'. Wurde sie vielleicht verschoben oder umbenannt?
 Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
