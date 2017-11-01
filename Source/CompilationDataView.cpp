@@ -189,6 +189,23 @@ CompilationDataView::_Build()
 	if (fDirPath->InitCheck() != B_OK)
 		return;
 
+	BFile testFile;
+	entry_ref testRef;
+	get_ref_for_path(fDirPath->Path(), &testRef);
+
+	testFile.SetTo(&testRef, B_READ_ONLY);
+	status_t result = testFile.InitCheck();
+
+	if (result != B_OK) {
+		BString text(B_TRANSLATE_COMMENT(
+			"The chosen folder '%foldername%' seems to have disappeared. "
+			"Was it perhaps moved or renamed?", "Alert text"));
+		text.ReplaceFirst("%foldername%", fDirPath->Path());
+		(new BAlert("FolderNotFound", text,
+			B_TRANSLATE("OK")))->Go();
+		return;
+	}
+
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
 		settings->GetCacheFolder(*fImagePath);
@@ -308,7 +325,7 @@ CompilationDataView::_Burn()
 
 	testFile.SetTo(&testRef, B_READ_ONLY);
 	status_t result = testFile.InitCheck();
-	
+
 	if (result != B_OK) {
 		BString text(B_TRANSLATE_COMMENT(
 			"There isn't an image '%filename%' in the cache folder. "
