@@ -9,6 +9,7 @@
 #include <ControlLook.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
+#include <Notification.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
@@ -36,7 +37,8 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
 	fImageSize(0),
-	fNotification(B_PROGRESS_NOTIFICATION),
+	fNoteID(""),
+	fID(0),
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
@@ -188,21 +190,28 @@ CompilationCloneView::_Build()
 
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
+		fAction = BUILDING;
+		fBuildButton->SetEnabled(false);
+
 		fOutputView->SetText(NULL);
 		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 			"Reading in disc" B_UTF8_ELLIPSIS, "Status notification"));
-		fBuildButton->SetEnabled(false);
-	
-		fNotification.SetGroup("BurnItNow");
-		fNotification.SetMessageID("BurnItNow_Clone");
-		fNotification.SetTitle(B_TRANSLATE_COMMENT("Building clone image",
-			"Notification title"));
-		fNotification.SetContent(B_TRANSLATE_COMMENT(
-			"Reading in disc" B_UTF8_ELLIPSIS, "Notification content"));
-		fNotification.SetProgress(0);
-		fNotification.Send();
 
-		fAction = BUILDING;
+		BNotification buildProgress(B_PROGRESS_NOTIFICATION);
+		buildProgress.SetGroup("BurnItNow");
+		buildProgress.SetTitle(B_TRANSLATE_COMMENT("Building clone image",
+			"Notification title"));
+		buildProgress.SetContent(B_TRANSLATE_COMMENT(
+			"Reading in disc" B_UTF8_ELLIPSIS, "Notification content"));
+		buildProgress.SetProgress(0);
+
+		char id[5];
+		snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+		fNoteID = "BurnItNow_Clone-";
+		fNoteID.Append(id);
+
+		buildProgress.SetMessageID(fNoteID);
+		buildProgress.Send();
 
 		BString file = "f=";
 		file.Append(path.Path());
@@ -236,7 +245,8 @@ CompilationCloneView::_BuildOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT) {
-				_UpdateProgress();
+				_UpdateProgress(B_TRANSLATE_COMMENT("Building clone image",
+					"Notification title"));
 				_UpdateSizeBar();
 			}
 			fOutputView->SetText(text);
@@ -249,11 +259,14 @@ CompilationCloneView::_BuildOutput(BMessage* message)
 			"Insert a blank disc and burn it",
 			"Status notification"));
 
-		fNotification.SetMessageID("BurnItNow_Clone");
-		fNotification.SetProgress(100);
-		fNotification.SetContent(B_TRANSLATE_COMMENT("Building finished!",
+		BNotification buildSuccess(B_INFORMATION_NOTIFICATION);
+		buildSuccess.SetGroup("BurnItNow");
+		buildSuccess.SetTitle(B_TRANSLATE_COMMENT("Building clone image",
+			"Notification title"));
+		buildSuccess.SetContent(B_TRANSLATE_COMMENT("Building finished!",
 			"Notification content"));
-		fNotification.Send();
+		buildSuccess.SetMessageID(fNoteID);
+		buildSuccess.Send();
 
 		BString device("dev=");
 		device.Append(fWindowParent->GetSelectedDevice().number.String());
@@ -297,19 +310,26 @@ CompilationCloneView::_Burn()
 	}
 
 	fAction = BURNING;
-
-	fOutputView->SetText(NULL);
-	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-	"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
 	fBuildButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Clone");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning cloned disc",
+	fOutputView->SetText(NULL);
+	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+		"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
+
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(B_TRANSLATE_COMMENT("Burning clone disc",
 		"Notification title"));
-	fNotification.SetProgress(0);
-	fNotification.Send(60 * 1000000LL);
+	burnProgress.SetProgress(0);
+
+	char id[5];
+	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+	fNoteID = "BurnItNow_Audio-";
+	fNoteID.Append(id);
+
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send(60 * 1000000LL);
 
 	BString device("dev=");
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
@@ -356,7 +376,8 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
-				_UpdateProgress();
+				_UpdateProgress(B_TRANSLATE_COMMENT("Burning clone disc",
+				"Notification title"));
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
@@ -367,20 +388,29 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+
+			BNotification burnAbort(B_IMPORTANT_NOTIFICATION);
+			burnAbort.SetGroup("BurnItNow");
+			burnAbort.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
 				"Notification title"));
-			fNotification.SetContent(B_TRANSLATE_COMMENT(
+			burnAbort.SetContent(B_TRANSLATE_COMMENT(
 				"The data doesn't fit on the disc.", "Notification content"));
+			burnAbort.SetMessageID(fNoteID);
+			burnAbort.Send();
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
 				"Status notification"));
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+
+			BNotification burnSuccess(B_INFORMATION_NOTIFICATION);
+			burnSuccess.SetGroup("BurnItNow");
+			burnSuccess.SetTitle(B_TRANSLATE_COMMENT("Burning clone disc",
+				"Notification title"));
+			burnSuccess.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
 				"Notification content"));
+			burnSuccess.SetMessageID(fNoteID);
+			burnSuccess.Send();
 		}
-		fNotification.SetMessageID("BurnItNow_Clone");
-		fNotification.Send();
 
 		fBuildButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
@@ -436,12 +466,15 @@ CompilationCloneView::_GetImageSizeOutput(BMessage* message)
 
 
 void
-CompilationCloneView::_UpdateProgress()
+CompilationCloneView::_UpdateProgress(const char* title)
 {
-	fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Clone");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(title);
+	burnProgress.SetContent(fETAtime);
+	burnProgress.SetProgress(fProgress);
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send();
 }
 
 

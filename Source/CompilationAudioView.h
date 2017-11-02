@@ -8,7 +8,6 @@
 #include <Button.h>
 #include <FilePanel.h>
 #include <ListView.h>
-#include <Notification.h>
 #include <Path.h>
 #include <SeparatorView.h>
 #include <SplitView.h>
@@ -73,7 +72,8 @@ private:
 	AudioListView* 	fTrackList;
 	SizeView*		fSizeView;
 
-	BNotification	fNotification;
+	BString			fNoteID;
+	int32			fID;
 	float			fProgress;
 	BString			fETAtime;
 	OutputParser	fParser;

@@ -8,7 +8,6 @@
 #include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
-#include <Notification.h>
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
@@ -38,7 +37,7 @@ private:
 	void 			_BurnOutput(BMessage* message);
 	void 			_GetImageSize();
 	void 			_GetImageSizeOutput(BMessage* message);
-	void			_UpdateProgress();
+	void			_UpdateProgress(const char* title);
 	void			_UpdateSizeBar();
 
 	CommandThread*	fBurnerThread;
@@ -53,7 +52,8 @@ private:
 	int64			fImageSize;
 	SizeView*		fSizeView;
 
-	BNotification	fNotification;
+	BString			fNoteID;
+	int32			fID;
 	float			fProgress;
 	BString			fETAtime;
 	OutputParser	fParser;

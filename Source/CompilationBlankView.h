@@ -8,7 +8,6 @@
 #include <Button.h>
 #include <FilePanel.h>
 #include <Menu.h>
-#include <Notification.h>
 #include <SeparatorView.h>
 #include <TextView.h>
 #include <View.h>
@@ -42,7 +41,8 @@ private:
 	BMenu*			fBlankModeMenu;
 	BButton*		fBlankButton;
 
-	BNotification	fNotification;
+	BString			fNoteID;
+	int32			fID;
 	int32			fAction;
 };
 

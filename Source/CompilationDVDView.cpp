@@ -10,6 +10,7 @@
 #include <File.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
+#include <Notification.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
@@ -35,7 +36,8 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 	fDirPath(new BPath()),
 	fImagePath(new BPath()),
 	fFolderSize(0),
-	fNotification(B_PROGRESS_NOTIFICATION),
+	fNoteID(""),
+	fID(0),
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
@@ -214,13 +216,21 @@ CompilationDVDView::_Build()
 	if (fImagePath->InitCheck() != B_OK)
 		return;
 
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_DVD");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Building DVD image",
+	BNotification buildProgress(B_PROGRESS_NOTIFICATION);
+	buildProgress.SetGroup("BurnItNow");
+	buildProgress.SetTitle(B_TRANSLATE_COMMENT("Building DVD image",
 		"Notification title"));
-	fNotification.SetContent(B_TRANSLATE_COMMENT(
+	buildProgress.SetContent(B_TRANSLATE_COMMENT(
 		"Preparing the build" B_UTF8_ELLIPSIS, "Notification content"));
-	fNotification.SetProgress(0);
+	buildProgress.SetProgress(0);
+
+	char id[5];
+	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+	fNoteID = "BurnItNow_Data-";
+	fNoteID.Append(id);
+
+	buildProgress.SetMessageID(fNoteID);
+	buildProgress.Send();
 
 	fAction = BUILDING;	// flag we're building ISO
 
@@ -231,12 +241,12 @@ CompilationDVDView::_Build()
 		return;
 	}
 
-	 // It may take a while for the building to start...
-	fNotification.Send(60 * 1000000LL);
-
 	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
 		fAction = IDLE;
 		return;
+
+	 // It may take a while for the building to start...
+	buildProgress.Send(60 * 1000000LL);
 
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Building in progress" B_UTF8_ELLIPSIS, "Status notification"));
@@ -281,7 +291,8 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
-				_UpdateProgress();
+				_UpdateProgress(B_TRANSLATE_COMMENT("Building DVD image",
+				"Notification title"));
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
@@ -298,11 +309,14 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 				"Status notification"));
 			fBurnButton->SetEnabled(false);
 
-			fNotification.SetMessageID("BurnItNow_DVD");
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE_COMMENT(
+			BNotification buildAbort(B_IMPORTANT_NOTIFICATION);
+			buildAbort.SetGroup("BurnItNow");
+			buildAbort.SetTitle(B_TRANSLATE_COMMENT("Building aborted",
+				"Notification title"));
+			buildAbort.SetContent(B_TRANSLATE_COMMENT(
 				"Unable to create DVD image", "Notification content"));
-			fNotification.Send();
+			buildAbort.SetMessageID(fNoteID);
+			buildAbort.Send();
 
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burn the disc",
@@ -310,11 +324,14 @@ CompilationDVDView::_BuildOutput(BMessage* message)
 			fBuildButton->SetEnabled(false);
 			fBurnButton->SetEnabled(true);
 
-			fNotification.SetMessageID("BurnItNow_DVD");
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE_COMMENT("Building finished!",
+			BNotification buildSuccess(B_INFORMATION_NOTIFICATION);
+			buildSuccess.SetGroup("BurnItNow");
+			buildSuccess.SetTitle(B_TRANSLATE_COMMENT("Building DVD image",
+				"Notification title"));
+			buildSuccess.SetContent(B_TRANSLATE_COMMENT("Building finished!",
 				"Notification content"));
-			fNotification.Send();
+			buildSuccess.SetMessageID(fNoteID);
+			buildSuccess.Send();
 
 			BEntry entry(fImagePath->Path());
 			if (entry.InitCheck() == B_OK) {
@@ -361,12 +378,19 @@ CompilationDVDView::_Burn()
 	fBuildButton->SetEnabled(false);
 	fBurnButton->SetEnabled(false);
 
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_DVD");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning DVD",
-		"Notificaation title"));
-	fNotification.SetProgress(0);
-	fNotification.Send(60 * 1000000LL);
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(B_TRANSLATE_COMMENT("Burning DVD",
+		"Notification title"));
+	burnProgress.SetProgress(0);
+
+	char id[5];
+	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+	fNoteID = "BurnItNow_DVD-";
+	fNoteID.Append(id);
+
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send(60 * 1000000LL);
 
 	BString device("dev=");
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
@@ -413,7 +437,8 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
-				_UpdateProgress();
+				_UpdateProgress(B_TRANSLATE_COMMENT("Burning DVD",
+				"Notification title"));
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
@@ -424,20 +449,29 @@ CompilationDVDView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+
+			BNotification burnAbort(B_IMPORTANT_NOTIFICATION);
+			burnAbort.SetGroup("BurnItNow");
+			burnAbort.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
 				"Notification title"));
-			fNotification.SetContent(B_TRANSLATE_COMMENT(
+			burnAbort.SetContent(B_TRANSLATE_COMMENT(
 				"The data doesn't fit on the disc.", "Notification content"));
+			burnAbort.SetMessageID(fNoteID);
+			burnAbort.Send();
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
 				"Status notification"));
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+
+			BNotification burnSuccess(B_INFORMATION_NOTIFICATION);
+			burnSuccess.SetGroup("BurnItNow");
+			burnSuccess.SetTitle(B_TRANSLATE_COMMENT("Burning DVD",
+				"Notification title"));
+			burnSuccess.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
 				"Notification content"));
+			burnSuccess.SetMessageID(fNoteID);
+			burnSuccess.Send();
 		}
-		fNotification.SetMessageID("BurnItNow_DVD");
-		fNotification.Send();
 
 		fDVDButton->SetEnabled(true);
 		fBuildButton->SetEnabled(false);
@@ -554,12 +588,15 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 
 
 void
-CompilationDVDView::_UpdateProgress()
+CompilationDVDView::_UpdateProgress(const char* title)
 {
-	fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Data");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(title);
+	burnProgress.SetContent(fETAtime);
+	burnProgress.SetProgress(fProgress);
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send();
 }
 
 

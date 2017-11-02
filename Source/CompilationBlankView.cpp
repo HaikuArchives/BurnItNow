@@ -6,6 +6,7 @@
 #include <Catalog.h>
 #include <ControlLook.h>
 #include <LayoutBuilder.h>
+#include <Notification.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
@@ -25,7 +26,8 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	BView(B_TRANSLATE_COMMENT("Blank RW-disc", "Tab label"), B_WILL_DRAW,
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBlankerThread(NULL),
-	fNotification(B_INFORMATION_NOTIFICATION),
+	fNoteID(""),
+	fID(0),
 	fAction(IDLE)
 {
 	fWindowParent = &parent;
@@ -161,6 +163,7 @@ void
 CompilationBlankView::_Blank()
 {
 	fAction = BLANKING;
+	fBlankButton->SetEnabled(false);
 
 	BString mode = fBlankModeMenu->FindMarked()->Label();
 	mode.ToLower();
@@ -173,20 +176,25 @@ CompilationBlankView::_Blank()
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
-	fBlankButton->SetEnabled(false);
 
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Blank");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Blanking disc",
+	BNotification blankProgress(B_INFORMATION_NOTIFICATION);
+	blankProgress.SetGroup("BurnItNow");
+	blankProgress.SetTitle(B_TRANSLATE_COMMENT("Blanking disc",
 		"Notification title"));
 	if (mode == "All")
-		fNotification.SetContent(B_TRANSLATE_COMMENT(
+		blankProgress.SetContent(B_TRANSLATE_COMMENT(
 		"This may take over 30 minutes...", "Notification content"));
 	else
-		fNotification.SetContent(B_TRANSLATE_COMMENT(
+		blankProgress.SetContent(B_TRANSLATE_COMMENT(
 		"This may take a while...", "Notification content"));
 
-	fNotification.Send();
+	char id[5];
+	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+	fNoteID = "BurnItNow_Blank-";
+	fNoteID.Append(id);
+
+	blankProgress.SetMessageID(fNoteID);
+	blankProgress.Send();
 
 	BString device("dev=");
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
@@ -223,10 +231,15 @@ CompilationBlankView::_BlankOutput(BMessage* message)
 		fInfoView->SetLabel(B_TRANSLATE_COMMENT("Blanking finished",
 			"Status notification"));
 
-		fNotification.SetMessageID("BurnItNow_Blank");
-		fNotification.SetContent(B_TRANSLATE_COMMENT("Blanking finished!",
+		BNotification blankFinish(B_INFORMATION_NOTIFICATION);
+		blankFinish.SetGroup("BurnItNow");
+		blankFinish.SetTitle(B_TRANSLATE_COMMENT("Blanking disc",
+			"Notification title"));
+		blankFinish.SetContent(B_TRANSLATE_COMMENT("Blanking finished!",
 			"Notification content"));
-		fNotification.Send();
+
+		blankFinish.SetMessageID(fNoteID);
+		blankFinish.Send();
 
 		fBlankButton->SetEnabled(true);
 

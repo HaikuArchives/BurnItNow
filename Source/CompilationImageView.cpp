@@ -10,6 +10,7 @@
 #include <LayoutBuilder.h>
 #include <Node.h>
 #include <NodeInfo.h>
+#include <Notification.h>
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
@@ -32,7 +33,8 @@ CompilationImageView::CompilationImageView(BurnWindow& parent)
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
 	fImagePath(new BPath()),
-	fNotification(B_PROGRESS_NOTIFICATION),
+	fNoteID(""),
+	fID(0),
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
@@ -198,19 +200,26 @@ CompilationImageView::_Burn()
 		delete fBurnerThread;
 
 	fAction = BURNING;	// flag we're burning
+	fChooseButton->SetEnabled(false);
+	fBurnButton->SetEnabled(false);
 
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 		"Burning in progress" B_UTF8_ELLIPSIS, "Status notification"));
-	fChooseButton->SetEnabled(false);
-	fBurnButton->SetEnabled(false);
 
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Image");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning image",
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(B_TRANSLATE_COMMENT("Burning image",
 		"Notification title"));
-	fNotification.SetProgress(0);
-	fNotification.Send(60 * 1000000LL);
+	burnProgress.SetProgress(0);
+
+	char id[5];
+	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+	fNoteID = "BurnItNow_Image-";
+	fNoteID.Append(id);
+
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send(60 * 1000000LL);
 
 	BString device("dev=");
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
@@ -258,7 +267,8 @@ CompilationImageView::_BurnOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
-				_UpdateProgress();
+				_UpdateProgress(B_TRANSLATE_COMMENT("Burning image",
+				"Notification title"));
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
@@ -269,20 +279,29 @@ CompilationImageView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+
+			BNotification burnAbort(B_IMPORTANT_NOTIFICATION);
+			burnAbort.SetGroup("BurnItNow");
+			burnAbort.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
 				"Notification title"));
-			fNotification.SetContent(B_TRANSLATE_COMMENT(
+			burnAbort.SetContent(B_TRANSLATE_COMMENT(
 				"The data doesn't fit on the disc.", "Notification content"));
+			burnAbort.SetMessageID(fNoteID);
+			burnAbort.Send();
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning complete. Burn another disc?",
 				"Status notification"));
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+
+			BNotification burnSuccess(B_INFORMATION_NOTIFICATION);
+			burnSuccess.SetGroup("BurnItNow");
+			burnSuccess.SetTitle(B_TRANSLATE_COMMENT("Burning image",
+				"Notification title"));
+			burnSuccess.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
 				"Notification content"));
+			burnSuccess.SetMessageID(fNoteID);
+			burnSuccess.Send();
 		}
-		fNotification.SetMessageID("BurnItNow_Image");
-		fNotification.Send();
 
 		fChooseButton->SetEnabled(true);
 		fBurnButton->SetEnabled(true);
@@ -368,7 +387,7 @@ CompilationImageView::_OpenOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
-				_UpdateProgress();
+				_UpdateProgress("");
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
 		}
@@ -388,12 +407,15 @@ CompilationImageView::_OpenOutput(BMessage* message)
 
 
 void
-CompilationImageView::_UpdateProgress()
+CompilationImageView::_UpdateProgress(const char* title)
 {
-	fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Image");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(title);
+	burnProgress.SetContent(fETAtime);
+	burnProgress.SetProgress(fProgress);
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send();
 
 	_UpdateSizeBar();
 }

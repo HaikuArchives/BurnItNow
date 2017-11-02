@@ -12,6 +12,7 @@
 #include <LayoutBuilder.h>
 #include <Node.h>
 #include <NodeInfo.h>
+#include <Notification.h>
 #include <ScrollView.h>
 #include <String.h>
 #include <StringList.h>
@@ -33,7 +34,8 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		new BGroupLayout(B_VERTICAL, kControlPadding)),
 	fBurnerThread(NULL),
 	fOpenPanel(NULL),
-	fNotification(B_PROGRESS_NOTIFICATION),
+	fNoteID(""),
+	fID(0),
 	fProgress(0),
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
@@ -415,29 +417,30 @@ CompilationAudioView::_Burn()
 		return;
 
 	fAction = BURNING;	// flag we're burning
+	fBurnButton->SetEnabled(false);
 
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Burning in progress"
 		B_UTF8_ELLIPSIS, "Status notification"));
-	fBurnButton->SetEnabled(false);
 
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning Audio CD",
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(B_TRANSLATE_COMMENT("Burning Audio CD",
 		"Notification title"));
+	burnProgress.SetProgress(0);
+
+	char id[5];
+	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+	fNoteID = "BurnItNow_Audio-";
+	fNoteID.Append(id);
+
+	burnProgress.SetMessageID(fNoteID);
+	 // It may take a while for the burning to start...
+	burnProgress.Send(60 * 1000000LL);
 
 	BString device("dev=");
 	device.Append(fWindowParent->GetSelectedDevice().number.String());
 	sessionConfig config = fWindowParent->GetSessionConfig();
-
-	fNotification.SetGroup("BurnItNow");
-	fNotification.SetMessageID("BurnItNow_Audio");
-	fNotification.SetTitle(B_TRANSLATE_COMMENT("Building data image",
-		"Notification title"));
-	fNotification.SetContent(B_TRANSLATE_COMMENT(
-		"Burning Audio CD" B_UTF8_ELLIPSIS, "Notification content"));
-	fNotification.SetProgress(0);
-	 // It may take a while for the burning to start...
-	fNotification.Send(60 * 1000000LL);
 
 	fBurnerThread = new CommandThread(NULL,
 		new BInvoker(new BMessage(kBurnOutput), this));
@@ -513,28 +516,42 @@ CompilationAudioView::_BurnOutput(BMessage* message)
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: The data doesn't fit on the disc",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+
+			BNotification burnAbort(B_IMPORTANT_NOTIFICATION);
+			burnAbort.SetGroup("BurnItNow");
+			burnAbort.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
 				"Notification title"));
-			fNotification.SetContent(B_TRANSLATE_COMMENT(
+			burnAbort.SetContent(B_TRANSLATE_COMMENT(
 				"The data doesn't fit on the disc.", "Notification content"));
+			burnAbort.SetMessageID(fNoteID);
+			burnAbort.Send();
 		} else if (fAbort == INVALIDWAV) {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning aborted: Some WAV file has the wrong encoding",
 				"Status notification"));
-			fNotification.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
+
+			BNotification burnAbort(B_IMPORTANT_NOTIFICATION);
+			burnAbort.SetGroup("BurnItNow");
+			burnAbort.SetTitle(B_TRANSLATE_COMMENT("Burning aborted",
 				"Notification title"));
-			fNotification.SetContent(B_TRANSLATE_COMMENT(
+			burnAbort.SetContent(B_TRANSLATE_COMMENT(
 				"Some WAV file has the wrong encoding", "Notification content"));
+			burnAbort.SetMessageID(fNoteID);
+			burnAbort.Send();
 		} else {
 			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
 				"Burning finished. Burn another disc?",
 				"Status notification"));
-			fNotification.SetProgress(100);
-			fNotification.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
+
+			BNotification burnSuccess(B_INFORMATION_NOTIFICATION);
+			burnSuccess.SetGroup("BurnItNow");
+			burnSuccess.SetTitle(B_TRANSLATE_COMMENT("Burning Audio CD",
+				"Notification title"));
+			burnSuccess.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
 				"Notification content"));
+			burnSuccess.SetMessageID(fNoteID);
+			burnSuccess.Send();
 		}
-		fNotification.SetMessageID("BurnItNow_Audio");
-		fNotification.Send();
 
 		fBurnButton->SetEnabled(true);
 
@@ -573,10 +590,14 @@ CompilationAudioView::_UpdateButtons()
 void
 CompilationAudioView::_UpdateProgress()
 {
-	fNotification.SetContent(fETAtime);
-	fNotification.SetMessageID("BurnItNow_Audio");
-	fNotification.SetProgress(fProgress);
-	fNotification.Send();
+	BNotification burnProgress(B_PROGRESS_NOTIFICATION);
+	burnProgress.SetGroup("BurnItNow");
+	burnProgress.SetTitle(B_TRANSLATE_COMMENT("Burning Audio CD",
+		"Notification title"));
+	burnProgress.SetContent(fETAtime);
+	burnProgress.SetProgress(fProgress);
+	burnProgress.SetMessageID(fNoteID);
+	burnProgress.Send();
 }
 
 
