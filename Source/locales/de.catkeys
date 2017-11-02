@@ -1,4 +1,4 @@
-1	German	application/x-vnd.haikuarchives-BurnItNow	3966062356
+1	German	application/x-vnd.haikuarchives-BurnItNow	2248579679
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Der Cache-Ordner '%folder%' ist ungültig.\nEs wird wieder der auf den Standard '/system/cache' zurückgesetzt.\n\nVielleicht war der Ordner auf einer nicht oder schreibgeschützt eingehängten Partition?
 Thank you	Application		Danke
@@ -34,10 +34,8 @@ Choose data folder	Compilation views	File panel title	Datenordner wählen
 Choose DVD folder	Compilation views	File panel title	DVD-Ordner wählen
 calculating…	Compilation views	In size view, as short as possible!	Berechnung…
 Type:	Compilation views	Label for the blanking types menu	Art:
-Burning DVD	Compilation views	Notificaation title	DVD wird gebrannt
 Blanking finished!	Compilation views	Notification content	Löschen fertig!
 Building finished!	Compilation views	Notification content	Image fertig erstellt!
-Burning Audio CD…	Compilation views	Notification content	Audio-CD wird gebrannt…
 Burning finished!	Compilation views	Notification content	Brennen fertig!
 Preparing the build…	Compilation views	Notification content	Image-Erstellung wird vorbereitet…
 Reading in disc…	Compilation views	Notification content	Einlesen der Disc…
@@ -47,13 +45,15 @@ This may take a while...	Compilation views	Notification content	Das kann eine We
 This may take over 30 minutes...	Compilation views	Notification content	Das kann über 30 Minuten dauern...
 Unable to create DVD image	Compilation views	Notification content	DVD-Image konnte nicht erstellt werden
 Blanking disc	Compilation views	Notification title	Disc wird gelöscht
+Building aborted	Compilation views	Notification title	Image-Erstellung abgebrochen
 Building clone image	Compilation views	Notification title	Klon-Image erstellen
 Building data image	Compilation views	Notification title	Daten-Image erstellen
 Building DVD image	Compilation views	Notification title	DVD-Image erstellen
 Burning aborted	Compilation views	Notification title	Brennvorgang abgebrochen
 Burning Audio CD	Compilation views	Notification title	Audio-CD wird gebrannt
-Burning cloned disc	Compilation views	Notification title	Klon-Disc wird gebrannt
+Burning clone disc	Compilation views	Notification title	Disc wird geklont
 Burning data disc	Compilation views	Notification title	Daten-Disc wird gebrannt
+Burning DVD	Compilation views	Notification title	DVD wird gebrannt
 Burning image	Compilation views	Notification title	Image wird gebrannt
 Blanking finished	Compilation views	Status notification	Löschen fertig
 Blanking in progress…	Compilation views	Status notification	Löschvorgang läuft…

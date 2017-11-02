@@ -1,4 +1,4 @@
-1	English	application/x-vnd.haikuarchives-BurnItNow	3966062356
+1	English	application/x-vnd.haikuarchives-BurnItNow	2248579679
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
 Thank you	Application		Thank you
@@ -34,10 +34,8 @@ Choose data folder	Compilation views	File panel title	Choose data folder
 Choose DVD folder	Compilation views	File panel title	Choose DVD folder
 calculating…	Compilation views	In size view, as short as possible!	calculating…
 Type:	Compilation views	Label for the blanking types menu	Type:
-Burning DVD	Compilation views	Notificaation title	Burning DVD
 Blanking finished!	Compilation views	Notification content	Blanking finished!
 Building finished!	Compilation views	Notification content	Building finished!
-Burning Audio CD…	Compilation views	Notification content	Burning Audio CD…
 Burning finished!	Compilation views	Notification content	Burning finished!
 Preparing the build…	Compilation views	Notification content	Preparing the build…
 Reading in disc…	Compilation views	Notification content	Reading in disc…
@@ -47,13 +45,15 @@ This may take a while...	Compilation views	Notification content	This may take a 
 This may take over 30 minutes...	Compilation views	Notification content	This may take over 30 minutes...
 Unable to create DVD image	Compilation views	Notification content	Unable to create DVD image
 Blanking disc	Compilation views	Notification title	Blanking disc
+Building aborted	Compilation views	Notification title	Building aborted
 Building clone image	Compilation views	Notification title	Building clone image
 Building data image	Compilation views	Notification title	Building data image
 Building DVD image	Compilation views	Notification title	Building DVD image
 Burning aborted	Compilation views	Notification title	Burning aborted
 Burning Audio CD	Compilation views	Notification title	Burning Audio CD
-Burning cloned disc	Compilation views	Notification title	Burning cloned disc
+Burning clone disc	Compilation views	Notification title	Burning clone disc
 Burning data disc	Compilation views	Notification title	Burning data disc
+Burning DVD	Compilation views	Notification title	Burning DVD
 Burning image	Compilation views	Notification title	Burning image
 Blanking finished	Compilation views	Status notification	Blanking finished
 Blanking in progress…	Compilation views	Status notification	Blanking in progress…

@@ -1,8 +1,8 @@
-1	Spanish	application/x-vnd.haikuarchives-BurnItNow	3966062356
+1	Spanish	application/x-vnd.haikuarchives-BurnItNow	2248579679
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
-Thank you	Application		Gracias
-BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow es un frontend para  cdrecord, readcd y mkisofs.\n\nPor favor informe los errores que encuentre, o aquella funcionalidad que desee que sea incorporada en futuras versiones. La información de contacto se encuentra en las instrucciones de uso en el menu 'Ayuda'.
+Thank you	Application		Thank you
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.
 Audio/Video DVD	Compilation views		Audio/Video DVD
 Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
 Disc label:	Compilation views		Disc label:
@@ -34,10 +34,8 @@ Choose data folder	Compilation views	File panel title	Choose data folder
 Choose DVD folder	Compilation views	File panel title	Choose DVD folder
 calculating…	Compilation views	In size view, as short as possible!	calculating…
 Type:	Compilation views	Label for the blanking types menu	Type:
-Burning DVD	Compilation views	Notificaation title	Burning DVD
 Blanking finished!	Compilation views	Notification content	Blanking finished!
 Building finished!	Compilation views	Notification content	Building finished!
-Burning Audio CD…	Compilation views	Notification content	Burning Audio CD…
 Burning finished!	Compilation views	Notification content	Burning finished!
 Preparing the build…	Compilation views	Notification content	Preparing the build…
 Reading in disc…	Compilation views	Notification content	Reading in disc…
@@ -47,13 +45,15 @@ This may take a while...	Compilation views	Notification content	This may take a 
 This may take over 30 minutes...	Compilation views	Notification content	This may take over 30 minutes...
 Unable to create DVD image	Compilation views	Notification content	Unable to create DVD image
 Blanking disc	Compilation views	Notification title	Blanking disc
+Building aborted	Compilation views	Notification title	Building aborted
 Building clone image	Compilation views	Notification title	Building clone image
 Building data image	Compilation views	Notification title	Building data image
 Building DVD image	Compilation views	Notification title	Building DVD image
 Burning aborted	Compilation views	Notification title	Burning aborted
 Burning Audio CD	Compilation views	Notification title	Burning Audio CD
-Burning cloned disc	Compilation views	Notification title	Burning cloned disc
+Burning clone disc	Compilation views	Notification title	Burning clone disc
 Burning data disc	Compilation views	Notification title	Burning data disc
+Burning DVD	Compilation views	Notification title	Burning DVD
 Burning image	Compilation views	Notification title	Burning image
 Blanking finished	Compilation views	Status notification	Blanking finished
 Blanking in progress…	Compilation views	Status notification	Blanking in progress…
@@ -85,40 +85,40 @@ Move down	Compilation views	Tool tip	Move down
 Move up	Compilation views	Tool tip	Move up
 Play back	Compilation views	Tool tip	Play back
 Play back	Context menu		Play back
-Remove	Context menu		Quitar
+Remove	Context menu		Remove
 OK	Helpers		OK
 There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.
 \nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?
-About…	Main window		Acerca de…
-App	Main window		Aplicación
-Burn speed:	Main window		Velocidad de grabación:
+About…	Main window		About…
+App	Main window		App
+Burn speed:	Main window		Burn speed:
 BurnItNow is currently busy.\n\n	Main window		BurnItNow is currently busy.\n\n
 Cache	Main window		Cache
 Cancel	Main window		Cancel
 Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?
-Clear cache now	Main window		Limpiar cache ahora
-Clear cache on quit	Main window		Limpiar cache al salir
+Clear cache now	Main window		Clear cache now
+Clear cache on quit	Main window		Clear cache on quit
 Delete	Main window		Delete
-Eject after burning	Main window		Expulsar después de grabar
-Help	Main window		Ayuda
+Eject after burning	Main window		Eject after burning
+Help	Main window		Help
 Keep	Main window		Keep
 OK	Main window		OK
 Open cache folder	Main window		Open cache folder
-Project website	Main window		Sitio web del proyecto
+Project website	Main window		Project website
 Quit anyway	Main window		Quit anyway
 Set cache folder…	Main window		Set cache folder…
-Simulation	Main window		Simulación
+Simulation	Main window		Simulation
 The blanking of a disc is currently in progress.\n	Main window		The blanking of a disc is currently in progress.\n
 The building of an image is currently in progress.\n	Main window		The building of an image is currently in progress.\n
 The burning of a disc is currently in progress.\n	Main window		The burning of a disc is currently in progress.\n
 There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?
-Usage instructions	Main window		Instrucciones de uso
+Usage instructions	Main window		Usage instructions
 Max	Main window	Abbreviation for maximal burn speed	Max
 Min	Main window	Abbreviation for minimal burn speed	Min
 Choose cache folder	Main window	File panel title	Choose cache folder
 16x	Main window	Multiplier for burn speed	16x
 32x	Main window	Multiplier for burn speed	32x
-4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (recomendado para CDs de audio)
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (best for audio CDs)
 8x	Main window	Multiplier for burn speed	8x
 Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
 Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
