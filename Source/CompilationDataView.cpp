@@ -3,6 +3,7 @@
  * Distributed under the terms of the MIT License.
  */
 #include <stdio.h>
+#include <stdio.h>
 
 #include <Alert.h>
 #include <Catalog.h>

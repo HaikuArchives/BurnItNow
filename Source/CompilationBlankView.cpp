@@ -2,6 +2,8 @@
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
  * Distributed under the terms of the MIT License.
  */
+#include <stdio.h>
+
 #include <Alert.h>
 #include <Catalog.h>
 #include <ControlLook.h>
