@@ -160,8 +160,14 @@ bool
 ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 	struct stat_beos* stat, const char* filetype)
 {
-	if (S_ISDIR(stat->st_mode) || (S_ISLNK(stat->st_mode)))
+	if (S_ISDIR(stat->st_mode))
 		return true;
+
+	if (S_ISLNK(stat->st_mode)) {
+		// Traverse symlinks
+		BEntry entry(ref, true);
+		return entry.IsDirectory();
+	}
 
 	BStringList imageMimes;
 	imageMimes.Add("application/x-cd-image");
