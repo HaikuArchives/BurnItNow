@@ -24,7 +24,6 @@
 
 AppSettings::AppSettings()
 	:
-	fFolder(""),
 	fEject(true),
 	fCache(false),
 	fSpeed(5),
@@ -39,18 +38,17 @@ AppSettings::AppSettings()
 	BPath path;
 	BMessage msg;
 
+	BPath cache;
+	find_directory(B_SYSTEM_CACHE_DIRECTORY, &cache);
+	fFolder = cache.Path();
+
 	if (find_directory(B_USER_SETTINGS_DIRECTORY, &path) == B_OK) {
 		status_t ret = path.Append(kSettingsFile);
 		if (ret == B_OK) {
 			BFile file(path.Path(), B_READ_ONLY);
 
 			if ((file.InitCheck() == B_OK) && (msg.Unflatten(&file) == B_OK)) {
-				if (msg.FindString("folder", &fFolder) != B_OK) {
-					BPath cache;
-					find_directory(B_SYSTEM_CACHE_DIRECTORY, &cache);
-					fFolder = cache.Path();
-					dirtySettings = true;
-				} else
+				if (msg.FindString("folder", &fFolder) == B_OK)
 					_EnsureCacheIsValid();
 				if (msg.FindBool("eject", &fEject) != B_OK) {
 					fEject = true;
