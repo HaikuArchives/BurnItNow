@@ -170,8 +170,20 @@ ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 	BMimeType refType;
 	BMimeType::GuessMimeType(ref, &refType);
 
-	if (imageMimes.HasString(refType.Type()))
+	BEntry entry(ref, true);	// also accept symlinks
+	BPath* path = new BPath(&entry);
+	BString filename(path->Leaf());
+
+	// Check for image MIME type or file extension
+	if (imageMimes.HasString(refType.Type())
+		|| filename.IFindLast(".iso", filename.CountChars())
+			== (filename.CountChars() - 4)
+		|| filename.IFindLast(".img", filename.CountChars())
+			== (filename.CountChars() - 4)
+		|| filename.IFindLast(".image", filename.CountChars())
+			== (filename.CountChars() - 6)) {
 		return true;
+	}
 
 	return false;
 }
@@ -320,7 +332,7 @@ CompilationImageView::_ChooseImage()
 	if (fOpenPanel == NULL) {
 		fOpenPanel = new BFilePanel(B_OPEN_PANEL, new BMessenger(this),
 			NULL, B_FILE_NODE, false, NULL, new ImageRefFilter(), true);
-		fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT("Choose data folder",
+		fOpenPanel->Window()->SetTitle(B_TRANSLATE_COMMENT("Choose image",
 			"File panel title"));	}
 	fOpenPanel->Show();
 }
@@ -351,7 +363,9 @@ CompilationImageView::_OpenImage(BMessage* message)
 		|| filename.IFindLast(".iso", filename.CountChars())
 			== (filename.CountChars() - 4)
 		|| filename.IFindLast(".img", filename.CountChars())
-			== (filename.CountChars() - 4)) {
+			== (filename.CountChars() - 4)
+		|| filename.IFindLast(".image", filename.CountChars())
+			== (filename.CountChars() - 6)) {
 
 		fImagePath->SetTo(&entry);
 		fPathView->SetText(fImagePath->Path());
