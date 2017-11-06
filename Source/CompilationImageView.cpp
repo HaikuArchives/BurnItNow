@@ -134,7 +134,6 @@ CompilationImageView::MessageReceived(BMessage* message)
 			_BurnOutput(message);
 			break;
 		case B_REFS_RECEIVED:
-			fOutputView->SetText(NULL);
 			_OpenImage(message);
 			break;
 		default:
@@ -176,20 +175,16 @@ ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 	BMimeType refType;
 	BMimeType::GuessMimeType(ref, &refType);
 
-	BEntry entry(ref, true);	// also accept symlinks
-	BPath* path = new BPath(&entry);
-	BString filename(path->Leaf());
+	BString extension = GetExtension(ref);
+	BStringList extStrings;
+	extStrings.Add("image");
+	extStrings.Add("img");
+	extStrings.Add("iso");
 
 	// Check for image MIME type or file extension
 	if (imageMimes.HasString(refType.Type())
-		|| filename.IFindLast(".iso", filename.CountChars())
-			== (filename.CountChars() - 4)
-		|| filename.IFindLast(".img", filename.CountChars())
-			== (filename.CountChars() - 4)
-		|| filename.IFindLast(".image", filename.CountChars())
-			== (filename.CountChars() - 6)) {
+			|| extStrings.HasString(extension))
 		return true;
-	}
 
 	return false;
 }
@@ -351,28 +346,22 @@ CompilationImageView::_OpenImage(BMessage* message)
 	if (message->FindRef("refs", &ref) != B_OK)
 		return;
 
-	BEntry entry(&ref, true);	// also accept symlinks
-	entry.GetRef(&ref);
-
-	BPath* path = new BPath(&entry);
-	BString filename(path->Leaf());
-
-	// Check for image MIME type or file extension
 	BStringList imageMimes;
 	imageMimes.Add("application/x-cd-image");
-
+	imageMimes.Add("application/x-bfs-image");
 	BMimeType refType;
 	BMimeType::GuessMimeType(&ref, &refType);
 
+	BString extension = GetExtension(&ref);
+	BStringList extStrings;
+	extStrings.Add("image");
+	extStrings.Add("img");
+	extStrings.Add("iso");
+
 	// Check for image MIME type or file extension
 	if (imageMimes.HasString(refType.Type())
-		|| filename.IFindLast(".iso", filename.CountChars())
-			== (filename.CountChars() - 4)
-		|| filename.IFindLast(".img", filename.CountChars())
-			== (filename.CountChars() - 4)
-		|| filename.IFindLast(".image", filename.CountChars())
-			== (filename.CountChars() - 6)) {
-
+			|| extStrings.HasString(extension)) {
+		BEntry entry(&ref, true);	// also accept symlinks
 		fImagePath->SetTo(&entry);
 		fPathView->SetText(fImagePath->Path());
 		fOutputView->SetText(NULL);
@@ -382,6 +371,7 @@ CompilationImageView::_OpenImage(BMessage* message)
 			delete fBurnerThread;
 
 		fAction = BUILDING;	// flag we're opening ISO
+		fOutputView->SetText(NULL);
 
 		fBurnerThread = new CommandThread(NULL,
 			new BInvoker(new BMessage(kBuildOutput), this));

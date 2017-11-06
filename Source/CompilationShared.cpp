@@ -14,6 +14,7 @@
 #include <Path.h>
 #include <String.h>
 #include <StringForSize.h>
+#include <StringList.h>
 #include <Volume.h>
 
 #include "CompilationShared.h"
@@ -21,23 +22,6 @@
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Helpers"
-
-
-bool
-DirRefFilter::Filter(const entry_ref* ref, BNode* node,
-	struct stat_beos* stat, const char* filetype)
-{
-	if (S_ISDIR(stat->st_mode))
-		return true;
-
-	if (S_ISLNK(stat->st_mode)) {
-		// Traverse symlinks
-		BEntry entry(ref, true);
-		return entry.IsDirectory();
-	}
-
-	return false;
-}
 
 
 bool
@@ -63,6 +47,23 @@ CheckFreeSpace(int64 size, const char* cache)
 		return false;
 	}
 	return true;
+}
+
+
+bool
+DirRefFilter::Filter(const entry_ref* ref, BNode* node,
+	struct stat_beos* stat, const char* filetype)
+{
+	if (S_ISDIR(stat->st_mode))
+		return true;
+
+	if (S_ISLNK(stat->st_mode)) {
+		// Traverse symlinks
+		BEntry entry(ref, true);
+		return entry.IsDirectory();
+	}
+
+	return false;
 }
 
 
@@ -99,6 +100,23 @@ FolderSizeCount(void* arg)
 	from.SendMessage(msg);
 
 	return 0;
+}
+
+
+BString
+GetExtension(const entry_ref* ref)
+{
+	BEntry entry(ref, true);	// also accept symlinks
+	BPath* path = new BPath(&entry);
+	BString filename(path->Leaf());
+
+	BString extension("no_extension");
+	BStringList parts;
+	filename.Split(".", true, parts);
+	if (parts.CountStrings() > 1)
+		extension = parts.Last();
+
+	return extension;
 }
 
 

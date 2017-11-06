@@ -33,5 +33,6 @@ public:
 
 bool CheckFreeSpace(int64 size, const char* cache);
 int32 FolderSizeCount(void* arg);
+BString	GetExtension(const entry_ref* ref);
 
 #endif // COMPILATIONSHARED_H

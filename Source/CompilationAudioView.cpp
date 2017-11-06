@@ -21,6 +21,7 @@
 
 #include "BurnApplication.h"
 #include "CompilationAudioView.h"
+#include "CompilationShared.h"
 #include "CommandThread.h"
 #include "Constants.h"
 #include "OutputParser.h"
@@ -344,27 +345,26 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		if (node.InitCheck() != B_OK)
 			return;
 
-		BNodeInfo nodeInfo(&node);
-		if (nodeInfo.InitCheck() != B_OK)
-			return;
-
-		char mimeTypeString[B_MIME_TYPE_LENGTH];
-		nodeInfo.GetType(mimeTypeString);
 		BPath* trackPath = new BPath(&entry);
 		BString filename(trackPath->Leaf());
 		BString path(trackPath->Path());
+
+
+		BString extension = GetExtension(&trackRef);
+		BStringList extStrings;
+		extStrings.Add("image");
+		extStrings.Add("img");
+		extStrings.Add("iso");
 
 		// Check for wav MIME type or file extension
 		BStringList audioMimes;
 		audioMimes.Add("audio/wav");
 		audioMimes.Add("audio/x-wav");
-
 		BMimeType refType;
 		BMimeType::GuessMimeType(&trackRef, &refType);
 
-		if ((audioMimes.HasString(refType.Type()))
-				|| (filename.IFindLast(".wav", filename.CountChars()))
-				== filename.CountChars() - 4)
+		if (audioMimes.HasString(refType.Type())
+				|| extStrings.HasString(extension))
 			fTrackList->AddItem(new AudioListItem(filename, path, i), index++);
 
 		if (node.IsDirectory()) {
@@ -373,14 +373,7 @@ CompilationAudioView::_AddTrack(BMessage* message)
 
 			while (dir.GetNextRef(&ref) == B_OK) {
 				BNode dNode(&ref);
-				if (dNode.InitCheck() != B_OK)
-					return;
-
-				BNodeInfo dNodeInfo(&dNode);
-				if (dNodeInfo.InitCheck() != B_OK)
-					return;
-
-				dNodeInfo.GetType(mimeTypeString);
+				extension = GetExtension(&ref);
 
 				BPath* dTrackPath = new BPath(&ref);
 				BString dFilename(dTrackPath->Leaf());
@@ -389,9 +382,8 @@ CompilationAudioView::_AddTrack(BMessage* message)
 				// Check for wav MIME type or file extension
 				BMimeType::GuessMimeType(&ref, &refType);
 
-				if ((audioMimes.HasString(refType.Type()))
-						|| (dFilename.IFindLast(".wav", dFilename.CountChars()))
-						== dFilename.CountChars() - 4)
+				if (audioMimes.HasString(refType.Type())
+						|| extStrings.HasString(extension))
 					fTrackList->AddItem(new AudioListItem(dFilename, dPath, i),
 						index++);
 			}
