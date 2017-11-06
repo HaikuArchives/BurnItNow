@@ -58,6 +58,11 @@ printf("New line: %s\n", newline.String());
 	if (resultNewline != B_ERROR)
 		return SMALLDISC;
 
+	resultNewline = newline.FindFirst(
+		"cdrecord: Data does not fit on current disk.");
+	if (resultNewline != B_ERROR)
+		return SMALLDISC;
+
 	// invalid wavs stopped the burning?
 	resultNewline = newline.FindFirst(
 		"cdrecord: Inappropriate audio coding in");
