@@ -154,13 +154,8 @@ CompilationDataView::MessageReceived(BMessage* message)
 			_BurnOutput(message);
 			break;
 		case B_REFS_RECEIVED:
-		{
-			fFolderSize = 0;
-			fOutputView->SetText(NULL);
 			_OpenDirectory(message);
-			_GetFolderSize();
 			break;
-		}
 		case kSetFolderSize:
 		{
 			message->FindInt64("foldersize", &fFolderSize);
@@ -519,10 +514,15 @@ CompilationDataView::_OpenDirectory(BMessage* message)
 		fDiscLabel->MakeFocus(true);
 	}
 
+	fFolderSize = 0;
+	fOutputView->SetText(NULL);
+
 	fBuildButton->SetEnabled(true);
 	fBurnButton->SetEnabled(false);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Build the image",
 		"Status notification"));
+
+	_GetFolderSize();
 }
 
 

@@ -152,13 +152,8 @@ CompilationDVDView::MessageReceived(BMessage* message)
 			_BurnOutput(message);
 			break;
 		case B_REFS_RECEIVED:
-		{
-			fFolderSize = 0;
-			fOutputView->SetText(NULL);
 			_OpenDirectory(message);
-			_GetFolderSize();
 			break;
-		}
 		case kSetFolderSize:
 		{
 			message->FindInt64("foldersize", &fFolderSize);
@@ -241,9 +236,10 @@ CompilationDVDView::_Build()
 		return;
 	}
 
-	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path()))
+	if (!CheckFreeSpace(fFolderSize * 1024, fImagePath->Path())) {
 		fAction = IDLE;
 		return;
+	}
 
 	 // It may take a while for the building to start...
 	buildProgress.Send(60 * 1000000LL);
@@ -518,8 +514,8 @@ void
 CompilationDVDView::_OpenDirectory(BMessage* message)
 {
 	BString status(B_TRANSLATE_COMMENT(
-			"Didn't find valid files needed for an Audio or Video DVD",
-			"Status notification"));
+		"Didn't find valid files needed for an Audio or Video DVD",
+		"Status notification"));
 
 	entry_ref ref;
 	if (message->FindRef("refs", &ref) != B_OK) {
@@ -572,6 +568,9 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 		return;
 	}
 
+	fFolderSize = 0;
+	fOutputView->SetText(NULL);
+
 	fPathView->SetText(fDirPath->Path());
 
 	if (fDiscLabel->TextView()->TextLength() == 0) {
@@ -583,6 +582,8 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 	fBurnButton->SetEnabled(false);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Build the DVD image",
 		"Status notification"));
+
+	_GetFolderSize();
 }
 
 
