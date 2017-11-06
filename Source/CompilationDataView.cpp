@@ -421,7 +421,7 @@ CompilationDataView::_BurnOutput(BMessage* message)
 			fOutputView->ScrollBy(0.0, 50.0);
 		} else {
 			if (modified == PERCENT)
-				_UpdateProgress(B_TRANSLATE_COMMENT("Burning clone disc",
+				_UpdateProgress(B_TRANSLATE_COMMENT("Burning data disc",
 				"Notification title"));
 			fOutputView->SetText(text);
 			fOutputView->ScrollTo(0.0, 1000000.0);
@@ -449,7 +449,7 @@ CompilationDataView::_BurnOutput(BMessage* message)
 
 			BNotification burnSuccess(B_INFORMATION_NOTIFICATION);
 			burnSuccess.SetGroup("BurnItNow");
-			burnSuccess.SetTitle(B_TRANSLATE_COMMENT("Burning clone disc",
+			burnSuccess.SetTitle(B_TRANSLATE_COMMENT("Burning data disc",
 				"Notification title"));
 			burnSuccess.SetContent(B_TRANSLATE_COMMENT("Burning finished!",
 				"Notification content"));

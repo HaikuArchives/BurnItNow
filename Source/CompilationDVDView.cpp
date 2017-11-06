@@ -226,7 +226,7 @@ CompilationDVDView::_Build()
 
 	char id[5];
 	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
-	fNoteID = "BurnItNow_Data-";
+	fNoteID = "BurnItNow_DVD-";
 	fNoteID.Append(id);
 
 	buildProgress.SetMessageID(fNoteID);

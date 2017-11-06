@@ -326,7 +326,7 @@ CompilationCloneView::_Burn()
 
 	char id[5];
 	snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
-	fNoteID = "BurnItNow_Audio-";
+	fNoteID = "BurnItNow_Clone-";
 	fNoteID.Append(id);
 
 	burnProgress.SetMessageID(fNoteID);
