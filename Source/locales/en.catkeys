@@ -1,4 +1,4 @@
-1	English	application/x-vnd.haikuarchives-BurnItNow	2248579679
+1	English	application/x-vnd.haikuarchives-BurnItNow	2992310293
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
 Thank you	Application		Thank you
@@ -32,6 +32,7 @@ Remove	Compilation views	Button label	Remove
 Add WAV files	Compilation views	File panel title	Add WAV files
 Choose data folder	Compilation views	File panel title	Choose data folder
 Choose DVD folder	Compilation views	File panel title	Choose DVD folder
+Choose image	Compilation views	File panel title	Choose image
 calculating…	Compilation views	In size view, as short as possible!	calculating…
 Type:	Compilation views	Label for the blanking types menu	Type:
 Blanking finished!	Compilation views	Notification content	Blanking finished!

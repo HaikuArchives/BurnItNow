@@ -1,8 +1,8 @@
-1	Ukrainian	application/x-vnd.haikuarchives-BurnItNow	2248579679
+1	Ukainian	application/x-vnd.haikuarchives-BurnItNow	2992310293
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
-Thank you	Application		Thank you
-BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.
+Thank you	Application		Дякуємо
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tвід команди BurnItNow\n\tта\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow - це графічний інтерфейс для cdrecord, readcd та mkisofs.\n\nПовідомляйте про знайдені помилки або непрацюючі функції. Контактна інформація знаходиться в інструкції по використанню в меню 'Довідка'.
 Audio/Video DVD	Compilation views		Audio/Video DVD
 Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
 Disc label:	Compilation views		Disc label:
@@ -32,6 +32,7 @@ Remove	Compilation views	Button label	Remove
 Add WAV files	Compilation views	File panel title	Add WAV files
 Choose data folder	Compilation views	File panel title	Choose data folder
 Choose DVD folder	Compilation views	File panel title	Choose DVD folder
+Choose image	Compilation views	File panel title	Choose image
 calculating…	Compilation views	In size view, as short as possible!	calculating…
 Type:	Compilation views	Label for the blanking types menu	Type:
 Blanking finished!	Compilation views	Notification content	Blanking finished!
@@ -85,40 +86,40 @@ Move down	Compilation views	Tool tip	Move down
 Move up	Compilation views	Tool tip	Move up
 Play back	Compilation views	Tool tip	Play back
 Play back	Context menu		Play back
-Remove	Context menu		Remove
+Remove	Context menu		Видалити
 OK	Helpers		OK
 There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.
 \nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?
-About…	Main window		About…
-App	Main window		App
-Burn speed:	Main window		Burn speed:
+About…	Main window		Про…
+App	Main window		Програма
+Burn speed:	Main window		Швидкість запису:
 BurnItNow is currently busy.\n\n	Main window		BurnItNow is currently busy.\n\n
 Cache	Main window		Cache
 Cancel	Main window		Cancel
 Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?
-Clear cache now	Main window		Clear cache now
-Clear cache on quit	Main window		Clear cache on quit
+Clear cache now	Main window		Очистити кеш зараз
+Clear cache on quit	Main window		Очистити кеш при виході
 Delete	Main window		Delete
-Eject after burning	Main window		Eject after burning
-Help	Main window		Help
+Eject after burning	Main window		Витягти диск після запису
+Help	Main window		Довідка
 Keep	Main window		Keep
 OK	Main window		OK
 Open cache folder	Main window		Open cache folder
-Project website	Main window		Project website
+Project website	Main window		Вебсайт проекту
 Quit anyway	Main window		Quit anyway
 Set cache folder…	Main window		Set cache folder…
-Simulation	Main window		Simulation
+Simulation	Main window		Імітація
 The blanking of a disc is currently in progress.\n	Main window		The blanking of a disc is currently in progress.\n
 The building of an image is currently in progress.\n	Main window		The building of an image is currently in progress.\n
 The burning of a disc is currently in progress.\n	Main window		The burning of a disc is currently in progress.\n
 There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?
-Usage instructions	Main window		Usage instructions
-Max	Main window	Abbreviation for maximal burn speed	Max
-Min	Main window	Abbreviation for minimal burn speed	Min
+Usage instructions	Main window		Інструкції по використанню
+Max	Main window	Abbreviation for maximal burn speed	Макс
+Min	Main window	Abbreviation for minimal burn speed	Мін
 Choose cache folder	Main window	File panel title	Choose cache folder
 16x	Main window	Multiplier for burn speed	16x
 32x	Main window	Multiplier for burn speed	32x
-4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (best for audio CDs)
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (рекомендовано для аудіо CD)
 8x	Main window	Multiplier for burn speed	8x
 Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
 Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
