@@ -317,7 +317,12 @@ AudioRefFilter::Filter(const entry_ref* ref, BNode* node,
 	BMimeType refType;
 	BMimeType::GuessMimeType(ref, &refType);
 
-	if (audioMimes.HasString(refType.Type()))
+	BString extension = GetExtension(ref);
+	BStringList extStrings;
+	extStrings.Add("wav");
+
+	if (audioMimes.HasString(refType.Type())
+			|| extStrings.HasString(extension))
 		return true;
 
 	return false;
@@ -349,19 +354,16 @@ CompilationAudioView::_AddTrack(BMessage* message)
 		BString filename(trackPath->Leaf());
 		BString path(trackPath->Path());
 
-
-		BString extension = GetExtension(&trackRef);
-		BStringList extStrings;
-		extStrings.Add("image");
-		extStrings.Add("img");
-		extStrings.Add("iso");
-
 		// Check for wav MIME type or file extension
 		BStringList audioMimes;
 		audioMimes.Add("audio/wav");
 		audioMimes.Add("audio/x-wav");
 		BMimeType refType;
 		BMimeType::GuessMimeType(&trackRef, &refType);
+
+		BString extension = GetExtension(&trackRef);
+		BStringList extStrings;
+		extStrings.Add("wav");
 
 		if (audioMimes.HasString(refType.Type())
 				|| extStrings.HasString(extension))
