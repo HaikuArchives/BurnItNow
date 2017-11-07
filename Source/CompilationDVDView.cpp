@@ -59,6 +59,7 @@ CompilationDVDView::CompilationDVDView(BurnWindow& parent)
 
 	fDiscLabel = new BTextControl("disclabel", B_TRANSLATE("Disc label:"), "",
 		NULL);
+	fDiscLabel->TextView()->SetMaxBytes(32);
 	fDiscLabel->SetExplicitMaxSize(BSize(B_SIZE_UNLIMITED, B_SIZE_UNSET));
 
 	fOutputView = new BTextView("OutputView");
@@ -258,6 +259,8 @@ CompilationDVDView::_Build()
 		discLabel = fDirPath->Leaf();
 	else
 		discLabel = fDiscLabel->Text();
+
+	discLabel.Truncate(32, false);	//mkisofs limits to 32char labels
 
 	status_t ret = fImagePath->Append(kCacheFileDVD);
 	if (ret == B_OK) {
@@ -574,7 +577,9 @@ CompilationDVDView::_OpenDirectory(BMessage* message)
 	fPathView->SetText(fDirPath->Path());
 
 	if (fDiscLabel->TextView()->TextLength() == 0) {
-		fDiscLabel->SetText(fDirPath->Leaf());
+		BString discLabel(fDirPath->Leaf());
+		discLabel.Truncate(32, false);	//mkisofs limits to 32char labels
+		fDiscLabel->SetText(discLabel);
 		fDiscLabel->MakeFocus(true);
 	}
 
