@@ -116,7 +116,7 @@ GetExtension(const entry_ref* ref)
 	if (parts.CountStrings() > 1)
 		extension = parts.Last();
 
-	return extension;
+	return extension.ToLower();
 }
 
 
