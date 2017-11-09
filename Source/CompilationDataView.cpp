@@ -393,7 +393,7 @@ CompilationDataView::_Burn()
 		->AddArgument("fs=16m")
 		->AddArgument(device)
 		->AddArgument("-v")	// to get progress output
-		->AddArgument("-gracetime=2")
+		->AddArgument("gracetime=2")
 		->AddArgument("-pad")
 		->AddArgument("padsize=63s")
 		->AddArgument(fImagePath->Path())
