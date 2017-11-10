@@ -14,6 +14,7 @@
 #include <Path.h>
 #include <ScrollView.h>
 #include <String.h>
+#include <StringList.h>
 #include <StringView.h>
 
 #include "BurnApplication.h"
@@ -44,7 +45,8 @@ CompilationCloneView::CompilationCloneView(BurnWindow& parent)
 	fETAtime("--"),
 	fParser(fProgress, fETAtime),
 	fAbort(0),
-	fAction(IDLE)
+	fAction(IDLE),
+	fAudioMode(false)
 {
 	fWindowParent = &parent;
 
@@ -123,7 +125,7 @@ CompilationCloneView::MessageReceived(BMessage* message)
 {
 	switch (message->what) {
 		case kBuildButton:
-			_GetImageSize();
+			_GetImageInfo();
 			break;
 		case kBuildOutput:
 			_BuildOutput(message);
@@ -134,8 +136,8 @@ CompilationCloneView::MessageReceived(BMessage* message)
 		case kBurnOutput:
 			_BurnOutput(message);
 			break;
-		case kGetImageSizeOutput:
-			_GetImageSizeOutput(message);
+		case kGetImageInfoOutput:
+			_GetImageInfoOutput(message);
 			break;
 		default:
 		if (kDeviceChange[0] == message->what) {
@@ -189,45 +191,97 @@ CompilationCloneView::_Build()
 		return;
 	}
 
-	status_t ret = path.Append(kCacheFileClone);
-	if (ret == B_OK) {
-		fAction = BUILDING;
-		fBuildButton->SetEnabled(false);
+	if (fAudioMode == true) {
+		BDirectory folder(path.Path());
+		status_t ret = folder.CreateDirectory(kCacheFolderAudioClone, NULL);
+		if (!(ret == B_FILE_EXISTS || ret == B_OK))
+			return;
 
-		fOutputView->SetText(NULL);
-		fInfoView->SetLabel(B_TRANSLATE_COMMENT(
-			"Reading in disc" B_UTF8_ELLIPSIS, "Status notification"));
+		ret = path.Append(kCacheFolderAudioClone);
+		if (ret == B_OK) {
+			fAction = BUILDING;
+			fBuildButton->SetEnabled(false);
 
-		BNotification buildProgress(B_PROGRESS_NOTIFICATION);
-		buildProgress.SetGroup("BurnItNow");
-		buildProgress.SetTitle(B_TRANSLATE_COMMENT("Building clone image",
-			"Notification title"));
-		buildProgress.SetContent(B_TRANSLATE_COMMENT(
-			"Reading in disc" B_UTF8_ELLIPSIS, "Notification content"));
-		buildProgress.SetProgress(0);
+			fOutputView->SetText(NULL);
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Reading in WAV files" B_UTF8_ELLIPSIS, "Status notification"));
 
-		char id[5];
-		snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
-		fNoteID = "BurnItNow_Clone-";
-		fNoteID.Append(id);
+			BNotification buildProgress(B_PROGRESS_NOTIFICATION);
+			buildProgress.SetGroup("BurnItNow");
+			buildProgress.SetTitle(B_TRANSLATE_COMMENT("Cloning Audio CD",
+				"Notification title"));
+			buildProgress.SetContent(B_TRANSLATE_COMMENT(
+				"Reading in WAV files" B_UTF8_ELLIPSIS, "Notification content"));
+			buildProgress.SetProgress(0);
 
-		buildProgress.SetMessageID(fNoteID);
-		buildProgress.Send();
+			char id[5];
+			snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+			fNoteID = "BurnItNow_Clone-";
+			fNoteID.Append(id);
 
-		BString file = "f=";
-		file.Append(path.Path());
-		BString device("dev=");
-		device.Append(fWindowParent->GetSelectedDevice().number.String());
-		sessionConfig config = fWindowParent->GetSessionConfig();
+			buildProgress.SetMessageID(fNoteID);
+			buildProgress.Send();
 
-		fBurnerThread = new CommandThread(NULL,
-			new BInvoker(new BMessage(kBuildOutput), this));
-		fBurnerThread->AddArgument("readcd")
-			->AddArgument(device)
-			->AddArgument("-s")
-			->AddArgument("speed=10")	// for max compatibility
-			->AddArgument(file)
-			->Run();
+			BString wavPath(path.Path());
+			wavPath.Append("/");
+
+			BString device("dev=");
+			device.Append(fWindowParent->GetSelectedDevice().number.String());
+			sessionConfig config = fWindowParent->GetSessionConfig();
+
+			fBurnerThread = new CommandThread(NULL,
+				new BInvoker(new BMessage(kBuildOutput), this));
+			fBurnerThread->AddArgument("cdda2wav")
+				->AddArgument(device)
+				->AddArgument("paraopts=proof")
+				->AddArgument("-vall")
+				->AddArgument("cddb=0")
+				->AddArgument("-B")
+				->AddArgument("-Owav")
+				->AddArgument(wavPath)
+				->Run();
+		}
+	} else {
+		status_t ret = path.Append(kCacheFileClone);
+		if (ret == B_OK) {
+			fAction = BUILDING;
+			fBuildButton->SetEnabled(false);
+
+			fOutputView->SetText(NULL);
+			fInfoView->SetLabel(B_TRANSLATE_COMMENT(
+				"Reading in disc" B_UTF8_ELLIPSIS, "Status notification"));
+
+			BNotification buildProgress(B_PROGRESS_NOTIFICATION);
+			buildProgress.SetGroup("BurnItNow");
+			buildProgress.SetTitle(B_TRANSLATE_COMMENT("Building clone image",
+				"Notification title"));
+			buildProgress.SetContent(B_TRANSLATE_COMMENT(
+				"Reading in disc" B_UTF8_ELLIPSIS, "Notification content"));
+			buildProgress.SetProgress(0);
+
+			char id[5];
+			snprintf(id, sizeof(id), "%" B_PRId32, fID++); // new ID
+			fNoteID = "BurnItNow_Clone-";
+			fNoteID.Append(id);
+
+			buildProgress.SetMessageID(fNoteID);
+			buildProgress.Send();
+
+			BString file = "f=";
+			file.Append(path.Path());
+			BString device("dev=");
+			device.Append(fWindowParent->GetSelectedDevice().number.String());
+			sessionConfig config = fWindowParent->GetSessionConfig();
+
+			fBurnerThread = new CommandThread(NULL,
+				new BInvoker(new BMessage(kBuildOutput), this));
+			fBurnerThread->AddArgument("readcd")
+				->AddArgument(device)
+				->AddArgument("-s")
+				->AddArgument("speed=10")	// for max compatibility
+				->AddArgument(file)
+				->Run();
+		}
 	}
 }
 
@@ -299,15 +353,28 @@ CompilationCloneView::_Burn()
 	if (path.InitCheck() != B_OK)
 		return;
 
-	status_t ret = path.Append(kCacheFileClone);
-	if (ret != B_OK) {
-		BString text(B_TRANSLATE_COMMENT(
-			"There isn't an image '%filename%' in the cache folder. "
-			"Was it perhaps moved or renamed?", "Alert text"));
-		text.ReplaceFirst("%filename%", kCacheFileClone);
-		(new BAlert("ImageNotFound", text,
-			B_TRANSLATE("OK")))->Go();
-		return;
+	if (fAudioMode == true) {
+		status_t ret = path.Append(kCacheFolderAudioClone);
+		if (ret != B_OK) {
+			BString text(B_TRANSLATE_COMMENT(
+				"There is no folder '%foldername%' in the cache folder. "
+				"Was it perhaps moved or renamed?", "Alert text"));
+			text.ReplaceFirst("%foldername%", kCacheFolderAudioClone);
+			(new BAlert("ImageNotFound", text,
+				B_TRANSLATE("OK")))->Go();
+			return;
+		}
+	} else {
+		status_t ret = path.Append(kCacheFileClone);
+		if (ret != B_OK) {
+			BString text(B_TRANSLATE_COMMENT(
+				"There isn't an image '%filename%' in the cache folder. "
+				"Was it perhaps moved or renamed?", "Alert text"));
+			text.ReplaceFirst("%filename%", kCacheFileClone);
+			(new BAlert("ImageNotFound", text,
+				B_TRANSLATE("OK")))->Go();
+			return;
+		}
 	}
 
 	fAction = BURNING;
@@ -347,16 +414,30 @@ CompilationCloneView::_Burn()
 	if (config.speed != "")
 		fBurnerThread->AddArgument(config.speed);
 
-	fBurnerThread->AddArgument(config.mode)
-		->AddArgument("fs=16m")
-		->AddArgument(device)
-		->AddArgument("-v")	// to get progress output
-		->AddArgument("gracetime=2")
-		->AddArgument("-pad")
-		->AddArgument("padsize=63s")
-		->AddArgument(path.Path())
-		->Run();
+	if (fAudioMode == true) {
+		BString files(path.Path());
+		files.Append("/*.wav");
+		fBurnerThread->AddArgument(config.mode)
+			->AddArgument(device)
+			->AddArgument("gracetime=2")
+			->AddArgument("-v")	// to get progress output
+			->AddArgument("-dao")
+			->AddArgument("-useinfo")
+			->AddArgument("-text")
+			->AddArgument(files)
+			->Run();
 
+	} else {
+		fBurnerThread->AddArgument(config.mode)
+			->AddArgument("fs=16m")
+			->AddArgument(device)
+			->AddArgument("-v")	// to get progress output
+			->AddArgument("gracetime=2")
+			->AddArgument("-pad")
+			->AddArgument("padsize=63s")
+			->AddArgument(path.Path())
+			->Run();
+	}
 	fParser.Reset();
 }
 
@@ -424,7 +505,7 @@ CompilationCloneView::_BurnOutput(BMessage* message)
 
 
 void
-CompilationCloneView::_GetImageSize()
+CompilationCloneView::_GetImageInfo()
 {
 	fImageSize = 0;
 	fOutputView->SetText(NULL);
@@ -435,7 +516,7 @@ CompilationCloneView::_GetImageSize()
 	sessionConfig config = fWindowParent->GetSessionConfig();
 
 	fBurnerThread = new CommandThread(NULL,
-		new BInvoker(new BMessage(kGetImageSizeOutput), this));
+		new BInvoker(new BMessage(kGetImageInfoOutput), this));
 	fBurnerThread->AddArgument("cdrecord")
 		->AddArgument("-media-info")
 		->AddArgument(device)
@@ -444,14 +525,14 @@ CompilationCloneView::_GetImageSize()
 
 
 void
-CompilationCloneView::_GetImageSizeOutput(BMessage* message)
+CompilationCloneView::_GetImageInfoOutput(BMessage* message)
 {
 	BString data;
 
 	if (message->FindString("line", &data) == B_OK) {
 		fParser.ParseMediainfoLine(fImageSize, data);
-		printf("Image size forecast: %" PRId64 " KiB, %" PRId64 " MiB\n",
-			fImageSize, fImageSize / 1024);
+//		printf("Image size forecast: %" PRId64 " KiB, %" PRId64 " MiB\n",
+//			fImageSize, fImageSize / 1024);
 
 		if (fImageSize != 0)
 			fSizeView->UpdateSizeDisplay(fImageSize, DATA, CD_OR_DVD);
@@ -461,8 +542,20 @@ CompilationCloneView::_GetImageSizeOutput(BMessage* message)
 		fOutputView->ScrollBy(0.0, 50.0);
 	}
 	int32 code = -1;
-	if (message->FindInt32("thread_exit", &code) == B_OK)
+	if (message->FindInt32("thread_exit", &code) == B_OK) {
+		BString text = fOutputView->Text();
+		BStringList output;
+		BStringList wordList;
+		text.Split("==============================================", true, 
+			output);
+		output.StringAt(1).Split(" ", true, wordList);
+		if (wordList.StringAt(3) == "Audio")
+			fAudioMode = true;
+		else
+			fAudioMode = false;
+
 		_Build();
+	}
 }
 
 

@@ -70,7 +70,7 @@ const int32 kBurnOutput = 'BrnO';
 
 const int32 kBuildButton = 'BilB';
 const int32 kBuildOutput = 'BilO';
-const int32 kGetImageSizeOutput = 'ImgO';
+const int32 kGetImageInfoOutput = 'ImgO';
 
 const int32 kBlankButton = 'BlnB';
 const int32 kBlankOutput = 'BlnO';
@@ -117,6 +117,7 @@ static const char kSettingsFile[] = "BurnItNow_settings";
 static const char kCacheFileClone[] = "burnitnow_clone.iso";
 static const char kCacheFileDVD[] = "burnitnow_dvd.iso";
 static const char kCacheFileData[] = "burnitnow_data.iso";
+static const char kCacheFolderAudioClone[] = "burnitnow_clone_wavs";
 
 static const char kCopyright[] = "2010-2017";
 static const char kVersion[] = "v1.0";

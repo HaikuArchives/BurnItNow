@@ -35,8 +35,8 @@ private:
 	void 			_BuildOutput(BMessage* message);
 	void 			_Burn();
 	void 			_BurnOutput(BMessage* message);
-	void 			_GetImageSize();
-	void 			_GetImageSizeOutput(BMessage* message);
+	void 			_GetImageInfo();
+	void 			_GetImageInfoOutput(BMessage* message);
 	void			_UpdateProgress(const char* title);
 	void			_UpdateSizeBar();
 
@@ -60,6 +60,7 @@ private:
 
 	int32			fAbort;
 	int32			fAction;
+	bool			fAudioMode;
 };
 
 

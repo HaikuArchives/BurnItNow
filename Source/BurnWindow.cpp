@@ -516,19 +516,28 @@ BurnWindow::_ClearCache()
 	if (cachePath.InitCheck() != B_OK)
 		return;
 
+	BEntry* entry;
 	BPath path = cachePath;
 	status_t ret = path.Append(kCacheFileClone);
 	if (ret == B_OK) {
-		BEntry* entry = new BEntry(path.Path());
-		entry->Remove();
-		
-		path = cachePath;
-		path.Append(kCacheFileDVD);
 		entry = new BEntry(path.Path());
 		entry->Remove();
-
-		path = cachePath;
-		path.Append(kCacheFileData);
+	}
+	path = cachePath;
+	ret = path.Append(kCacheFileDVD);
+	if (ret == B_OK) {
+		entry = new BEntry(path.Path());
+		entry->Remove();
+	}
+	path = cachePath;
+	ret = path.Append(kCacheFileData);
+	if (ret == B_OK) {
+		entry = new BEntry(path.Path());
+		entry->Remove();
+	}
+	path = cachePath;
+	ret = path.Append(kCacheFolderAudioClone);
+	if (ret == B_OK) {
 		entry = new BEntry(path.Path());
 		entry->Remove();
 	}
