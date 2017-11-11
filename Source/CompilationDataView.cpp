@@ -188,11 +188,7 @@ CompilationDataView::_Build()
 	if (fDirPath->InitCheck() != B_OK)
 		return;
 
-	BFile testFile;
-	entry_ref testRef;
-	get_ref_for_path(fDirPath->Path(), &testRef);
-
-	testFile.SetTo(&testRef, B_READ_ONLY);
+	BFile testFile(fDirPath->Path(), B_READ_ONLY);
 	status_t result = testFile.InitCheck();
 
 	if (result != B_OK) {
@@ -202,6 +198,7 @@ CompilationDataView::_Build()
 		text.ReplaceFirst("%foldername%", fDirPath->Path());
 		(new BAlert("FolderNotFound", text,
 			B_TRANSLATE("OK")))->Go();
+
 		return;
 	}
 
@@ -331,11 +328,7 @@ CompilationDataView::_BuildOutput(BMessage* message)
 void
 CompilationDataView::_Burn()
 {
-	BFile testFile;
-	entry_ref testRef;
-	get_ref_for_path(fImagePath->Path(), &testRef);
-
-	testFile.SetTo(&testRef, B_READ_ONLY);
+	BFile testFile(fImagePath->Path(), B_READ_ONLY);
 	status_t result = testFile.InitCheck();
 
 	if (result != B_OK) {
@@ -345,6 +338,7 @@ CompilationDataView::_Burn()
 		text.ReplaceFirst("%filename%", kCacheFileData);
 		(new BAlert("ImageNotFound", text,
 			B_TRANSLATE("OK")))->Go();
+
 		return;
 	}
 

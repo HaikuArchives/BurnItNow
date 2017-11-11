@@ -8,6 +8,7 @@
 #include <Alert.h>
 #include <Catalog.h>
 #include <ControlLook.h>
+#include <File.h>
 #include <FindDirectory.h>
 #include <LayoutBuilder.h>
 #include <Notification.h>
@@ -354,25 +355,33 @@ CompilationCloneView::_Burn()
 		return;
 
 	if (fAudioMode == true) {
-		status_t ret = path.Append(kCacheFolderAudioClone);
-		if (ret != B_OK) {
+		path.Append(kCacheFolderAudioClone);
+		BFile testFile(path.Path(), B_READ_ONLY);
+		status_t result = testFile.InitCheck();
+
+		if (result != B_OK) {
 			BString text(B_TRANSLATE_COMMENT(
 				"There is no folder '%foldername%' in the cache folder. "
 				"Was it perhaps moved or renamed?", "Alert text"));
 			text.ReplaceFirst("%foldername%", kCacheFolderAudioClone);
 			(new BAlert("ImageNotFound", text,
 				B_TRANSLATE("OK")))->Go();
+
 			return;
 		}
 	} else {
-		status_t ret = path.Append(kCacheFileClone);
-		if (ret != B_OK) {
+		path.Append(kCacheFileClone);
+		BFile testFile(path.Path(), B_READ_ONLY);
+		status_t result = testFile.InitCheck();
+
+		if (result != B_OK) {
 			BString text(B_TRANSLATE_COMMENT(
 				"There isn't an image '%filename%' in the cache folder. "
 				"Was it perhaps moved or renamed?", "Alert text"));
 			text.ReplaceFirst("%filename%", kCacheFileClone);
 			(new BAlert("ImageNotFound", text,
 				B_TRANSLATE("OK")))->Go();
+
 			return;
 		}
 	}

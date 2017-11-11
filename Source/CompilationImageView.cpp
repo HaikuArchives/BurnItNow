@@ -193,11 +193,7 @@ ImageRefFilter::Filter(const entry_ref* ref, BNode* node,
 void
 CompilationImageView::_Burn()
 {
-	BFile testFile;
-	entry_ref testRef;
-	get_ref_for_path(fImagePath->Path(), &testRef);
-
-	testFile.SetTo(&testRef, B_READ_ONLY);
+	BFile testFile(fImagePath->Path(), B_READ_ONLY);
 	status_t result = testFile.InitCheck();
 	
 	if (result != B_OK) {
@@ -207,6 +203,7 @@ CompilationImageView::_Burn()
 		text.ReplaceFirst("%filename%", fImagePath->Leaf());
 		(new BAlert("ImageNotFound", text,
 			B_TRANSLATE("OK")))->Go();
+
 		return;
 	}
 
