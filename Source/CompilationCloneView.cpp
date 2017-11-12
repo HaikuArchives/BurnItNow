@@ -226,14 +226,20 @@ CompilationCloneView::_Build()
 			BString wavPath(path.Path());
 			wavPath.Append("/");
 
-			BString device("dev=");
-			device.Append(fWindowParent->GetSelectedDevice().number.String());
+
+			BString device(fWindowParent->GetSelectedDevice().number.String());
+			BString dev("dev=");
+			dev.Append(device);
 			sessionConfig config = fWindowParent->GetSessionConfig();
 
 			fBurnerThread = new CommandThread(NULL,
 				new BInvoker(new BMessage(kBuildOutput), this));
 			fBurnerThread->AddArgument("cdda2wav")
-				->AddArgument(device)
+				->AddArgument(dev)
+				->AddArgument("-device")		// test
+				->AddArgument(device)			// test
+				->AddArgument("-interface")		// test
+				->AddArgument("generic_scsi")	// test
 				->AddArgument("paraopts=proof")
 				->AddArgument("-vall")
 				->AddArgument("cddb=0")
