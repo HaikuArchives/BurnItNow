@@ -204,8 +204,10 @@ CompilationImageView::_Burn()
 		(new BAlert("ImageNotFound", text,
 			B_TRANSLATE("OK")))->Go();
 
+		testFile.Unset();
 		return;
 	}
+	testFile.Unset();
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;

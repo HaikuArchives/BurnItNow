@@ -367,8 +367,10 @@ CompilationCloneView::_Burn()
 			(new BAlert("ImageNotFound", text,
 				B_TRANSLATE("OK")))->Go();
 
+			testFile.Unset();
 			return;
 		}
+		testFile.Unset();
 	} else {
 		path.Append(kCacheFileClone);
 		BFile testFile(path.Path(), B_READ_ONLY);
@@ -382,8 +384,10 @@ CompilationCloneView::_Burn()
 			(new BAlert("ImageNotFound", text,
 				B_TRANSLATE("OK")))->Go();
 
+			testFile.Unset();
 			return;
 		}
+		testFile.Unset();
 	}
 
 	fAction = BURNING;

@@ -199,8 +199,10 @@ CompilationDataView::_Build()
 		(new BAlert("FolderNotFound", text,
 			B_TRANSLATE("OK")))->Go();
 
+		testFile.Unset();
 		return;
 	}
+	testFile.Unset();
 
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
@@ -339,8 +341,10 @@ CompilationDataView::_Burn()
 		(new BAlert("ImageNotFound", text,
 			B_TRANSLATE("OK")))->Go();
 
+		testFile.Unset();
 		return;
 	}
+	testFile.Unset();
 
 	if (fBurnerThread != NULL)
 		delete fBurnerThread;
