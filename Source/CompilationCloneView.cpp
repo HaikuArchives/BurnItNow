@@ -193,6 +193,22 @@ CompilationCloneView::_Build()
 	}
 
 	if (fAudioMode == true) {
+		BString text(B_TRANSLATE(
+			"BurnItNow currently only supports the cloning of data discs.\n\n"
+			"You can mount the audio disc with Tracker, copy the WAV files "
+			"to your hard disk and burn them with BurnItNow in 'Audio CD' "
+			"mode."));
+		(new BAlert("NoAudioCloning", text, B_TRANSLATE("OK")))->Go();
+
+		fBuildButton->SetEnabled(true);
+		return;
+
+	// TODO: cdda2wav currently fails with the error message
+	//   "cdda2wav: Invalid Argument. Cannot open output fd 0"
+	// if BurnItNow isn't started from Terminal.
+	// Maybe an issue with environment variables in Haiku in general?
+	// See https://dev.haiku-os.org/ticket/12534
+
 		BDirectory folder(path.Path());
 		status_t ret = folder.CreateDirectory(kCacheFolderAudioClone, NULL);
 		if (!(ret == B_FILE_EXISTS || ret == B_OK))
