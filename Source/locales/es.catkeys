@@ -1,10 +1,11 @@
-1	Spanish	application/x-vnd.haikuarchives-BurnItNow	2992310293
+1	Spanish	application/x-vnd.haikuarchives-BurnItNow	580220439
 OK	App settings		OK
 The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
 Thank you	Application		Gracias
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow es un frontend para  cdrecord, readcd y mkisofs.\n\nPor favor informe los errores que encuentre, o aquella funcionalidad que desee que sea incorporada en futuras versiones. La información de contacto se encuentra en las instrucciones de uso en el menu 'Ayuda'.
 Audio/Video DVD	Compilation views		Audio/Video DVD
 Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.
 Disc label:	Compilation views		Disc label:
 Drop tracks here (only WAV files)	Compilation views		Drop tracks here (only WAV files)
 Folder: <none>	Compilation views		Folder: <none>
@@ -12,6 +13,7 @@ Image: <none>	Compilation views		Image: <none>
 OK	Compilation views		OK
 The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?
 The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	The image file '%filename%' wasn't found. Was it perhaps moved or renamed?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?
 There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?
 Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
 All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
@@ -40,6 +42,7 @@ Building finished!	Compilation views	Notification content	Building finished!
 Burning finished!	Compilation views	Notification content	Burning finished!
 Preparing the build…	Compilation views	Notification content	Preparing the build…
 Reading in disc…	Compilation views	Notification content	Reading in disc…
+Reading in WAV files…	Compilation views	Notification content	Reading in WAV files…
 Some WAV file has the wrong encoding	Compilation views	Notification content	Some WAV file has the wrong encoding
 The data doesn't fit on the disc.	Compilation views	Notification content	The data doesn't fit on the disc.
 This may take a while...	Compilation views	Notification content	This may take a while...
@@ -56,6 +59,7 @@ Burning clone disc	Compilation views	Notification title	Burning clone disc
 Burning data disc	Compilation views	Notification title	Burning data disc
 Burning DVD	Compilation views	Notification title	Burning DVD
 Burning image	Compilation views	Notification title	Burning image
+Cloning Audio CD	Compilation views	Notification title	Cloning Audio CD
 Blanking finished	Compilation views	Status notification	Blanking finished
 Blanking in progress…	Compilation views	Status notification	Blanking in progress…
 Build the DVD image	Compilation views	Status notification	Build the DVD image
@@ -75,6 +79,7 @@ Insert a blank disc and burn it	Compilation views	Status notification	Insert a b
 Insert the disc and blank it	Compilation views	Status notification	Insert the disc and blank it
 Insert the disc and create an image	Compilation views	Status notification	Insert the disc and create an image
 Reading in disc…	Compilation views	Status notification	Reading in disc…
+Reading in WAV files…	Compilation views	Status notification	Reading in WAV files…
 Ready	Compilation views	Status notification	Ready
 Unable to create a DVD image	Compilation views	Status notification	Unable to create a DVD image
 Audio CD	Compilation views	Tab label	Audio CD
