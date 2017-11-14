@@ -28,7 +28,7 @@ BurnApplication::BurnApplication()
 void
 BurnApplication::ReadyToRun()
 {
-	putenv("LC_ALL=C");	// force English environment for parsing output
+//	putenv("LC_ALL=C");	// force English environment for parsing output
 
 	BRect rect = fSettings.GetWindowPosition();
 	fWindow = new BurnWindow(rect, B_TRANSLATE_SYSTEM_NAME("BurnItNow"));
