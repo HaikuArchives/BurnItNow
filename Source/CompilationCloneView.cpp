@@ -242,10 +242,8 @@ CompilationCloneView::_Build()
 			BString wavPath(path.Path());
 			wavPath.Append("/");
 
-
-			BString device(fWindowParent->GetSelectedDevice().number.String());
 			BString dev("dev=");
-			dev.Append(device);
+			dev.Append(fWindowParent->GetSelectedDevice().number.String());
 			sessionConfig config = fWindowParent->GetSessionConfig();
 
 			fBurnerThread = new CommandThread(NULL,
