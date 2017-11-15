@@ -193,15 +193,15 @@ CompilationCloneView::_Build()
 	}
 
 	if (fAudioMode == true) {
-		BString text(B_TRANSLATE(
-			"BurnItNow currently only supports the cloning of data discs.\n\n"
-			"You can mount the audio disc with Tracker, copy the WAV files "
-			"to your hard disk and burn them with BurnItNow in 'Audio CD' "
-			"mode."));
-		(new BAlert("NoAudioCloning", text, B_TRANSLATE("OK")))->Go();
-
-		fBuildButton->SetEnabled(true);
-		return;
+//		BString text(B_TRANSLATE(
+//			"BurnItNow currently only supports the cloning of data discs.\n\n"
+//			"You can mount the audio disc with Tracker, copy the WAV files "
+//			"to your hard disk and burn them with BurnItNow in 'Audio CD' "
+//			"mode."));
+//		(new BAlert("NoAudioCloning", text, B_TRANSLATE("OK")))->Go();
+//
+//		fBuildButton->SetEnabled(true);
+//		return;
 
 	// TODO: cdda2wav currently fails with the error message
 	//   "cdda2wav: Invalid Argument. Cannot open output fd 0"
@@ -252,13 +252,9 @@ CompilationCloneView::_Build()
 				new BInvoker(new BMessage(kBuildOutput), this));
 			fBurnerThread->AddArgument("cdda2wav")
 				->AddArgument(dev)
-				->AddArgument("-device")		// test
-				->AddArgument(device)			// test
-				->AddArgument("-interface")		// test
-				->AddArgument("generic_scsi")	// test
 				->AddArgument("paraopts=proof")
 				->AddArgument("-vall")
-				->AddArgument("cddb=0")
+				->AddArgument("cddb=1")
 				->AddArgument("-B")
 				->AddArgument("-Owav")
 				->AddArgument(wavPath)
