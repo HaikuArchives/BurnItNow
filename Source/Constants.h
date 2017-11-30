@@ -120,6 +120,6 @@ static const char kCacheFileData[] = "burnitnow_data.iso";
 static const char kCacheFolderAudioClone[] = "burnitnow_clone_wavs";
 
 static const char kCopyright[] = "2010-2017";
-static const char kVersion[] = "v1.0";
+static const char kVersion[] = "v1.2";
 
 #endif	// _CONSTANTS_H_

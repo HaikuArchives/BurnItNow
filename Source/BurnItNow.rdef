@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 BurnItNow Maintainers
+ * Copyright 2017 BurnItNow Maintainers
  * Distributed under the terms of the MIT License.
  * Haiku Vector Icon by Michele Frau
  */
@@ -10,14 +10,14 @@ resource app_flags B_EXCLUSIVE_LAUNCH;
 
 resource app_version {
 	major  = 1,
-	middle = 0,
+	middle = 2,
 	minor  = 0,
 
 	variety = B_APPV_FINAL,
 	internal = 0,
 
-	short_info = "CD burning application",
-	long_info = "Create ISO images and burn audio and data CDs"
+	short_info = "Disc burning application",
+	long_info = "Create ISO images and burn audio and data discs"
 };
 
 resource file_types message;
