@@ -1,20 +1,20 @@
 1	Ukrainian	application/x-vnd.haikuarchives-BurnItNow	580220439
 OK	App settings		OK
-The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Папка кешу '%folder%' недійсна.\nЇї буде скинуто на умовчання до '/system/cache'.\n\nМожливо, вона знаходиться на розділі, який не змонтовано або лише для читання?
 Thank you	Application		Дякуємо
 BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tвід команди BurnItNow\n\tта\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow - це графічний інтерфейс для cdrecord, readcd та mkisofs.\n\nПовідомляйте про знайдені помилки або непрацюючі функції. Контактна інформація знаходиться в інструкції по використанню в меню 'Довідка'.
-Audio/Video DVD	Compilation views		Audio/Video DVD
-Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
-BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.
-Disc label:	Compilation views		Disc label:
-Drop tracks here (only WAV files)	Compilation views		Drop tracks here (only WAV files)
-Folder: <none>	Compilation views		Folder: <none>
-Image: <none>	Compilation views		Image: <none>
+Audio/Video DVD	Compilation views		Аудіо/Відео DVD
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Типи стирання:\n\nAll\t\t\tСтирання всього диска. Триватиме довгий час.\nFast\t\t\tМінімальне очищення диска.\n\t\t\tБудуть стерті PMA, TOC та Pregap.\nSession\t\tСтирання останньої сесії.\nTrack\t\tОчищення доріжки.\nTrack tail\t\tОчищення кінця доріжки.\nUnreserve\tРозблокування зарезервованої доріжки.\nUnclose\t\tВідкриття останньої сесії.
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		Зараз BurnItNow підтримує лише клонування дисків з даними.\n\nВи можете змонтувати аудіодиск за допомогою Tracker, скопіювати файли WAV на жорсткий диск і записати їх за допомогою BurnItNow в режимі 'Аудіодиск'.
+Disc label:	Compilation views		Мітка диска:
+Drop tracks here (only WAV files)	Compilation views		Перетягніть доріжки сюди (лише файли WAV)
+Folder: <none>	Compilation views		Папка: <немає>
+Image: <none>	Compilation views		Образ: <немає>
 OK	Compilation views		OK
-The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?
-The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	The image file '%filename%' wasn't found. Was it perhaps moved or renamed?
-There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?
-There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Папка '%foldername%' відсутня. Можливо, її переміщено чи перейменовано?
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Файл образу '%filename%' не знайдено. Можливо, його переміщено чи перейменовано?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	У папці кешу немає папки '%foldername%'. Можливо, її переміщено чи перейменовано?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	У папці кешу немає образу '%filename%'. Можливо, його переміщено чи перейменовано?
 Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
 All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
 Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
@@ -22,125 +22,125 @@ Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail o
 Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
 Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
 Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
-Add…	Compilation views	Button label	Add…
-Blank disc	Compilation views	Button label	Blank disc
-Build image	Compilation views	Button label	Build image
-Burn disc	Compilation views	Button label	Burn disc
-Choose DVD folder	Compilation views	Button label	Choose DVD folder
-Choose folder	Compilation views	Button label	Choose folder
-Choose image	Compilation views	Button label	Choose image
-Create image	Compilation views	Button label	Create image
-Remove	Compilation views	Button label	Remove
-Add WAV files	Compilation views	File panel title	Add WAV files
-Choose data folder	Compilation views	File panel title	Choose data folder
-Choose DVD folder	Compilation views	File panel title	Choose DVD folder
-Choose image	Compilation views	File panel title	Choose image
-calculating…	Compilation views	In size view, as short as possible!	calculating…
-Type:	Compilation views	Label for the blanking types menu	Type:
-Blanking finished!	Compilation views	Notification content	Blanking finished!
-Building finished!	Compilation views	Notification content	Building finished!
-Burning finished!	Compilation views	Notification content	Burning finished!
-Preparing the build…	Compilation views	Notification content	Preparing the build…
-Reading in disc…	Compilation views	Notification content	Reading in disc…
-Reading in WAV files…	Compilation views	Notification content	Reading in WAV files…
-Some WAV file has the wrong encoding	Compilation views	Notification content	Some WAV file has the wrong encoding
-The data doesn't fit on the disc.	Compilation views	Notification content	The data doesn't fit on the disc.
-This may take a while...	Compilation views	Notification content	This may take a while...
-This may take over 30 minutes...	Compilation views	Notification content	This may take over 30 minutes...
-Unable to create DVD image	Compilation views	Notification content	Unable to create DVD image
-Blanking disc	Compilation views	Notification title	Blanking disc
-Building aborted	Compilation views	Notification title	Building aborted
-Building clone image	Compilation views	Notification title	Building clone image
-Building data image	Compilation views	Notification title	Building data image
-Building DVD image	Compilation views	Notification title	Building DVD image
-Burning aborted	Compilation views	Notification title	Burning aborted
-Burning Audio CD	Compilation views	Notification title	Burning Audio CD
-Burning clone disc	Compilation views	Notification title	Burning clone disc
-Burning data disc	Compilation views	Notification title	Burning data disc
-Burning DVD	Compilation views	Notification title	Burning DVD
-Burning image	Compilation views	Notification title	Burning image
-Cloning Audio CD	Compilation views	Notification title	Cloning Audio CD
-Blanking finished	Compilation views	Status notification	Blanking finished
-Blanking in progress…	Compilation views	Status notification	Blanking in progress…
-Build the DVD image	Compilation views	Status notification	Build the DVD image
-Build the image	Compilation views	Status notification	Build the image
-Building in progress…	Compilation views	Status notification	Building in progress…
-Burn the disc	Compilation views	Status notification	Burn the disc
-Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Burning aborted: Some WAV file has the wrong encoding
-Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Burning aborted: The data doesn't fit on the disc
-Burning complete. Burn another disc?	Compilation views	Status notification	Burning complete. Burn another disc?
-Burning finished. Burn another disc?	Compilation views	Status notification	Burning finished. Burn another disc?
-Burning in progress…	Compilation views	Status notification	Burning in progress…
-Choose the DVD folder to burn	Compilation views	Status notification	Choose the DVD folder to burn
-Choose the folder to burn	Compilation views	Status notification	Choose the folder to burn
-Choose the image to burn	Compilation views	Status notification	Choose the image to burn
-Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Didn't find valid files needed for an Audio or Video DVD
-Insert a blank disc and burn it	Compilation views	Status notification	Insert a blank disc and burn it
-Insert the disc and blank it	Compilation views	Status notification	Insert the disc and blank it
-Insert the disc and create an image	Compilation views	Status notification	Insert the disc and create an image
-Reading in disc…	Compilation views	Status notification	Reading in disc…
-Reading in WAV files…	Compilation views	Status notification	Reading in WAV files…
-Ready	Compilation views	Status notification	Ready
-Unable to create a DVD image	Compilation views	Status notification	Unable to create a DVD image
-Audio CD	Compilation views	Tab label	Audio CD
-Blank RW-disc	Compilation views	Tab label	Blank RW-disc
-Clone disc	Compilation views	Tab label	Clone disc
-Image file	Compilation views	Tab label	Image file
-Data disc	Compilation views	Tab lable	Data disc
-Move down	Compilation views	Tool tip	Move down
-Move up	Compilation views	Tool tip	Move up
-Play back	Compilation views	Tool tip	Play back
-Play back	Context menu		Play back
+Add…	Compilation views	Button label	Додати…
+Blank disc	Compilation views	Button label	Стерти диск
+Build image	Compilation views	Button label	Створити образ
+Burn disc	Compilation views	Button label	Записати диск
+Choose DVD folder	Compilation views	Button label	Вибрати папку DVD
+Choose folder	Compilation views	Button label	Вибрати папку
+Choose image	Compilation views	Button label	Вибрати образ
+Create image	Compilation views	Button label	Створити образ
+Remove	Compilation views	Button label	Видалити
+Add WAV files	Compilation views	File panel title	Додати файли WAV
+Choose data folder	Compilation views	File panel title	Вибрати папку даних
+Choose DVD folder	Compilation views	File panel title	Вибрати папку DVD
+Choose image	Compilation views	File panel title	Вибрати образ
+calculating…	Compilation views	In size view, as short as possible!	Обчислення…
+Type:	Compilation views	Label for the blanking types menu	Тип:
+Blanking finished!	Compilation views	Notification content	Стирання завершене!
+Building finished!	Compilation views	Notification content	Створення завершене!
+Burning finished!	Compilation views	Notification content	Запис завершений!
+Preparing the build…	Compilation views	Notification content	Підготовка створення…
+Reading in disc…	Compilation views	Notification content	Читання диска…
+Reading in WAV files…	Compilation views	Notification content	Читання файлів WAV…
+Some WAV file has the wrong encoding	Compilation views	Notification content	Деякі файли WAV мають неправильне кодування
+The data doesn't fit on the disc.	Compilation views	Notification content	Дані не вміщаються на диск.
+This may take a while...	Compilation views	Notification content	Це може тривати деякий час...
+This may take over 30 minutes...	Compilation views	Notification content	Це може тривати понад 30 хвилин...
+Unable to create DVD image	Compilation views	Notification content	Неможливо створити образ DVD
+Blanking disc	Compilation views	Notification title	Стирання диска
+Building aborted	Compilation views	Notification title	Створення перерване
+Building clone image	Compilation views	Notification title	Створення клонованого образу
+Building data image	Compilation views	Notification title	Створення образу даних
+Building DVD image	Compilation views	Notification title	Створення образу DVD
+Burning aborted	Compilation views	Notification title	Запис перервано
+Burning Audio CD	Compilation views	Notification title	Запис аудіодиска
+Burning clone disc	Compilation views	Notification title	Запис клонованого диска
+Burning data disc	Compilation views	Notification title	Запис диска з даними
+Burning DVD	Compilation views	Notification title	Запис DVD
+Burning image	Compilation views	Notification title	Запис образу
+Cloning Audio CD	Compilation views	Notification title	Клонування аудіодиска
+Blanking finished	Compilation views	Status notification	Стирання завершене
+Blanking in progress…	Compilation views	Status notification	Триває стирання…
+Build the DVD image	Compilation views	Status notification	Створити образ DVD
+Build the image	Compilation views	Status notification	Створити образ
+Building in progress…	Compilation views	Status notification	Триває створення…
+Burn the disc	Compilation views	Status notification	Записати диск
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Запис перервано: деякі файли WAV мають неправильне кодування
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Запис перервано: дані не вміщаються на диск
+Burning complete. Burn another disc?	Compilation views	Status notification	Запис завершено. Записати інший диск?
+Burning finished. Burn another disc?	Compilation views	Status notification	Запис завершено. Записати інший диск?
+Burning in progress…	Compilation views	Status notification	Триває запис…
+Choose the DVD folder to burn	Compilation views	Status notification	Вибрати папку DVD для запису
+Choose the folder to burn	Compilation views	Status notification	Вибрати папку для запису
+Choose the image to burn	Compilation views	Status notification	Вибрати образ для запису
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Не знайдено файлів для Аудіо/Відео DVD
+Insert a blank disc and burn it	Compilation views	Status notification	Вставити чистий диск і записати його
+Insert the disc and blank it	Compilation views	Status notification	Вставити диск і стерти його
+Insert the disc and create an image	Compilation views	Status notification	Вставити диск і створити образ
+Reading in disc…	Compilation views	Status notification	Читання диска…
+Reading in WAV files…	Compilation views	Status notification	Читання файлів WAV…
+Ready	Compilation views	Status notification	Готово
+Unable to create a DVD image	Compilation views	Status notification	Неможливо створити образ DVD
+Audio CD	Compilation views	Tab label	Аудіодиск
+Blank RW-disc	Compilation views	Tab label	Стерти RW-диск
+Clone disc	Compilation views	Tab label	Клонувати диск
+Image file	Compilation views	Tab label	Файл образу
+Data disc	Compilation views	Tab lable	Диск даних
+Move down	Compilation views	Tool tip	Нижче
+Move up	Compilation views	Tool tip	Вище
+Play back	Compilation views	Tool tip	Відтворити
+Play back	Context menu		Відтворити
 Remove	Context menu		Видалити
 OK	Helpers		OK
-There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.
-\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Недостатньо вільного простору в '%cache%'. Замало %amount%.\n\nЗробіть кімнату або змініть папку кешу.
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nБажаєте все одно закрити BurnItNow (але це не зупинить поточне завдання…)?
 About…	Main window		Про…
 App	Main window		Програма
 Burn speed:	Main window		Швидкість запису:
-BurnItNow is currently busy.\n\n	Main window		BurnItNow is currently busy.\n\n
-Cache	Main window		Cache
-Cancel	Main window		Cancel
-Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?
+BurnItNow is currently busy.\n\n	Main window		BurnItNow зараз працює.\n\n
+Cache	Main window		Кеш
+Cancel	Main window		Скасувати
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Зміна папки кешу на '%folder%' зазнала невдачі.\n\nМожливо, розміщення лише для читання?
 Clear cache now	Main window		Очистити кеш зараз
 Clear cache on quit	Main window		Очистити кеш при виході
-Delete	Main window		Delete
+Delete	Main window		Видалити
 Eject after burning	Main window		Витягти диск після запису
 Help	Main window		Довідка
-Keep	Main window		Keep
+Keep	Main window		Зберегти
 OK	Main window		OK
-Open cache folder	Main window		Open cache folder
-Project website	Main window		Вебсайт проекту
-Quit anyway	Main window		Quit anyway
-Set cache folder…	Main window		Set cache folder…
+Open cache folder	Main window		Відкрити папку кешу
+Project website	Main window		Веб-сайт проекту
+Quit anyway	Main window		Закрити все одно
+Set cache folder…	Main window		Встановити папку кешу…
 Simulation	Main window		Імітація
-The blanking of a disc is currently in progress.\n	Main window		The blanking of a disc is currently in progress.\n
-The building of an image is currently in progress.\n	Main window		The building of an image is currently in progress.\n
-The burning of a disc is currently in progress.\n	Main window		The burning of a disc is currently in progress.\n
-There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?
+The blanking of a disc is currently in progress.\n	Main window		Виконується стирання диска.\n
+The building of an image is currently in progress.\n	Main window		Виконується створення образу.\n
+The burning of a disc is currently in progress.\n	Main window		Виконується запис диска.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		У старій папці кешу в '%oldfolder%' зберігаються кешовані образи ISO.\n\nБажаєте зберегти або видалити ці образи, або скасувати налаштування нової папки кешу?
 Usage instructions	Main window		Інструкції по використанню
 Max	Main window	Abbreviation for maximal burn speed	Макс
 Min	Main window	Abbreviation for minimal burn speed	Мін
-Choose cache folder	Main window	File panel title	Choose cache folder
+Choose cache folder	Main window	File panel title	Вибрати папку кешу
 16x	Main window	Multiplier for burn speed	16x
 32x	Main window	Multiplier for burn speed	32x
-4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (рекомендовано для аудіо CD)
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (рекомендовано для аудіодисків)
 8x	Main window	Multiplier for burn speed	8x
 Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
 Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
-Finished in %duration%	Parser		Finished in %duration%
-Finished very soon now	Parser		Finished very soon now
-~ Empty project ~	Size view		~ Empty project ~
-Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple
+Finished in %duration%	Parser		Завершення за %duration%
+Finished very soon now	Parser		Зараз буде завершено
+~ Empty project ~	Size view		~ Пустий проект ~
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Середня місткість:\n  CD-650 - зелений\n  CD-700 - жовтий\n  CD-800 - оранжевий\n  CD-900 - синій\n  DVD5 - бежевий\n  DVD9 - пурпуровий
 CD-650	Size view	CD medium size	CD-650
 CD-700	Size view	CD medium size	CD-700
 CD-800	Size view	CD medium size	CD-800
 CD-900	Size view	CD medium size	CD-900
 DVD5	Size view	DVD medium size	DVD5
 DVD9	Size view	DVD medium size	DVD9
-%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% over CD-900
-%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% over DVD9
-%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% left (%medium%)
-5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB left (CD-900)
-Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Project size: %size%
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% більше CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% більше DVD9
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	Лишилось %size% (%medium%)
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 Мб лишилось (CD-900)
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Розмір проекту: %size%
 BurnItNow	System name		BurnItNow
