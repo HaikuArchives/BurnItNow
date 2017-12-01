@@ -22,6 +22,8 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "Compilation views"
 
+static const char* kBlankMode[] =
+	{ "all", "fast", "session", "track", "trtail", "unreserve", "unclose" };
 
 CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	:
@@ -61,20 +63,17 @@ CompilationBlankView::CompilationBlankView(BurnWindow& parent)
 	blankModeMenuItem->SetMarked(true);
 	fBlankModeMenu->AddItem(blankModeMenuItem);
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Session",
-		"Blanking mode. From the man page: 'Blank the last session.'"),
-		new BMessage()));
+		"Blanking mode. From the man page: 'Blank the last session.'"),	NULL));
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Track",
-		"Blanking mode. From the man page: 'Blank a track.'"),
-		new BMessage()));
+		"Blanking mode. From the man page: 'Blank a track.'"), NULL));
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Track tail",
 		"Blanking mode. From the man page: 'Blank the tail of a track.'"),
-		new BMessage()));
+		NULL));
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Unreserve",
 		"Blanking mode. From the man page: 'Unreserve a reserved track.'"),
-		new BMessage()));
+		NULL));
 	fBlankModeMenu->AddItem(new BMenuItem(B_TRANSLATE_COMMENT("Unclose",
-		"Blanking mode. From the man page: 'Unclose last session.'"),
-		new BMessage()));
+		"Blanking mode. From the man page: 'Unclose last session.'"), NULL));
 
 	BMenuField* blankModeMenuField = new BMenuField("BlankModeMenuField",
 		B_TRANSLATE_COMMENT("Type:", "Label for the blanking types menu"),
@@ -167,13 +166,9 @@ CompilationBlankView::_Blank()
 	fAction = BLANKING;
 	fBlankButton->SetEnabled(false);
 
-	BString mode = fBlankModeMenu->FindMarked()->Label();
-	mode.ToLower();
-
-	if (mode == "track tail")
-		mode = "trtail";
-
-	mode.Prepend("blank=");
+	BString mode("blank=");
+	int32 menuIndex = fBlankModeMenu->IndexOf(fBlankModeMenu->FindMarked());
+	mode.Append(kBlankMode[menuIndex]);
 
 	fOutputView->SetText(NULL);
 	fInfoView->SetLabel(B_TRANSLATE_COMMENT("Blanking in progress"
