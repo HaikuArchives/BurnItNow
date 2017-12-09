@@ -1,5 +1,5 @@
 This is the source for the rewrite of BurnItNow.
-![BurnItNow](https://github.com/ayushmunot/BurnItNow/blob/master/burnitnow.png?raw=true "BurnItNow")
+![BurnItNow](burnitnow.png "BurnItNow")
 
 For information on using BurnItNow, [see its documentation](http://rawgit.com/HaikuArchives/BurnItNow/master/Docs/ReadMe.html).
 
