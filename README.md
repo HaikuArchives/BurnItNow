@@ -1,11 +1,13 @@
 This is the source for the rewrite of BurnItNow.
 
+![screenshot](screenshot.png)
+
 For information on using BurnItNow, [see its documentation](http://rawgit.com/HaikuArchives/BurnItNow/master/Docs/ReadMe.html).
 
 If you build from source manually instead of using haikuporter and the recipe at haikuports, at runtime, BurnItNow depends on:
 
 *   cdrecord
-*	isoinfo
+*   isoinfo
 *   mkisofs
 *   readcd
 
