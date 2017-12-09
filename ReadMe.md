@@ -1,11 +1,17 @@
-This is the source for the rewrite of BurnItNow.
+# BurnItNow.
+
+BurnItNow works with CDs and DVDs. It burns data and ISO images, and 
+blanks rewritable RW media. It creates Audio CDs from drag & dropped WAV 
+files and burns pre-authored DVD-Audio and DVD-Video
+
+![screenshot](/Docs/images/overview.png)
 
 For information on using BurnItNow, [see its documentation](http://rawgit.com/HaikuArchives/BurnItNow/master/Docs/ReadMe.html).
 
 If you build from source manually instead of using haikuporter and the recipe at haikuports, at runtime, BurnItNow depends on:
 
 *   cdrecord
-*	isoinfo
+*   isoinfo
 *   mkisofs
 *   readcd
 
