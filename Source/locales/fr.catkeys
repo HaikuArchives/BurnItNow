@@ -1,0 +1,146 @@
+1	French	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nVoulez vous quitter BurnItNow quand même (cela ne stoppera pas la tâche en cours...)  ?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (le mieux pour les CDs audio)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		À propos de…
+App	Main window		Application
+Burn speed:	Main window		Vitesse de gravure :
+BurnItNow is currently busy.\n\n	Main window		BurnItNow est occupé actuellement.\n\n
+Cache	Main window		Tampon
+Cancel	Main window		Annuler
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changer le dossier tampon pour '%folder%' a échoué.\n\nPeut être que l'emplacement est en lecture seule ?
+Choose cache folder	Main window	File panel title	Chox du dossier tampon
+Clear cache now	Main window		Vider le tampon maintenant
+Clear cache on quit	Main window		Vider le tampon en quittant
+Delete	Main window		Effacer
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disque en une fois (DAO, Disc at once)
+Eject after burning	Main window		Éjecter après la gravure
+Help	Main window		Aide
+Keep	Main window		Conserver
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+OK	Main window		D'accord
+Open cache folder	Main window		Ouvrir le dossier tampon
+Project website	Main window		Site internet du projet
+Quit anyway	Main window		Quitter quand même
+Set cache folder…	Main window		Définir le dossier tampon…
+Simulation	Main window		Simulation
+The blanking of a disc is currently in progress.\n	Main window		L'effacement du disque est en cours.\n
+The building of an image is currently in progress.\n	Main window		La construction d'une image est en cours.\n
+The burning of a disc is currently in progress.\n	Main window		La gravure d'un disque est en cours.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		Il y a toujours des images ISO en cache dans l'ancien dossier tampon '%oldfolder%'.\n\nVoulez vous conserver ou effacer ces images, ou bien annuler le choix d'un nouveau dossier tampon ?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Piste par piste (TAO, Track at once)
+Usage instructions	Main window		Instructions d'utilisation
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% libre (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% de plus qu'un CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% de plus qu'un DVD9
+~ Empty project ~	Size view		~ Projet vide ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB libre (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Capacité du média:\n  CD-650 - vert\n  CD-700 - jaune\n  CD-800 - orange\n  CD-900 - bleu\n  DVD5 - beige\n  DVD9 - mauve
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Taille du projet : %size%
+Add WAV files	Compilation views	File panel title	Ajouter des fichiers audio (WAV)
+Add…	Compilation views	Button label	Ajouter…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Complet
+Audio CD	Compilation views	Tab label	CD Audio
+Audio/Video DVD	Compilation views		DVD Audio/Video
+Blank disc	Compilation views	Button label	Effacer le disque
+Blank RW-disc	Compilation views	Tab label	Effacer un disque réinscriptible (RW)
+Blanking disc	Compilation views	Notification title	Effacement du disque
+Blanking finished	Compilation views	Status notification	Effacement terminé
+Blanking finished!	Compilation views	Notification content	Effacement terminé !
+Blanking in progress…	Compilation views	Status notification	Effacement en cours…
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Types d'effacement :\n\nComplet\t\t\tEfface le disque entièrement. Cela peut prendre longtemps.\nRapide\t\t\tEfface le disque de manière minimale.\n\t\t\t Cela remet le PMA, la TOC et le pregap aux valeurs initialles.\nSession\t\tEfface la dernière session.\nPiste\t\tEfface une piste.\nFin de piste\t\tEfface la fin d'une piste.\nLibérer\tLibére une piste réservée.\nRéouvrir\t\tRéouvre la dernière  session.
+Build image	Compilation views	Button label	Construire l'image
+Build the DVD image	Compilation views	Status notification	Construit l'image du DVD
+Build the image	Compilation views	Status notification	Construit l'image
+Building aborted	Compilation views	Notification title	Construction abandonnée
+Building clone image	Compilation views	Notification title	Construction de l'image clone
+Building data image	Compilation views	Notification title	Construction de l'image de données
+Building DVD image	Compilation views	Notification title	Construction de l'image du DVD
+Building finished!	Compilation views	Notification content	Construction terminée !
+Building in progress…	Compilation views	Status notification	Construction en cours…
+Burn disc	Compilation views	Button label	Graver le disque
+Burn the disc	Compilation views	Status notification	Grave le disque
+Burning aborted	Compilation views	Notification title	Gravure interrompue
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Gravure interrompue : Un fichier WAV n'est pas encodé correctement.
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Gravure interrompue : Les données ne tiennent pas sur le disque
+Burning Audio CD	Compilation views	Notification title	Gravure du CD Audio
+Burning clone disc	Compilation views	Notification title	Gravure du disque clone
+Burning complete. Burn another disc?	Compilation views	Status notification	Gravure achevée. Graver un autre disque ?
+Burning data disc	Compilation views	Notification title	Gravure du disque de données
+Burning DVD	Compilation views	Notification title	Gravure du DVD
+Burning finished!	Compilation views	Notification content	Gravure terminée !
+Burning finished. Burn another disc?	Compilation views	Status notification	Gravure terminée. Graver un autre disque ?
+Burning image	Compilation views	Notification title	Gravure de l'image
+Burning in progress…	Compilation views	Status notification	Gravure en cours…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow ne supporte actuellement que le clonage de disque de données.\n\nVous pouvez monter le disque audio avec le Tracker, copier les fichiers WAV sur votre disque dur et les graver avec BurnItNow en mode 'CD Audio'.
+calculating…	Compilation views	In size view, as short as possible!	calcul en cours…
+Choose data folder	Compilation views	File panel title	Choix du dossier de données
+Choose DVD folder	Compilation views	Button label	Choisir le dossier du DVD
+Choose DVD folder	Compilation views	File panel title	Choix du dossier du DVD
+Choose folder	Compilation views	Button label	Choisir le dossier
+Choose image	Compilation views	Button label	Choisir l'image
+Choose image	Compilation views	File panel title	Choix de l'image
+Choose the DVD folder to burn	Compilation views	Status notification	Choisir le dossier du DVD à graver
+Choose the folder to burn	Compilation views	Status notification	Choisir le dossier à graver
+Choose the image to burn	Compilation views	Status notification	Choisir l'mage à graver
+Clone disc	Compilation views	Tab label	Cloner un disque
+Cloning Audio CD	Compilation views	Notification title	Clonage du CD Audio
+Create image	Compilation views	Button label	Créer l'image
+Data disc	Compilation views	Tab lable	Disque de données
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Impossible de trouver les fichiers valides nécessaires pour un DVD Audio ou Video
+Disc label:	Compilation views		Titre du disque :
+Drop tracks here (only WAV files)	Compilation views		Déposer les pistes ici (seulement des fichiers WAV)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Rapide
+Folder: <none>	Compilation views		Dossier : <aucun>
+Image file	Compilation views	Tab label	Fichier d'image
+Image: <none>	Compilation views		Image : <aucune>
+Insert a blank disc and burn it	Compilation views	Status notification	Insérer un disque vierge et le graver
+Insert the disc and blank it	Compilation views	Status notification	Insérer le disque et l'effacer
+Insert the disc and create an image	Compilation views	Status notification	Insérer le disque et créer une image
+Move down	Compilation views	Tool tip	Descendre
+Move up	Compilation views	Tool tip	Monter
+OK	Compilation views		D'accord
+Play back	Compilation views	Tool tip	Lecture
+Preparing the build…	Compilation views	Notification content	Prépare la construction…
+Reading in disc…	Compilation views	Notification content	Analyse du disque…
+Reading in disc…	Compilation views	Status notification	Analyse du disque…
+Reading in WAV files…	Compilation views	Notification content	Analyse des fichiers WAV…
+Reading in WAV files…	Compilation views	Status notification	Analyse des fichiers WAV…
+Ready	Compilation views	Status notification	Prêt
+Remove	Compilation views	Button label	Supprimer
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
+Some WAV file has the wrong encoding	Compilation views	Notification content	Un fichier WAV n'est pas encodé correctement
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Le dossier choisi '%foldername%' semble avoir disparu. Peut être a-t-il été déplacé ou renommé ?
+The data doesn't fit on the disc.	Compilation views	Notification content	Les données ne tiennent pas sur le disque
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Le fichier d'image '%filename%' n'a pas été trouvé. Peut être a-t-il été déplacé ou renommé ?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Il n'y a pas de dossier '%foldername%' dans le dossier tampon. Peut être a-t-il été déplacé ou renommé ?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Il n'y a pas d'image '%filename%' dans le dossier tampon. Peut être a-t-elle été déplacée ou renommée ?
+This may take a while...	Compilation views	Notification content	Cela peut prendre un certain temps...
+This may take over 30 minutes...	Compilation views	Notification content	Cela peut prendre plus de 30 minutes...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Piste
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Fin de piste
+Type:	Compilation views	Label for the blanking types menu	Type :
+Unable to create a DVD image	Compilation views	Status notification	Impossible de créer une image DVD
+Unable to create DVD image	Compilation views	Notification content	Impossible de créer une image DVD
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Réouvrir
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Libérer
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tpar l'équipe BurnItNow\n\tet\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow est une interface graphique pour cdrecord, readcd et mkisofs.\n\nVeuillez rapporter les bogues que vous trouvez ou les fonctionnalités qui vous manquent. Les informations de contact sont dans les instructions d'utilisation accessibles par le menu « Aide ».
+Thank you	Application		Merci
+Finished in %duration%	Parser		Terminé(e) en %duration%
+Finished very soon now	Parser		En passe de terminer
+OK	App settings		D'accord
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Le dossier tampon '%folder%' n'est pas valide.\nRetour au  '/system/cache' par défaut.\n\nL'emplacement se situe peut être sur une partition non montée ou montée en lecture seule ?
+OK	Helpers		D'accord
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Il n'y a pas assez d'espace libre disponible dans '%cache%'. Il manque %amount% .\n\nFaites de la place, ou changez le dossier tampon.
+Play back	Context menu		Lecture
+Remove	Context menu		Supprimer

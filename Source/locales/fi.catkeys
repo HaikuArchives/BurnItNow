@@ -1,0 +1,146 @@
+1	Finnish	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nHaluatko silti poistua BurnItNow-ohjelmasta (tämä ei pysäytä parhaillaan prosessoitavaa tehtävää…)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (paras audio CD-levyille)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		Ohjelmasta…
+App	Main window		Sovellus
+Burn speed:	Main window		Polttonopeus:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow on parhaillaan varattuna.\n\n
+Cache	Main window		Välimuisti
+Cancel	Main window		Peru
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Välimuistikansion '%folder%' vaihtaminen epäonnistui.\n\nEhkä sijainti on kirjoitussuojattu?
+Choose cache folder	Main window	File panel title	Valitse välimuistikansio
+Clear cache now	Main window		Tyhjennä välimuisti nyt
+Clear cache on quit	Main window		Tyhjennä välimuisti poistuttaessa ohjelmasta
+Delete	Main window		Poista
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Levy yhdellä kertaa (DAO)
+Eject after burning	Main window		Poista asemasta polton jälkeen
+Help	Main window		Opaste
+Keep	Main window		Pidä
+Max	Main window	Abbreviation for maximal burn speed	Maksimi
+Min	Main window	Abbreviation for minimal burn speed	Minimi
+OK	Main window		Valmis
+Open cache folder	Main window		Avaa välimuistikansio
+Project website	Main window		Hankkeen webbisivu
+Quit anyway	Main window		Poistu silti
+Set cache folder…	Main window		Aseta välimuistikansio…
+Simulation	Main window		Simulointi
+The blanking of a disc is currently in progress.\n	Main window		Levyn tyhjentäminen on parhaillaan käynnissä.\n
+The building of an image is currently in progress.\n	Main window		Levykuvan rakentaminen on parhaillaan käynnissä.\n
+The burning of a disc is currently in progress.\n	Main window		Levyn polttaminen on parhaillaan käynnissä.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		Tallennatko yhä ISO-levykuvan vanhaan välimuistikansioon '%oldfolder%'.\n\nHaluatko pitää tai poistaa nuo levykuvat vai perua uuden välimuistikansion asetukset?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Kappale yhdellä kertaa (TAO)
+Usage instructions	Main window		Käyttöohjeet
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% jäljellä (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% yli CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% yli DVD9
+~ Empty project ~	Size view		~ Poista hanke ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB jäljellä (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Tietovälineen kapasiteetit:\n  CD-650 - vihreä\n  CD-700 - keltainen\n  CD-800 - oranssi\n  CD-900 - sininen\n  DVD5 - beesi\n  DVD9 - violetti
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Hankekoko: %size%
+Add WAV files	Compilation views	File panel title	Lisää WAV-tiedostoja
+Add…	Compilation views	Button label	Lisää…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Kaikki
+Audio CD	Compilation views	Tab label	Audio CD
+Audio/Video DVD	Compilation views		Audio/Video DVD
+Blank disc	Compilation views	Button label	Tyhjennä levy
+Blank RW-disc	Compilation views	Tab label	Tyhjä RW-levy
+Blanking disc	Compilation views	Notification title	Tyhjennetään levy
+Blanking finished	Compilation views	Status notification	Tyhjennys on päättynyt
+Blanking finished!	Compilation views	Notification content	Tyhjennys on päättynyt!
+Blanking in progress…	Compilation views	Status notification	Tyhjennys on käynnissä…
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Tyhjennystyypit:\n\nKaikki\t\t\tTyhjennä koko levy. Tämä voi kestää kauan.\nNopea\t\t\tMinimaalinen tyhjä levy.\n\t\t\tTämä poistaa PMA-, TOC- ja pregap-kohteet.\nIstunto\t\tTyhjennä viimeisin istunto.\nKappale\t\tTyhjennä kappale.\nKappaleen jälkiosa\t\tTyhjennä kappaleen jälkiosa.\nVaraamaton\tMerkitse varattu kappale varaamattomaksi.\nAvaa\t\tAvaa viimeisin istunto.
+Build image	Compilation views	Button label	Rakenna levykuva
+Build the DVD image	Compilation views	Status notification	Rakenna DVD-levykuva
+Build the image	Compilation views	Status notification	Rakenna levykuva
+Building aborted	Compilation views	Notification title	Rakentaminen keskeytetty
+Building clone image	Compilation views	Notification title	Rakennetaan kloonilevykuva
+Building data image	Compilation views	Notification title	Rakennetaan datalevykuva
+Building DVD image	Compilation views	Notification title	Rakennetaan DVD-levykuva
+Building finished!	Compilation views	Notification content	Rakentaminen on päättynyt!
+Building in progress…	Compilation views	Status notification	Polttaminen on käynnissä…
+Burn disc	Compilation views	Button label	Polta levy
+Burn the disc	Compilation views	Status notification	Polta levy
+Burning aborted	Compilation views	Notification title	Polttaminen on keskeytetty
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Polttaminen keskeytetty: Jossain WAV-tiedostossa on väärä koodaus
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Polttaminen keskeytetty: Data ei mahdu levylle
+Burning Audio CD	Compilation views	Notification title	Poltetaan Audio CD
+Burning clone disc	Compilation views	Notification title	Poltetaan kloonattu levy
+Burning complete. Burn another disc?	Compilation views	Status notification	Polttaminen on valmis. Poltetaanko toinen levy?
+Burning data disc	Compilation views	Notification title	Poltetaan datalevy
+Burning DVD	Compilation views	Notification title	Poltetaan DVD
+Burning finished!	Compilation views	Notification content	Rakentaminen on päättynyt!
+Burning finished. Burn another disc?	Compilation views	Status notification	Polttaminen on päättynyt. Poltetaanko toinen levy?
+Burning image	Compilation views	Notification title	Poltetaan levykuva
+Burning in progress…	Compilation views	Status notification	Polttaminen on käynnissä…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow tukee nykyäään vain datalevyjen kloonausta.\n\nVoit liittää audiolevyn Seuraajalla, kopioida WAV-tiedostot levyasemallesi ja polttaa ne BurnItNow-ohjelmalla 'Audio CD'-tilassa.
+calculating…	Compilation views	In size view, as short as possible!	lasketaan…
+Choose data folder	Compilation views	File panel title	Valitse datakansio
+Choose DVD folder	Compilation views	Button label	Valitse DVD-kansio
+Choose DVD folder	Compilation views	File panel title	Valitse DVD-kansio
+Choose folder	Compilation views	Button label	Valitse kansio
+Choose image	Compilation views	Button label	Valitse levykuva
+Choose image	Compilation views	File panel title	Valitse levykuva
+Choose the DVD folder to burn	Compilation views	Status notification	Valitse levylle poltettava DVD-kansio
+Choose the folder to burn	Compilation views	Status notification	Valitse levylle poltettava kansio
+Choose the image to burn	Compilation views	Status notification	Valitse levylle poltettava levykuva
+Clone disc	Compilation views	Tab label	Kloonattu levy
+Cloning Audio CD	Compilation views	Notification title	Kloonataan Audio CD
+Create image	Compilation views	Button label	Luo levykuva
+Data disc	Compilation views	Tab lable	Datatiedosto
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Audio tai Video DVD:lle ei löytynyt kelvollisia tiedostoja
+Disc label:	Compilation views		Levynimiö:
+Drop tracks here (only WAV files)	Compilation views		Pudota kappaleet tähän (vain WAV-tiedostot)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Nopea
+Folder: <none>	Compilation views		Kansio: <ei valittu>
+Image file	Compilation views	Tab label	Levykuvatiedosto
+Image: <none>	Compilation views		Levykuva: <ei valittu>
+Insert a blank disc and burn it	Compilation views	Status notification	Laita tyhjä levy levyasemaan ja polta se
+Insert the disc and blank it	Compilation views	Status notification	Laita levy levyasemaan ja tyhjennä se
+Insert the disc and create an image	Compilation views	Status notification	Laita levy levyasemaan ja luo levykuva
+Move down	Compilation views	Tool tip	Siirry alaspäin
+Move up	Compilation views	Tool tip	Siirry ylöspäon
+OK	Compilation views		Valmis
+Play back	Compilation views	Tool tip	Toista
+Preparing the build…	Compilation views	Notification content	Valmistellaan rakentamista…
+Reading in disc…	Compilation views	Notification content	Luetaan levyä…
+Reading in disc…	Compilation views	Status notification	Luetaan levyä…
+Reading in WAV files…	Compilation views	Notification content	Luetaan WAV-tiedostoja…
+Reading in WAV files…	Compilation views	Status notification	Luetaan WAV-tiedostoissa…
+Ready	Compilation views	Status notification	Valmis
+Remove	Compilation views	Button label	Poista
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Istunto
+Some WAV file has the wrong encoding	Compilation views	Notification content	Jossain WAV-tiedostossa on väärä koodaus
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Valittu kansio '%foldername%' näyttää kadonneen. Ehkä se on siirretty tai nimetty uudelleen?
+The data doesn't fit on the disc.	Compilation views	Notification content	Data ei mahdu levylle.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Levykuvatiedostoa '%filename%' ei löytynyt. Ehkä se on siirretty tai nimetty uudelleen?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Kansiota '%foldername%' ei löytynyt välimuistikansiosta. Ehkä se on siirretty tai nimetty uudelleen?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Levykuvatiedostoa '%filename%' ei löytynyt välimuistikansiosta. Ehkä se on siirretty tai nimetty uudelleen?
+This may take a while...	Compilation views	Notification content	Tämä voi kestää hetken...
+This may take over 30 minutes...	Compilation views	Notification content	Tämä voi kestää yli 30 minuuttia...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Kappale
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Kappaleen jälkiosa
+Type:	Compilation views	Label for the blanking types menu	Tyyppi:
+Unable to create a DVD image	Compilation views	Status notification	DVD-levykuvan luominen epäonnistui
+Unable to create DVD image	Compilation views	Notification content	DVD-levykuvan luominen epäonnistui
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Avaa
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Varaamaton
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\ttekijä: BurnItNow-ryhmä\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow cdrecord-, readcd- ja mkisofsohjelmien graafinen edustaohjelma.\n\nIlmoita löytämistäsi ohjelmointivirheistä tai ominaisuuksista, joita kaipaat. Yhteystiedot löytyvät 'Opaste'-valikon käyttöohjeista.
+Thank you	Application		Kiitos
+Finished in %duration%	Parser		Päättynyt ajassa %duration%
+Finished very soon now	Parser		Päättyy nyt hyvin nopeasti
+OK	App settings		Valmis
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Välimuistikansio '%folder%' ei ole kelvollinen.\nPalautetaan takaisin oletuskansioon '/system/cache'.\n\nSijainti on ehkä osiossa, jota ei ole liitetty tai joka on kirjoitussuojattu?
+OK	Helpers		Valmis
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Välimuistissa '%cache%' ei ole riittävästä vapaata tilaa. Lisätilaa tavitaan %amount%.\n\nTee tilaa, tai vaihda välimuistikansiota.
+Play back	Context menu		Toista
+Remove	Context menu		Poista

@@ -1,0 +1,146 @@
+1	Thai	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nคุณต้องการที่จะออกจาก BurnItNow ต่อไปหรือไม่ (สิ่งนี้จะไม่หยุดงานที่กำลังดำเนินการ…)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (ดีที่สุดสำหรับซีดีเพลง)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		เกี่ยวกับ…
+App	Main window		แอพ
+Burn speed:	Main window		ความเร็วในการบันทึก:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow ขณะนี้ไม่ว่าง\n\n
+Cache	Main window		แคช
+Cancel	Main window		ยกเลิก
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		การเปลี่ยนโฟลเดอร์แคชเป็น '%folder%' ล้มเหลว\n\nอาจเป็นตำแหน่งที่เป็นแบบอ่านอย่างเดียวหรือไม่?
+Choose cache folder	Main window	File panel title	เลือกโฟลเดอร์แคช
+Clear cache now	Main window		ลบแคชเดี๋ยวนี้
+Clear cache on quit	Main window		ล้างแคชเมื่อออก
+Delete	Main window		ลบ
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Eject after burning	Main window		ออกหลังจากการบันทึก
+Help	Main window		ช่วยเหลือ
+Keep	Main window		เก็บ
+Max	Main window	Abbreviation for maximal burn speed	สูงสุด
+Min	Main window	Abbreviation for minimal burn speed	ต่ำสุด
+OK	Main window		ตกลง
+Open cache folder	Main window		เปิดโฟลเดอร์แคช
+Project website	Main window		โครงการเว็ปไซต์
+Quit anyway	Main window		ออก
+Set cache folder…	Main window		เลือกโฟลเดอร์แคช...
+Simulation	Main window		จำลอง
+The blanking of a disc is currently in progress.\n	Main window		ขณะนี้การลบแผ่นดิสก์อยู่ระหว่างดำเนินการ\n
+The building of an image is currently in progress.\n	Main window		กำลังสร้างภาพในขณะนี้\n
+The burning of a disc is currently in progress.\n	Main window		ขณะนี้กำลังดำเนินการเขียนดิสก์อยู่\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		ยังมีรูปภาพ ISO ที่แคชไว้ในโฟลเดอร์แคชเก่าที่ '%oldfolder%' \n\n คุณต้องการเก็บหรือลบภาพเหล่านั้นหรือยกเลิกการตั้งค่าโฟลเดอร์แคชใหม่หรือไม่
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+Usage instructions	Main window		คำแนะนำการใช้งาน
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% คงเหลือ (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% มากกว่า CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% มากกว่า DVD9
+~ Empty project ~	Size view		~ โครงงานว่างเปล่า~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB คงเหลือ (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		ความจุของสื่อ:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	ขนาดโครงงาน %size%
+Add WAV files	Compilation views	File panel title	เพิ่มไฟล์ WAV 
+Add…	Compilation views	Button label	เพิ่ม…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	ทั้งหมด
+Audio CD	Compilation views	Tab label	Audio CD
+Audio/Video DVD	Compilation views		Audio/Video DVD
+Blank disc	Compilation views	Button label	แผ่นดิส์เปล่า
+Blank RW-disc	Compilation views	Tab label	แผ่นดิสก์ RW-disc เปล่า
+Blanking disc	Compilation views	Notification title	กำลังลบแผ่นดิสก์
+Blanking finished	Compilation views	Status notification	ลบเสร็จแล้ว
+Blanking finished!	Compilation views	Notification content	ลบเสร็จแล้ว
+Blanking in progress…	Compilation views	Status notification	ดำเนินการลบ
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		ชนิดการลบ:\n\nทั้งหมด\t\t\tลบแผ่นดิสก์ทั้งหมด ซึ่งอาจจะใช้เวลานาน \nเร็ว\t\t\tการลบแผ่นดิสก์แบบย่อ\n\t\t\tทำการลบ PMA OCและที่ว่างก่อนหน้า\nการบันทึก\t\tลบการบันทึกท้ายสุด\nแทรค\t\tลบแทรค\nท้ายแทรค\t\tBลบส่วนท้ายของแทรค\nไม่สำรอง\tไม่สำรอง แทร็กที่สำรองไว้.\nไม่เปิด\t\tไม่เปิดการบันทึกล่าสุด
+Build image	Compilation views	Button label	สร้างภาพ
+Build the DVD image	Compilation views	Status notification	สร้างภาพ DVD
+Build the image	Compilation views	Status notification	สร้างภาพ
+Building aborted	Compilation views	Notification title	ยกเลิกการสร้าง
+Building clone image	Compilation views	Notification title	สร้างภาพโคลน
+Building data image	Compilation views	Notification title	สร้างภาพข้อมูล
+Building DVD image	Compilation views	Notification title	สร้างภาพ DVD
+Building finished!	Compilation views	Notification content	การสร้างเสร็จสิ้น
+Building in progress…	Compilation views	Status notification	กำลังดำเนินการสร้าง ...
+Burn disc	Compilation views	Button label	เขียนแผ่นดิสก์
+Burn the disc	Compilation views	Status notification	เขียนแผ่นดิสก์
+Burning aborted	Compilation views	Notification title	ยกเลิกการเขียน
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	ยกเลิกการเขียน: ไฟล์ WAV บางไฟล์มีการเข้ารหัสผิด
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	ยกเลิกการเขียน: ข้อมูลไม่พอดีกับแผ่นดิสก์
+Burning Audio CD	Compilation views	Notification title	เขียน Audio CD
+Burning clone disc	Compilation views	Notification title	เขียนแผ่นดิสก์คัดลอก
+Burning complete. Burn another disc?	Compilation views	Status notification	เขียนเสร็จแล้ว ทำการเขียนแผ่นดิสก์อื่นหรือไม่?
+Burning data disc	Compilation views	Notification title	เขียนแผ่นดิสก์ข้อมูล
+Burning DVD	Compilation views	Notification title	เขียน DVD
+Burning finished!	Compilation views	Notification content	เชียนเสร็จสิ้น
+Burning finished. Burn another disc?	Compilation views	Status notification	เขียนเสร็จแล้ว ทำการเขียนแผ่นดิสก์อื่นหรือไม่?
+Burning image	Compilation views	Notification title	เขียนภาพ
+Burning in progress…	Compilation views	Status notification	กำลังเขียน...
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		ขณะนี้ BurnItNow รองรับการโคลนดิสก์ข้อมูลเท่านั้น\n\n คุณสามารถต่อแผ่นดิสก์เสียงด้วย Tracker คัดลอกไฟล์ WAV ไปยังฮาร์ดดิสก์ของคุณและเขียนด้วย BurnItNow ในโหมด 'Audio CD'
+calculating…	Compilation views	In size view, as short as possible!	กำลังคำนวน
+Choose data folder	Compilation views	File panel title	เลือกโฟลเดอร์ข้อมูล
+Choose DVD folder	Compilation views	Button label	เลือกโฟลดเดอร์ DVD 
+Choose DVD folder	Compilation views	File panel title	เลือกโฟลเดอร์ DVD 
+Choose folder	Compilation views	Button label	เลือกโฟลเดอร์
+Choose image	Compilation views	Button label	เลือกภาพ
+Choose image	Compilation views	File panel title	เลือกภาพ
+Choose the DVD folder to burn	Compilation views	Status notification	เลือกโฟลเดอร์ DVD  เพื่อทำการเขียน
+Choose the folder to burn	Compilation views	Status notification	เลือกโฟลเดอร์เพื่อเขียน
+Choose the image to burn	Compilation views	Status notification	เลือกภาพเพื่อเขียน
+Clone disc	Compilation views	Tab label	คัดลอกแผ่นดิสก์
+Cloning Audio CD	Compilation views	Notification title	คัดลอก Audio CD
+Create image	Compilation views	Button label	สร้างภาพ
+Data disc	Compilation views	Tab lable	แผ่นดิสก์ข้อมูล
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	ไม่พบไฟล์ที่ใช้งานได้ ทั้ง Audio หรือ Video DVD
+Disc label:	Compilation views		ป้ายชื่อแผ่นดิสก์:
+Drop tracks here (only WAV files)	Compilation views		วางแทร็กที่นี่ (เฉพาะไฟล์ WAV)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	เร็ว
+Folder: <none>	Compilation views		โฟลเดอร์: <ไม่มี>
+Image file	Compilation views	Tab label	ไฟล์ภาพ
+Image: <none>	Compilation views		ภาพ: <ไม่มี>
+Insert a blank disc and burn it	Compilation views	Status notification	ใส้แผ่นดิสก์เปล่าเพื่อทำการเขียน
+Insert the disc and blank it	Compilation views	Status notification	ใส่แผ่นดิสก์และลบ
+Insert the disc and create an image	Compilation views	Status notification	ใส่แผ่นดิสก์และสร้างภาพ
+Move down	Compilation views	Tool tip	เลื่อนลง
+Move up	Compilation views	Tool tip	เลื่อนขึ้น
+OK	Compilation views		ตกลง
+Play back	Compilation views	Tool tip	เล่นย้อน
+Preparing the build…	Compilation views	Notification content	เตรียมสร้าง
+Reading in disc…	Compilation views	Notification content	กำลังอ่านข้อมูลในแผ่นดิสก์...
+Reading in disc…	Compilation views	Status notification	กำลังอ่านข้อมูลในแผ่นดิสก์…
+Reading in WAV files…	Compilation views	Notification content	กำลังอ่านข้อมูลในไฟล์ WAV…
+Reading in WAV files…	Compilation views	Status notification	กำลังอ่า่นข้อมูลในไฟล์ WAV…
+Ready	Compilation views	Status notification	พร้อม
+Remove	Compilation views	Button label	ลบ
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	บันทึก
+Some WAV file has the wrong encoding	Compilation views	Notification content	ไฟล์ WAV บางไฟล์มีการเข้ารหัสผิด
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	โฟลเดอร์ '%foldername%' ที่เลือกดูเหมือนว่าจะหายไป บางทีมันอาจถูกย้ายหรือเปลี่ยนชื่อ?
+The data doesn't fit on the disc.	Compilation views	Notification content	ข้อมูลไม่พอดีกับแผ่นดิสก์
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	ไม่พบไฟล์รูปภาพ '%filename%' บางทีมันอาจถูกย้ายหรือเปลี่ยนชื่อ?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	ไม่มีโฟลเดอร์ '%foldername%' ในโฟลเดอร์แคช บางทีมันอาจถูกย้ายหรือเปลี่ยนชื่อ?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	ไม่มีภาพ '%filename%' ในโฟลเดอร์แคช บางทีมันอาจถูกย้ายหรือเปลี่ยนชื่อ?
+This may take a while...	Compilation views	Notification content	อาจใช้เวลาสักครู่ ...
+This may take over 30 minutes...	Compilation views	Notification content	อาจใช้เวลามากกว่า 30 นาที ...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	แทรค
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	ท้ายแทรค
+Type:	Compilation views	Label for the blanking types menu	ชนิด:
+Unable to create a DVD image	Compilation views	Status notification	ไม่สามารถสร้างภาพ DVD
+Unable to create DVD image	Compilation views	Notification content	ไม่สามารถสร้างภาพ DVD
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	ไม่ปิด
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	ไม่สำรอง
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow%version%\n\tโดย ทีม BurnItNow\n\tและ\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\t,\n\tRobert Mercer.\n\n\tลิขสิทธิ์ %years%\n\nBurnItNow เป็นส่วนหน้าแบบกราฟิกของ cdrecord, readcd และ mkisofs\n\n โปรดรายงานข้อบกพร่องที่คุณพบหรือคุณสมบัติที่คุณพลาด ข้อมูลการติดต่ออยู่ในคำแนะนำการใช้งานในเมนู 'ความช่วยเหลือ'
+Thank you	Application		ขอบคุณ
+Finished in %duration%	Parser		เสร็จใน %duration%
+Finished very soon now	Parser		เสร็จสิ้นเร็ว ๆ นี้
+OK	App settings		ตกลง
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		โฟลเดอร์แคช'%folder%' ไม่ถูกต้อง\nกำลังย้อนกลับเป็นค่าเริ่มต้น'/system/cache'.\n\nอาจเป็นตำแหน่งที่อยู่ในพาร์ติชันที่ไม่ได้ติดตั้งหรือเมาท์แบบอ่านอย่างเดียวหรือไม่?
+OK	Helpers		ตกลง
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		มีพื้นที่ว่างไม่เพียงพอที่ '%cache%' เราเป็น%amount% ที่ขาด\n\n สร้างพื้นที่หรือเปลี่ยนโฟลเดอร์แคช
+Play back	Context menu		เล่นย้อน
+Remove	Context menu		ลบ

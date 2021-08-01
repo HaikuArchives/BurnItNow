@@ -1,0 +1,152 @@
+1	Swedish	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nVill du avsluta BurnItNow ändå (detta kommer inte att avbryta pågående uppgift...)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (bäst för ljud-skivor)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		Om...
+App	Main window		App
+Burn speed:	Main window		Brännhastighet:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow är upptagen.\n\n
+Cache	Main window		Cache
+Cancel	Main window		Avbryt
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Ändring av cache-mappen till '%folder%' misslyckades.\n\nKanske mappen är skrivskyddad?
+Choose cache folder	Main window	File panel title	Välj cache-mapp
+Clear cache now	Main window		Rensa cache nu
+Clear cache on quit	Main window		Rensa cache vid avslut
+Delete	Main window		Ta bort
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Eject after burning	Main window		Mata ut efter bränning
+Help	Main window		Hjälp
+Keep	Main window		Behåll
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+OK	Main window		OK
+Open cache folder	Main window		Öppna cache-mapp
+Project website	Main window		Projektets hemsida
+Quit anyway	Main window		Avsluta ändå
+Set cache folder…	Main window		Ange cache-mapp...
+Simulation	Main window		Simulering
+The blanking of a disc is currently in progress.\n	Main window		Rensning av skiva pågår.\n
+The building of an image is currently in progress.\n	Main window		Skapande av avbild pågår.\n
+The burning of a disc is currently in progress.\n	Main window		Skivbränning pågår.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		Det finns cachade ISO-avbildningar i '%oldfolder%'.\n\nVill du behålla eller ta bort dessa avbilder, eller avbryta ändringen av cache-mappen?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+Usage instructions	Main window		Hanteringsinstruktioner
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% kvar (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% över CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% över DVD9
+~ Empty project ~	Size view		~ Tomt projekt ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB kvar (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Medelkapacitet:\n CD-650 - grön\n CD-700 - gul\n CD-800 - orange\n CD-900 - blå\n DVD5 - beige\n DVD9 - lila
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Projektstorlek: %size%
+Add WAV files	Compilation views	File panel title	Lägg till WAV-filer
+Add…	Compilation views	Button label	Lägg till...
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Allt
+Audio CD	Compilation views	Tab label	Ljud-CD
+Audio/Video DVD	Compilation views		Ljud/Video-DVD
+Blank disc	Compilation views	Button label	Blank skiva
+Blank RW-disc	Compilation views	Tab label	Blank RW-skiva
+Blanking disc	Compilation views	Notification title	Rensar skiva
+Blanking finished	Compilation views	Status notification	Skivrensning slutförd
+Blanking finished!	Compilation views	Notification content	Skivrensning slutförd!
+Blanking in progress…	Compilation views	Status notification	Skivrensning pågår...
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blankeringstyper:\n\nAlla\t\t\tTöm hela skivan. Det kan ta lång tid.\nSnabbt\t\t\tMinimalt töm skivan.\n\t\t\tDet raderar PMA, TOC och pregap.\nSession\t\tTöm den senaste sessionen.\nTrack\t\tTöm ett spår.\nSpårsvans\t\tTöm svansen på ett spår.\noreservera\tTa bort ett reserverat spår.\nÖPPNA\t\tLossa förra sessionen.
+Build image	Compilation views	Button label	Bygg avbildning
+Build the DVD image	Compilation views	Status notification	Bygg DVD-avbildning
+Build the image	Compilation views	Status notification	Bygger avbildning
+Building aborted	Compilation views	Notification title	Byggandet avbröts
+Building clone image	Compilation views	Notification title	Byggaer klon avbildning
+Building data image	Compilation views	Notification title	Bygger data avbildning
+Building DVD image	Compilation views	Notification title	Bygger DVD avbildning
+Building finished!	Compilation views	Notification content	Byggandet är klar!
+Building in progress…	Compilation views	Status notification	Byggandet pågår...
+Burn disc	Compilation views	Button label	Bränn skiva
+Burn the disc	Compilation views	Status notification	Bränn skivan
+Burning aborted	Compilation views	Notification title	Bränning avbryten
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Bränning avbryten: Några WAV-filer har fel kodning
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Bränning avbryten: Informationen får inte plats på skivan
+Burning Audio CD	Compilation views	Notification title	Bränner ljud-CD
+Burning clone disc	Compilation views	Notification title	Bränner klonskiva
+Burning complete. Burn another disc?	Compilation views	Status notification	Bränning slutförd. Bränn en till skiva?
+Burning data disc	Compilation views	Notification title	Bränner data-skiva
+Burning DVD	Compilation views	Notification title	Bränner DVD
+Burning finished!	Compilation views	Notification content	Bränning slutförd!
+Burning finished. Burn another disc?	Compilation views	Status notification	Bränning slutförd. Bränn en till skiva?
+Burning image	Compilation views	Notification title	Bränner avbild
+Burning in progress…	Compilation views	Status notification	Bränning pågår...
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		
+
+
+
+
+
+BurnItNow stöder för närvarande bara kloning av dataskivor.\n\nDu kan montera ljudskivan med Tracker, kopiera WAV-filerna till din hårddisk och bränna dem med BurnItNow i "Audio CD" -läge.
+calculating…	Compilation views	In size view, as short as possible!	beräknar...
+Choose data folder	Compilation views	File panel title	Choose data folder
+Choose DVD folder	Compilation views	Button label	Välj DVD-mapp
+Choose DVD folder	Compilation views	File panel title	Välj DVD-mapp
+Choose folder	Compilation views	Button label	Välj mapp
+Choose image	Compilation views	Button label	Välj avbildning
+Choose image	Compilation views	File panel title	Välj avbildning
+Choose the DVD folder to burn	Compilation views	Status notification	Välj DVD-mapp att bränna
+Choose the folder to burn	Compilation views	Status notification	Välj mapp att bränna
+Choose the image to burn	Compilation views	Status notification	Välj avbild att bränna
+Clone disc	Compilation views	Tab label	Klona skiva
+Cloning Audio CD	Compilation views	Notification title	Klonar ljudskiva
+Create image	Compilation views	Button label	Skapar avbild
+Data disc	Compilation views	Tab lable	Dataskiva
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Hittade inga gilitga filer som behövs för en ljud- eller video-DVD
+Disc label:	Compilation views		Skivetikett:
+Drop tracks here (only WAV files)	Compilation views		Släpp spår här (endast WAV-filer)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Snabb
+Folder: <none>	Compilation views		Mapp: <ingen>
+Image file	Compilation views	Tab label	Avbildningsfil
+Image: <none>	Compilation views		Avbildning: <ingen>
+Insert a blank disc and burn it	Compilation views	Status notification	Sätt i en tom skiva för bränning
+Insert the disc and blank it	Compilation views	Status notification	Sätt i skivan och radera den
+Insert the disc and create an image	Compilation views	Status notification	Sätt i en skiva och skapa en avbildning
+Move down	Compilation views	Tool tip	Flytta ner
+Move up	Compilation views	Tool tip	Flytta upp
+OK	Compilation views		OK
+Play back	Compilation views	Tool tip	Spela upp
+Preparing the build…	Compilation views	Notification content	Förbereder byggandet...
+Reading in disc…	Compilation views	Notification content	Läser skivan...
+Reading in disc…	Compilation views	Status notification	Läser skivan...
+Reading in WAV files…	Compilation views	Notification content	Läser in WAV-filer...
+Reading in WAV files…	Compilation views	Status notification	Läser in WAV-filer...
+Ready	Compilation views	Status notification	Klar
+Remove	Compilation views	Button label	Ta bort
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
+Some WAV file has the wrong encoding	Compilation views	Notification content	Några WAV-filer har fel kodning
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Den valda mappen '%foldername%' verkar ha försvunnit. Kan den ha flyttats eller döpts om?
+The data doesn't fit on the disc.	Compilation views	Notification content	Informationen ryms inte på skivan.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Avbildningen '%filename%' hittades inte. Kan den ha flyttats eller döpts om?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Det finns ingen mapp vid namn '%foldername%' i cache-mappen. Kan den ha flyttats eller döpts om?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Det finns ingen avbild vid namn %filename%' i cache-mappen. Kan den ha flyttats eller döpts om?
+This may take a while...	Compilation views	Notification content	Detta kan ta en stund...
+This may take over 30 minutes...	Compilation views	Notification content	Dettta kan ta mer än 30 minuter...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Spår
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Spårslut
+Type:	Compilation views	Label for the blanking types menu	Typ:
+Unable to create a DVD image	Compilation views	Status notification	Kunde inte skapa DVD-avbildning
+Unable to create DVD image	Compilation views	Notification content	Kunde inte skapa DVD-avbildning
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Lås upp
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Oreservera
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tgenom BurnItNow-teamet\n\toch\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow är en grafisk frontend till cdrecord, readcd och mkisofs.\n\n Rapportera felen du hittar eller funktioner du saknar. Kontaktinfo finns i användarinstruktionerna i menyn 'Hjälp'.
+Thank you	Application		Tack så mycket
+Finished in %duration%	Parser		Slutförde i %duration%
+Finished very soon now	Parser		Slutför alldeles strax
+OK	App settings		OK
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Cache-mappen '%folder%' är inte giltig.\nÅtergår till standard-mappen '/system/cache'.\n\nKanske mappen är på en partition som inte är monterad eller monterad som skrivskyddad?
+OK	Helpers		OK
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Det finns inte tillräckligt med ledigt utrymme på '%cache%'. Vi saknar  %amount%.\n\nFrigör utrymme eller ändra cache-mapp.
+Play back	Context menu		Spela upp
+Remove	Context menu		Ta bort

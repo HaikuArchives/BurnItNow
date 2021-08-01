@@ -1,113 +1,26 @@
 1	German	application/x-vnd.haikuarchives-BurnItNow	580220439
-OK	App settings		OK
-The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Der Cache-Ordner '%folder%' ist ungültig.\nEs wird wieder der auf den Standard '/system/cache' zurückgesetzt.\n\nVielleicht war der Ordner auf einer nicht oder schreibgeschützt eingehängten Partition?
-Thank you	Application		Danke
-BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tvomBurnItNow Team\n\tund\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow ist eine grafische Oberfläche für cdrecord, readcd und mkisofs.\n\nBerichte zu Bugs oder gewünschten Features sind sehr willkommen. Kontaktinfos befinden sich in der Bedienungsanleitung aus dem 'Hilfe' Menü.
-Audio/Video DVD	Compilation views		Audio/Video-DVD
-Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Löscharten:\n\nAll\t\t\tDie gesamte Disc löschen. Das kann geraume Zeit dauern.\nFast\t\t\tDie Disc nur minimal löschen.\n\t\t\tDas löscht den PMA, den TOC und den Pregap.\nSession\t\tNur die letzte Sitzung löschen.\nTrack\t\tEinen Track löschen.\nTrack tail\t\tDas Ende eines Tracks löschen.\nUnreserve\tEinen reservierten Track 'ent-reserverieren'.\nUnclose\t\tDie letzte Sitzung entsperren.
-BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow unterstützt momentan nur das Klonen von Daten-Discs.\n\nAudio CDs können per Tracker eingehängt, die WAV Dateien auf die Festplatte kopiert und dann mit BurnItNows 'Audio CD' Mode gebrannt werden.
-Disc label:	Compilation views		Disc Name:
-Drop tracks here (only WAV files)	Compilation views		Tracks hier fallen lassen (nur WAV Dateien)
-Folder: <none>	Compilation views		Ordner: <keiner>
-Image: <none>	Compilation views		Image: <keines>
-OK	Compilation views		OK
-The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Der ausgewählte Ordner '%foldername%' ist verschwunden. Wurde er vielleicht verschoben oder umbenannt?
-The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Die Image-Datei '%filename%' wurde nicht gefunden. Wurde sie vielleicht verschoben oder umbenannt?
-There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Im Cache-Ordner befindet sich kein Ordner '%foldername%'. Wurde er vielleicht verschoben oder umbenannt?
-There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Im Cache-Ordner befindet sich keine Image-Datei '%filename%'. Wurde sie vielleicht verschoben oder umbenannt?
-Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
-All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
-Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
-Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
-Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
-Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
-Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
-Add…	Compilation views	Button label	Hinzu…
-Blank disc	Compilation views	Button label	Disc löschen
-Build image	Compilation views	Button label	Image erstellen
-Burn disc	Compilation views	Button label	Disc brennen
-Choose DVD folder	Compilation views	Button label	DVD-Ordner wählen
-Choose folder	Compilation views	Button label	Ordner wählen
-Choose image	Compilation views	Button label	Image wählen
-Create image	Compilation views	Button label	Image erstellen
-Remove	Compilation views	Button label	Entfernen
-Add WAV files	Compilation views	File panel title	WAV Dateien auswählen
-Choose data folder	Compilation views	File panel title	Datenordner wählen
-Choose DVD folder	Compilation views	File panel title	DVD-Ordner wählen
-Choose image	Compilation views	File panel title	Image wählen
-calculating…	Compilation views	In size view, as short as possible!	Berechnung…
-Type:	Compilation views	Label for the blanking types menu	Art:
-Blanking finished!	Compilation views	Notification content	Löschen fertig!
-Building finished!	Compilation views	Notification content	Image fertig erstellt!
-Burning finished!	Compilation views	Notification content	Brennen fertig!
-Preparing the build…	Compilation views	Notification content	Image-Erstellung wird vorbereitet…
-Reading in disc…	Compilation views	Notification content	Einlesen der Disc…
-Reading in WAV files…	Compilation views	Notification content	WAV Dateien werden eingelesen…
-Some WAV file has the wrong encoding	Compilation views	Notification content	Mindestens eine WAV Datei hat eine ungültige Kodierung
-The data doesn't fit on the disc.	Compilation views	Notification content	Die Daten passen nicht auf die Disc.
-This may take a while...	Compilation views	Notification content	Das kann eine Weile dauern...
-This may take over 30 minutes...	Compilation views	Notification content	Das kann über 30 Minuten dauern...
-Unable to create DVD image	Compilation views	Notification content	DVD-Image konnte nicht erstellt werden
-Blanking disc	Compilation views	Notification title	Disc wird gelöscht
-Building aborted	Compilation views	Notification title	Image-Erstellung abgebrochen
-Building clone image	Compilation views	Notification title	Klon-Image erstellen
-Building data image	Compilation views	Notification title	Daten-Image erstellen
-Building DVD image	Compilation views	Notification title	DVD-Image erstellen
-Burning aborted	Compilation views	Notification title	Brennvorgang abgebrochen
-Burning Audio CD	Compilation views	Notification title	Audio-CD wird gebrannt
-Burning clone disc	Compilation views	Notification title	Disc wird geklont
-Burning data disc	Compilation views	Notification title	Daten-Disc wird gebrannt
-Burning DVD	Compilation views	Notification title	DVD wird gebrannt
-Burning image	Compilation views	Notification title	Image wird gebrannt
-Cloning Audio CD	Compilation views	Notification title	Klone Audio CD
-Blanking finished	Compilation views	Status notification	Löschen fertig
-Blanking in progress…	Compilation views	Status notification	Löschvorgang läuft…
-Build the DVD image	Compilation views	Status notification	DVD-Image erstellen
-Build the image	Compilation views	Status notification	Image erstellen
-Building in progress…	Compilation views	Status notification	Erstellungsvorgang läuft…
-Burn the disc	Compilation views	Status notification	Disc brennen
-Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Brennen abgebrochen: Mindestens ein WAV hat eine ungültige Kodierung
-Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Brennen abgebrochen: Die Disc ist zu klein.
-Burning complete. Burn another disc?	Compilation views	Status notification	Brennen fertig. Eine weitere Disc brennen?
-Burning finished. Burn another disc?	Compilation views	Status notification	Brennen fertig. Eine weitere Disc brennen?
-Burning in progress…	Compilation views	Status notification	Brennvorgang läuft…
-Choose the DVD folder to burn	Compilation views	Status notification	Zu brennenden DVD-Ordner wählen
-Choose the folder to burn	Compilation views	Status notification	Zu brennenden Ordner wählen
-Choose the image to burn	Compilation views	Status notification	Zu brennendes Image wählen
-Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Die für eine Audio/Video-DVD nötigen Dateien wurden nicht gefunden
-Insert a blank disc and burn it	Compilation views	Status notification	Leere Disc einlegen und brennen
-Insert the disc and blank it	Compilation views	Status notification	Disc einlegen und löschen
-Insert the disc and create an image	Compilation views	Status notification	Disc einlegen und Image erstellen
-Reading in disc…	Compilation views	Status notification	Einlesen der Disc…
-Reading in WAV files…	Compilation views	Status notification	WAV Dateien werden eingelesen…
-Ready	Compilation views	Status notification	Bereit
-Unable to create a DVD image	Compilation views	Status notification	Es konnte kein DVD-Image erstellt werden
-Audio CD	Compilation views	Tab label	Audio-CD
-Blank RW-disc	Compilation views	Tab label	RW-Disc löschen
-Clone disc	Compilation views	Tab label	Disc klonen
-Image file	Compilation views	Tab label	Image-Datei
-Data disc	Compilation views	Tab lable	Daten-Disc
-Move down	Compilation views	Tool tip	Runter
-Move up	Compilation views	Tool tip	Rauf
-Play back	Compilation views	Tool tip	Wiedergabe
-Play back	Context menu		Wiedergabe
-Remove	Context menu		Entfernen
-OK	Helpers		OK
-There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Unter '%cache%' steht nicht genügend freier Speicher zur Verfügung. Es fehlen %amount%.\n\nEntweder Platz schaffen oder einen anderen Cache-Ordner wählen.
 \nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nSoll BurnItNow trotzdem beendet werden (auch wenn das den momentan laufenden Vorgang nicht abbricht…)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (empfohlen bei Audio-CDs)
+8x	Main window	Multiplier for burn speed	8x
 About…	Main window		Über…
 App	Main window		App
-Burn speed:	Main window		Brenn-Speed:
+Burn speed:	Main window		Geschwindigkeit:
 BurnItNow is currently busy.\n\n	Main window		BurnItNow ist gerade beschäftigt.\n\n
 Cache	Main window		Cache
 Cancel	Main window		Abbrechen
 Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Der Cache-Ordner konnte nicht zu '%folder%' geändert werden.\n\nVielleicht ist der Speicherort schreibgeschützt?
+Choose cache folder	Main window	File panel title	Cache-Ordner wählen
 Clear cache now	Main window		Cache jetzt leeren
 Clear cache on quit	Main window		Cache beim Beenden leeren
 Delete	Main window		Löschen
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
 Eject after burning	Main window		Disc nach Brennen auswerfen
 Help	Main window		Hilfe
 Keep	Main window		Behalten
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
 OK	Main window		OK
 Open cache folder	Main window		Cache-Ordner öffnen
 Project website	Main window		Projekt Webseite
@@ -118,29 +31,116 @@ The blanking of a disc is currently in progress.\n	Main window		Eine Disc wird g
 The building of an image is currently in progress.\n	Main window		Ein Image wird gerade erstellt.\n
 The burning of a disc is currently in progress.\n	Main window		Eine Disc wird gerade gebrannt.\n
 There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		Im alten Cache-Ordner '%oldfolder%' befinden sich noch ISO Images.\n\nSollen diese Images gelöscht oder aufgehoben werden, oder soll die Wahl eines neuen Cache-Ordners abgebrochen werden?
-Usage instructions	Main window		Bedienungsanleitung
-Max	Main window	Abbreviation for maximal burn speed	Max
-Min	Main window	Abbreviation for minimal burn speed	Min
-Choose cache folder	Main window	File panel title	Cache-Ordner wählen
-16x	Main window	Multiplier for burn speed	16x
-32x	Main window	Multiplier for burn speed	32x
-4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (empfohlen bei Audio-CDs)
-8x	Main window	Multiplier for burn speed	8x
-Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
 Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
-Finished in %duration%	Parser		Fertig in %duration%
-Finished very soon now	Parser		Gleich ist's vollbracht...
+Usage instructions	Main window		Bedienungsanleitung
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% übrig (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% über CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% über DVD9
 ~ Empty project ~	Size view		~ Leeres Projekt ~
-Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Medienkapazitäten:\n  CD-650 - grün\n  CD-700 - gelb\n  CD-800 - orange\n  CD-900 - blau\n  DVD5 - beige\n  DVD9 - rosa
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB übrig (CD-900)
 CD-650	Size view	CD medium size	CD-650
 CD-700	Size view	CD medium size	CD-700
 CD-800	Size view	CD medium size	CD-800
 CD-900	Size view	CD medium size	CD-900
 DVD5	Size view	DVD medium size	DVD5
 DVD9	Size view	DVD medium size	DVD9
-%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% über CD-900
-%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% über DVD9
-%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% übrig (%medium%)
-5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB übrig (CD-900)
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Medienkapazitäten:\n  CD-650 - grün\n  CD-700 - gelb\n  CD-800 - orange\n  CD-900 - blau\n  DVD5 - beige\n  DVD9 - rosa
 Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Projektgröße: %size%
+Add WAV files	Compilation views	File panel title	WAV Dateien auswählen
+Add…	Compilation views	Button label	Hinzu…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
+Audio CD	Compilation views	Tab label	Audio-CD
+Audio/Video DVD	Compilation views		Audio/Video-DVD
+Blank disc	Compilation views	Button label	Disc löschen
+Blank RW-disc	Compilation views	Tab label	RW-Disc löschen
+Blanking disc	Compilation views	Notification title	Disc wird gelöscht
+Blanking finished	Compilation views	Status notification	Löschen fertig
+Blanking finished!	Compilation views	Notification content	Löschen fertig!
+Blanking in progress…	Compilation views	Status notification	Löschvorgang läuft…
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Löscharten:\n\nAll\t\t\tDie gesamte Disc löschen. Das kann geraume Zeit dauern.\nFast\t\t\tDie Disc nur minimal löschen.\n\t\t\tDas löscht den PMA, den TOC und den Pregap.\nSession\t\tNur die letzte Sitzung löschen.\nTrack\t\tEinen Track löschen.\nTrack tail\t\tDas Ende eines Tracks löschen.\nUnreserve\tEinen reservierten Track 'ent-reserverieren'.\nUnclose\t\tDie letzte Sitzung entsperren.
+Build image	Compilation views	Button label	Image erstellen
+Build the DVD image	Compilation views	Status notification	DVD-Image erstellen
+Build the image	Compilation views	Status notification	Image erstellen
+Building aborted	Compilation views	Notification title	Image-Erstellung abgebrochen
+Building clone image	Compilation views	Notification title	Klon-Image erstellen
+Building data image	Compilation views	Notification title	Daten-Image erstellen
+Building DVD image	Compilation views	Notification title	DVD-Image erstellen
+Building finished!	Compilation views	Notification content	Image fertig erstellt!
+Building in progress…	Compilation views	Status notification	Erstellungsvorgang läuft…
+Burn disc	Compilation views	Button label	Disc brennen
+Burn the disc	Compilation views	Status notification	Disc brennen
+Burning aborted	Compilation views	Notification title	Brennvorgang abgebrochen
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Brennen abgebrochen: Mindestens ein WAV hat eine ungültige Kodierung
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Brennen abgebrochen: Die Disc ist zu klein.
+Burning Audio CD	Compilation views	Notification title	Audio-CD wird gebrannt
+Burning clone disc	Compilation views	Notification title	Disc wird geklont
+Burning complete. Burn another disc?	Compilation views	Status notification	Brennen fertig. Eine weitere Disc brennen?
+Burning data disc	Compilation views	Notification title	Daten-Disc wird gebrannt
+Burning DVD	Compilation views	Notification title	DVD wird gebrannt
+Burning finished!	Compilation views	Notification content	Brennen fertig!
+Burning finished. Burn another disc?	Compilation views	Status notification	Brennen fertig. Eine weitere Disc brennen?
+Burning image	Compilation views	Notification title	Image wird gebrannt
+Burning in progress…	Compilation views	Status notification	Brennvorgang läuft…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow unterstützt momentan nur das Klonen von Daten-Discs.\n\nAudio CDs können per Tracker eingehängt, die WAV Dateien auf die Festplatte kopiert und dann mit BurnItNows 'Audio CD' Mode gebrannt werden.
+calculating…	Compilation views	In size view, as short as possible!	Berechnung…
+Choose data folder	Compilation views	File panel title	Datenordner wählen
+Choose DVD folder	Compilation views	Button label	DVD-Ordner wählen
+Choose DVD folder	Compilation views	File panel title	DVD-Ordner wählen
+Choose folder	Compilation views	Button label	Ordner wählen
+Choose image	Compilation views	Button label	Image wählen
+Choose image	Compilation views	File panel title	Image wählen
+Choose the DVD folder to burn	Compilation views	Status notification	Zu brennenden DVD-Ordner wählen
+Choose the folder to burn	Compilation views	Status notification	Zu brennenden Ordner wählen
+Choose the image to burn	Compilation views	Status notification	Zu brennendes Image wählen
+Clone disc	Compilation views	Tab label	Disc klonen
+Cloning Audio CD	Compilation views	Notification title	Klone Audio CD
+Create image	Compilation views	Button label	Image erstellen
+Data disc	Compilation views	Tab lable	Daten-Disc
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Die für eine Audio/Video-DVD nötigen Dateien wurden nicht gefunden
+Disc label:	Compilation views		Disc Name:
+Drop tracks here (only WAV files)	Compilation views		Tracks hier fallen lassen (nur WAV Dateien)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
+Folder: <none>	Compilation views		Ordner: <keiner>
+Image file	Compilation views	Tab label	Image-Datei
+Image: <none>	Compilation views		Image: <keines>
+Insert a blank disc and burn it	Compilation views	Status notification	Leere Disc einlegen und brennen
+Insert the disc and blank it	Compilation views	Status notification	Disc einlegen und löschen
+Insert the disc and create an image	Compilation views	Status notification	Disc einlegen und Image erstellen
+Move down	Compilation views	Tool tip	Runter
+Move up	Compilation views	Tool tip	Rauf
+OK	Compilation views		OK
+Play back	Compilation views	Tool tip	Wiedergabe
+Preparing the build…	Compilation views	Notification content	Image-Erstellung wird vorbereitet…
+Reading in disc…	Compilation views	Notification content	Einlesen der Disc…
+Reading in disc…	Compilation views	Status notification	Einlesen der Disc…
+Reading in WAV files…	Compilation views	Notification content	WAV Dateien werden eingelesen…
+Reading in WAV files…	Compilation views	Status notification	WAV Dateien werden eingelesen…
+Ready	Compilation views	Status notification	Bereit
+Remove	Compilation views	Button label	Entfernen
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
+Some WAV file has the wrong encoding	Compilation views	Notification content	Mindestens eine WAV Datei hat eine ungültige Kodierung
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Der ausgewählte Ordner '%foldername%' ist verschwunden. Wurde er vielleicht verschoben oder umbenannt?
+The data doesn't fit on the disc.	Compilation views	Notification content	Die Daten passen nicht auf die Disc.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Die Image-Datei '%filename%' wurde nicht gefunden. Wurde sie vielleicht verschoben oder umbenannt?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Im Cache-Ordner befindet sich kein Ordner '%foldername%'. Wurde er vielleicht verschoben oder umbenannt?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Im Cache-Ordner befindet sich keine Image-Datei '%filename%'. Wurde sie vielleicht verschoben oder umbenannt?
+This may take a while...	Compilation views	Notification content	Das kann eine Weile dauern...
+This may take over 30 minutes...	Compilation views	Notification content	Das kann über 30 Minuten dauern...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
+Type:	Compilation views	Label for the blanking types menu	Art:
+Unable to create a DVD image	Compilation views	Status notification	Es konnte kein DVD-Image erstellt werden
+Unable to create DVD image	Compilation views	Notification content	DVD-Image konnte nicht erstellt werden
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
 BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tvomBurnItNow Team\n\tund\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow ist eine grafische Oberfläche für cdrecord, readcd und mkisofs.\n\nBerichte zu Bugs oder gewünschten Features sind sehr willkommen. Kontaktinfos befinden sich in der Bedienungsanleitung aus dem 'Hilfe' Menü.
+Thank you	Application		Danke
+Finished in %duration%	Parser		Fertig in %duration%
+Finished very soon now	Parser		Gleich ist's vollbracht...
+OK	App settings		OK
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Der Cache-Ordner '%folder%' ist ungültig.\nEs wird wieder der auf den Standard '/system/cache' zurückgesetzt.\n\nVielleicht war der Ordner auf einer nicht oder schreibgeschützt eingehängten Partition?
+OK	Helpers		OK
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Unter '%cache%' steht nicht genügend freier Speicher zur Verfügung. Es fehlen %amount%.\n\nEntweder Platz schaffen oder einen anderen Cache-Ordner wählen.
+Play back	Context menu		Wiedergabe
+Remove	Context menu		Entfernen

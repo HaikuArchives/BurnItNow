@@ -1,0 +1,146 @@
+1	Catalan	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nVoleu sortir del BurnItNow tanmateix (això no aturarà la tasca en curs...)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (millor per a CD d’àudio)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		Quant a...
+App	Main window		Aplicació
+Burn speed:	Main window		Velocitat de gravació:
+BurnItNow is currently busy.\n\n	Main window		El BurnItNow ara està ocupat.\n\n
+Cache	Main window		Cau
+Cancel	Main window		Cancel·la
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Ha fallat canviar la carpeta de cau a "%folder%".\n\nPotser la ubicació és de només lectura?
+Choose cache folder	Main window	File panel title	Trieu la carpeta de cau
+Clear cache now	Main window		Neteja la cau ara
+Clear cache on quit	Main window		Neteja la cau en sortir
+Delete	Main window		Suprimeix
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc immediat (DAO)
+Eject after burning	Main window		Expulsa'l després de la gravació.
+Help	Main window		Ajuda
+Keep	Main window		Mantén-lo
+Max	Main window	Abbreviation for maximal burn speed	Màx.
+Min	Main window	Abbreviation for minimal burn speed	Min.
+OK	Main window		D'acord
+Open cache folder	Main window		Obre la carpeta de cau
+Project website	Main window		Lloc web del projecte
+Quit anyway	Main window		Surt tanmateix
+Set cache folder…	Main window		Establiu la carpeta de cau...
+Simulation	Main window		Simulació
+The blanking of a disc is currently in progress.\n	Main window		L'emblanquiment del disc està en progrés.\n
+The building of an image is currently in progress.\n	Main window		La construcció d'una imatge està en progrés.\n
+The burning of a disc is currently in progress.\n	Main window		La gravació d'un disc està en progrés.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		Encara hi ha imatges ISO a l’antiga carpeta de cau a %oldfolder%.\n\nVoleu conservar o suprimir aquestes imatges, o cancel·lar la configuració d'una carpeta de cau nova?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Pista immediata (TAO)
+Usage instructions	Main window		Instruccions d'ús
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% a l'esquerra (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% de CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% de DVD9
+~ Empty project ~	Size view		~ Projecte buit ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB a l'esquerra (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Capacitats dels mitjans:\n  CD-650 - verd\n  CD-700 - groc\n  CD-800 - taronja\n  CD-900 - blau\n  DVD5 - beix\n  DVD9 - porpra
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Mida del projecte: %size%
+Add WAV files	Compilation views	File panel title	Afegeix fitxers WAV
+Add…	Compilation views	Button label	Afegeix...
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Tot
+Audio CD	Compilation views	Tab label	CD d'àudio
+Audio/Video DVD	Compilation views		DVD d'àudio / vídeo
+Blank disc	Compilation views	Button label	Emblanqueix el disc
+Blank RW-disc	Compilation views	Tab label	Emblanqueix el disc regravable
+Blanking disc	Compilation views	Notification title	S'emblanqueix el disc
+Blanking finished	Compilation views	Status notification	L'emblanquiment ha acabat.
+Blanking finished!	Compilation views	Notification content	L'emblanquiment ha acabat!
+Blanking in progress…	Compilation views	Status notification	Emblanquiment en progrés...
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Tipus d'emblanquiments:\n\nAll\t\t\tEmblanquiment de tot el disc. Això pot trigar força.\nRàpid\t\t\tEmblanquiment mínim del disc.\n\t\t\tAixò esborra el PMA, el TOC i el pregap.\nSessió\t\tEmblanquiment de la darrera sessió.\nTrack\t\tEmblanquiment d'una pista.\nCua de pista\t\tEmblanquiment de la cua d'una pista.\nAnul·la la reserva\tSe suprimeix la reserva d'una pista reservada.\nDesclou\t\tSe n'obre la darrera sessió.
+Build image	Compilation views	Button label	Construeix la imatge
+Build the DVD image	Compilation views	Status notification	Construeix la imatge del DVD
+Build the image	Compilation views	Status notification	Construeix la imatge
+Building aborted	Compilation views	Notification title	Construcció avortada
+Building clone image	Compilation views	Notification title	Construcció de la imatge clonada
+Building data image	Compilation views	Notification title	Construcció d’imatge de dades
+Building DVD image	Compilation views	Notification title	Construcció d'imatges de DVD
+Building finished!	Compilation views	Notification content	Construcció acabada!
+Building in progress…	Compilation views	Status notification	Construcció en progrés...
+Burn disc	Compilation views	Button label	Grava el disc
+Burn the disc	Compilation views	Status notification	Gravació del disc
+Burning aborted	Compilation views	Notification title	Gravació avortada
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	S'ha cancel·lat la gravació: alguns fitxers WAV tenen la codificació incorrecta.
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	S'ha cancel·lat la gravació: les dades no caben al disc.
+Burning Audio CD	Compilation views	Notification title	Gravació de CD d'àudio
+Burning clone disc	Compilation views	Notification title	Gravació de disc clonat
+Burning complete. Burn another disc?	Compilation views	Status notification	Gravació completa. Voleu gravar un altre disc?
+Burning data disc	Compilation views	Notification title	Gravació de disc de dades
+Burning DVD	Compilation views	Notification title	Gravació de DVD
+Burning finished!	Compilation views	Notification content	Gravació acabada!
+Burning finished. Burn another disc?	Compilation views	Status notification	Gravació acabada. Voleu gravar un altre disc?
+Burning image	Compilation views	Notification title	Gravació d'imatge
+Burning in progress…	Compilation views	Status notification	Gravació en progrés...
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		Actualment, el BurnItNow només admet la clonació de discs de dades.\n\nPodeu muntar el disc d'àudio amb el Tracker, copiar els fitxers WAV al disc dur i gravar-los amb BurnItNow amb el mode "CD d'àudio".
+calculating…	Compilation views	In size view, as short as possible!	es calcula...
+Choose data folder	Compilation views	File panel title	Trieu la carpeta de dades
+Choose DVD folder	Compilation views	Button label	Tria la carpeta de DVD
+Choose DVD folder	Compilation views	File panel title	Trieu la carpeta de DVD
+Choose folder	Compilation views	Button label	Tria la carpeta
+Choose image	Compilation views	Button label	Tria la imatge
+Choose image	Compilation views	File panel title	Tria d'imatge
+Choose the DVD folder to burn	Compilation views	Status notification	Trieu la carpeta de DVD per gravar.
+Choose the folder to burn	Compilation views	Status notification	Trieu la carpeta per gravar.
+Choose the image to burn	Compilation views	Status notification	Trieu la imatge per gravar.
+Clone disc	Compilation views	Tab label	Clona el disc
+Cloning Audio CD	Compilation views	Notification title	Clonació de CD d'àudio
+Create image	Compilation views	Button label	Crea la imatge
+Data disc	Compilation views	Tab lable	Disc de dades
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	No s'han trobat fitxers vàlids necessaris per a un DVD d'àudio o vídeo.
+Disc label:	Compilation views		Etiqueta del disc:
+Drop tracks here (only WAV files)	Compilation views		Deixeu anar les pistes aquí (només fitxers WAV)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Ràpid
+Folder: <none>	Compilation views		Carpeta: <cap>
+Image file	Compilation views	Tab label	Fitxer d'imatge
+Image: <none>	Compilation views		Imatge: <cap>
+Insert a blank disc and burn it	Compilation views	Status notification	Introduïu un disc en blanc i graveu-lo.
+Insert the disc and blank it	Compilation views	Status notification	Introduïu un disc i deixeu-lo en blanc.
+Insert the disc and create an image	Compilation views	Status notification	Inseriu un disc i creeu-ne una imatge.
+Move down	Compilation views	Tool tip	Mou avall
+Move up	Compilation views	Tool tip	Mou amunt
+OK	Compilation views		D'acord
+Play back	Compilation views	Tool tip	Reprodueix
+Preparing the build…	Compilation views	Notification content	Es prepara la construcció...
+Reading in disc…	Compilation views	Notification content	Es llegeix el disc...
+Reading in disc…	Compilation views	Status notification	Lectura del disc
+Reading in WAV files…	Compilation views	Notification content	Es llegeixen els fitxers WAV...
+Reading in WAV files…	Compilation views	Status notification	Lectura dels fitxers WAV
+Ready	Compilation views	Status notification	A punt
+Remove	Compilation views	Button label	Suprimeix
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Sessió
+Some WAV file has the wrong encoding	Compilation views	Notification content	Alguns fitxers WAV tenen la codificació incorrecta.
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	La carpeta %foldername% sembla haver desaparegut. Potser s'ha canviat de lloc o de nom?
+The data doesn't fit on the disc.	Compilation views	Notification content	Les dades no caben al disc.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	El fitxer d'imatge %filename% no s'ha trobat. Potser s'ha canviat de lloc o de nom?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	No hi ha cap carpeta "%foldername%" a la carpeta de cau. Potser s'ha canviat de lloc o de nom?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	No hi ha cap imatge "%filename%" a la carpeta de cau. Potser s'ha canviat de lloc o de nom?
+This may take a while...	Compilation views	Notification content	Això pot trigar una mica...
+This may take over 30 minutes...	Compilation views	Notification content	Això pot trigar uns 30 minuts...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Pista
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Cua de pista
+Type:	Compilation views	Label for the blanking types menu	Tipus:
+Unable to create a DVD image	Compilation views	Status notification	No es pot crear una imatge de DVD.
+Unable to create DVD image	Compilation views	Notification content	No es pot crear la imatge de DVD.
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Desclou
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Anul·la la reserva
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	El BurnItNow %version%\n\tde l'equip BurnItNow\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow és un frontal gràfic per a enregistrament de CD, lectura de CD i "mkisofs".\n\nNotifiqueu els errors que hi trobeu o les funcions que hi trobeu a faltar. La informació de contacte és a les instruccions d'ús del menú d'ajuda.
+Thank you	Application		Gràcies
+Finished in %duration%	Parser		S'ha acabat en %duration%.
+Finished very soon now	Parser		Aviat s'acabarà.
+OK	App settings		D'acord
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		La carpeta de cau "%folder%" no és vàlida.\nEs torna al valor per defecte "/system/cache".\n\nPotser la ubicació es troba en una partició que no està muntada o muntada només de lectura?
+OK	Helpers		D'acord
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		No hi ha prou espai lliure disponible a '%cache%'. Manquen %amount%.\n\nFeu espai o canvieu la carpeta de la memòria cau.
+Play back	Context menu		Reprodueix
+Remove	Context menu		Suprimeix

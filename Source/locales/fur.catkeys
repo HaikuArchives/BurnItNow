@@ -1,0 +1,146 @@
+1	Friulian	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nJessî di BurnItNow distès (dut câs la azion cumò in vore no vignarà fermade…)?
+16x	Main window	Multiplier for burn speed	16×
+32x	Main window	Multiplier for burn speed	32×
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4× (miôr pai CD audio)
+8x	Main window	Multiplier for burn speed	8×
+About…	Main window		Informazions…
+App	Main window		Aplicazion
+Burn speed:	Main window		Velocitât incision:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow cumò al è impegnât.\n\n
+Cache	Main window		Cache
+Cancel	Main window		Anule
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		No si è rivâts a cambiâ la cartele de cache a '%folder%'.\n\nIse forsit une posizion di dome-leture?
+Choose cache folder	Main window	File panel title	Sielç cartele de cache
+Clear cache now	Main window		Nete cumò la cache
+Clear cache on quit	Main window		Nete la cache ae jessude
+Delete	Main window		Elimine
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Eject after burning	Main window		Pare fûr daspò la incision
+Help	Main window		Jutori
+Keep	Main window		Ten
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+OK	Main window		Va ben
+Open cache folder	Main window		Vierç cartele de cache
+Project website	Main window		Sît web dal progjet
+Quit anyway	Main window		Jes distès
+Set cache folder…	Main window		Stabilìs cartele de cache…
+Simulation	Main window		Simulazion
+The blanking of a disc is currently in progress.\n	Main window		La scanceladure di un disc e je in chest moment in vore.\n
+The building of an image is currently in progress.\n	Main window		La costruzion di une imagjin e je in chest moment in vore.\n
+The burning of a disc is currently in progress.\n	Main window		La incision di un disc e je in chest moment in vore.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		A son ancjemò imagjins ISO archiviadis te vecje cartele de cache su '%oldfolder%'.\n\nTignî o eliminâ chês imagjins opûr anulâ la impostazion de gnove cartele de cache?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+Usage instructions	Main window		Istruzions di ûs
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	a restin %size% (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	superât di %size% un CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	superât di %size% un DVD9
+~ Empty project ~	Size view		~ Progjet vueit ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	a restin 5,000.12 MiB (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Capacitâts dai supuarts:\n  CD-650 - vert\n  CD-700 - zâl\n  CD-800 - naranç\n  CD-900 - blu\n  DVD5 - beige\n  DVD9 - viole
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Dimension dal progjet: %size%
+Add WAV files	Compilation views	File panel title	Zonte file WAV
+Add…	Compilation views	Button label	Zonte…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Dut
+Audio CD	Compilation views	Tab label	CD Audio
+Audio/Video DVD	Compilation views		DVD Audio/Video
+Blank disc	Compilation views	Button label	Disc vueit
+Blank RW-disc	Compilation views	Tab label	Scancele disc RW
+Blanking disc	Compilation views	Notification title	Scanceladure disc
+Blanking finished	Compilation views	Status notification	Scanceladure finide
+Blanking finished!	Compilation views	Notification content	Scanceladure finide!
+Blanking in progress…	Compilation views	Status notification	Scanceladure in vore…
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Gjenar di scanceladure:\n\nDut\t\t\tScancele il disc intîr. Chest al pues tirâle a dilunc.\nVeloç\t\t\tScancele il disc al minim.\n\t\t\tChest al elimine la PMA, la TOC e il pregap.\nSession\t\tScancele la ultime session.\nLinie\t\tScancele une linie.\nFin di linie\t\tScancele la fin di une linie.\nLibere\tLibere une linie riservade.\nTorne vierç\t\tTorne a vierzi la ultime session.
+Build image	Compilation views	Button label	Costruìs imagjin
+Build the DVD image	Compilation views	Status notification	Costruìs la imagjin DVD
+Build the image	Compilation views	Status notification	Costruìs la imagjin
+Building aborted	Compilation views	Notification title	Costruzion interote
+Building clone image	Compilation views	Notification title	Daûr a costruî la imagjin clonade
+Building data image	Compilation views	Notification title	Daûr a costruî la imagjin dai dâts
+Building DVD image	Compilation views	Notification title	Daûr a costruî la imagjin DVD
+Building finished!	Compilation views	Notification content	Costruzion finide!
+Building in progress…	Compilation views	Status notification	Costruzion in vore…
+Burn disc	Compilation views	Button label	Incît disc
+Burn the disc	Compilation views	Status notification	Incît il disc
+Burning aborted	Compilation views	Notification title	Incision interote
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Incision interote: cualchi file WAV al à une codifiche sbaliade
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Incision interote: i dâts no stan sul disc
+Burning Audio CD	Compilation views	Notification title	Incision CD Audio
+Burning clone disc	Compilation views	Notification title	Incision disc clonât
+Burning complete. Burn another disc?	Compilation views	Status notification	Incision completade. Incidi un altri disc?
+Burning data disc	Compilation views	Notification title	Incision disc dâts
+Burning DVD	Compilation views	Notification title	Incision DVD
+Burning finished!	Compilation views	Notification content	Incision finished!
+Burning finished. Burn another disc?	Compilation views	Status notification	Incision finide. Incidi un altri disc?
+Burning image	Compilation views	Notification title	Incision image
+Burning in progress…	Compilation views	Status notification	Incision in vore…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow pal moment al supuarte dome la clonazion di discs dâts.\n\nNo tu puedis montâ un disc audio cun Tracker, copiâ i file WAV sul disc fis e incidiju cun BurnItNow in modalitât 'CD Audio'.
+calculating…	Compilation views	In size view, as short as possible!	calcul…
+Choose data folder	Compilation views	File panel title	Sielç la cartele dâts
+Choose DVD folder	Compilation views	Button label	Sielç cartele DVD
+Choose DVD folder	Compilation views	File panel title	Sielç la cartele DVD
+Choose folder	Compilation views	Button label	Sielç cartele
+Choose image	Compilation views	Button label	Sielç imagjin
+Choose image	Compilation views	File panel title	Sielç la imagjin
+Choose the DVD folder to burn	Compilation views	Status notification	Sielç la cartele DVD di incidi
+Choose the folder to burn	Compilation views	Status notification	Sielç la cartele di incidi
+Choose the image to burn	Compilation views	Status notification	Sielç la imagjin di incidi
+Clone disc	Compilation views	Tab label	Clone disc
+Cloning Audio CD	Compilation views	Notification title	Clonazion CD Audio
+Create image	Compilation views	Button label	Cree imagjin
+Data disc	Compilation views	Tab lable	Disc dâts
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	No si à cjatât file valits necessaris par un DVD Video o Audio
+Disc label:	Compilation views		Etichete disc:
+Drop tracks here (only WAV files)	Compilation views		Strissine i tocs achì (dome file WAV)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Veloç
+Folder: <none>	Compilation views		Cartele: <nissune>
+Image file	Compilation views	Tab label	File imagjin
+Image: <none>	Compilation views		Imagjin: <nissune>
+Insert a blank disc and burn it	Compilation views	Status notification	Inserìs un disc vueit e incidilu
+Insert the disc and blank it	Compilation views	Status notification	Inserìs il disc e scancelilu
+Insert the disc and create an image	Compilation views	Status notification	Inserìs il disc e cree une imagjin
+Move down	Compilation views	Tool tip	Sposte in jù
+Move up	Compilation views	Tool tip	Sposte in sù
+OK	Compilation views		Va ben
+Play back	Compilation views	Tool tip	Riprodûs
+Preparing the build…	Compilation views	Notification content	Daûr a prontâ la costruzion…
+Reading in disc…	Compilation views	Notification content	Daûr a lei il disc…
+Reading in disc…	Compilation views	Status notification	Daûr a lei il disc…
+Reading in WAV files…	Compilation views	Notification content	Daûr a lei i file WAV…
+Reading in WAV files…	Compilation views	Status notification	Daûr a lei i file WAV…
+Ready	Compilation views	Status notification	Pront
+Remove	Compilation views	Button label	Gjave
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
+Some WAV file has the wrong encoding	Compilation views	Notification content	Cualchi file WAV al à une codifiche sbaliade
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Al semee che la cartele sielte '%foldername%' e sedi sparide. Ise stade forsit spostade o cambiade di non?
+The data doesn't fit on the disc.	Compilation views	Notification content	I dâts no stan sul disc.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Il file imagjin '%filename%' nol è stât cjatât. Isal stât forsit spostât o cambiât di non?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	No je nissune cartele '%foldername%' te cartele de cache. Ise stade forsit spostade o cambiade di non?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	No esist une imagjin '%filename%' te cartele de cache. Ise stade forsit spostade o cambiade di non?
+This may take a while...	Compilation views	Notification content	Al podarès tirâle a dilunc...
+This may take over 30 minutes...	Compilation views	Notification content	Al podarès durâ plui di 30 minûts...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Linie
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Fin di linie
+Type:	Compilation views	Label for the blanking types menu	Gjenar:
+Unable to create a DVD image	Compilation views	Status notification	Impussibil creâ une imagjin DVD
+Unable to create DVD image	Compilation views	Notification content	Impussibil creâ imagjin DVD
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Torne vierç
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Libere
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tdal grup BurnItNow\n\te\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow al è une interface grafiche par cdrecord, readcd e mkisofs.\n\nPar plasê segnale i erôrs che tu cjatis o lis funzionalitâts che a mancjin. Lis informazions di contat a son tes istruzions di ûs tal menù 'Jutori'.
+Thank you	Application		Gracie
+Finished in %duration%	Parser		Finît in %duration%
+Finished very soon now	Parser		Finît chi di pôc
+OK	App settings		Va ben
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		La cartele de cache '%folder%' no je valide.\nTorne indaûr a chê predefinide '/system/cache'.\n\nForsit la posizion e je suntune partizion che no je montade opûr e je montade in modalitât dome-leture?
+OK	Helpers		Va ben
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		No si à vonde spazi libar disponibil su '%cache%'. Nus mancjin %amount%.\n\nFâs spazi o cambie la cartele de cache.
+Play back	Context menu		Riprodûs
+Remove	Context menu		Gjave

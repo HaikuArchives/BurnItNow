@@ -1,0 +1,146 @@
+1	Czech	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nOpravdu ukončit BurnItNow (nepřeruší spuštěné úlohy…)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (nejlepší pro zvuková CD)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		O aplikaci…
+App	Main window		App
+Burn speed:	Main window		Rychlost vypalování:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow je vytížen.\n\n
+Cache	Main window		Dočasný adresář
+Cancel	Main window		Zrušit
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Změna dočasného adresáře na '%folder%' selhala.\n\nNení umístění jen pro čtení?
+Choose cache folder	Main window	File panel title	Zvolit dočasný adresář
+Clear cache now	Main window		Vyprázdnit dočasný adresář
+Clear cache on quit	Main window		Před ukončením vyprázdnit dočasný adresář
+Delete	Main window		Smazat
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disk najednou (DAO)
+Eject after burning	Main window		Vysunout po vypálení
+Help	Main window		Nápověda
+Keep	Main window		Zachovat
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+OK	Main window		OK
+Open cache folder	Main window		Otevřít dočasný adresář
+Project website	Main window		Internetová stránka projektu
+Quit anyway	Main window		Přesto ukončit
+Set cache folder…	Main window		Zvolit dočasný adresář…
+Simulation	Main window		Předstírání
+The blanking of a disc is currently in progress.\n	Main window		Mazání disku právě probíhá.\n
+The building of an image is currently in progress.\n	Main window		Vytváření obrazu právě probíhá.\n
+The burning of a disc is currently in progress.\n	Main window		Vypalování právě probíhá.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		V původním dočasném adresáři '%oldfolder%' jsou stále obrazy.\n\nChcete je ponechat, smazat nebo zrušit nastavení nového dočasného adresáře?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Stopa najednou (TAO)
+Usage instructions	Main window		Použití
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% zbývá (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% přes CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% přes DVD9
+~ Empty project ~	Size view		~ Prázdný projekt ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB zbývá (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Kapacity médií:\n  CD-650 - zelené\n  CD-700 - žluté\n  CD-800 - oranžové\n  CD-900 - modré\n  DVD5 - béžové\n  DVD9 - fialové
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Velikost projektu: %size%
+Add WAV files	Compilation views	File panel title	Přidat soubory WAV
+Add…	Compilation views	Button label	Přidat…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Vše
+Audio CD	Compilation views	Tab label	Zvukové CD
+Audio/Video DVD	Compilation views		Obrazozvukové DVD
+Blank disc	Compilation views	Button label	Prázdný disk
+Blank RW-disc	Compilation views	Tab label	Prázdný přepisovatelný disk
+Blanking disc	Compilation views	Notification title	Mažu disk
+Blanking finished	Compilation views	Status notification	Mazání dokončeno
+Blanking finished!	Compilation views	Notification content	Smazáno!
+Blanking in progress…	Compilation views	Status notification	Mažu…
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Typy smazání:\n\nVše\t\t\tSmaže celý disk, ale dlouho to trvá.\nRychlé\t\t\tSmaže jen nejnutnější.\n\t\t\tToto smaže oblast paměti programu (PMA), tabulku obsahu (TOC) a předstopu.\nRelace\t\tSmazat poslední relaci.\nStopa\t\tSmazat stopu.\nKonec stopy\t\tSmaže konec stopy.\nOdrezervovat\tOdrezervuje rezervovanou stopu.\nOtevřít\t\tOtevře poslední relaci.
+Build image	Compilation views	Button label	Vytvořit obraz
+Build the DVD image	Compilation views	Status notification	Vytvořit obraz DVD
+Build the image	Compilation views	Status notification	Vytvořit obraz
+Building aborted	Compilation views	Notification title	Vytváření obrazu přerušeno
+Building clone image	Compilation views	Notification title	Klonuji do obrazu
+Building data image	Compilation views	Notification title	Vytvářím obraz dat
+Building DVD image	Compilation views	Notification title	Vytvářím obraz DVD
+Building finished!	Compilation views	Notification content	Obraz vytvořen!
+Building in progress…	Compilation views	Status notification	Vytváří se…
+Burn disc	Compilation views	Button label	Vypálit disk
+Burn the disc	Compilation views	Status notification	Vypálit disk
+Burning aborted	Compilation views	Notification title	Pálení přerušeno
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Vypalování přerušeno: Některé soubory WAV mají špatné kódování
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Vypalování přerušeno: Data se tam nevejdou
+Burning Audio CD	Compilation views	Notification title	Vypaluji zvukové CD
+Burning clone disc	Compilation views	Notification title	Vypaluji klon
+Burning complete. Burn another disc?	Compilation views	Status notification	Vypáleno. Vypálit další disk?
+Burning data disc	Compilation views	Notification title	Vypaluji datový disk
+Burning DVD	Compilation views	Notification title	Vypaluji DVD
+Burning finished!	Compilation views	Notification content	Vypáleno!
+Burning finished. Burn another disc?	Compilation views	Status notification	Vypalování hotovo. Vypálit další disk?
+Burning image	Compilation views	Notification title	Vypaluji obraz
+Burning in progress…	Compilation views	Status notification	Vypaluje se…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow zatím podporuje jen klonování datových disků.\n\nMůžete připojit zvukové CD pomocí Trackeru, nakopírovat soubory WAV na pevný disk a vypálit je s BurnItNow v režimu 'Zvukové CD'.
+calculating…	Compilation views	In size view, as short as possible!	počítám…
+Choose data folder	Compilation views	File panel title	Zvolit datový adresář
+Choose DVD folder	Compilation views	Button label	Zvolit adresář DVD
+Choose DVD folder	Compilation views	File panel title	Zvolit adresář DVD
+Choose folder	Compilation views	Button label	Zvolit adresář
+Choose image	Compilation views	Button label	Zvolit obraz
+Choose image	Compilation views	File panel title	Zvolit obraz
+Choose the DVD folder to burn	Compilation views	Status notification	Zvolte adresář DVD k vypálení
+Choose the folder to burn	Compilation views	Status notification	Zvolte adresář k vypálení
+Choose the image to burn	Compilation views	Status notification	Zvolte obraz k vypálení
+Clone disc	Compilation views	Tab label	Klonovat disk
+Cloning Audio CD	Compilation views	Notification title	Klonuji zvukové CD
+Create image	Compilation views	Button label	Vytvořit obraz
+Data disc	Compilation views	Tab lable	Datový disk
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Nenalezeny platné soubory pro zvukové či obrazové DVD
+Disc label:	Compilation views		Název disku:
+Drop tracks here (only WAV files)	Compilation views		Sem přetáhněte stopy (pouze soubory WAV)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Rychle
+Folder: <none>	Compilation views		Adresář: <žádný>
+Image file	Compilation views	Tab label	Soubor obrazu
+Image: <none>	Compilation views		Obraz: <žádný>
+Insert a blank disc and burn it	Compilation views	Status notification	Vložte prázdný disk a vypalte ho
+Insert the disc and blank it	Compilation views	Status notification	Vložte disk a smažte ho
+Insert the disc and create an image	Compilation views	Status notification	Vložte disk a vytvořte obraz
+Move down	Compilation views	Tool tip	Posunout dolů
+Move up	Compilation views	Tool tip	Posunout nahoru
+OK	Compilation views		OK
+Play back	Compilation views	Tool tip	Přehrávání
+Preparing the build…	Compilation views	Notification content	Připravování vytvoření obrazu…
+Reading in disc…	Compilation views	Notification content	Načítání disku…
+Reading in disc…	Compilation views	Status notification	Načítání disku…
+Reading in WAV files…	Compilation views	Notification content	Načítání WAV souborů…
+Reading in WAV files…	Compilation views	Status notification	Načítání souborů WAV…
+Ready	Compilation views	Status notification	Hotovo
+Remove	Compilation views	Button label	Odebrat
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Relace
+Some WAV file has the wrong encoding	Compilation views	Notification content	Některé soubory WAV mají špatné kódování
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Zvolený adresář '%foldername%' někam zmizel. Nebyl náhodou přesunut či přejmenován?
+The data doesn't fit on the disc.	Compilation views	Notification content	Data se nevejdou na disk.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Soubor obrazu '%filename%' nebyl nalezen. Nebyl přesunut či přejmenován?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Adresář '%foldername%' zmizel z dočasného umístění. Nebyl náhodou přesunut či přejmenován?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Soubor obrazu '%filename%' zmizel z dočasného umístění. Nebyl přesunut či přejmenován?
+This may take a while...	Compilation views	Notification content	Tohle chvilku potrvá...
+This may take over 30 minutes...	Compilation views	Notification content	Může trvat přes půl hodiny...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Stopa
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Konec stopy
+Type:	Compilation views	Label for the blanking types menu	Typ:
+Unable to create a DVD image	Compilation views	Status notification	Nelze vytvořit obraz DVD
+Unable to create DVD image	Compilation views	Notification content	Nepodařilo se vytvořit obraz DVD
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Otevřít
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Odrezervovat
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tod týmu BurnItNow\n\ta\n\tHumdingera,\n\tPrzemysława Buczkowski,\n\tRoberta Mercera.\n\n\tCopyright %years%\n\nBurnItNow je grafické rozhraní pro programy cdrecord, readcd a mkisofs.\n\nProsím hlašte nám chyby a chytré nápady. Kontakt je uveden v nabídce 'Nápověda'.
+Thank you	Application		Díky
+Finished in %duration%	Parser		Dokončeno za %duration%
+Finished very soon now	Parser		Dokončeno velmi brzy
+OK	App settings		OK
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Složka mezipaměti '%folder%' je neplatná.\nNávrat k výchozí '/system/cache'.\n\nMůže být složka v oddílu, který nebyl připojen nebo je jen pro čtení?
+OK	Helpers		OK
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		V '%cache%' není dostatek volného místa. Je potřeba %amount%.\n\nUvolněte místo, nebo změňte dočasný adresář.
+Play back	Context menu		Přehrávání
+Remove	Context menu		Odebrat

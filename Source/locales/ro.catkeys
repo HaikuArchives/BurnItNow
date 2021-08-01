@@ -1,0 +1,146 @@
+1	Romanian	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nDoriți să ieșiți oricum din BurnItNow (aceasta nu va opri sarcina în progres în prezent…)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (cea mai bună pentru CD-uri audio)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		Despre...
+App	Main window		Aplicație
+Burn speed:	Main window		Viteză de inscripționare:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow este ocupat deocamdată.\n\n
+Cache	Main window		Cache
+Cancel	Main window		Anulează
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Modificarea dosarului cache la „%folder%” a eșuat.\n\nPoate că locația este protejată la scriere?
+Choose cache folder	Main window	File panel title	Alege dosar cache
+Clear cache now	Main window		Eliberează cache-ul acum
+Clear cache on quit	Main window		Eliberează cache la ieșire
+Delete	Main window		Șterge
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Eject after burning	Main window		Scoate după inscripționare
+Help	Main window		Ajutor
+Keep	Main window		Păstrează
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+OK	Main window		OK
+Open cache folder	Main window		Deschide dosar cache
+Project website	Main window		Pagina web a proiectului
+Quit anyway	Main window		Ieși oricum
+Set cache folder…	Main window		Stabilire dosar cache...
+Simulation	Main window		Simulare
+The blanking of a disc is currently in progress.\n	Main window		Golirea unui disc este în progres în prezent.\n
+The building of an image is currently in progress.\n	Main window		Generarea unei imagini este în progres în prezent.\n
+The burning of a disc is currently in progress.\n	Main window		Inscripționarea unui disc este în progres în prezent.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		Mai sunt imagini ISO în dosarul vechi pentru cache '%oldfolder%'.\n\nVreți să păstrați sau să ștergeți aceste imagini, sau să anulați inițierea unui dosar nou pentru cache?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+Usage instructions	Main window		Instrucțiuni de utilizare
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% rămas (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% peste CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% peste DVD9
+~ Empty project ~	Size view		~ Proiect liber ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB rămas (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Capacități medii:\n  CD-650 - verde\n  CD-700 - galben\n  CD-800 - portocaliu\n  CD-900 - albastru\n  DVD5 - bej\n  DVD9 - mov
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Dimensiune proiect: %size%
+Add WAV files	Compilation views	File panel title	Adaugă fișiere WAV
+Add…	Compilation views	Button label	Adaugă...
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	Tot
+Audio CD	Compilation views	Tab label	CD Audio
+Audio/Video DVD	Compilation views		DVD Audio/Video
+Blank disc	Compilation views	Button label	Disc liber
+Blank RW-disc	Compilation views	Tab label	Disc RW liber
+Blanking disc	Compilation views	Notification title	Se eliberează discul
+Blanking finished	Compilation views	Status notification	Eliberare terminată
+Blanking finished!	Compilation views	Notification content	Eliberarea s-a terminat!
+Blanking in progress…	Compilation views	Status notification	Eliberare în progres...
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Tipuri de reinițializare:\n\nToate\t\t\tReinițializează întregul disc. Operațiunea poate dura mult timp.\nRapidă\t\t\tReinițializarea minimă a discului.\n\t\t\tOperațiunea șterge PMA, TOC și pregap.\nSesiune\t\tReinițializează ultima sesiunea.\nTrack\t\tReinițializează un track.\nSfârșitul trackului\t\tReinițializează sfârșitul unui track.\nDerezervare\tAnulează rezervarea unui track.\nRedeschide\t\tRedeschide ultima sesiune.
+Build image	Compilation views	Button label	Generează o imagine
+Build the DVD image	Compilation views	Status notification	Generează imaginea DVD
+Build the image	Compilation views	Status notification	Generează imaginea
+Building aborted	Compilation views	Notification title	Generare anulată
+Building clone image	Compilation views	Notification title	Se generează o imagine clonată
+Building data image	Compilation views	Notification title	Se generează o imagine de date
+Building DVD image	Compilation views	Notification title	Se generează o imagine DVD
+Building finished!	Compilation views	Notification content	Generare terminată!
+Building in progress…	Compilation views	Status notification	Generare în progres…
+Burn disc	Compilation views	Button label	Inscripționează un disc
+Burn the disc	Compilation views	Status notification	Inscripționează discul
+Burning aborted	Compilation views	Notification title	Inscripționare anulată
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Inscripționare anulată. Un fișier WAV nu are codarea corectă
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Inscripționare anulată. Datele nu încap pe disc
+Burning Audio CD	Compilation views	Notification title	Se inscripționează un CD audio
+Burning clone disc	Compilation views	Notification title	Se inscripționează un disc clonat
+Burning complete. Burn another disc?	Compilation views	Status notification	Inscripționare completă. Inscripționați un alt disc?
+Burning data disc	Compilation views	Notification title	Se inscripționează un disc de date
+Burning DVD	Compilation views	Notification title	Se inscripționează un DVD
+Burning finished!	Compilation views	Notification content	Inscripționare terminată!
+Burning finished. Burn another disc?	Compilation views	Status notification	Inscripționare terminată. Se inscripționează un alt disc?
+Burning image	Compilation views	Notification title	Se inscripționează o imagine
+Burning in progress…	Compilation views	Status notification	Inscripționare în progres…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow deocamdată suportă doar clonarea diskurilor de date.\n\nPuteți să montați un disk audio cu Tracker, să copiați fișiere WAV pe hard disk și apoi să le înregistrați cu BurnItNow în modul 'Audio CD'.
+calculating…	Compilation views	In size view, as short as possible!	se calculează...
+Choose data folder	Compilation views	File panel title	Alege dosarul de date
+Choose DVD folder	Compilation views	Button label	Alege dosar DVD
+Choose DVD folder	Compilation views	File panel title	Alege dosarul DVD
+Choose folder	Compilation views	Button label	Alege dosar
+Choose image	Compilation views	Button label	Alege imagine
+Choose image	Compilation views	File panel title	Alege imaginea
+Choose the DVD folder to burn	Compilation views	Status notification	Alegeți dosarul DVD de inscripționat
+Choose the folder to burn	Compilation views	Status notification	Alegeți dosarul de inscripționat
+Choose the image to burn	Compilation views	Status notification	Alegeți imaginea de inscripționat
+Clone disc	Compilation views	Tab label	Clonare disc
+Cloning Audio CD	Compilation views	Notification title	Se clonează un CD audio
+Create image	Compilation views	Button label	Creează imagine
+Data disc	Compilation views	Tab lable	Disc de date
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Nu s-au găsit fișierele valide necesare pentru un DVD audio sau video
+Disc label:	Compilation views		Etichetă disc:
+Drop tracks here (only WAV files)	Compilation views		Plasați piste aici (doar fișiere WAV)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Rapid
+Folder: <none>	Compilation views		Dosar: <nimic>
+Image file	Compilation views	Tab label	Fișier imagine
+Image: <none>	Compilation views		Imagine: <nimic>
+Insert a blank disc and burn it	Compilation views	Status notification	Introduceți un disc gol și inscripționați-l
+Insert the disc and blank it	Compilation views	Status notification	Introduceți discul și goliți-l
+Insert the disc and create an image	Compilation views	Status notification	Introduceți discul și creați o imagine
+Move down	Compilation views	Tool tip	Mută în jos
+Move up	Compilation views	Tool tip	Mută în sus
+OK	Compilation views		OK
+Play back	Compilation views	Tool tip	Redare
+Preparing the build…	Compilation views	Notification content	Se pregătește generarea…
+Reading in disc…	Compilation views	Notification content	Se citește de pe disc…
+Reading in disc…	Compilation views	Status notification	Se citește de pe disc…
+Reading in WAV files…	Compilation views	Notification content	Se citesc fișiere WAV...
+Reading in WAV files…	Compilation views	Status notification	Se citesc fișiere WAV...
+Ready	Compilation views	Status notification	Gata
+Remove	Compilation views	Button label	Elimină
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Sesiune
+Some WAV file has the wrong encoding	Compilation views	Notification content	Un fișiere WAV nu are codarea corectă
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	Dosarul selectat '%foldername%' pare să nu mai existe. Este posibil ca acesta să fie mutat sau redenumit?
+The data doesn't fit on the disc.	Compilation views	Notification content	Datele nu încap pe disc.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	Nu s-a găsit fișierul imagine „%filename%”. Poate că a fost mutat sau redenumit?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Nu există niciun dosar „%foldername%” în dosarul cache. Poate că a fost mutat sau redenumit?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	Nu există nicio imagine „%filename%” în dosarul cache. Poate că a fost mutată sau redenumită?
+This may take a while...	Compilation views	Notification content	Aceasta va dura ceva timp...
+This may take over 30 minutes...	Compilation views	Notification content	Aceasta va dura peste 30 de minute...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Pistă
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Sfârșit pistă
+Type:	Compilation views	Label for the blanking types menu	Tip:
+Unable to create a DVD image	Compilation views	Status notification	Nu s-a putut crea o imagine de DVD
+Unable to create DVD image	Compilation views	Notification content	Nu s-a putut crea imaginea de DVD
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Redeschide
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Nu mai rezerva
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tde comanda BurnItNow\n\tși\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow este o interfață grafică pentru cdrecord, readcd și mkisofs.\n\nVă rugăm să raportați buguri găsite sau feature-uri dorite. Informația de contact o puteți găsi în instrucțiuni de utilizare de la meniul 'Ajutor'.
+Thank you	Application		Mulțumesc
+Finished in %duration%	Parser		Terminat în %duration%
+Finished very soon now	Parser		Se termină foarte curând
+OK	App settings		OK
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		Dosarul cu cache '%folder%' este invalid.\nSe va folosi dosarul implicit '/system/cache'.\n\nEste posibil ca locația să fie pe o partiție, care nu este montată sau este montată read-only?
+OK	Helpers		OK
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		Nu există destul spațiu liber disponibil la „%cache%”. Ne lipsesc %amount%.\n\nFaceți loc, sau schimbați dosarul cache.
+Play back	Context menu		Redare
+Remove	Context menu		Elimină

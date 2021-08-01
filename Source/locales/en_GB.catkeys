@@ -1,0 +1,146 @@
+1	English (British)	application/x-vnd.haikuarchives-BurnItNow	580220439
+\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?	Main window		\nDo you want to quit BurnItNow anyway (this won't stop the task currently in progress…)?
+16x	Main window	Multiplier for burn speed	16x
+32x	Main window	Multiplier for burn speed	32x
+4x (best for audio CDs)	Main window	Multiplier for burn speed	4x (best for audio CDs)
+8x	Main window	Multiplier for burn speed	8x
+About…	Main window		About…
+App	Main window		App
+Burn speed:	Main window		Burn speed:
+BurnItNow is currently busy.\n\n	Main window		BurnItNow is currently busy.\n\n
+Cache	Main window		Cache
+Cancel	Main window		Cancel
+Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?	Main window		Changing the cache folder to '%folder%' failed.\n\nMaybe the location is read-only?
+Choose cache folder	Main window	File panel title	Choose cache folder
+Clear cache now	Main window		Clear cache now
+Clear cache on quit	Main window		Clear cache on quit
+Delete	Main window		Delete
+Disc at once (DAO)	Main window	Official term of a burn mode, probably don't translate	Disc at once (DAO)
+Eject after burning	Main window		Eject after burning
+Help	Main window		Help
+Keep	Main window		Keep
+Max	Main window	Abbreviation for maximal burn speed	Max
+Min	Main window	Abbreviation for minimal burn speed	Min
+OK	Main window		Alright
+Open cache folder	Main window		Open cache folder
+Project website	Main window		Project website
+Quit anyway	Main window		Quit anyway
+Set cache folder…	Main window		Set cache folder…
+Simulation	Main window		Simulation
+The blanking of a disc is currently in progress.\n	Main window		The blanking of a disc is currently in progress.\n
+The building of an image is currently in progress.\n	Main window		The building of an image is currently in progress.\n
+The burning of a disc is currently in progress.\n	Main window		The burning of a disc is currently in progress.\n
+There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?	Main window		There are still cached ISO images in the old cache folder at '%oldfolder%'.\n\nDo you want to keep or delete those images, or cancel the setting of a new cache folder?
+Track at once (TAO)	Main window	Official term of a burn mode, probably don't translate	Track at once (TAO)
+Usage instructions	Main window		Usage instructions
+%size% left (%medium%)	Size view	How much space is left on a medium; don't translate variables	%size% left (%medium%)
+%size% over CD-900	Size view	How many MiBs we're over the capacity of a CD-900	%size% over CD-900
+%size% over DVD9	Size view	How many MiBs we're over the capacity of a DVD9	%size% over DVD9
+~ Empty project ~	Size view		~ Empty project ~
+5,000.12 MiB left (CD-900)	Size view	Just for layouting, the widest string for the size info	5,000.12 MiB left (CD-900)
+CD-650	Size view	CD medium size	CD-650
+CD-700	Size view	CD medium size	CD-700
+CD-800	Size view	CD medium size	CD-800
+CD-900	Size view	CD medium size	CD-900
+DVD5	Size view	DVD medium size	DVD5
+DVD9	Size view	DVD medium size	DVD9
+Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple	Size view		Medium capacities:\n  CD-650 - green\n  CD-700 - yellow\n  CD-800 - orange\n  CD-900 - blue\n  DVD5 - beige\n  DVD9 - purple
+Project size: %size%	Size view	Tooltip, don't translate the variable %size%	Project size: %size%
+Add WAV files	Compilation views	File panel title	Add WAV files
+Add…	Compilation views	Button label	Add…
+All	Compilation views	Blanking mode. From the man page: 'Blank the entire disc. This may take a long time.'	All
+Audio CD	Compilation views	Tab label	Audio CD
+Audio/Video DVD	Compilation views		Audio/Video DVD
+Blank disc	Compilation views	Button label	Blank disc
+Blank RW-disc	Compilation views	Tab label	Blank RW-disc
+Blanking disc	Compilation views	Notification title	Blanking disc
+Blanking finished	Compilation views	Status notification	Blanking finished
+Blanking finished!	Compilation views	Notification content	Blanking finished!
+Blanking in progress…	Compilation views	Status notification	Blanking in progress…
+Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.	Compilation views		Blanking types:\n\nAll\t\t\tBlank the entire disc. This may take a long time.\nFast\t\t\tMinimally blank the disc.\n\t\t\tThis erases the PMA, the TOC and the pregap.\nSession\t\tBlank the last session.\nTrack\t\tBlank a track.\nTrack tail\t\tBlank the tail of a track.\nUnreserve\tUnreserve a reserved track.\nUnclose\t\tUnclose last session.
+Build image	Compilation views	Button label	Build image
+Build the DVD image	Compilation views	Status notification	Build the DVD image
+Build the image	Compilation views	Status notification	Build the image
+Building aborted	Compilation views	Notification title	Building aborted
+Building clone image	Compilation views	Notification title	Building clone image
+Building data image	Compilation views	Notification title	Building data image
+Building DVD image	Compilation views	Notification title	Building DVD image
+Building finished!	Compilation views	Notification content	Building finished!
+Building in progress…	Compilation views	Status notification	Building in progress…
+Burn disc	Compilation views	Button label	Burn disc
+Burn the disc	Compilation views	Status notification	Burn the disc
+Burning aborted	Compilation views	Notification title	Burning aborted
+Burning aborted: Some WAV file has the wrong encoding	Compilation views	Status notification	Burning aborted: Some WAV file has the wrong encoding
+Burning aborted: The data doesn't fit on the disc	Compilation views	Status notification	Burning aborted: The data doesn't fit on the disc
+Burning Audio CD	Compilation views	Notification title	Burning Audio CD
+Burning clone disc	Compilation views	Notification title	Burning clone disc
+Burning complete. Burn another disc?	Compilation views	Status notification	Burning complete. Burn another disc?
+Burning data disc	Compilation views	Notification title	Burning data disc
+Burning DVD	Compilation views	Notification title	Burning DVD
+Burning finished!	Compilation views	Notification content	Burning finished!
+Burning finished. Burn another disc?	Compilation views	Status notification	Burning finished. Burn another disc?
+Burning image	Compilation views	Notification title	Burning image
+Burning in progress…	Compilation views	Status notification	Burning in progress…
+BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.	Compilation views		BurnItNow currently only supports the cloning of data discs.\n\nYou can mount the audio disc with Tracker, copy the WAV files to your hard disk and burn them with BurnItNow in 'Audio CD' mode.
+calculating…	Compilation views	In size view, as short as possible!	calculating…
+Choose data folder	Compilation views	File panel title	Choose data folder
+Choose DVD folder	Compilation views	Button label	Choose DVD folder
+Choose DVD folder	Compilation views	File panel title	Choose DVD folder
+Choose folder	Compilation views	Button label	Choose folder
+Choose image	Compilation views	Button label	Choose image
+Choose image	Compilation views	File panel title	Choose image
+Choose the DVD folder to burn	Compilation views	Status notification	Choose the DVD folder to burn
+Choose the folder to burn	Compilation views	Status notification	Choose the folder to burn
+Choose the image to burn	Compilation views	Status notification	Choose the image to burn
+Clone disc	Compilation views	Tab label	Clone disc
+Cloning Audio CD	Compilation views	Notification title	Cloning Audio CD
+Create image	Compilation views	Button label	Create image
+Data disc	Compilation views	Tab lable	Data disc
+Didn't find valid files needed for an Audio or Video DVD	Compilation views	Status notification	Didn't find valid files needed for an Audio or Video DVD
+Disc label:	Compilation views		Disc label:
+Drop tracks here (only WAV files)	Compilation views		Drop tracks here (only WAV files)
+Fast	Compilation views	Blanking mode. From the man page: 'Minimally blank the disc. This results in erasing the PMA, the TOC and the pregap.'	Fast
+Folder: <none>	Compilation views		Folder: <none>
+Image file	Compilation views	Tab label	Image file
+Image: <none>	Compilation views		Image: <none>
+Insert a blank disc and burn it	Compilation views	Status notification	Insert a blank disc and burn it
+Insert the disc and blank it	Compilation views	Status notification	Insert the disc and blank it
+Insert the disc and create an image	Compilation views	Status notification	Insert the disc and create an image
+Move down	Compilation views	Tool tip	Move down
+Move up	Compilation views	Tool tip	Move up
+OK	Compilation views		Alright
+Play back	Compilation views	Tool tip	Play back
+Preparing the build…	Compilation views	Notification content	Preparing the build…
+Reading in disc…	Compilation views	Notification content	Reading in disc…
+Reading in disc…	Compilation views	Status notification	Reading in disc…
+Reading in WAV files…	Compilation views	Notification content	Reading in WAV files…
+Reading in WAV files…	Compilation views	Status notification	Reading in WAV files…
+Ready	Compilation views	Status notification	Ready
+Remove	Compilation views	Button label	Remove
+Session	Compilation views	Blanking mode. From the man page: 'Blank the last session.'	Session
+Some WAV file has the wrong encoding	Compilation views	Notification content	Some WAV file has the wrong encoding
+The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?	Compilation views	Alert text	The chosen folder '%foldername%' seems to have disappeared. Was it perhaps moved or renamed?
+The data doesn't fit on the disc.	Compilation views	Notification content	The data doesn't fit on the disc.
+The image file '%filename%' wasn't found. Was it perhaps moved or renamed?	Compilation views	Alert text	The image file '%filename%' wasn't found. Was it perhaps moved or renamed?
+There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There is no folder '%foldername%' in the cache folder. Was it perhaps moved or renamed?
+There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?	Compilation views	Alert text	There isn't an image '%filename%' in the cache folder. Was it perhaps moved or renamed?
+This may take a while...	Compilation views	Notification content	This may take a while...
+This may take over 30 minutes...	Compilation views	Notification content	This may take over 30 minutes...
+Track	Compilation views	Blanking mode. From the man page: 'Blank a track.'	Track
+Track tail	Compilation views	Blanking mode. From the man page: 'Blank the tail of a track.'	Track tail
+Type:	Compilation views	Label for the blanking types menu	Type:
+Unable to create a DVD image	Compilation views	Status notification	Unable to create a DVD image
+Unable to create DVD image	Compilation views	Notification content	Unable to create DVD image
+Unclose	Compilation views	Blanking mode. From the man page: 'Unclose last session.'	Unclose
+Unreserve	Compilation views	Blanking mode. From the man page: 'Unreserve a reserved track.'	Unreserve
+BurnItNow	System name		BurnItNow
+BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or features you miss. The contact info is in the usage instructions in the 'Help' menu.	Application	Don't change the variables %years% and %version%.	BurnItNow %version%\n\tby the BurnItNow team\n\tand\n\tHumdinger,\n\tPrzemysław Buczkowski,\n\tRobert Mercer.\n\n\tCopyright %years%\n\nBurnItNow is a graphical frontend to cdrecord, readcd and mkisofs.\n\nPlease report the bugs you find or request features you need. The contact information is in the usage instructions under the 'Help' menu.
+Thank you	Application		Thank you
+Finished in %duration%	Parser		Finished in %duration%
+Finished very soon now	Parser		Finished very soon now
+OK	App settings		Alright
+The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or mounted read-only?	App settings		The cache folder '%folder%' isn't valid.\nReverting back to the default '/system/cache'.\n\nMaybe the location is on a partition that isn't mounted or is mounted read-only?
+OK	Helpers		Alright
+There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.	Helpers		There's not enough free space available at '%cache%'. We're %amount% short.\n\nMake room, or change the cache folder.
+Play back	Context menu		Play back
+Remove	Context menu		Remove
