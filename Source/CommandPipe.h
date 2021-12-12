@@ -76,7 +76,7 @@ public:
 	// This method can be used to read the entire file into a BString.
 			BString				ReadLines(FILE* file);
 
-	// Stardard append operators, if you use pointers to a BCommandPipe,
+	// Standard append operators, if you use pointers to a BCommandPipe,
 	// you must use *pipe << "command"; and not pipe << "command" (as it
 	// will not compile that way)
 			BCommandPipe&		operator<<(const char* arg);

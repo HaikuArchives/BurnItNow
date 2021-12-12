@@ -468,9 +468,9 @@ AudioListItem::DrawItem(BView* view, BRect rect, bool complete)
 	if (fTrack < 9)
 		track.Append("0");
 
-	char nummber[4];
-	snprintf(nummber, sizeof(nummber), "%" B_PRId32, fTrack + 1);
-	track.Append(nummber);
+	char number[4];
+	snprintf(number, sizeof(number), "%" B_PRId32, fTrack + 1);
+	track.Append(number);
 	float trackWidth = font.StringWidth(track.String());
 
 	if (!IsSelected()) {
