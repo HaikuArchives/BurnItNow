@@ -134,10 +134,10 @@ CompilationAudioView::CompilationAudioView(BurnWindow& parent)
 		.Add(fSizeView);
 
 	// Apply settings to splitview
-	float infoWeight;
-	float tracksWeight;
-	bool infoCollapse;
-	bool tracksCollapse;
+	float infoWeight = 0.5;
+	float tracksWeight = 0.5;
+	bool infoCollapse = false;
+	bool tracksCollapse = false;
 	AppSettings* settings = my_app->Settings();
 	if (settings->Lock()) {
 		settings->GetSplitWeight(infoWeight, tracksWeight);
