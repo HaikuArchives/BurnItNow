@@ -1,7 +1,9 @@
 /*
  * Copyright 2010-2017, BurnItNow Team. All rights reserved.
+ * Copyright 2021, Adrien Destugues <pulkomandy@pulkomandy.tk>
  * Distributed under the terms of the MIT License.
  */
+#include <glob.h>
 #include <string>
 #include <stdio.h>
 
@@ -452,9 +454,20 @@ CompilationCloneView::_Burn()
 			->AddArgument("-v")	// to get progress output
 			->AddArgument("-dao")
 			->AddArgument("-useinfo")
-			->AddArgument("-text")
-			->AddArgument(files)
-			->Run();
+			->AddArgument("-text");
+
+		glob_t globResult;
+		int status = glob(files.String(), GLOB_NOSORT, NULL, &globResult);
+
+		if (status == 0) {
+			for (int i = 0; i < globResult.gl_pathc; i++) {
+				fBurnerThread->AddArgument(globResult.gl_pathv[i]);
+			}
+
+			globfree(&globResult);
+
+			fBurnerThread->Run();
+		}
 
 	} else {
 		fBurnerThread->AddArgument(config.mode)
